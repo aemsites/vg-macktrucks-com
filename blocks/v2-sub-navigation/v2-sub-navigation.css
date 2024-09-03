@@ -137,7 +137,7 @@
   color: var(--v2-sub-navigation-active-item-color);
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
+/* stylelint-disable no-descending-specificity */
 .v2-sub-navigation__active-item-wrapper:hover,
 .v2-sub-navigation__active-item-wrapper:active
 .v2-sub-navigation__active-item-wrapper:focus,
@@ -145,6 +145,7 @@
   background-color: var(--v2-sub-navigation-active-item-wrapper-bg-hover);
   text-decoration: none; 
 }
+/* stylelint-enable no-descending-specificity */
 
 .v2-sub-navigation__active-item-wrapper .icon,
 .v2-sub-navigation__active-item-wrapper svg {

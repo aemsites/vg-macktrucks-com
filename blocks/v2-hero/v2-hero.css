@@ -419,11 +419,12 @@
   height: unset;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
+/* stylelint-disable no-descending-specificity */
 .v2-hero--no-image .v2-hero__content-wrapper,
 .v2-hero--no-image.v2-hero--dark .v2-hero__content-wrapper {
   background-color: var(--c-primary-black);
 }
+/* stylelint-enable no-descending-specificity */
 
 /* stylelint-disable-next-line no-descending-specificity */
 .v2-hero--no-image.v2-hero--light .v2-hero__content-wrapper {
