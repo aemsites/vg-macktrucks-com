@@ -2,102 +2,102 @@
 Helix v5 sites for macktrucks.com
 
 ## Environments
-- Preview: https://main--vg-macktrucks-com--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com--volvogroup.aem.page/
+- Live: https://main--macktrucks-com--volvogroup.aem.live/
 
 ### Other markets:
 
 #### macktrucks.bs
-- Preview: https://main--vg-macktrucks-bs--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-bs--aemsites.hlx.live/
+- Preview: https://main--macktrucks-bs--volvogroup.aem.page/
+- Live: https://main--macktrucks-bs--volvogroup.aem.live/
 
 #### macktrucks.cl
-- Preview: https://main--vg-macktrucks-cl--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-cl--aemsites.hlx.live/
+- Preview: https://main--macktrucks-cl--volvogroup.aem.page/
+- Live: https://main--macktrucks-cl--volvogroup.aem.live/
 
 #### macktrucks.com.ar
-- Preview: https://main--vg-macktrucks-com-ar--aemsites.hlxge/
-- Live: https://main--vg-macktrucks-com-ar--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-ar--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-ar--volvogroup.aem.live/
 
 #### macktrucks.com.au
-- Preview: https://main--vg-macktrucks-com-au--aemsites.hlxge/
-- Live: https://main--vg-macktrucks-com-au--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-au--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-au--volvogroup.aem.live/
 
 #### macktrucks.com.bo
-- Preview: https://main--vg-macktrucks-com-bo--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-bo--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-bo--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-bo--volvogroup.aem.live/
 
 #### macktrucks.com.co
-- Preview: https://main--vg-macktrucks-com-co--aemsites.hlxge/
-- Live: https://main--vg-macktrucks-com-co--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-co--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-co--volvogroup.aem.live/
 
 #### macktrucks.com.do
-- Preview: https://main--vg-macktrucks-com-do--aemsites.hlxge/
-- Live: https://main--vg-macktrucks-com-do--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-do--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-do--volvogroup.aem.live/
 
 #### macktrucks.com.ec
-- Preview: https://main--vg-macktrucks-com-ec--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-ec--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-ec--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-ec--volvogroup.aem.live/
 
 #### macktrucks.com.emea
-- Preview: https://main--vg-macktrucks-com-emea--aemsites.hlxge/
-- Live: https://main--vg-macktrucks-com-emea--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-emea-volvogroup.aem.page/
+- Live: https://main--macktrucks-com-emea--volvogroup.aem.live/
 
 #### macktrucks.com.gy
-- Preview: https://main--vg-macktrucks-com-gy--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-gy--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-gy--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-gy--volvogroup.aem.live/
 
 #### macktrucks.com.mx
-- Preview: https://main--vg-macktrucks-com-mx--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-mx--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-mx--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-mx--volvogroup.aem.live/
 
 #### macktrucks.com.museum
-- Preview: https://main--vg-macktrucks-com-museum--aemsites.hlxge/
-- Live: https://main--vg-macktrucks-com-museum--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-museum--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-museum--volvogroup.aem.live/
 
 #### macktrucks.com.ng
-- Preview: https://main--vg-macktrucks-com-ng--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-ng--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-ng--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-ng--volvogroup.aem.live/
 
 #### macktrucks.com.ni
-- Preview: https://main--vg-macktrucks-com-ni--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-ni--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-ni--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-ni--volvogroup.aem.live/
 
 #### macktrucks.com.pa
-- Preview: https://main--vg-macktrucks-com-pa--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-pa--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-pa--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-pa--volvogroup.aem.live/
 
 #### macktrucks.com.pe
-- Preview: https://main--vg-macktrucks-com-pe--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-pe--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-pe--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-pe--volvogroup.aem.live/
 
 #### macktrucks.com.ve
-- Preview: https://main--vg-macktrucks-com-ve--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-com-ve--aemsites.hlx.live/
+- Preview: https://main--macktrucks-com-ve--volvogroup.aem.page/
+- Live: https://main--macktrucks-com-ve--volvogroup.aem.live/
 
 #### macktrucks.cr
-- Preview: https://main--vg-macktrucks-cr--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-cr--aemsites.hlx.live/
+- Preview: https://main--macktrucks-cr--volvogroup.aem.page/
+- Live: https://main--macktrucks-cr--volvogroup.aem.live/
 
 #### macktrucks.gt
-- Preview: https://main--vg-macktrucks-gt--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-gt--aemsites.hlx.live/
+- Preview: https://main--macktrucks-gt--volvogroup.aem.page/
+- Live: https://main--macktrucks-gt--volvogroup.aem.live/
 
 #### macktrucks.hn
-- Preview: https://main--vg-macktrucks-hn--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-hn--aemsites.hlx.live/
+- Preview: https://main--macktrucks-hn--volvogroup.aem.page/
+- Live: https://main--macktrucks-hn--volvogroup.aem.live/
 
 #### macktrucks.ht
-- Preview: https://main--vg-macktrucks-ht--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-ht--aemsites.hlx.live/
+- Preview: https://main--macktrucks-ht--volvogroup.aem.page/
+- Live: https://main--macktrucks-ht--volvogroup.aem.live/
 
 #### macktrucks.sv
-- Preview: https://main--vg-macktrucks-sv--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-sv--aemsites.hlx.live/
+- Preview: https://main--macktrucks-sv--volvogroup.aem.page/
+- Live: https://main--macktrucks-sv--volvogroup.aem.live/
 
 #### macktrucks.tt
-- Preview: https://main--vg-macktrucks-tt--aemsites.hlx.page/
-- Live: https://main--vg-macktrucks-tt--aemsites.hlx.live/
+- Preview: https://main--macktrucks-tt--volvogroup.aem.page/
+- Live: https://main--macktrucks-tt--volvogroup.aem.live/
 
 ## Installation
 
