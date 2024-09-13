@@ -8,7 +8,7 @@ const feeds = [
   {
     title: 'Mack News',
     targetFile: `../../mack-news/feed.xml`,
-    source: 'https://main--macktrucks-com--volvogroup.aem.live/mack-news/feed.json',
+    source: 'https://main--vg-macktrucks-com--volvogroup.aem.live/mack-news/feed.json',
     siteRoot: "https://www.macktrucks.com",
     link:	"https://www.macktrucks.com/mack-news/",
     language:	"en",
@@ -18,7 +18,7 @@ const feeds = [
   {
     title: 'Mack Body Builder News',
     targetFile: `../../parts-and-services/support/body-builders/news-and-events/feed.xml`,
-    source: 'https://main--macktrucks-com--volvogroup.aem.live/body-builder-news.json',
+    source: 'https://main--vg-macktrucks-com--volvogroup.aem.live/body-builder-news.json',
     siteRoot: "https://www.macktrucks.com",
     link:	"https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
     language:	"en",

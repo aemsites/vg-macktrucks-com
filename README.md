@@ -2,8 +2,8 @@
 Helix v5 sites for macktrucks.com
 
 ## Environments
-- Preview: https://main--macktrucks-com--volvogroup.aem.page/
-- Live: https://main--macktrucks-com--volvogroup.aem.live/
+- Preview: https://main--vg-macktrucks-com--volvogroup.aem.page/
+- Live: https://main--vg-macktrucks-com--volvogroup.aem.live/
 
 ### Other markets:
 
