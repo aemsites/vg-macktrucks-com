@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/</id>
     <title>Mack Body Builder News</title>
-    <updated>2024-08-13T11:51:29.000Z</updated>
+    <updated>2024-09-25T10:10:44.000Z</updated>
     <generator>AEM Project Franklin News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/"/>
     <subtitle>Get the latest news from Mack® Trucks Body Builder Portal.</subtitle>
@@ -10,9 +10,9 @@
         <title type="html"><![CDATA[Mack Medium Duty PTO Options]]></title>
         <id>https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/mack-medium-duty-pto-options</id>
         <link href="https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/mack-medium-duty-pto-options"/>
-        <updated>2024-05-02T20:24:50.000Z</updated>
+        <updated>2024-09-25T10:10:44.000Z</updated>
         <content type="html"><![CDATA[Get the full Mack Medium Duty (MMD) Chassis PTO installation guide to help set up the correct applications for your vehicle.]]></content>
-        <published>2024-05-02T20:24:50.000Z</published>
+        <published>2024-09-25T10:10:44.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[Mack Medium Duty-Trailer Wiring with Brake Controller]]></title>
