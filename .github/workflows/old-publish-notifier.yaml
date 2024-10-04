@@ -1,29 +1,28 @@
-name: Search Connector - Delete
+name: Old Search Connector - Upsert
 
 on: 
   repository_dispatch:
     types:
-      - resource-unpublished
-
+      - resource-published
 jobs:
   check-event-status:
     runs-on: ubuntu-latest
     steps:
     - run: |
         echo "Status: ${{ github.event.client_payload.status }}"
-        echo "Site: ${{ github.event.client_payload.site }}"
-        echo "Org: ${{ github.event.client_payload.org }}"
         echo "Path: ${{ github.event.client_payload.path }}"
   notify-connector:
     if: (github.event.client_payload.status == 200 || github.event.client_payload.status == 204) && endsWith(github.event.client_payload.path, '.md')
     runs-on: ubuntu-latest
     steps:
-    - name: Notify delete endpoint
+    - name: Notify upsert endpoint
       run: |
         sleep 1s
         PAGE_PATH=$(echo "${{ github.event.client_payload.path }}" | sed 's/\.md$//g')
-        WEBSITE_NAME="${{ github.event.client_payload.site }}"      
-        URI=$(echo "${{ vars.CONNECTOR_DOMAIN }}/$WEBSITE_NAME?path=$PAGE_PATH")
-        response=$(curl -s -H "x-api-key: ${{ secrets.API_KEY }}" -X DELETE "$URI")
+        WEBSITE_NAME="${{ vars.WEBSITE_NAME }}"
+        URI=$(echo "${{ vars.OLD_CONNECTOR_DOMAIN }}/$WEBSITE_NAME")
+        BODY='{ "paths": [ "'$PAGE_PATH'" ] }'
+        BODY="$(echo "$BODY" | jq -c)"
+        response=$(curl -s -H "x-api-key: ${{ secrets.OLD_API_KEY }}" -X POST "$URI" -d "$BODY")
         echo "response: $response"
       shell: bash
