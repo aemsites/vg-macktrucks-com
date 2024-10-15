@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/mack-news/</id>
     <title>Mack News</title>
-    <updated>2024-10-08T00:00:00.000Z</updated>
+    <updated>2024-10-14T00:00:00.000Z</updated>
     <generator>AEM Project Franklin News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.macktrucks.com/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3055,5 +3055,21 @@
         <updated>2024-10-08T00:00:00.000Z</updated>
         <content type="html"><![CDATA[ALLENTOWN, PA (Oct. 8, 2024) – Mack Defense announced today that it will feature the Mack® MD6 Electric model at its booth at the Association of the United States Army (AUSA) 2024 Annual Meeting and Exposition, Oct. 14-16, at the Walter E. Washington Convention Center in Washington, D.C.]]></content>
         <published>2024-10-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack® Connect Empowers Fleets with Enhanced Control and Confidence | Mack Trucks]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-connect-empowers-fleets-with-enhanced-control-and-confidence</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-connect-empowers-fleets-with-enhanced-control-and-confidence"/>
+        <updated>2024-10-14T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[NASHVILLE, TN (Oct. 14, 2024) –Mack Trucks customers today touted the benefits of Mack® Connect, Mack’s comprehensive fleet management portal. Mack made the announcement during the American Trucking Associations Management Conference and Exhibition, Oct. 12-15 at Nashville’s Music City Center.]]></content>
+        <published>2024-10-14T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Reaffirms Commitment to Safety and Veterans with Continued ATA Program Sponsorships]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-trucks-reaffirms-commitment-to-safety-and-veterans-with-continued-ata-program-sponsorships</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-trucks-reaffirms-commitment-to-safety-and-veterans-with-continued-ata-program-sponsorships"/>
+        <updated>2024-10-14T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[NASHVILLE, TN (Oct. 14, 2024) –Mack Trucks today announced the continuation of its long-standing commitment to highway safety and veteran support through renewed sponsorships of two key American Trucking Associations (ATA) programs for 2025]]></content>
+        <published>2024-10-14T00:00:00.000Z</published>
     </entry>
 </feed>
