@@ -794,7 +794,7 @@ a.header__link {
     text-decoration: underline;
   }
 
-  /* stylelint-disable-next-line no-descending-specificity */
+  /* stylelint-disable no-descending-specificity */
   .header .button .icon,
   .header .button svg,
   .header a.standalone-link .icon,
@@ -807,6 +807,7 @@ a.header__link {
     height: 16px;
     stroke: currentcolor;
   }
+  /* stylelint-enable no-descending-specificity */
 
   .header__accordion-container.header__main-link-wrapper {
     height: auto;

@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/mack-news/</id>
     <title>Mack News</title>
-    <updated>2024-09-05T00:00:00.000Z</updated>
+    <updated>2024-10-14T00:00:00.000Z</updated>
     <generator>AEM Project Franklin News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.macktrucks.com/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -2458,12 +2458,12 @@
         <published>2023-02-13T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[General Truck Sales in Ohio Becomes a Mack Certified Electric Vehicle (EV) Dealer | Mack Trucks]]></title>
+        <title type="html"><![CDATA[Vanguard Truck Centers in Austin, Houston and Phoenix are Now Mack Certified EV Dealers | Mack Trucks]]></title>
         <id>https://www.macktrucks.com/mack-news/2023/general-truck-sales-in-ohio-becomes-a-mack-certified-electric-vehicle-ev-dealer</id>
         <link href="https://www.macktrucks.com/mack-news/2023/general-truck-sales-in-ohio-becomes-a-mack-certified-electric-vehicle-ev-dealer"/>
-        <updated>2023-01-23T00:00:00.000Z</updated>
-        <content type="html"><![CDATA[GREENSBORO, NC (Jan. 23, 2023) – Mack Trucks dealer General Truck Sales recently completed the stringent requirements to become a Mack Certified Electric Vehicle (EV) Dealer at its Toledo, Ohio location. The designation means General Truck Sales will now be able to service and support the Mack LR Electric refuse vehicle, Mack’s first Class 8 full electric vehicle.]]></content>
-        <published>2023-01-23T00:00:00.000Z</published>
+        <updated>2023-12-04T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (Dec. 4, 2023) – Mack Trucks announced today that Vanguard Truck Centers recently achieved Certified Electric Vehicle (EV) status at several of its locations, including in Phoenix, making it the first Mack Certified EV Dealer in Arizona.]]></content>
+        <published>2023-12-04T00:00:00.000Z</published>
     </entry>
     <entry>
         <title type="html"><![CDATA[Mack Customer WIN Waste Innovations Uses Waste Collected by Mack LR Electric Vehicles to Power Trucks | Mack Trucks]]></title>
@@ -2618,7 +2618,7 @@
         <published>2023-01-12T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[Mack Trucks Features Mack® MD Electric and LR® Electric Trucks at ACT Expo 2023 | Mack Trucks]]></title>
+        <title type="html"><![CDATA[Mack Trucks Features Mack® MD Electric and LR® Electric Trucks at ACT Expo 2023  | Mack Trucks]]></title>
         <id>https://www.macktrucks.com/mack-news/2023/mack-trucks-features-mack-md-electric-and-lr-electric-trucks-at-act-expo-2023</id>
         <link href="https://www.macktrucks.com/mack-news/2023/mack-trucks-features-mack-md-electric-and-lr-electric-trucks-at-act-expo-2023"/>
         <updated>2023-04-26T00:00:00.000Z</updated>
@@ -2999,5 +2999,77 @@
         <updated>2024-09-05T00:00:00.000Z</updated>
         <content type="html"><![CDATA[GREENSBORO, NC (Sept. 5, 2024) – Mack Trucks recently launched its cutting-edge Truck Builder, a digital platform that allows customers to customize their dream Mack® truck from the ground up. This innovative tool represents a comprehensive overhaul of Mack’s previous online truck customization technology and significantly enhances the user experience.]]></content>
         <published>2024-09-05T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Dealer Kriete Truck Centers Expands Upper Midwest Presence]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-dealer-kriete-truck-centers-expands-upper-midwest-presence</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-dealer-kriete-truck-centers-expands-upper-midwest-presence"/>
+        <updated>2024-09-10T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (Sept. 10, 2024) – Mack Trucks announced today that its long-standing dealer, Kriete Truck Centers, has expanded its operations through a strategic acquisition of La Crosse Truck Center in La Crosse, Wisconsin.]]></content>
+        <published>2024-09-10T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Enters Long-Term Partnership with Richard Childress Racing]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-trucks-enters-long-term-partnership-with-richard-childress-racing</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-trucks-enters-long-term-partnership-with-richard-childress-racing"/>
+        <updated>2024-09-12T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (Sept. 12, 2024) – Mack Trucks and Richard Childress Racing (RCR) today announced a long-term partnership under which Mack will be designated as the “Official Long-Haul Truck of Richard Childress Racing.]]></content>
+        <published>2024-09-12T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks is the Official Truck Partner for 23XI Racing | Mack Trucks]]></title>
+        <id>https://www.macktrucks.com/mack-news/2023/mack-trucks-is-the-official-truck-partner-for-23xi-racing</id>
+        <link href="https://www.macktrucks.com/mack-news/2023/mack-trucks-is-the-official-truck-partner-for-23xi-racing"/>
+        <updated>2023-04-06T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (April 6, 2023) – Mack Trucks announced today that it has signed a multi-year partnership with 23XI (twenty-three eleven) Racing to be its official truck partner. The team is co-owned by NBA legend Michael Jordan and three-time Daytona 500 winner Denny Hamlin.]]></content>
+        <published>2023-04-06T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack and Kriete Deliver Two Mack® LR Electric Models to the City of Madison, Wisconsin]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-and-kriete-deliver-two-mack-lr-electric-models-to-the-city-of-madison-wisconsin</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-and-kriete-deliver-two-mack-lr-electric-models-to-the-city-of-madison-wisconsin"/>
+        <updated>2024-09-17T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[MADISON, WI (Sept. 17, 2024) – During an event today hosted by Kriete Truck Centers at its Madison, Wisconsin location, the commercial truck and equipment dealer, together with Mack Trucks, officially handed over two Mack® LR Electric Class 8 refuse models to the City of Madison.]]></content>
+        <published>2024-09-17T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Awarded New Sourcewell Contract.]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-trucks-awarded-new-sourcewell-contract</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-trucks-awarded-new-sourcewell-contract"/>
+        <updated>2024-10-01T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (Oct. 1, 2024) – Mack Trucks has been awarded a new contract with Sourcewell, a government service cooperative offering competitive pricing and volume discounts on Mack® trucks to its more than 50,000 members.]]></content>
+        <published>2024-10-01T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Spotlights Mack Anthem® Models at ATA MC&E]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-trucks-spotlights-mack-anthem-models-at-ata-mc-e</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-trucks-spotlights-mack-anthem-models-at-ata-mc-e"/>
+        <updated>2024-10-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (Oct. 3, 2024) – Mack Trucks will feature two Mack Anthem models at the American Trucking Associations (ATA) Management Conference & Exhibition (MC&E), Oct. 12 to 15, at the Music City Center, Nashville, Tennessee.]]></content>
+        <published>2024-10-03T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Defense to Spotlight the Mack® MD Electric at AUSA 2024]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-defense-to-spotlight-the-mack-md-electric-at-ausa-2024</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-defense-to-spotlight-the-mack-md-electric-at-ausa-2024"/>
+        <updated>2024-10-08T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[ALLENTOWN, PA (Oct. 8, 2024) – Mack Defense announced today that it will feature the Mack® MD6 Electric model at its booth at the Association of the United States Army (AUSA) 2024 Annual Meeting and Exposition, Oct. 14-16, at the Walter E. Washington Convention Center in Washington, D.C.]]></content>
+        <published>2024-10-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack® Connect Empowers Fleets with Enhanced Control and Confidence | Mack Trucks]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-connect-empowers-fleets-with-enhanced-control-and-confidence</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-connect-empowers-fleets-with-enhanced-control-and-confidence"/>
+        <updated>2024-10-14T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[NASHVILLE, TN (Oct. 14, 2024) –Mack Trucks customers today touted the benefits of Mack® Connect, Mack’s comprehensive fleet management portal. Mack made the announcement during the American Trucking Associations Management Conference and Exhibition, Oct. 12-15 at Nashville’s Music City Center.]]></content>
+        <published>2024-10-14T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Reaffirms Commitment to Safety and Veterans with Continued ATA Program Sponsorships]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-trucks-reaffirms-commitment-to-safety-and-veterans-with-continued-ata-program-sponsorships</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-trucks-reaffirms-commitment-to-safety-and-veterans-with-continued-ata-program-sponsorships"/>
+        <updated>2024-10-14T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[NASHVILLE, TN (Oct. 14, 2024) –Mack Trucks today announced the continuation of its long-standing commitment to highway safety and veteran support through renewed sponsorships of two key American Trucking Associations (ATA) programs for 2025]]></content>
+        <published>2024-10-14T00:00:00.000Z</published>
     </entry>
 </feed>

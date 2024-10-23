@@ -156,8 +156,7 @@
     'first second fourth'
     'fifth fifth sixth'
     'fifth fifth sixth';
-    column-gap: 5px;
-    row-gap: 5px;
+    gap: 5px;
   }
 
   .teaser-card,

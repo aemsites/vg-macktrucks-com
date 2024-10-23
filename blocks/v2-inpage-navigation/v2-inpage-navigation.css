@@ -66,7 +66,7 @@
   border-color var(--duration-small) var(--easing-standard);
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
+/* stylelint-disable no-descending-specificity */
 .v2-inpage-navigation__item button:hover,
 .v2-inpage-navigation__item button:active,
 .v2-inpage-navigation__item button:focus,
@@ -77,6 +77,7 @@
   .v2-inpage-navigation__selected-item-wrapper {
   background-color: #f1f1f1;
 }
+/* stylelint-enable no-descending-specificity */
 
 .v2-inpage-navigation__item button:focus {
   outline: 0;

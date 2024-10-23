@@ -102,8 +102,7 @@
     background-color: var(--c-primary-white);
     display: flex;
     flex-flow: row;
-    column-gap: 64px;
-    row-gap: 24px;
+    gap: 24px 64px;
     align-items: center;
     padding: 40px 40px 0 0;
   }

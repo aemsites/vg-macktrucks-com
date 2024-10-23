@@ -14,6 +14,41 @@
       }
     ]
   },
+  "tools": {
+    "total": 7,
+    "offset": 0,
+    "limit": 7,
+    "data": [
+      {
+        "name": "GIT_OWNER",
+        "value": "aemsites"
+      },
+      {
+        "name": "GIT_REPO",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "GLOBAL_SITEMAP_URL",
+        "value": "/sitemap.xml"
+      },
+      {
+        "name": "v1SectionClasses",
+        "value": "[\"background\",\"background-top\",\"bg-paper\",\"bg-white-paper\",\"dark-background\",\"center\",\"flex-center\",\"font-l\",\"font-m\",\"font-s\",\"font-xl\",\"font-xxl\",\"font-xs\",\"font-xxs\",\"helvetica-55\",\"helvetica-65\",\"helvetica-75\",\"helvetica-56\",\"helvetica-66\",\"helvetica-76\",\"gap\",\"highlight\",\"line-separator\",\"magazine-listing-content\",\"no-first-line\",\"padding-0\",\"padding-16\",\"padding-32\",\"section-width\",\"text-white\",\"text-black\",\"responsive-title\",\"title-line\",\"title-margin-bottom-0\",\"title-white\",\"wrapper-margin-top-0\"]"
+      },
+      {
+        "name": "v2SectionClasses",
+        "value": "[\"header-with-mark\",\"recalls-padding\",\"section--background-with-dots\",\"section--black-background\",\"section--gray-background\",\"section--light-gray-background\",\"section--no-gap\",\"section--no-vertical-padding\",\"section--with-background\"]"
+      },
+      {
+        "name": "v1AllowedBlocks",
+        "value": "[\"v2-embed\",\"v2-forms\"]"
+      },
+      {
+        "name": "v2AllowedBlocks",
+        "value": "[\"embed\",\"footer\",\"fragment\",\"header\",\"iframe\",\"modal\",\"library-metadata\"]"
+      }
+    ]
+  },
   "truckConfigurator": {
     "total": 8,
     "offset": 0,
@@ -258,6 +293,48 @@
       {
         "name": "COOKIE_CHECK",
         "value": "false"
+      }
+    ]
+  },
+  "magazineConfig": {
+    "total": 4,
+    "offset": 0,
+    "limit": 4,
+    "data": [
+      {
+        "name": "HREF",
+        "value": "https://go.pardot.com/l/1038343/2023-12-12/3m4w2c"
+      },
+      {
+        "name": "IFRAME_SIZE",
+        "value": "900px"
+      },
+      {
+        "name": "DATE_LANGUAGE",
+        "value": "en-US"
+      },
+      {
+        "name": "DATE_OPTIONS",
+        "value": "[\"month: long\",\"day: numeric\",\"year: numeric\"]"
+      }
+    ]
+  },
+  "fgrep": {
+    "total": 3,
+    "offset": 0,
+    "limit": 3,
+    "data": [
+      {
+        "name": "GIT_OWNER",
+        "value": "aemsites"
+      },
+      {
+        "name": "GIT_REPO",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "GLOBAL_SITEMAP_URL",
+        "value": "/sitemap.xml"
       }
     ]
   },

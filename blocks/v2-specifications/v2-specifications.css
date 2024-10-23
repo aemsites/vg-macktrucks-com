@@ -28,12 +28,13 @@
   margin-top: 0;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
+/* stylelint-disable no-descending-specificity */
 .v2-specifications__list--with-pictures,
 .v2-specifications__list--with-downloads {
   gap: 40px;
   grid-template-columns: 1fr;
 }
+/* stylelint-enable no-descending-specificity */
 
 .v2-specifications__list--with-downloads strong,
 .v2-specifications__list--with-pictures strong {

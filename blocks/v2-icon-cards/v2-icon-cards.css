@@ -245,7 +245,7 @@
   margin: 4px 0;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
+/* stylelint-disable no-descending-specificity */
 .v2-icon-cards__column--extra-col a.button:active,
 .v2-icon-cards__column--extra-col a.button:focus,
 .v2-icon-cards__column--extra-col a.button:hover,
@@ -255,6 +255,7 @@
   background-color: unset;
   text-decoration: none;
 }
+/* stylelint-enable no-descending-specificity */
 
 @media (min-width: 744px) {
   .v2-icon-cards.v2-icon-cards--4-cols {

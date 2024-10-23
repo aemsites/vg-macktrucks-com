@@ -1035,11 +1035,12 @@ main .section.responsive-title h1 {
 /* ICONS STYLES - END */
 
 /* REDESIGN Buttons */
-/* stylelint-disable-next-line no-descending-specificity */
+/* stylelint-disable no-descending-specificity */
 .redesign-v2 a.button:any-link,
 .redesign-v2 button {
   font-weight: normal;
 }
+/* stylelint-enable no-descending-specificity */
 
 /* stylelint-disable-next-line no-descending-specificity */
 .redesign-v2 a.button,
@@ -1117,13 +1118,14 @@ main .section.responsive-title h1 {
   background-color: var(--button-primary-bg-active);
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
+/* stylelint-disable no-descending-specificity */
 .redesign-v2 a.button--secondary,
 .redesign-v2 button.button--secondary {
   background-color: var(--button-secondary-bg);
   border-color: var(--button-secondary-border);
   color: var(--button-secondary-color);
 }
+/* stylelint-enable no-descending-specificity */
 
 /* stylelint-disable-next-line no-descending-specificity */
 .redesign-v2 .button--secondary:hover,
