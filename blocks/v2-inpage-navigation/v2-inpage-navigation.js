@@ -1,4 +1,4 @@
-import { getMetadata } from '../../scripts/lib-franklin.js';
+import { getMetadata } from '../../scripts/aem.js';
 import {
   createElement,
   debounce,
@@ -122,7 +122,7 @@ export default async function decorate(block) {
 
   const wrapper = block.querySelector(':scope > div');
   wrapper.classList.add(`${blockName}__wrapper`);
-  const itemsWrapper = block.querySelector(':scope > div > div');
+  const itemsWrapper = block.querySelector(':scope > div > div > p');
 
   const dropdownWrapper = createElement('div', { classes: `${blockName}__dropdown` });
   const selectedItemWrapper = createElement('div', { classes: `${blockName}__selected-item-wrapper` });
@@ -138,7 +138,7 @@ export default async function decorate(block) {
     }
     const listItem = createElement('li', { classes });
 
-    listItem.innerHTML = item.innerHTML;
+    listItem.innerHTML = item.outerHTML;
     list.appendChild(listItem);
   });
 

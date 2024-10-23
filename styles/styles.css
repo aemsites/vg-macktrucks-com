@@ -1397,13 +1397,6 @@ main .section.responsive-title h1 {
   text-decoration: underline;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-.redesign-v2 :where(ul) {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-}
-
 .redesign-v2 .li--hyphen {
   padding-left: 20px;
   margin-bottom: 8px;
@@ -1576,3 +1569,59 @@ main .section.responsive-title h1 {
     --text-block-max-width: 694px;
   }
 }
+
+/* generic tooltip styles  starts here */
+.redesign-v2 .tooltip {
+  position: relative;
+}
+
+.redesign-v2 .tooltip::before,
+.redesign-v2 .tooltip::after {
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-small) linear, visibility var(--duration-small) linear;
+}
+
+.redesign-v2 .tooltip.show::before,
+.redesign-v2 .tooltip.show::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.redesign-v2 .tooltip::before {
+  content: attr(data-tooltip);
+  z-index: 2;
+  padding: 4px 8px 5px;
+  white-space: nowrap;
+  color: var(--c-primary-black);
+  background: var(--c-primary-white);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 0.3px 0.5px 0 rgb(0 0 0 / 10%);
+}
+
+.redesign-v2 .tooltip::after {
+  content: "";
+  width: 0;
+  height: 0;
+  z-index: 4;
+  filter: drop-shadow(0 6px 4px rgb(0 0 0 / 10%));
+}
+
+/* tooltip position top */
+.redesign-v2 .tooltip--top::before,
+.redesign-v2 .tooltip--top::after {
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%);
+  margin-bottom: 15px;
+}
+
+.redesign-v2 .tooltip--top::after {
+  margin-bottom: 8.5px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid var(--c-primary-white);
+}
+
+/* generic tooltip styles  ends here */

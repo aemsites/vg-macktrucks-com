@@ -65,7 +65,7 @@ $lastPane = "";                                                                 
 $radiusValue = $('#range').val();                                                               // the current radius value
 $sortedPins = null;                                                                             // stores all pins by distance (miles)
 $offset = ((new Date().getTimezoneOffset()) / 60) * -1;
-$key = 'AIzaSyAP8IewqHuU8SMz_6tNiIUlbU_l0GFOd1w';
+$key = window.locatorConfig.apiKey
 $myDealer = null;
 $wayPoints = [];
 $directionsService = null;
@@ -282,7 +282,7 @@ $.fn.initGoogleMaps = function () {
   // Lets us control OOO when some cases gmaps takes longer to initialize
   $.ajax({
     type: "GET",
-    url: "https://maps.googleapis.com/maps/api/js?key=AIzaSyAP8IewqHuU8SMz_6tNiIUlbU_l0GFOd1w&libraries=places,geometry",
+    url: `https://maps.googleapis.com/maps/api/js?key=${$key}&libraries=places,geometry`,
     dataType: "script",
     success: function (d) {
       initMap();

@@ -1,4 +1,4 @@
-import { getMetadata } from './lib-franklin.js';
+import { getMetadata } from './aem.js';
 
 export const feedsInfo = {
   'mack-news': {

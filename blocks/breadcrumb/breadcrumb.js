@@ -5,7 +5,7 @@ export default function decorate(block) {
 
   const articleUrl = (window.location.href).split('/').pop();
   const articleName = articleUrl.replaceAll('-', ' ').toLowerCase();
-  const homeUrl = 'https://www.macktrucks.com/magazine/';
+  const homeUrl = `${window.location.origin}/magazine/`;
 
   breadcrumbItems.innerHTML = `
     <li class="breadcrumb breadcrumb-home">

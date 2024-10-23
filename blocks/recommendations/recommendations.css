@@ -102,17 +102,18 @@
   .recommendations-container {
     width: 100%;
   }
-  
+
   .recommendations-list {
     flex-direction: row;
     justify-content: flex-start;
     column-gap: 15px;
   }
-  
+
   .recommendations-item {
     --card-height: 270px;
 
-    width: 50%;
+    width: 100%;
+    min-width: 50%;
   }
 }
 
@@ -121,16 +122,26 @@
   margin: unset;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-title,
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-subtitle,
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-link,
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-truck {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-title,
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-subtitle,
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-link,
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-truck {
   display: flex;
   color: var(--c-primary-black);
   line-height: 22px;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-category,
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-category,
 .magazine-categories.recommendations-container .recommendations-section-title {
   display: none;
 }
@@ -159,41 +170,56 @@
   padding: 10px 0 20px;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content a:hover {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  a:hover {
   text-decoration: 0;
   color: var(--c-secondary-steel);
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-title {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-title {
   font-family: var(--ff-body-bold);
   font-size: var(--heading-font-size-s);
   margin: 5px 0 0;
   padding: 0 0 5px;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-subtitle {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-subtitle {
   margin: 0;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-truck {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-truck {
   align-items: center;
   background-color: var(--c-secondary-steel);
   width: fit-content;
   opacity: 0.6;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-truck p {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-truck
+  p {
   color: var(--c-primary-white);
   opacity: 0.8;
   margin: 0;
   padding: 2px 10px 0 5px;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-link {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-link {
   padding: 5px 0;
 }
 
-.magazine-categories.recommendations-container .recommendations-text-content .recommendations-link::after {
+.magazine-categories.recommendations-container
+  .recommendations-text-content
+  .recommendations-link::after {
   content: url('../../media/arrow-B.webp');
   margin-left: 10px;
 }
@@ -208,8 +234,10 @@
     height: fit-content;
   }
 
-  .magazine-categories.recommendations-container .recommendations-item .recommendations-image,
-  .magazine-categories.recommendations-container  .recommendations-image  img {
+  .magazine-categories.recommendations-container
+    .recommendations-item
+    .recommendations-image,
+  .magazine-categories.recommendations-container .recommendations-image img {
     height: 270px;
   }
 }
@@ -223,8 +251,10 @@
     padding: 20px;
   }
 
-  .magazine-categories.recommendations-container .recommendations-item .recommendations-image,
-  .magazine-categories.recommendations-container  .recommendations-image  img {
+  .magazine-categories.recommendations-container
+    .recommendations-item
+    .recommendations-image,
+  .magazine-categories.recommendations-container .recommendations-image img {
     height: 240px;
     min-width: 360px;
   }
@@ -234,7 +264,7 @@
   .magazine-categories.recommendations-container .recommendations-list {
     flex-direction: column;
   }
-  
+
   .magazine-categories.recommendations-container .recommendations-item {
     width: unset;
   }
@@ -244,7 +274,8 @@
     overflow: hidden;
   }
 
-  main .section.magazine-categories.recommendations-container.recent-articles-container {
+  main
+    .section.magazine-categories.recommendations-container.recent-articles-container {
     display: flex;
     flex-flow: wrap;
     align-items: flex-start;

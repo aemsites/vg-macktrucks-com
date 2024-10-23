@@ -5,16 +5,45 @@ import {
   loadBlocks,
   loadHeader,
   loadFooter,
-} from './lib-franklin.js';
+} from './aem.js';
 
 let placeholders = null;
 
+export const getLanguagePath = () => {
+  const { pathname } = new URL(window.location.href);
+  const langCodeMatch = pathname.match('^(/[a-z]{2}(-[a-z]{2})?/).*');
+  return langCodeMatch ? langCodeMatch[1] : '/';
+};
+
 export async function getPlaceholders() {
-  placeholders = await fetch('/placeholder.json').then((resp) => resp.json());
+  const url = `${getLanguagePath()}placeholder.json`;
+  placeholders = await fetch(url).then((resp) => resp.json());
 }
 
 export function getTextLabel(key) {
   return placeholders.data.find((el) => el.Key === key)?.Text || key;
+}
+
+/**
+ * Returns the true origin of the current page in the browser.
+ * If the page is running in a iframe with srcdoc, the ancestor origin is returned.
+ * @returns {String} The true origin
+ */
+export function getOrigin() {
+  return window.location.href === 'about:srcdoc' ? window.parent.location.origin : window.location.origin;
+}
+
+/**
+ * Returns the true of the current page in the browser.mac
+ * If the page is running in a iframe with srcdoc,
+ * the ancestor origin + the path query param is returned.
+ * @returns {String} The href of the current page or the href of the block running in the library
+ */
+export function getHref() {
+  if (window.location.href !== 'about:srcdoc') return window.location.href;
+
+  const urlParams = new URLSearchParams(window.parent.location.search);
+  return `${window.parent.location.origin}${urlParams.get('path')}`;
 }
 
 /**
@@ -138,9 +167,7 @@ export async function decorateIcons(element) {
 
 export async function loadTemplate(doc, templateName) {
   try {
-    const cssLoaded = new Promise((resolve) => {
-      loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`, resolve);
-    });
+    await loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`);
     const decorationComplete = new Promise((resolve) => {
       (async () => {
         try {
@@ -155,7 +182,7 @@ export async function loadTemplate(doc, templateName) {
         resolve();
       })();
     });
-    await Promise.all([cssLoaded, decorationComplete]);
+    await decorationComplete;
   } catch (error) {
     // eslint-disable-next-line no-console
     console.log(`failed to load block ${templateName}`, error);
@@ -282,8 +309,11 @@ export const slugify = (text) => (
     .replace(/--+/g, '-')
 );
 
+/**
+ * Loads the constants file where configuration values are stored
+ */
 async function getConstantValues() {
-  const url = '/constants.json';
+  const url = `${getLanguagePath()}constants.json`;
   let constants;
   try {
     const response = await fetch(url).then((resp) => resp.json());
@@ -297,6 +327,13 @@ async function getConstantValues() {
   return constants;
 }
 
+/**
+ * Extracts the values from an array in format: ['key1: value1', 'key2: value2', 'key3: value3']
+ * and returns this into an object with those keys and values:
+ * { key1: value1, key2: value2, key3: value3 }
+ * @param {Array} data - Array of strings that contain an object coming from sharepoint
+ * @returns {Object} An parsed object with those values and keys
+ */
 export const extractObjectFromArray = (data) => {
   const obj = {};
   for (const item of data) {
@@ -328,6 +365,8 @@ const {
   headerConfig,
   tools,
   truckConfiguratorUrls,
+  newsFeedConfig,
+  bodyBuilderNewsConfig,
 } = await getConstantValues();
 
 // This data comes from the sharepoint 'constants.xlsx' file
@@ -337,6 +376,8 @@ export const MAGAZINE_CONFIGS = formatValues(magazineConfig?.data);
 export const HEADER_CONFIGS = formatValues(headerConfig?.data);
 export const TOOLS_CONFIGS = formatValues(tools?.data);
 export const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
+export const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
+export const BODY_BUILDER_NEWS_CONFIGS = formatValues(bodyBuilderNewsConfig?.data);
 
 /**
  * Check if one trust group is checked.
@@ -586,3 +627,16 @@ export const clearElementAttributes = (element) => {
 
   return element;
 };
+
+/**
+ * Get a HTML link element and adds the target=blank attribute if href is external
+ * @param {HTMLElement} link - Anchor HTML element with an href attribute
+ */
+export function addTargetBlankToExternalLink(link) {
+  if (!link.href) return;
+  const url = link.href;
+  const isExternal = !url.match('macktrucks') && !url.match('.hlx.(page|live)') && !url.match('.aem.(page|live)') && !url.match('localhost');
+  if (url.match('build.macktrucks') || url.endsWith('.pdf') || isExternal) {
+    link.target = '_blank';
+  }
+}

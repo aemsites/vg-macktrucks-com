@@ -1,7 +1,7 @@
 {
   "name": "@adobe/helix-project-boilerplate",
   "private": true,
-  "version": "23.0.0",
+  "version": "28.0.0",
   "description": "Starter project for Adobe Helix",
   "scripts": {
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",

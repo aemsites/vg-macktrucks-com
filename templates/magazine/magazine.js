@@ -1,18 +1,17 @@
 import {
   getMetadata,
   createOptimizedPicture,
-} from '../../scripts/lib-franklin.js';
-import {
-  createElement,
-} from '../../scripts/common.js';
+} from '../../scripts/aem.js';
+import { createElement } from '../../scripts/common.js';
+import { getArticleTags } from '../../scripts/services/magazine.service.js';
 
-async function buildArticleHero() {
+async function buildArticleHero({ truckTags, categoryTag } = {}) {
   const title = getMetadata('og:title');
   const headPic = getMetadata('og:image');
   const headAlt = getMetadata('og:image:alt');
 
-  const truckModel = getMetadata('truck');
-  const category = getMetadata('category');
+  const truckModel = truckTags || getMetadata('truck');
+  const category = categoryTag || getMetadata('category');
 
   const section = createElement('div', { classes: ['section', 'template', 'article-template', 'article-hero-container'] });
 
@@ -89,6 +88,9 @@ async function buildShareSection() {
 }
 
 export default async function decorate(doc) {
+  const categoryTag = await getArticleTags('categories');
+  const truckTags = await getArticleTags('trucks');
+
   const container = doc.querySelector('main');
 
   const article = createElement('div', { classes: 'article-content' });
@@ -104,7 +106,7 @@ export default async function decorate(doc) {
     recommendationsSection,
   ] = await Promise.all([
     buildSection(container, 'breadcrumb'),
-    buildArticleHero(),
+    buildArticleHero({ truckTags, categoryTag }),
     buildShareSection(),
     buildShareSection(),
     buildSection(container, 'recent-articles'),

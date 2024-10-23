@@ -3,7 +3,7 @@ import {
   formatStringToArray,
   TOOLS_CONFIGS,
 } from './common.js';
-import { loadCSS } from './lib-franklin.js';
+import { loadCSS } from './aem.js';
 import showSnackbar from '../common/snackbar/snackbar.js';
 
 loadCSS(`${window.hlx.codeBasePath}/common/snackbar/snackbar.css`);

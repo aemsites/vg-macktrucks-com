@@ -1,0 +1,39 @@
+.v2-dealer-locator .nearby-pins article.teaser .teaser-top .heading p,
+.v2-dealer-locator .nearby-pins article.teaser .teaser-top .left {
+  max-width: none;
+}
+
+.v2-dealer-locator .mobile-main-header {
+  position: relative;
+  z-index: 1;
+}
+
+.v2-dealer-locator .mobile-main-header .panel-header .search-container {
+  right: 45px;
+}
+
+.v2-dealer-locator .mobile-main-header .panel-header .filter-container {
+  display: none;
+}
+
+.v2-dealer-locator .go-back {
+  padding-right: 5px;
+}
+
+.v2-dealer-locator .go-back button {
+  position: relative;
+  left: 0;
+}
+
+.v2-dealer-locator .sidebar .panel-header .search-container {
+  right: 45px;
+}
+
+.v2-dealer-locator .sidebar .panel-header .filter-container {
+  display: none;
+}
+
+.legend-header,
+.v2-dealer-locator .sidebar .panel-card .panel-filter-distance {
+  display: none;
+}

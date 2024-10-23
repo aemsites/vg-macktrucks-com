@@ -8,7 +8,7 @@ import {
 import {
   createOptimizedPicture,
   getMetadata,
-} from '../../scripts/lib-franklin.js';
+} from '../../scripts/aem.js';
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 
 // check if the header has to have a login and/or a search button

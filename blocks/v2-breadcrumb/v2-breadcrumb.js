@@ -1,5 +1,10 @@
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
-import { createElement, getTextLabel } from '../../scripts/common.js';
+import { readBlockConfig } from '../../scripts/aem.js';
+import {
+  createElement,
+  getTextLabel,
+  variantsClassesToBEM,
+  addTargetBlankToExternalLink,
+} from '../../scripts/common.js';
 
 const blockName = 'v2-breadcrumb';
 const sectionStatus = 'data-section-status';
@@ -8,11 +13,12 @@ const homeText = {
   home: getTextLabel('home'),
   ellipsis: '…', // unicode ellipsis
 };
+const variantClasses = ['custom'];
 
 const formatText = (str) => str.replace(/-/g, ' ').toLowerCase();
 
 const getPadding = (elCompCSS) => parseInt(elCompCSS.getPropertyValue('padding-left'), 10)
-      + parseInt(elCompCSS.getPropertyValue('padding-right'), 10);
+  + parseInt(elCompCSS.getPropertyValue('padding-right'), 10);
 
 const getCrumbsWidth = (block) => {
   const crumbs = block.querySelectorAll(`.${blockName}__crumb-item`);
@@ -31,25 +37,64 @@ const getBlockWidth = (block) => {
 };
 
 const fitting = (block) => getCrumbsWidth(block) < getBlockWidth(block);
+
+const generateCustomUrl = (block) => {
+  const allCrumbs = [];
+  block.querySelectorAll(':scope > div').forEach((row) => {
+    if (row.children) {
+      const cols = [...row.children];
+      if (cols[1]) {
+        const obj = {
+          key: cols[0].textContent,
+          value: row.children[1].textContent,
+        };
+        allCrumbs.push(obj);
+      }
+    }
+  });
+  const keyString = allCrumbs.map((obj) => obj.key).join('/');
+
+  return ([keyString, allCrumbs]);
+};
+
 export default function decorate(block) {
+  variantsClassesToBEM(block.classList, variantClasses, blockName);
+  let url;
+  let customLinks;
+  const hasCustomClass = block.classList.contains(`${blockName}--custom`);
+
   const cfg = readBlockConfig(block);
   const hasPath = cfg && Object.hasOwn(cfg, 'path');
-  const url = hasPath ? cfg.path : window.location.pathname;
+
+  if (hasPath) {
+    url = cfg.path;
+  } else if (hasCustomClass) {
+    const [customPath, allCrumbs] = generateCustomUrl(block);
+    customLinks = allCrumbs;
+    url = customPath;
+  } else {
+    url = window.location.pathname;
+  }
+
   const path = url.split('/').filter(Boolean);
   const nav = createElement('nav', { classes: [`${blockName}__crumb-nav`] });
   const ul = createElement('ul', { classes: [`${blockName}__crumb-list`] });
+
   const crumbs = path.map((_, i) => {
     const liEl = createElement('li', { classes: [`${blockName}__crumb-item`] });
-    const content = formatText(path[i]);
+    const content = hasCustomClass ? path[i] : formatText(path[i]);
     const crumbProps = { 'data-content': content };
     const crumbClasses = [`${blockName}__crumb`];
     if (i !== path.length - 1) {
-      crumbProps.href = `/${path.slice(0, i + 1).join('/')}/`;
+      crumbProps.href = hasCustomClass ? `${customLinks[i].value}` : `/${path.slice(0, i + 1).join('/')}/`;
     } else {
       crumbClasses.push(`${blockName}__crumb--active`);
       crumbProps['aria-current'] = 'page';
     }
     const crumb = createElement('a', { classes: crumbClasses, props: crumbProps });
+    if (hasCustomClass) {
+      addTargetBlankToExternalLink(crumb);
+    }
     crumb.textContent = content;
     liEl.append(crumb);
     return liEl;
@@ -57,12 +102,16 @@ export default function decorate(block) {
   const homeItem = createElement('li', { classes: [`${blockName}__crumb-item`] });
   const homeEl = createElement('a', {
     classes: [`${blockName}__crumb`, `${blockName}__crumb--home`],
-    props: { href: '/' },
+    props: { href: hasCustomClass ? `${customLinks[0].value}` : '/' },
   });
+  addTargetBlankToExternalLink(homeEl);
 
-  homeEl.textContent = homeText.home;
+  homeEl.textContent = hasCustomClass ? `${customLinks[0].key}` : homeText.home;
   homeItem.append(homeEl);
   crumbs.unshift(homeItem);
+  if (hasCustomClass) {
+    crumbs.splice(1, 1);
+  }
   ul.append(...crumbs);
   nav.append(ul);
   block.textContent = '';
@@ -93,7 +142,7 @@ export default function decorate(block) {
     entries.forEach((entry) => {
       if (!entry.contentBoxSize) return;
       // add again the content from each item and check if it fits again or not
-      homeEl.textContent = homeText.home;
+      homeEl.textContent = hasCustomClass ? `${customLinks[0].key}` : homeText.home;
       crumbs.forEach((crumb, i) => {
         const link = crumb.firstElementChild;
         if (i > 0) {

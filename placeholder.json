@@ -274,6 +274,10 @@
     {
       "Key": "All Products",
       "Text": "All Products"
+    },
+    {
+      "Key": "tooltip copied text",
+      "Text": "Copied!"
     }
   ],
   ":type": "sheet"

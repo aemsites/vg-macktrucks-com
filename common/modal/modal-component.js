@@ -1,4 +1,4 @@
-import { loadCSS } from '../../scripts/lib-franklin.js';
+import { loadCSS } from '../../scripts/aem.js';
 // eslint-disable-next-line import/no-cycle
 import {
   createIframe,

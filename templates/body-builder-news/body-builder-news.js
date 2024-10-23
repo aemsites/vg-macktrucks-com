@@ -2,7 +2,7 @@ import {
   getMetadata,
   buildBlock,
   decorateBlock,
-} from '../../scripts/lib-franklin.js';
+} from '../../scripts/aem.js';
 import { findAndCreateImageLink } from '../../scripts/scripts.js';
 import {
   createElement,

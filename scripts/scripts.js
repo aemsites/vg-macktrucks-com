@@ -16,7 +16,7 @@ import {
   toClassName,
   loadScript,
   createOptimizedPicture,
-} from './lib-franklin.js';
+} from './aem.js';
 
 import {
   addFavIcon,
@@ -26,6 +26,7 @@ import {
   getPlaceholders,
   TRUCK_CONFIGURATOR_URLS,
   loadDelayed,
+  loadTemplate,
   slugify,
   variantsClassesToBEM,
 } from './common.js';
@@ -33,6 +34,7 @@ import {
   isVideoLink,
   addVideoShowHandler,
 } from './video-helper.js';
+import { validateCountries } from './validate-countries.js';
 
 const disableHeader = getMetadata('disable-header').toLowerCase() === 'true';
 const disableFooter = getMetadata('disable-footer').toLowerCase() === 'true';
@@ -333,8 +335,8 @@ export function decorateLinks(block) {
       }
 
       const url = new URL(link.href);
-      const external = !url.host.match('macktrucks.com') && !url.host.match('.hlx.(page|live)') && !url.host.match('localhost');
-      if (url.host.match('build.macktrucks.com') || url.pathname.endsWith('.pdf') || external) {
+      const external = !url.host.match('macktrucks') && !url.host.match('.hlx.(page|live)') && !url.host.match('localhost');
+      if (url.host.match('build.macktrucks') || url.pathname.endsWith('.pdf') || external) {
         link.target = '_blank';
       }
     });
@@ -375,9 +377,9 @@ const createInpageNavigation = (main) => {
   [...main.querySelectorAll(':scope > div')].forEach((section) => {
     const title = section.dataset.inpage;
     if (title) {
-      const countDuplcated = tabItemsObj.filter((item) => item.title === title)?.length || 0;
+      const countDuplicated = tabItemsObj.filter((item) => item.title === title)?.length || 0;
       const order = parseFloat(section.dataset.inpageOrder);
-      const anchorID = (countDuplcated > 0) ? slugify(`${section.dataset.inpage}-${countDuplcated}`) : slugify(section.dataset.inpage);
+      const anchorID = (countDuplicated > 0) ? slugify(`${section.dataset.inpage}-${countDuplicated}`) : slugify(section.dataset.inpage);
       const obj = {
         title,
         id: anchorID,
@@ -415,7 +417,7 @@ const createInpageNavigation = (main) => {
     subnavLink.textContent = item.title;
 
     subnavItem.append(subnavLink);
-    navItems.push(subnavItem);
+    navItems.push(subnavLink);
   });
 
   return navItems;
@@ -468,45 +470,25 @@ export function decorateMain(main, head) {
   buildInpageNavigationBlock(main, 'v2-inpage-navigation');
 }
 
-async function loadTemplate(doc, templateName) {
-  try {
-    const cssLoaded = new Promise((resolve) => {
-      loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`, resolve);
-    });
-    const decorationComplete = new Promise((resolve) => {
-      (async () => {
-        try {
-          const mod = await import(`../templates/${templateName}/${templateName}.js`);
-          if (mod.default) {
-            await mod.default(doc);
-          }
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(`failed to load module for ${templateName}`, error);
-        }
-        resolve();
-      })();
-    });
-    await Promise.all([cssLoaded, decorationComplete]);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log(`failed to load block ${templateName}`, error);
-  }
-}
-
 /**
  * Loads everything needed to get to LCP.
  * @param {Element} doc The container element
  */
 async function loadEager(doc) {
-  document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+
   const main = doc.querySelector('main');
   const { head } = doc;
   if (main) {
     decorateMain(main, head);
     document.body.classList.add('appear');
+    const language = getMetadata('locale') || 'en';
+    document.documentElement.lang = language;
+    const templateName = getMetadata('template');
+    if (templateName) await loadTemplate(doc, templateName);
     await waitForLCP(LCP_BLOCKS);
+  } else {
+    document.documentElement.lang = 'en';
   }
 
   await getPlaceholders();
@@ -517,9 +499,6 @@ async function loadEager(doc) {
  * @param {Element} doc The container element
  */
 async function loadLazy(doc) {
-  const templateName = getMetadata('template');
-  if (templateName) await loadTemplate(doc, templateName);
-
   const main = doc.querySelector('main');
   await loadBlocks(main);
 
@@ -773,6 +752,10 @@ moveClassToHtmlEl('redesign-v2');
 moveClassToHtmlEl('truck-configurator');
 
 if (document.documentElement.classList.contains('truck-configurator')) {
+  const allowedCountries = getMetadata('allowed-countries');
+  const errorPageUrl = getMetadata('redirect-url');
+  if (allowedCountries && errorPageUrl) validateCountries(allowedCountries, errorPageUrl);
+
   const container = createElement('div', { props: { id: 'configurator' } });
   const main = document.querySelector('main');
   main.innerHTML = '';
@@ -815,3 +798,13 @@ if (getMetadata('truck-configurator-page')) {
     document.location.hash = `#/${page}`;
   }
 }
+
+/* Checks for all <em> tags that contain only 1 character and deletes the space after it */
+const allItalics = [...document.querySelectorAll('em')];
+allItalics.forEach((emTag) => {
+  const tagLength = emTag.textContent.length;
+  const { nextSibling } = emTag;
+  if (tagLength === 1 && nextSibling.nodeType === Node.TEXT_NODE && nextSibling.nodeValue.startsWith(' ')) {
+    nextSibling.nodeValue = nextSibling.nodeValue.slice(1);
+  }
+});

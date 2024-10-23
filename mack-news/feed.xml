@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/mack-news/</id>
     <title>Mack News</title>
-    <updated>2024-08-13T00:00:00.000Z</updated>
+    <updated>2024-09-05T00:00:00.000Z</updated>
     <generator>AEM Project Franklin News feed generator (GitHub action)</generator>
     <link rel="alternate" href="https://www.macktrucks.com/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -2975,5 +2975,29 @@
         <updated>2024-08-13T00:00:00.000Z</updated>
         <content type="html"><![CDATA[GREENSBORO, NC (Aug. 13, 2024) – Mack Trucks and Kriete Truck Centers, a leading commercial truck and equipment dealer with 10 locations across Wisconsin, recently delivered a Mack® MD Electric vehicle – the first to operate in the state – to ABC Supply Co., Inc.]]></content>
         <published>2024-08-13T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Introduces the Medium-Duty Mack® MD Electric | Mack Trucks]]></title>
+        <id>https://www.macktrucks.com/mack-news/2023/mt-introduces-medium-duty-mack-md-electric-adding-its-second-battery-electric-vehicle-to-lineup</id>
+        <link href="https://www.macktrucks.com/mack-news/2023/mt-introduces-medium-duty-mack-md-electric-adding-its-second-battery-electric-vehicle-to-lineup"/>
+        <updated>2023-03-08T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[Mack Trucks revealed today its Mack® MD Electric, the company’s first electric vehicle in the medium-duty segment of the trucking industry. Mack revealed the truck for the first time during an event at the National Truck Equipment Association (NTEA) 2023 Work Truck Show, March 6-9 at the Indiana Convention Center in Indianapolis.]]></content>
+        <published>2023-03-08T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Highlights Zero-Emissions Technology During GTSE Ride and Drive with Mack® MD Electric]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-highlights-zero-emissions-technology-during-gtse-ride-and-drive-with-mack-md</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-highlights-zero-emissions-technology-during-gtse-ride-and-drive-with-mack-md"/>
+        <updated>2024-08-19T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (Aug. 19, 2024) – Mack Trucks will spotlight its Mack ® MD Electric model, the second zero-emissions vehicle in Mack’s lineup, at the Green Transportation Summit & Expo (GTSE), Aug. 20-22, in Tacoma, Washington. Mack is a sponsor of the ride-and-drive event occurring from 2 to 4:30 p.m. Aug. 20 on a closed course at the Tacoma Dome.]]></content>
+        <published>2024-08-19T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Unveils Virtual Truck Builder]]></title>
+        <id>https://www.macktrucks.com/mack-news/2024/mack-trucks-unveils-virtual-truck-builder</id>
+        <link href="https://www.macktrucks.com/mack-news/2024/mack-trucks-unveils-virtual-truck-builder"/>
+        <updated>2024-09-05T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[GREENSBORO, NC (Sept. 5, 2024) – Mack Trucks recently launched its cutting-edge Truck Builder, a digital platform that allows customers to customize their dream Mack® truck from the ground up. This innovative tool represents a comprehensive overhaul of Mack’s previous online truck customization technology and significantly enhances the user experience.]]></content>
+        <published>2024-09-05T00:00:00.000Z</published>
     </entry>
 </feed>

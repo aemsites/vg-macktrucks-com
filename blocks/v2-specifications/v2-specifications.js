@@ -1,6 +1,6 @@
 import {
   loadBlock,
-} from '../../scripts/lib-franklin.js';
+} from '../../scripts/aem.js';
 import {
   createElement,
   slugify,

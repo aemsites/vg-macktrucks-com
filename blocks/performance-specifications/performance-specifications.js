@@ -1,7 +1,7 @@
 import {
   a, button, div, domEl, p, ul, li,
 } from '../../scripts/scripts.js';
-import { loadScript } from '../../scripts/lib-franklin.js';
+import { loadScript } from '../../scripts/aem.js';
 import { getTextLabel } from '../../scripts/common.js';
 
 /**

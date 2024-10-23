@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { sampleRUM, loadScript } from './lib-franklin.js';
+import { sampleRUM, loadScript } from './aem.js';
 // eslint-disable-next-line import/no-cycle
 import {
   isPerformanceAllowed,

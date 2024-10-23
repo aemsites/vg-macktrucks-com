@@ -1,19 +1,4 @@
 {
-  "truckConfiguratorUrls": {
-    "total": 2,
-    "offset": 0,
-    "limit": 2,
-    "data": [
-      {
-        "name": "JS",
-        "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/runtime~configurator.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.bundle.js\"]"
-      },
-      {
-        "name": "CSS",
-        "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.css\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.css\"]"
-      }
-    ]
-  },
   "searchUrls": {
     "total": 2,
     "offset": 0,
@@ -26,41 +11,6 @@
       {
         "name": "SEARCH_URL_DEV",
         "value": "https://search-api-dev.aws.43636.vnonprod.com/search"
-      }
-    ]
-  },
-  "tools": {
-    "total": 7,
-    "offset": 0,
-    "limit": 7,
-    "data": [
-      {
-        "name": "GIT_OWNER",
-        "value": "hlxsites"
-      },
-      {
-        "name": "GIT_REPO",
-        "value": "vg-macktrucks-com"
-      },
-      {
-        "name": "GLOBAL_SITEMAP_URL",
-        "value": "/sitemap.xml"
-      },
-      {
-        "name": "v1SectionClasses",
-        "value": "[\"background\",\"background-top\",\"bg-paper\",\"bg-white-paper\",\"dark-background\",\"center\",\"flex-center\",\"font-l\",\"font-m\",\"font-s\",\"font-xl\",\"font-xxl\",\"font-xs\",\"font-xxs\",\"helvetica-55\",\"helvetica-65\",\"helvetica-75\",\"helvetica-56\",\"helvetica-66\",\"helvetica-76\",\"gap\",\"highlight\",\"line-separator\",\"magazine-listing-content\",\"no-first-line\",\"padding-0\",\"padding-16\",\"padding-32\",\"section-width\",\"text-white\",\"text-black\",\"responsive-title\",\"title-line\",\"title-margin-bottom-0\",\"title-white\",\"wrapper-margin-top-0\"]"
-      },
-      {
-        "name": "v2SectionClasses",
-        "value": "[\"header-with-mark\",\"recalls-padding\",\"section--background-with-dots\",\"section--black-background\",\"section--gray-background\",\"section--light-gray-background\",\"section--no-gap\",\"section--no-vertical-padding\",\"section--with-background\"]"
-      },
-      {
-        "name": "v1AllowedBlocks",
-        "value": "[\"v2-embed\",\"v2-forms\"]"
-      },
-      {
-        "name": "v2AllowedBlocks",
-        "value": "[\"embed\",\"footer\",\"fragment\",\"header\",\"iframe\",\"modal\",\"library-metadata\"]"
       }
     ]
   },
@@ -108,6 +58,148 @@
         "model": "terrapro",
         "pdp path": "/trucks/terrapro-series/",
         "configurator path": "/trucks/terrapro-series/build/#/terrapro"
+      }
+    ]
+  },
+  "truckConfiguratorUrls": {
+    "total": 2,
+    "offset": 0,
+    "limit": 2,
+    "data": [
+      {
+        "name": "JS",
+        "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/runtime~configurator.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.bundle.js\"]"
+      },
+      {
+        "name": "CSS",
+        "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.css\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.css\"]"
+      }
+    ]
+  },
+  "fgrep": {
+    "total": 3,
+    "offset": 0,
+    "limit": 3,
+    "data": [
+      {
+        "name": "GIT_OWNER",
+        "value": "hlxsites"
+      },
+      {
+        "name": "GIT_REPO",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "GLOBAL_SITEMAP_URL",
+        "value": "/sitemap.xml"
+      }
+    ]
+  },
+  "magazineConfig": {
+    "total": 4,
+    "offset": 0,
+    "limit": 4,
+    "data": [
+      {
+        "name": "HREF",
+        "value": "https://go.pardot.com/l/1038343/2023-12-12/3m4w2c"
+      },
+      {
+        "name": "IFRAME_SIZE",
+        "value": "900px"
+      },
+      {
+        "name": "DATE_LANGUAGE",
+        "value": "en-US"
+      },
+      {
+        "name": "DATE_OPTIONS",
+        "value": "[\"month: long\",\"day: numeric\",\"year: numeric\"]"
+      }
+    ]
+  },
+  "bodyBuilderNewsConfig": {
+    "total": 4,
+    "offset": 0,
+    "limit": 4,
+    "data": [
+      {
+        "name": "ENDPOINT",
+        "value": "https://www.macktrucks.com/body-builder-news.json"
+      },
+      {
+        "name": "FEED_INFO_ENDPOINT",
+        "value": "https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/feed-info.json"
+      },
+      {
+        "name": "TARGET_DIRECTORY",
+        "value": "../../parts-and-services/support/body-builders/news-and-events"
+      },
+      {
+        "name": "LIMIT",
+        "value": "1000"
+      }
+    ]
+  },
+  "newsFeedConfig": {
+    "total": 4,
+    "offset": 0,
+    "limit": 4,
+    "data": [
+      {
+        "name": "ENDPOINT",
+        "value": "https://www.macktrucks.com/mack-news.json"
+      },
+      {
+        "name": "FEED_INFO_ENDPOINT",
+        "value": "https://www.macktrucks.com/mack-news/feed-info.json"
+      },
+      {
+        "name": "TARGET_DIRECTORY",
+        "value": "../../mack-news/"
+      },
+      {
+        "name": "LIMIT",
+        "value": "1000"
+      }
+    ]
+  },
+  "tools": {
+    "total": 8,
+    "offset": 0,
+    "limit": 8,
+    "data": [
+      {
+        "name": "GIT_OWNER",
+        "value": "hlxsites"
+      },
+      {
+        "name": "GIT_REPO",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "GLOBAL_SITEMAP_URL",
+        "value": "/sitemap.xml"
+      },
+      {
+        "name": "v1SectionClasses",
+        "value": "[\"background\",\"background-top\",\"bg-paper\",\"bg-white-paper\",\"dark-background\",\"center\",\"flex-center\",\"font-l\",\"font-m\",\"font-s\",\"font-xl\",\"font-xxl\",\"font-xs\",\"font-xxs\",\"helvetica-55\",\"helvetica-65\",\"helvetica-75\",\"helvetica-56\",\"helvetica-66\",\"helvetica-76\",\"gap\",\"highlight\",\"line-separator\",\"magazine-listing-content\",\"no-first-line\",\"padding-0\",\"padding-16\",\"padding-32\",\"section-width\",\"text-white\",\"text-black\",\"responsive-title\",\"title-line\",\"title-margin-bottom-0\",\"title-white\",\"wrapper-margin-top-0\"]"
+      },
+      {
+        "name": "v2SectionClasses",
+        "value": "[\"header-with-mark\",\"recalls-padding\",\"section--background-with-dots\",\"section--black-background\",\"section--gray-background\",\"section--light-gray-background\",\"section--no-gap\",\"section--no-vertical-padding\",\"section--with-background\"]"
+      },
+      {
+        "name": "v1AllowedBlocks",
+        "value": "[\"v2-embed\",\"v2-forms\"]"
+      },
+      {
+        "name": "v2AllowedBlocks",
+        "value": "[\"embed\",\"footer\",\"fragment\",\"header\",\"iframe\",\"modal\",\"library-metadata\"]"
+      },
+      {
+        "name": "GOOGLE_API_KEY",
+        "value": "AIzaSyAP8IewqHuU8SMz_6tNiIUlbU_l0GFOd1w"
       }
     ]
   },
@@ -169,58 +261,18 @@
       }
     ]
   },
-  "magazineConfig": {
-    "total": 4,
-    "offset": 0,
-    "limit": 4,
-    "data": [
-      {
-        "name": "HREF",
-        "value": "https://go.pardot.com/l/1038343/2023-12-12/3m4w2c"
-      },
-      {
-        "name": "IFRAME_SIZE",
-        "value": "900px"
-      },
-      {
-        "name": "DATE_LANGUAGE",
-        "value": "en-US"
-      },
-      {
-        "name": "DATE_OPTIONS",
-        "value": "[\"month: long\",\"day: numeric\",\"year: numeric\"]"
-      }
-    ]
-  },
-  "fgrep": {
-    "total": 3,
-    "offset": 0,
-    "limit": 3,
-    "data": [
-      {
-        "name": "GIT_OWNER",
-        "value": "hlxsites"
-      },
-      {
-        "name": "GIT_REPO",
-        "value": "vg-macktrucks-com"
-      },
-      {
-        "name": "GLOBAL_SITEMAP_URL",
-        "value": "/sitemap.xml"
-      }
-    ]
-  },
   ":version": 3,
   ":names": [
-    "truckConfiguratorUrls",
     "searchUrls",
-    "tools",
     "truckConfigurator",
-    "headerConfig",
-    "cookieValues",
+    "truckConfiguratorUrls",
+    "fgrep",
     "magazineConfig",
-    "fgrep"
+    "bodyBuilderNewsConfig",
+    "newsFeedConfig",
+    "tools",
+    "headerConfig",
+    "cookieValues"
   ],
   ":type": "multi-sheet"
 }

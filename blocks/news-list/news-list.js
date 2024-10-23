@@ -2,7 +2,7 @@ import { createElement } from '../../scripts/common.js';
 import {
   feedsInfo, getBodyBuilderNews, getMackNews, PagingInfo,
 } from '../../scripts/news.js';
-import { readBlockConfig } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   const config = readBlockConfig(block);

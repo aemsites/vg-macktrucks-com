@@ -1,45 +1,18 @@
 import { Feed } from 'feed';
+import path from 'path';
 import fs from 'fs';
 
 /**
- * @type {FeedConfig[]}
- */
-const feeds = [
-  {
-    title: 'Mack News',
-    targetFile: `../../mack-news/feed.xml`,
-    source: 'https://main--vg-macktrucks-com--hlxsites.hlx.live/mack-news/feed.json',
-    siteRoot: "https://www.macktrucks.com",
-    link:	"https://www.macktrucks.com/mack-news/",
-    language:	"en",
-    description:	"Get the latest news from Mack® Trucks and see how we are taking our Born Ready " +
-      "semi truck line to the next level with new innovations and technology."
-  },
-  {
-    title: 'Mack Body Builder News',
-    targetFile: `../../parts-and-services/support/body-builders/news-and-events/feed.xml`,
-    source: 'https://main--vg-macktrucks-com--hlxsites.hlx.live/body-builder-news.json',
-    siteRoot: "https://www.macktrucks.com",
-    link:	"https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
-    language:	"en",
-    description:	"Get the latest news from Mack® Trucks Body Builder Portal."
-  },
-]
-
-
-const limit = "1000";
-
-/**
  * @typedef {Object} FeedConfig
- * @property {string} title
- * @property {string} description
- * @property {string} link
- * @property {string} siteRoot
- * @property {string} targetFile
- * @property {string} source
- * @property {string} language
+ * @property {string} DOMAIN
+ * @property {string} LANGUAGE
+ * @property {string} SOURCE_ENDPOINT
+ * @property {string} TARGET_FILE
+ * @property {string} FEED_TITLE
+ * @property {string} FEED_SITE_ROOT
+ * @property {string} FEED_LINK
+ * @property {string} FEED_DESCRIPTION
  */
-
 
 /**
  * @typedef {Object} Post
@@ -50,61 +23,153 @@ const limit = "1000";
  * @property {string} template
  */
 
+const CONSTANTS_FILE_URL = 'https://www.macktrucks.com/constants.json';
+
 /**
- * @param feed {FeedConfig}
- * @return {Promise<void>}
+ * @return {Promise<FeedConfig[]>}
  */
-async function createFeed(feed) {
-  const allPosts = await fetchBlogPosts(feed);
-  console.log(`found ${allPosts.length} posts`);
+async function getConstantValues() {
+  let constants = {};
 
+  try {
+    const response = await fetch(CONSTANTS_FILE_URL);
 
-  const newestPost = allPosts
-    .map((post) => new Date(post.publicationDate * 1000))
-    .reduce((maxDate, date) => (date > maxDate ? date : maxDate), new Date(0));
+    if (response.ok) {
+      const responseData = await response.json();
 
-  const atomFeed = new Feed({
-    title: feed.title,
-    description: feed.description,
-    id: feed.link,
-    link: feed.link,
-    updated: newestPost,
-    generator: 'AEM Project Franklin News feed generator (GitHub action)',
-    language: feed.language,
-  });
+      constants = responseData;
+    } else {
+      console.error('Error fetching constants file', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error with constants file', error);
+  }
 
-  allPosts.forEach((post) => {
-    const link = feed.siteRoot + post.path;
-    atomFeed.addItem({
-      title: post.title,
-      id: link,
-      link,
-      content: post.summary,
-      date: new Date(post.publicationDate * 1000),
-      published: new Date(post.publicationDate * 1000),
-    });
-  });
-
-  fs.writeFileSync(feed.targetFile, atomFeed.atom1());
-  console.log('wrote file to ', feed.targetFile);
+  return constants;
 }
 
 /**
- * @param feed {FeedConfig}
+ * @return {Promise<FeedConfig[]>}
+ */
+async function getFeedConfig() {
+  const {
+    newsFeedConfig,
+  } = await getConstantValues();
+  
+  return newsFeedConfig?.data || [];
+};
+
+/**
+ * @return {Promise<void>}
+ */
+async function createFeed() {
+  let feedsConfigurations = await getFeedConfig();
+
+  if (!feedsConfigurations) {
+    console.error('No feed configurations found');
+    return;
+  }
+
+  for (const feedConfig of feedsConfigurations) {
+    const {
+      LANGUAGE,
+      SOURCE_ENDPOINT,
+      TARGET_FILE,
+      FEED_TITLE,
+      FEED_SITE_ROOT,
+      FEED_LINK,
+      FEED_DESCRIPTION,
+      LIMIT,
+    } = feedConfig;
+  
+    const PARSED_LIMIT = Number(LIMIT);
+  
+    const allPosts = await fetchBlogPosts(SOURCE_ENDPOINT, PARSED_LIMIT);
+
+    console.log(`Generating feed "${FEED_TITLE}" - "${FEED_LINK}"`);
+    console.log(`Found ${allPosts.length} posts`);
+  
+    const newestPost = allPosts
+      .map((post) => new Date(post.publicationDate * 1000))
+      .reduce((maxDate, date) => (date > maxDate ? date : maxDate), new Date(0));
+  
+    const feed = new Feed({
+      title: FEED_TITLE,
+      description: FEED_DESCRIPTION,
+      id: FEED_LINK,
+      link: FEED_LINK,
+      updated: newestPost,
+      generator: `${FEED_TITLE} - Feed Generator`,
+      language: LANGUAGE,
+    });
+  
+    allPosts.forEach((post) => {
+      const link = FEED_SITE_ROOT + post.path;
+      const date = post.date || post.publicationDate;
+      const dateFormatted = new Date(date * 1000) || new Date();
+
+      feed.addItem({
+        title: post.title,
+        id: link,
+        link,
+        content: post.summary,
+        date: dateFormatted,
+        published: dateFormatted,
+      });
+    });
+
+    const dir = path.parse(TARGET_FILE).dir;
+
+    if (!fs.existsSync(dir)) {
+      console.log('Folder doesn\' exist: ', dir);
+      console.log('Creating folder: ', dir);
+
+      fs.mkdirSync(dir);
+    }
+
+    fs.writeFileSync(TARGET_FILE, feed.atom1());
+
+    console.log('Wrote file to: ', TARGET_FILE);
+    console.log('-----------------------------------');
+  }
+
+}
+
+/**
+ * @param {string} endpoint
+ * @param {number} limit
  * @return {Promise<Post[]>}
  */
-async function fetchBlogPosts(feed) {
+async function fetchBlogPosts(endpoint, limit) {
   let offset = 0;
   const allPosts = [];
 
   while (true) {
-    const api = new URL(feed.source);
-    api.searchParams.append('offset', JSON.stringify(offset));
-    api.searchParams.append('limit', limit);
-    const response = await fetch(api, {});
-    const result = await response.json();
+    let result;
+    const apiUrl = new URL(endpoint);
 
-    allPosts.push(...result.data);
+    apiUrl.searchParams.append('offset', JSON.stringify(offset));
+    apiUrl.searchParams.append('limit', limit);
+
+    try {
+      const response = await fetch(apiUrl);
+
+      if (response.ok) {
+        result = await response.json();
+      } else {
+        console.error('Error fetching blog posts', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error with constants file', error);
+    }
+
+    if (!result) {
+      break;
+    }
+
+    if (result?.data) {
+      allPosts.push(...result.data);
+    }
 
     if (result.offset + result.limit < result.total) {
       // there are more pages
@@ -116,8 +181,5 @@ async function fetchBlogPosts(feed) {
   return allPosts;
 }
 
-for (const feed of feeds) {
-  createFeed(feed)
-    .catch((e) => console.error(e));
-
-}
+createFeed()
+  .catch((e) => console.error(e));

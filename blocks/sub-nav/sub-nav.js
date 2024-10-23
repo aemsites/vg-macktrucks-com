@@ -95,6 +95,8 @@ function toggleListMagazine(el) {
 async function buildMagazineSubNav(block, ref) {
   const resp = await fetch(`${ref}.plain.html`);
   if (!resp.ok) return;
+  const subscribeSection = document.querySelector('[data-form-type="Subscribe-magazine"]');
+  const isSubscribeEnabled = !!MAGAZINE_CONFIGS.HREF && !!subscribeSection;
   const text = await resp.text();
   const fragment = document.createRange().createContextualFragment(text);
   const mainTitleImgWrapper = fragment.querySelector('div');
@@ -107,55 +109,67 @@ async function buildMagazineSubNav(block, ref) {
   // add (hamburger menu)/(down arrow) to open close the sub-nav-list
   const iconClass = MQ.matches ? 'fa-bars' : 'fa-caret-down';
   const listIcon = createElement('div', { classes: ['fa', iconClass, 'icon'] });
-  // add a cta button to open an eloqua form (subscribe to bulldog)
-  const subscribeBtnContainer = createElement('div', { classes: 'button-container' });
-  const subscribeBtn = createElement('button', {
-    classes: ['magazine-subscribe-button', 'button-container'],
-    props: { type: 'button' },
-  });
-  // list section overlay
+  // hamburger dropdown: list section overlay
   const closeBtn = createElement('div', { classes: ['fa', 'fa-close', 'icon'] });
-  const listSubscribeBtnContainer = createElement('div', { classes: 'list-button-container' });
-  const listSubscribeBtn = createElement('button', {
-    classes: ['magazine-subscribe-button', 'list-subscribe-button'],
-    props: { type: 'button' },
-  });
-  const supR = createElement('sup');
   const listContainer = createElement('div', { classes: 'sub-nav-list-container' });
   const listWrapper = getAllElWithChildren(fragment.querySelectorAll('div'), 'ul')[0];
   const dogIconWrapper = getAllElWithChildren(listWrapper.querySelectorAll('p'), 'picture')[0];
   const mainList = listWrapper.querySelector('ul');
   const innerList = mainList.querySelector('ul');
+  const elementsToAppend = [listIcon, mainSubNav, listContainer];
   listWrapper.className = 'sub-nav-list-wrapper';
   dogIconWrapper.className = 'sub-nav-list-icon';
   mainList.className = 'sub-nav-list main';
   innerList.className = 'sub-nav-list inner';
-  listSubscribeBtn.textContent = subscribeText;
-  supR.textContent = '®';
-  listSubscribeBtn.appendChild(supR);
-  listSubscribeBtnContainer.appendChild(listSubscribeBtn);
   listWrapper.appendChild(closeBtn);
-  listContainer.append(listWrapper, listSubscribeBtnContainer);
+
+  if (isSubscribeEnabled) {
+    // add a cta button to open a form (subscribe to bulldog) in the dropdown list
+    const listSubscribeBtnContainer = createElement('div', { classes: 'list-button-container' });
+    const listSubscribeBtn = createElement('button', {
+      classes: ['magazine-subscribe-button', 'list-subscribe-button'],
+      props: { type: 'button' },
+    });
+    const supR = createElement('sup');
+    listSubscribeBtn.textContent = subscribeText;
+    supR.textContent = '®';
+    listSubscribeBtn.appendChild(supR);
+    listSubscribeBtnContainer.appendChild(listSubscribeBtn);
+    listContainer.append(listWrapper, listSubscribeBtnContainer);
+  } else {
+    listContainer.appendChild(listWrapper);
+  }
+
   mainList.nextElementSibling.remove();
 
   // adding it to the block
   mainTitleLink.textContent = '';
   mainTitleLink.title = mainTitleImg.lastElementChild.alt;
-  subscribeBtn.textContent = subscribeText;
-  subscribeBtnContainer.appendChild(subscribeBtn);
   mainTitleLink.appendChild(mainTitleImg);
   subNavTitle.appendChild(mainTitleLink);
   mainSubNav.appendChild(subNavTitle);
-  subNavContainer.append(listIcon, mainSubNav, subscribeBtnContainer, listContainer);
+
+  if (isSubscribeEnabled) {
+    // add a cta button to open a form (subscribe to bulldog)
+    const subscribeBtnContainer = createElement('div', { classes: 'button-container' });
+    const subscribeBtn = createElement('button', {
+      classes: ['magazine-subscribe-button', 'button-container'],
+      props: { type: 'button' },
+    });
+    subscribeBtn.textContent = subscribeText;
+    subscribeBtnContainer.appendChild(subscribeBtn);
+    elementsToAppend.push(subscribeBtnContainer);
+  }
+
+  subNavContainer.append(...elementsToAppend);
   block.appendChild(subNavContainer);
 
   const allSubscribeButtons = document.querySelectorAll('.magazine-subscribe-button');
   allSubscribeButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const container = document.querySelector('[data-form-type="Subscribe-magazine"]');
-      if (container) {
-        container.scrollIntoView({ block: 'start', behavior: 'smooth' });
-      } else {
+      if (subscribeSection) {
+        subscribeSection.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      } else if (MAGAZINE_CONFIGS.HREF) {
         window.location.href = MAGAZINE_CONFIGS.HREF;
       }
     });

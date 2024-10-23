@@ -30,7 +30,6 @@
 }
 
 .v2-breadcrumb .v2-breadcrumb__crumb {
-  text-transform: capitalize;
   white-space: nowrap;
   color: inherit;
   display: flex;
@@ -56,6 +55,9 @@
   text-decoration: none;
 }
 
+.v2-breadcrumb:not(.v2-breadcrumb--custom) .v2-breadcrumb__crumb {
+  text-transform: capitalize;
+}
 
 @media (min-width: 1200px) {
   .v2-breadcrumb {

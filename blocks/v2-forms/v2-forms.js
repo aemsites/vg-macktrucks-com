@@ -1,4 +1,4 @@
-import { loadScript } from '../../scripts/lib-franklin.js';
+import { loadScript } from '../../scripts/aem.js';
 import { createElement } from '../../scripts/common.js';
 import { logResults } from '../v2-newsletter/v2-newsletter.js';
 

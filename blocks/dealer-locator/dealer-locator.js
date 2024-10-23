@@ -1,4 +1,7 @@
-import { loadScript } from '../../scripts/lib-franklin.js';
+import { loadScript } from '../../scripts/aem.js';
+import { TOOLS_CONFIGS } from '../../scripts/common.js';
+
+const { GOOGLE_API_KEY } = TOOLS_CONFIGS;
 
 function escapeHTML(input) {
   return input.replace(/&/g, '&amp;')
@@ -22,6 +25,7 @@ export default async function decorate(block) {
     consolidateFilters: true,
     selectedBrand: 'mack',
     dataSource: datasource,
+    apiKey: GOOGLE_API_KEY,
     amenities: ['Appointments Accepted', 'Bilingual Service', 'Driver Lounge', 'Free Pickup and Delivery', 'Hotel Shuttle', 'Internet Service', 'Laundry', 'Showers', 'Telephones', 'Trailer Parking', 'Video Games'],
   };
 

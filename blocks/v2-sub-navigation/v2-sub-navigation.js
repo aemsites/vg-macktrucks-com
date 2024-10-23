@@ -4,7 +4,7 @@ import {
 } from '../../scripts/common.js';
 import {
   getMetadata,
-} from '../../scripts/lib-franklin.js';
+} from '../../scripts/aem.js';
 
 const blockName = 'v2-sub-navigation';
 
