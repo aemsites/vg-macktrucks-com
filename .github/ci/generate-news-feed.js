@@ -3,34 +3,6 @@ import path from 'path';
 import fs from 'fs';
 
 /**
- * @type {FeedConfig[]}
- */
-const feeds = [
-  {
-    title: 'Mack News',
-    targetFile: `../../mack-news/feed.xml`,
-    source: 'https://main--vg-macktrucks-com--volvogroup.aem.live/mack-news/feed.json',
-    siteRoot: "https://www.macktrucks.com",
-    link:	"https://www.macktrucks.com/mack-news/",
-    language:	"en",
-    description:	"Get the latest news from Mack® Trucks and see how we are taking our Born Ready " +
-      "semi truck line to the next level with new innovations and technology."
-  },
-  {
-    title: 'Mack Body Builder News',
-    targetFile: `../../parts-and-services/support/body-builders/news-and-events/feed.xml`,
-    source: 'https://main--vg-macktrucks-com--volvogroup.aem.live/body-builder-news.json',
-    siteRoot: "https://www.macktrucks.com",
-    link:	"https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
-    language:	"en",
-    description:	"Get the latest news from Mack® Trucks Body Builder Portal."
-  },
-]
-
-
-const limit = "1000";
-
-/**
  * @typedef {Object} FeedConfig
  * @property {string} DOMAIN
  * @property {string} LANGUAGE
