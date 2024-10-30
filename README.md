@@ -11,9 +11,17 @@ Helix v5 sites for macktrucks.com
 - Preview: https://main--macktrucks-bs--volvogroup.aem.page/
 - Live: https://main--macktrucks-bs--volvogroup.aem.live/
 
+#### macktrucks.ca
+- Preview: https://main--macktrucks-ca--volvogroup.aem.page/
+- Live: https://main--macktrucks-ca--volvogroup.aem.live/
+
 #### macktrucks.cl
 - Preview: https://main--macktrucks-cl--volvogroup.aem.page/
 - Live: https://main--macktrucks-cl--volvogroup.aem.live/
+
+#### macktrucks.co.nz
+- Preview: https://main--macktrucks-co-nz--volvogroup.aem.page/
+- Live: https://main--macktrucks-co-nz--volvogroup.aem.live/
 
 #### macktrucks.com.ar
 - Preview: https://main--macktrucks-com-ar--volvogroup.aem.page/
