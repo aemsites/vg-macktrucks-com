@@ -16,7 +16,7 @@ jobs:
           # The bot user https://github.com/hlx-macktrucks-bot is used to commit the changes. The personal access token
           # must be created from: https://github.com/settings/tokens
           # The token is then stored in the secrets of the this.
-          # see https://github.com/hlxsites/vg-macktrucks-com/settings/secrets/actions
+          # see https://github.com/aemsites/vg-macktrucks-com/settings/secrets/actions
           token: ${{ secrets.BOT_ACCESS_TOKEN }}
 
       - name: Update package version by release tag
