@@ -51,7 +51,7 @@ Helix v5 sites for macktrucks.com
 - Preview: https://main--macktrucks-com-emea--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-emea--volvogroup.aem.live/
 
-#### macktrucks.com.gy
+#### macktrucksguyana.com
 - Preview: https://main--macktrucks-com-gy--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-gy--volvogroup.aem.live/
 
