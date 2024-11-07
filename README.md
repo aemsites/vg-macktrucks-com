@@ -7,7 +7,7 @@ Helix v5 sites for macktrucks.com
 
 ### Other markets:
 
-#### macktrucks.bs
+#### bahamas.macktrucks.com
 - Preview: https://main--macktrucks-bs--volvogroup.aem.page/
 - Live: https://main--macktrucks-bs--volvogroup.aem.live/
 
@@ -47,7 +47,7 @@ Helix v5 sites for macktrucks.com
 - Preview: https://main--macktrucks-com-ec--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-ec--volvogroup.aem.live/
 
-#### macktrucks.com.emea
+#### macktrucksemea.com
 - Preview: https://main--macktrucks-com-emea--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-emea--volvogroup.aem.live/
 
@@ -59,15 +59,15 @@ Helix v5 sites for macktrucks.com
 - Preview: https://main--macktrucks-com-mx--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-mx--volvogroup.aem.live/
 
-#### macktrucks.com.museum
+#### https://www.macktruckshistoricalmuseum.org
 - Preview: https://main--macktrucks-com-museum--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-museum--volvogroup.aem.live/
 
-#### macktrucks.com.ng
+#### macktrucksnigeria.com
 - Preview: https://main--macktrucks-com-ng--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-ng--volvogroup.aem.live/
 
-#### macktrucks.com.ni
+#### macktrucksnicaragua.com
 - Preview: https://main--macktrucks-com-ni--volvogroup.aem.page/
 - Live: https://main--macktrucks-com-ni--volvogroup.aem.live/
 
@@ -99,11 +99,11 @@ Helix v5 sites for macktrucks.com
 - Preview: https://main--macktrucks-ht--volvogroup.aem.page/
 - Live: https://main--macktrucks-ht--volvogroup.aem.live/
 
-#### macktrucks.sv
+#### sv.macktrucks.com
 - Preview: https://main--macktrucks-sv--volvogroup.aem.page/
 - Live: https://main--macktrucks-sv--volvogroup.aem.live/
 
-#### macktrucks.tt
+#### tt.macktrucks.com
 - Preview: https://main--macktrucks-tt--volvogroup.aem.page/
 - Live: https://main--macktrucks-tt--volvogroup.aem.live/
 
