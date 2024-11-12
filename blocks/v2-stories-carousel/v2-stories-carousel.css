@@ -119,17 +119,7 @@ a.v2-stories-carousel-link {
   width: 27px;
 }
 
-@media (min-width: 1200px) {
-  .v2-stories-carousel-title {
-    font-size: 45px;
-    line-height: 51.75px;
-    letter-spacing: -0.9px;
-  }
-
-  .v2-stories-carousel-aligner {
-    padding-left: calc((100vw - var(--wrapper-width)) / 2);
-  }
-
+@media (min-width: 768px) {
   .v2-stories-carousel-content-wrapper {
     margin-left: 0;
   }
@@ -160,5 +150,17 @@ a.v2-stories-carousel-link {
 
   .v2-stories-carousel-control:hover {
     background: rgb(0 0 0 / 70%);
+  }
+}
+
+@media (min-width: 1200px) {
+  .v2-stories-carousel-title {
+    font-size: 45px;
+    line-height: 51.75px;
+    letter-spacing: -0.9px;
+  }
+
+  .v2-stories-carousel-aligner {
+    padding-left: calc((100vw - var(--wrapper-width)) / 2);
   }
 }
