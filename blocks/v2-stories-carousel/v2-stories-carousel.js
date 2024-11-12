@@ -70,10 +70,12 @@ const updateButtonVisibility = (elements) => {
 /**
  * Scrolls to the specified slide based on direction and updates button visibility.
  * @param {Object} elements - An object containing carousel elements.
- * @param {HTMLElement} elements.trackContainer - The container element that holds the carousel track.
+ * @param {HTMLElement} elements.trackContainer - The container element that holds
+ * the carousel track.
  * @param {HTMLElement[]} elements.slides - An array of slide elements within the carousel.
  * @param {number} elements.currentSlideIndex - The index of the currently active slide.
- * @param {number} [direction=1] - The scroll direction, positive for next and negative for previous.
+ * @param {number} [direction=1] - The scroll direction, positive for next and
+ * negative for previous.
  * @param {boolean} [debounced=false] - Whether to apply debouncing to the scroll action.
  */
 const scrollToSlide = (elements, direction = 1, debounced = false) => {
