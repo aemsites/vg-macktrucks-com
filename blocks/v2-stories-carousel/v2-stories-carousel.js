@@ -68,11 +68,13 @@ const updateButtonVisibility = (elements) => {
 };
 
 /**
- * Scrolls to the specified slide and updates button visibility.
+ * Scrolls to the specified slide based on direction and updates button visibility.
  * @param {Object} elements - An object containing carousel elements.
- * @param {number} [direction=1] - The scroll direction, positive for next and
- * negative for previous.
- * @param {boolean} [debounced=false] - Whether to apply debouncing.
+ * @param {HTMLElement} elements.trackContainer - The container element that holds the carousel track.
+ * @param {HTMLElement[]} elements.slides - An array of slide elements within the carousel.
+ * @param {number} elements.currentSlideIndex - The index of the currently active slide.
+ * @param {number} [direction=1] - The scroll direction, positive for next and negative for previous.
+ * @param {boolean} [debounced=false] - Whether to apply debouncing to the scroll action.
  */
 const scrollToSlide = (elements, direction = 1, debounced = false) => {
   const { trackContainer, currentSlideIndex } = elements;
@@ -80,12 +82,12 @@ const scrollToSlide = (elements, direction = 1, debounced = false) => {
   const { slides } = elements;
 
   const newSlideIndex = Math.max(0, Math.min(currentSlideIndex + direction, slides.length - 1));
-  if (newSlideIndex === currentSlideIndex) return;
-
   elements.currentSlideIndex = newSlideIndex;
   const targetScrollPosition = slides[newSlideIndex].offsetLeft;
 
   const performScroll = () => {
+    if (Math.abs(trackContainer.scrollLeft - targetScrollPosition) < 1) return;
+
     trackContainer.scrollTo({
       left: targetScrollPosition,
       behavior: 'smooth',
