@@ -110,15 +110,6 @@ a.v2-stories-carousel-link {
   display: none;
 }
 
-.v2-stories-carousel__icon {
-  height: 100%;
-}
-
-.v2-stories-carousel__icon svg {
-  height: 100%;
-  width: 27px;
-}
-
 @media (min-width: 768px) {
   .v2-stories-carousel-content-wrapper {
     margin-left: 0;
@@ -138,6 +129,7 @@ a.v2-stories-carousel-link {
     z-index: 1;
     align-items: center;
     justify-content: center;
+    transition: background 0.5s;
   }
 
   .v2-stories-carousel-control.prev {
@@ -150,6 +142,15 @@ a.v2-stories-carousel-link {
 
   .v2-stories-carousel-control:hover {
     background: rgb(0 0 0 / 70%);
+  }
+
+  .v2-stories-carousel__icon {
+    height: 100%;
+  }
+  
+  .v2-stories-carousel__icon svg {
+    height: 100%;
+    width: 27px;
   }
 }
 
