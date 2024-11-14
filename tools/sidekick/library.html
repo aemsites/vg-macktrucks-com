@@ -10,19 +10,9 @@
     <meta name="robots" content="noindex" />
     <base href="/" />
 
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: sans-serif;
-        background-color: #ededed;
-        height: 100%;
-      }
-      
-      helix-sidekick { display: none }
-    </style>
     <title>Sidekick Library</title>
+    <script src="/tools/sidekick/library.js" type="module"></script>
+    <link rel="stylesheet" href="/tools/sidekick/library.css"/>
   </head>
 
   <body>
@@ -30,40 +20,5 @@
       type="module"
       src="https://www.aem.live/tools/sidekick/library/index.js"
     ></script>
-    <script>
-      const library = document.createElement('sidekick-library')
-      library.config = {
-        base: '/block-library/library.json',
-        plugins: {
-          blocks: {
-            viewPorts: [
-              {
-                width: '375px',
-                label: 'Phone',
-                icon: 'device-phone',
-              },
-              {
-                width: '744px',
-                label: 'Tablet',
-                icon: 'device-tablet',
-              },
-              {
-                width: '1200px',
-                label: 'Desktop 1200',
-                icon: 'device-desktop',
-              },
-              {
-                width: '1440px',
-                label: 'Desktop 1440',
-                icon: 'device-desktop',
-                default: true,
-              },
-            ],
-          }
-        }
-      }
-
-      document.body.prepend(library)
-    </script>
   </body>
 </html>
