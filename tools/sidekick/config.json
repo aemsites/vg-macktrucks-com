@@ -1,11 +1,12 @@
 {
   "project": "Mack Trucks",
+  "host": "www.macktrucks.com",
   "plugins": [
     {
       "id": "library",
       "title": "Library",
       "environments": [ "edit" ],
-      "url": "https://main--vg-macktrucks-com--volvogroup.aem.live/tools/sidekick/library.html",
+      "url": "https://main--vg-macktrucks-com--volvogroup.aem.page/tools/sidekick/library.html",
       "includePaths": [ "**.docx**" ]
     },
     {
