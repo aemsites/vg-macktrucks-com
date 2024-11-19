@@ -28,6 +28,6 @@ library.config = {
       ],
     },
   },
-}
+};
 
 document.body.prepend(library);
