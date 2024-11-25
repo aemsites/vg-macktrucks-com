@@ -1,0 +1,54 @@
+.v2-magazine .v2-magazine-article .section {
+  gap: 0;
+}
+
+.v2-magazine .v2-magazine-article .default-content-wrapper,
+.v2-magazine .v2-magazine-article .v2-social-block--attribution,
+.v2-magazine .v2-magazine-article .v2-embed {
+  max-width: 864px;
+  margin: auto;
+}
+
+.v2-magazine .v2-magazine-article .v2-pull-quote-wrapper {
+  max-width: 689px;
+  margin: auto;
+}
+
+.v2-magazine .v2-magazine-article .v2-hero {
+  margin-bottom: 40px;
+}
+
+.v2-magazine .v2-magazine-article .v2-embed,
+.v2-magazine .v2-magazine-article .v2-pull-quote-wrapper {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.v2-magazine .v2-magazine-article .default-content-wrapper h3 {
+  font-family: var(--ff-headline-medium);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 23px;
+}
+
+@media (min-width: 1200px) {
+  .v2-magazine .v2-magazine-article .v2-hero {
+    margin-bottom: 32px;
+  }
+
+  .v2-magazine .v2-magazine-article .default-content-wrapper h3 {
+    font-size: 32px;
+    line-height: 36.8px;
+  }
+
+  .v2-magazine .v2-magazine-article .v2-image-banner {
+    margin-top: 128px;
+    margin-bottom: 128px;
+  }
+
+  .v2-magazine .v2-magazine-article .v2-social-block {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 48px;
+  }
+}
