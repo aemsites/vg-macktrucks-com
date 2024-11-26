@@ -17,7 +17,7 @@ const CLASSES = {
 
 const getItemTitleContainer = (item) => item.querySelector('div:nth-child(3)');
 const getItemCategoryTitleContainer = (item) => item.querySelector('div:nth-child(2)');
-const getItemLink = (item) => item.querySelector('div:nth-child(3) > a');
+const getItemLink = (item) => item.querySelector('div:nth-child(3) > a, div:nth-child(3) > p > a');
 
 const arrowButtonElement = () => createElement('span', { classes: ['icon', 'icon-arrow-right'] });
 
