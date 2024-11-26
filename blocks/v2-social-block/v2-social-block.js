@@ -33,19 +33,19 @@ const TEMPLATE_LINK_CONFIGS = [
 ];
 
 const buildTemplateBlock = (links, hasAttribution) => {
-  const attributionDate = getMetadata('attribution-date');
-  const attributionAuthor = getMetadata('attribution-author');
+  const attributionDate = getMetadata('date');
+  const attributionAuthor = getMetadata('author');
 
   const attributionContent = hasAttribution ? `
     <div class="${CLASSES.attributionWrapper}">
-      <p class="${CLASSES.attributionDate}">${attributionDate || ''}</p>
-      <p class="${CLASSES.attributionAuthor}">${attributionAuthor || ''}</p>
+      ${attributionDate ? `<p class="${CLASSES.attributionDate}">${attributionDate}</p>` : ''}
+      ${attributionAuthor ? `<p class="${CLASSES.attributionAuthor}">${attributionAuthor}</p>` : ''}
     </div>
   ` : '';
 
-  const listItems = links.map(([icon, href]) => `
+  const listItems = links.map(([icon, baseHref]) => `
     <li class="${CLASSES.listItem}">
-      <a href="${href}${window.location.href}" target="_blank">
+      <a href="${baseHref}${window.location.href}" target="_blank">
         <span class="icon icon-${icon}"></span>
       </a>
     </li>
