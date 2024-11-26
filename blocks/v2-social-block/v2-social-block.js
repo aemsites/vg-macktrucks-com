@@ -2,7 +2,7 @@ import {
   getTextLabel,
   unwrapDivs,
   decorateIcons,
-  variantsClassesToBEM
+  variantsClassesToBEM,
 } from '../../scripts/common.js';
 import { getMetadata } from '../../scripts/aem.js';
 
