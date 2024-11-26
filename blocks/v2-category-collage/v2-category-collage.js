@@ -79,7 +79,7 @@ const removeInnerLink = (link) => {
 };
 
 const decorateNewItemContainer = (item, itemContainer, innerLink) => {
-  const { href, title } = innerLink;
+  const { href = '', title = '' } = innerLink || {};
   const newItemContainer = createElement('a', {
     classes: CLASSES.itemLinkClass,
     props: { href, title, tabindex: -1 },
@@ -90,7 +90,10 @@ const decorateNewItemContainer = (item, itemContainer, innerLink) => {
   const itemCategoryTitleContainer = getItemCategoryTitleContainer(item);
   const itemTitleContainer = getItemTitleContainer(item);
 
-  removeInnerLink(innerLink);
+  if (innerLink) {
+    removeInnerLink(innerLink);
+  }
+
   item.classList.add(CLASSES.itemContainer);
   clearElementAttributes(itemTitleContainer)
     .classList.add(CLASSES.itemTitle);
