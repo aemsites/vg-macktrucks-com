@@ -60,14 +60,14 @@
   justify-content: flex-start;
 }
 
-.v2-magazine .v2-social-block--attribution {
-  border-top: none;
-}
-
 .v2-social-block--attribution {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.v2-magazine .v2-social-block--attribution {
+  border-top: none;
 }
 
 .v2-social-block__attribution-date {
