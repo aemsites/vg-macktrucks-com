@@ -112,9 +112,7 @@
   overflow: hidden;
   scroll-snap-align: center;
   background-color: var(--background-color);
-  transition:
-    color,
-    border-color;
+  transition: color, border-color;
   transition-duration: var(--duration-large);
   transition-timing-function: var(--easing-standard);
 }
