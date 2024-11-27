@@ -100,20 +100,24 @@
           }
       ]
   },
-  "searchUrls": {
-      "total": 2,
-      "offset": 0,
-      "limit": 2,
-      "data": [
-          {
-              "name": "SEARCH_URL_PROD",
-              "value": "https://kb3ko4nzt2.execute-api.eu-west-1.amazonaws.com/prod/search"
-          },
-          {
-              "name": "SEARCH_URL_DEV",
-              "value": "https://search-api-qa-eds.aws.43636.vnonprod.com/search"
-          }
-      ]
+  "searchConfig": {
+    "total": 3,
+    "offset": 0,
+    "limit": 3,
+    "data": [
+      {
+        "name": "TENANT",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "SEARCH_URL_PROD",
+        "value": "https://kb3ko4nzt2.execute-api.eu-west-1.amazonaws.com/prod/search"
+      },
+      {
+        "name": "SEARCH_URL_DEV",
+        "value": "https://search-api-qa-eds.aws.43636.vnonprod.com/search"
+      }
+    ]
   },
   "fgrep": {
       "total": 3,

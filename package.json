@@ -8,6 +8,9 @@
     "npm": ">=10.7.0"
   },
   "scripts": {
+    "dev": "aem up",
+    "dev:ca": "AEM_PAGES_URL=https://main--macktrucks-ca--volvogroup.aem.page/ aem up",
+    "dev:mx": "AEM_PAGES_URL=https://main--macktrucks-com-mx--volvogroup.aem.page/ aem up",
     "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
     "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",

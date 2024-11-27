@@ -5,6 +5,7 @@ import {
   loadBlocks,
   loadHeader,
   loadFooter,
+  getMetadata,
 } from './aem.js';
 
 let placeholders = null;
@@ -359,7 +360,7 @@ export const formatValues = (values) => {
 };
 
 const {
-  searchUrls,
+  searchConfig,
   cookieValues,
   magazineConfig,
   headerConfig,
@@ -370,7 +371,7 @@ const {
 } = await getConstantValues();
 
 // This data comes from the sharepoint 'constants.xlsx' file
-export const SEARCH_URLS = formatValues(searchUrls?.data);
+export const SEARCH_CONFIGS = formatValues(searchConfig?.data);
 export const COOKIE_CONFIGS = formatValues(cookieValues?.data);
 export const MAGAZINE_CONFIGS = formatValues(magazineConfig?.data);
 export const HEADER_CONFIGS = formatValues(headerConfig?.data);
@@ -599,6 +600,19 @@ export const deepMerge = (originalTarget, source) => {
   });
   return target;
 };
+
+
+export const isDevHost = () => {
+  const devHosts = ['localhost', '127.0.0.1', 'aem.page', 'aem.live'];
+  return devHosts.some((url) => window.location.host.includes(url));
+};
+
+/**
+ * Function that checks for the locale field in metadata an returns it.
+ * It defaults to 'en-us'
+ * @returns {string} The locale string
+*/
+export const getLocale = () => getMetadata('locale') || 'en-us';
 
 /**
  * Clear/removes all of the attributes of an element by reference
