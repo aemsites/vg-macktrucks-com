@@ -96,7 +96,7 @@ export default async function decorate(block) {
 
   if (filteredArticles.length) {
     buildBlock(filteredArticles, block);
+    block.parentElement.classList.add('full-width');
+    unwrapDivs(block);
   }
-
-  unwrapDivs(block);
 }
