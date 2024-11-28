@@ -4,6 +4,8 @@ import {
   generateId,
   getTextLabel,
   HEADER_CONFIGS,
+
+  getLanguagePath,
 } from '../../scripts/common.js';
 import {
   createOptimizedPicture,
@@ -124,16 +126,14 @@ const mobileActions = () => {
   const mobileActionsEl = createElement('div', { classes: [`${blockClass}__mobile-actions`] });
   const searchLabel = getTextLabel('Search');
   const openMenuLabel = getTextLabel('Open menu');
+  const searchResults = `${getLanguagePath()}search`;
+
+  const searchEl = `<a href="${searchResults}" aria-label="${searchLabel}" class="${blockClass}__search-button ${blockClass}__action-link ${blockClass}__link">
+    <span class="icon icon-search" aria-hidden="true"></span>
+  </a>`;
 
   const actions = document.createRange().createContextualFragment(`
-    ${SEARCH_DISABLED.toLowerCase() === 'false' ? `
-    <a
-      href="/search"
-      aria-label="${searchLabel}"
-      class="${blockClass}__search-button ${blockClass}__action-link ${blockClass}__link"
-    >
-      <span class="icon icon-search" aria-hidden="true"></span>
-    </a>` : ''}
+    ${SEARCH_DISABLED.toLowerCase() === 'true' ? '' : searchEl}
     <button
       aria-label="${openMenuLabel}"
       class="${blockClass}__hamburger-menu ${blockClass}__action-link ${blockClass}__link"
