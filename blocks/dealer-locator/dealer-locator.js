@@ -26,7 +26,7 @@ export default async function decorate(block) {
     consolidateFilters: true,
     selectedBrand: 'mack',
     dataSource: datasource,
-    apiKey: GOOGLE_API_KEY,
+    apiKey: GOOGLE_API_KEY || '',
     amenities: ['Appointments Accepted', 'Bilingual Service', 'Driver Lounge', 'Free Pickup and Delivery', 'Hotel Shuttle', 'Internet Service', 'Laundry', 'Showers', 'Telephones', 'Trailer Parking', 'Video Games'],
   };
 
