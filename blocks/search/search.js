@@ -39,12 +39,6 @@ const SEARCH_PARAMS = {
 };
 
 export default function decorate(block) {
-  const section = block.closest('.section');
-  // check if the closest default content wrapper is inside the same section element
-  const siblingDefaultSection = section.querySelector('.default-content-wrapper');
-  const popularSearchWrapper = siblingDefaultSection || section.nextElementSibling;
-  popularSearchWrapper.classList.add('popular-search');
-
   const fragmentRange = document.createRange();
   const locale = getLocale();
   const language = locale.split('-')[0].toUpperCase();
@@ -102,7 +96,7 @@ export default function decorate(block) {
 
   searchBtn.onclick = () => searchResults();
 
-  const onclickHandler = (val) => {
+  const onClickHandler = (val) => {
     input.value = val;
     searchResults();
   };
@@ -114,7 +108,7 @@ export default function decorate(block) {
       role: 'option',
       'data-section-name': 'default',
     },
-  }, onclickHandler));
+  }, onClickHandler));
 
   let liSelected;
   let next;
@@ -197,7 +191,6 @@ export default function decorate(block) {
   };
 
   const updateFilterCheckbox = () => {
-    // const facetsArr = facets.reduce((acc, curVal) => acc.concat(curVal.items), []);
     const form = block.querySelector('form');
     [...form].forEach((field) => {
       const isChecked = facetsFilters.find(({ value }) => value.includes(field.value));
@@ -307,8 +300,8 @@ export default function decorate(block) {
       resultCount = count;
       hasResults = true;
     } else {
-      const noResults = PLACEHOLDERS.noResults.replace('$0', `"${
-        queryTerm.trim() === '' ? ' ' : queryTerm}"`);
+      const noResults = PLACEHOLDERS.noResults.replace('$0', `"<span>${
+        queryTerm.trim() === '' ? ' ' : queryTerm}</span>"`);
       summary.parentElement.classList.add('no-results');
       resultsText = getNoResultsTemplate({ noResults, refine: PLACEHOLDERS.refine });
       hasResults = false;
@@ -380,7 +373,6 @@ export default function decorate(block) {
       topic: { field: 'TOPIC', value: _topic },
       truck: { field: 'TRUCK', value: _truck },
     };
-
     const objectFilters = Object.keys(filters);
 
     const variables = {
