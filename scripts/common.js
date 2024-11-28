@@ -601,7 +601,6 @@ export const deepMerge = (originalTarget, source) => {
   return target;
 };
 
-
 export const isDevHost = () => {
   const devHosts = ['localhost', '127.0.0.1', 'aem.page', 'aem.live'];
   return devHosts.some((url) => window.location.host.includes(url));

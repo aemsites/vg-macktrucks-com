@@ -87,16 +87,6 @@ export default function decorate(block) {
   const sortBy = document.getElementById('searchOptionsSection');
   const listEl = block.querySelector('.autosuggest__results-container ul');
 
-  function sanitizeQueryTerm(query) {
-    return query.replace(/[<>]/g, (tag) => {
-      const replacements = {
-        '<': '&lt;',
-        '>': '&gt;',
-      };
-      return replacements[tag] || tag;
-    });
-  }
-
   function searchResults(hideAutoSuggest = true) {
     if (hideAutoSuggest) {
       listEl.textContent = '';
@@ -393,7 +383,6 @@ export default function decorate(block) {
 
     const objectFilters = Object.keys(filters);
 
-    const isFilters = facetsFilters.length;
     const variables = {
       q: queryTerm,
       language,
