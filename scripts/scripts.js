@@ -751,6 +751,10 @@ const moveClassToHtmlEl = (className, elementSelector = 'main') => {
 moveClassToHtmlEl('redesign-v2');
 moveClassToHtmlEl('truck-configurator');
 
+function hasConfigURLs() {
+  return TRUCK_CONFIGURATOR_URLS && TRUCK_CONFIGURATOR_URLS.JS && TRUCK_CONFIGURATOR_URLS.CSS;
+}
+
 if (document.documentElement.classList.contains('truck-configurator')) {
   const allowedCountries = getMetadata('allowed-countries');
   const errorPageUrl = getMetadata('redirect-url');
@@ -761,30 +765,32 @@ if (document.documentElement.classList.contains('truck-configurator')) {
   main.innerHTML = '';
   main.append(container);
 
-  const jsUrls = formatStringToArray(TRUCK_CONFIGURATOR_URLS.JS);
-  const cssUrls = formatStringToArray(TRUCK_CONFIGURATOR_URLS.CSS);
+  if (hasConfigURLs()) {
+    const { JS, CSS } = TRUCK_CONFIGURATOR_URLS;
+    const jsUrls = formatStringToArray(JS);
+    const cssUrls = formatStringToArray(CSS);
 
-  jsUrls.forEach((url) => {
-    loadScript(url, { type: 'text/javascript', charset: 'UTF-8', defer: 'defer' });
-  });
+    jsUrls.forEach((url) => {
+      loadScript(url, { type: 'text/javascript', charset: 'UTF-8', defer: 'defer' });
+    });
 
-  cssUrls.forEach((url) => {
-    loadCSS(url);
-  });
+    cssUrls.forEach((url) => {
+      loadCSS(url);
+    });
 
-  window.addEventListener('reactRouterChange', (e) => {
-    const newLocation = e.detail;
+    window.addEventListener('reactRouterChange', (e) => {
+      const newLocation = e.detail;
 
-    // eslint-disable-next-line no-console
-    console.info('[truck-configurator]: React Router location changed:', newLocation);
+      console.info('[truck-configurator]: React Router location changed:', newLocation);
 
-    if (newLocation.pathname && newLocation.pathname !== '/' && disableHeader) {
-      document.documentElement.classList.add('truck-configurator--detail-page');
-    }
-    if (newLocation.pathname && (newLocation.pathname === '/' || newLocation.pathname === '')) {
-      document.documentElement.classList.remove('truck-configurator--detail-page');
-    }
-  });
+      if (newLocation.pathname && newLocation.pathname !== '/' && disableHeader) {
+        document.documentElement.classList.add('truck-configurator--detail-page');
+      }
+      if (newLocation.pathname && (newLocation.pathname === '/' || newLocation.pathname === '')) {
+        document.documentElement.classList.remove('truck-configurator--detail-page');
+      }
+    });
+  }
 }
 
 if (getMetadata('truck-configurator-page')) {

@@ -19,6 +19,7 @@ export default async function decorate(block) {
   // add the zip code to the input search, if it is present
   const zipCode = hasZipLocation ? escapeHTML(searchParams.get('l')) : null;
   const datasource = block.textContent.trim();
+  if (!GOOGLE_API_KEY) return;
   window.locatorConfig = {
     asist: false,
     showAsistDialog: true,

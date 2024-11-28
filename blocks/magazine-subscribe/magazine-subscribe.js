@@ -20,7 +20,7 @@ export default async function decorate(block) {
 
   const iframeLink = createElement('a', {
     classes: 'iframe-link',
-    props: { href },
+    props: { href: href || '#' },
   });
   const iframeForm = buildBlock('iframe', { elems: [iframeLink] });
 
