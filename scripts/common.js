@@ -335,6 +335,7 @@ async function getConstantValues() {
  * @returns {Object} An parsed object with those values and keys
  */
 export const extractObjectFromArray = (data) => {
+  if (!data) return {};
   const obj = {};
   for (const item of data) {
     try {

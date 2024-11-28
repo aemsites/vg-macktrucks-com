@@ -21,11 +21,6 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
-const parsedData = JSON.parse(ACC_ENG_TRACKING);
-const splitData = extractObjectFromArray(parsedData);
-
-const { piAId, piCId, piHostname } = splitData;
-
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
@@ -47,7 +42,7 @@ if (isTargetingAllowed()) {
 // add more delayed functionality here
 
 // Prevent the cookie banner from loading when running in library
-if (!window.location.pathname.includes('srcdoc')
+if (DATA_DOMAIN_SCRIPT && !window.location.pathname.includes('srcdoc')
   && !devHosts.some((url) => window.location.host.includes(url))) {
   loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
     type: 'text/javascript',
@@ -102,6 +97,10 @@ async function loadHotjar() {
 
 // Account Engagement Tracking Code
 async function loadAccountEngagementTracking() {
+  const {
+    piAId = null, piCId = null, piHostname = null,
+  } = extractObjectFromArray(JSON.parse(ACC_ENG_TRACKING));
+  if (!piAId || !piCId || !piHostname) return;
   const body = document.querySelector('body');
   const script = document.createElement('script');
   script.type = 'text/javascript';
