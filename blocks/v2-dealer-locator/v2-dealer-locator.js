@@ -85,8 +85,9 @@ export default async function decorate(block) {
 
   // blockConfig.datasource is a required field for the block to work:
   if (!blockConfig.datasource) {
-    // eslint-disable-next-line no-console
     console.error('The block is missing the datasource field in the configuration.');
+  } else if (!GOOGLE_API_KEY) {
+    console.error('The block is missing the %cGOOGLE_API_KEY%c in the %cTOOLS_CONFIGS', 'color: red;', 'color: initial;', 'color: red;');
   } else {
     window.locatorConfig = {
       asist: false,

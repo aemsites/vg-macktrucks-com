@@ -6,6 +6,10 @@ const languageCode = 'en';
 export const splitString = (str) => str.split(',').map((item) => item.trim());
 
 export const getUserCountryName = async (lat, lng) => {
+  if (!GOOGLE_API_KEY) {
+    console.error('Google API key is missing');
+    return null;
+  }
   const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&language=${languageCode}&key=${GOOGLE_API_KEY}`;
 
   const response = await getJsonFromUrl(apiUrl);
