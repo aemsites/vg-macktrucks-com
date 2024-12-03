@@ -2,8 +2,32 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/</id>
     <title>Mack Body Builder News</title>
-    <updated>1970-01-01T00:00:00.000Z</updated>
+    <updated>2024-11-29T15:33:57.000Z</updated>
     <generator>Mack Body Builder News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/"/>
     <subtitle>Get the latest news from Mack® Trucks Body Builder Portal</subtitle>
+    <entry>
+        <title type="html"><![CDATA[Customer Adaptation Center]]></title>
+        <id>https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/customer-adaptation-center</id>
+        <link href="https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/customer-adaptation-center"/>
+        <updated>2024-11-20T13:10:13.000Z</updated>
+        <content type="html"><![CDATA[We specialize in heavy content specialty vehicles such as the MRU Twin and Tri Steer chassis, the GU8 80” Twin Steer with Cleartech DPF0106 Exhaust, Mechanical All Wheel Drive-Granite, Granite MHD and MRU, and Split-Box PTOs.]]></content>
+        <published>2024-11-20T13:10:13.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Body Builder News and Events]]></title>
+        <id>https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/</id>
+        <link href="https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/"/>
+        <updated>2024-11-20T13:10:13.000Z</updated>
+        <content type="html"><![CDATA[0]]></content>
+        <published>2024-11-20T13:10:13.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[mDrive Auto Neutral Introduced by Mack]]></title>
+        <id>https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/mdrive-auto-neutral-introduced-by-mack</id>
+        <link href="https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/mdrive-auto-neutral-introduced-by-mack"/>
+        <updated>2024-11-29T15:33:57.000Z</updated>
+        <content type="html"><![CDATA[Auto Neutral is now available on vehicles equipped with GHG 2017 engines and the new "F" generation mDrive.]]></content>
+        <published>2024-11-29T15:33:57.000Z</published>
+    </entry>
 </feed>
