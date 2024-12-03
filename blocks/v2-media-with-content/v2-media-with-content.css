@@ -40,6 +40,9 @@
   flex-direction: row;
   justify-content: center;
   column-gap: 24px;
+  padding: 0;
+  list-style: none;
+  margin: 0;
 }
 
 li.v2-media-with-content__list-item {

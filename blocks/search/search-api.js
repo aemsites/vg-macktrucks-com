@@ -5,20 +5,32 @@ const isProd = !window.location.host.includes('hlx.page') && !window.location.ho
 const SEARCH_LINK = !isProd ? SEARCH_URL_DEV : SEARCH_URL_PROD;
 
 export async function fetchData(queryObj) {
-  const response = await fetch(
-    SEARCH_LINK,
-    {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Content-Length': queryObj.length,
-      },
-      body: JSON.stringify(queryObj),
-    },
-  );
+  try {
+    if (!SEARCH_LINK) {
+      throw new Error('SEARCH_LINK is not defined');
+    }
 
-  return response.json();
+    const response = await fetch(
+      SEARCH_LINK,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Content-Length': queryObj.length,
+        },
+        body: JSON.stringify(queryObj),
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    throw new Error(`Fetch error: ${error.message}`);
+  }
 }
 
 export const searchQuery = (hasFilters) => `

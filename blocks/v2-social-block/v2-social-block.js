@@ -2,9 +2,12 @@ import {
   getTextLabel,
   unwrapDivs,
   decorateIcons,
+  variantsClassesToBEM,
 } from '../../scripts/common.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 const blockName = 'v2-social-block';
+const variantClasses = ['attribution'];
 const docRange = document.createRange();
 
 const LABELS = {
@@ -17,6 +20,10 @@ const CLASSES = {
   listItem: `${blockName}__list-item`,
   tooltipTop: ['tooltip', 'tooltip--top'],
   tooltipShow: 'show',
+  attribution: `${blockName}--attribution`,
+  attributionWrapper: `${blockName}__attribution-wrapper`,
+  attributionDate: `${blockName}__attribution-date`,
+  attributionAuthor: `${blockName}__attribution-author`,
 };
 
 const TEMPLATE_LINK_CONFIGS = [
@@ -25,19 +32,35 @@ const TEMPLATE_LINK_CONFIGS = [
   ['fb', 'https://www.facebook.com/sharer/sharer.php?u='],
 ];
 
-const buildTemplateBlock = (links) => {
-  const fragment = docRange.createContextualFragment(`
-    <ul class='${CLASSES.list}'>
-      ${links.map((link) => `
-        <li class='${CLASSES.listItem}'>
-          <a href='${link[1]}${window.location.href}' target='_blank'>
-            <span class='icon icon-${link[0]}'></span>
-          </a>
-        </li>
-        `).join('')}
+const buildTemplateBlock = (links, hasAttribution) => {
+  const attributionDate = getMetadata('date');
+  const attributionAuthor = getMetadata('author');
+
+  const attributionContent = hasAttribution ? `
+    <div class="${CLASSES.attributionWrapper}">
+      ${attributionDate ? `<p class="${CLASSES.attributionDate}">${attributionDate}</p>` : ''}
+      ${attributionAuthor ? `<p class="${CLASSES.attributionAuthor}">${attributionAuthor}</p>` : ''}
+    </div>
+  ` : '';
+
+  const listItems = links.map(([icon, baseHref]) => `
+    <li class="${CLASSES.listItem}">
+      <a href="${baseHref}${window.location.href}" target="_blank">
+        <span class="icon icon-${icon}"></span>
+      </a>
+    </li>
+  `).join('');
+
+  const template = `
+    ${attributionContent}
+    <ul class="${CLASSES.list}">
+      ${listItems}
     </ul>
-  `);
+  `;
+
+  const fragment = docRange.createContextualFragment(template);
   decorateIcons(fragment);
+
   return fragment;
 };
 
@@ -77,7 +100,9 @@ export default function decorate(block) {
   const isMagazineTemplate = document.body.classList.contains('v2-magazine');
 
   if (isMagazineTemplate) {
-    fragment = buildTemplateBlock(TEMPLATE_LINK_CONFIGS);
+    variantsClassesToBEM(block.classList, variantClasses, blockName);
+    const hasAttribution = block.classList.contains(CLASSES.attribution);
+    fragment = buildTemplateBlock(TEMPLATE_LINK_CONFIGS, hasAttribution);
   } else {
     const heading = block.querySelectorAll('h1, h2, h3, h4, h5, h6')[0];
     const links = Array.from(block.querySelectorAll('a'));

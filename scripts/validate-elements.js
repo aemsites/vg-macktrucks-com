@@ -9,10 +9,10 @@ import showSnackbar from '../common/snackbar/snackbar.js';
 loadCSS(`${window.hlx.codeBasePath}/common/snackbar/snackbar.css`);
 
 const {
-  v1SectionClasses,
-  v2SectionClasses,
-  v1AllowedBlocks,
-  v2AllowedBlocks,
+  v1SectionClasses = '',
+  v2SectionClasses = '',
+  v1AllowedBlocks = '',
+  v2AllowedBlocks = '',
 } = TOOLS_CONFIGS;
 
 const formattedV1SectionClasses = formatStringToArray(v1SectionClasses);

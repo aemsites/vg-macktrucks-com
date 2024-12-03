@@ -99,9 +99,12 @@
   height: 375px;
 }
 
-.v2-hero.v2-hero--magazine .v2-hero__content,
-.v2-hero.v2-hero--magazine .v2-hero__content * {
+.v2-hero.v2-hero--magazine .v2-hero__content {
   max-width: 850px;
+}
+
+.v2-hero.v2-hero--magazine .v2-hero__content * {
+  max-width: 489px;
 }
 
 .v2-hero--magazine .v2-hero__content-wrapper {
@@ -114,10 +117,6 @@
   font-size: var(--hero-magazine-headline);
   line-height: 90%;
   text-transform: uppercase;
-}
-
-.v2-hero--magazine .v2-hero__heading span {
-  display: block;
 }
 
 @media (min-width: 1200px) {

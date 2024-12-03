@@ -12,7 +12,7 @@ import {
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 
 // check if the header has to have a login and/or a search button
-const { SEARCH_DISABLED, LOGIN_DISABLED } = HEADER_CONFIGS;
+const { SEARCH_DISABLED = '', LOGIN_DISABLED = '' } = HEADER_CONFIGS;
 
 const blockClass = 'header';
 

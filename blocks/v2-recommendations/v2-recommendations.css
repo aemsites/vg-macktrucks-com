@@ -1,8 +1,10 @@
-.v2-recommendations-container {
+.v2-recommendations-wrapper {
   background-color: var(--c-primary-gray);
 }
 
 .v2-recommendations {
+  max-width: var(--wrapper-width);
+  margin: 0 auto;
   padding-top: 12px;
   padding-bottom: 32px;
 }

@@ -1,8 +1,3 @@
-.section.v2-image-banner-container {
-  margin-bottom: 48px;
-  margin-top: 48px;
-}
-
 .v2-image-banner {
   background-size: cover;
   background-position: center;
@@ -10,6 +5,8 @@
   overflow: hidden;
   position: relative;
   width: 100%;
+  margin-bottom: 48px;
+  margin-top: 48px;
 }
 
 .v2-image-banner picture {
@@ -25,13 +22,15 @@
   background-attachment: fixed;
 }
 
-@media (min-width: 1200px) {
-  .section.v2-image-banner-container {
-    margin-bottom: 64px;
-    margin-top: 64px;
-  }
-
+@media (min-width: 768px) {
   .v2-image-banner {
     max-height: 360px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .v2-image-banner {
+    margin-bottom: 64px;
+    margin-top: 64px;
   }
 }
