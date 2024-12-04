@@ -8,7 +8,7 @@
   font-family: "fontawesome Fallback";
   font-style: normal;
   font-weight: 400;
-  src: local("Arial");
+  src: local("Inter");
   ascent-override: 93.75%;
   descent-override: 6.25%;
   line-gap-override: 0.00%;
@@ -92,9 +92,10 @@
   /* Font family */
 
   /* Alternate fonts */
-  --fallback-ff-texts: "Arial Regular Text Fallback", helvetica, sans-serif;
-  --fallback-ff-headlines: "Arial Bold Headline Fallback", helvetica, sans-serif;
-  --fallback-ff-accents: "Arial Regular Text Fallback", helvetica, sans-serif;
+  --fallback-ff-default: inter, sans-serif;
+  --fallback-ff-texts: "Inter Regular Text Fallback", helvetica, sans-serif;
+  --fallback-ff-headlines: "Inter Bold Headline Fallback", helvetica, sans-serif;
+  --fallback-ff-accents: "Inter Regular Text Fallback", helvetica, sans-serif;
 
   /* Headlines */
   --ff-headline-medium: "GT America Extended Medium", var(--fallback-ff-headlines);
