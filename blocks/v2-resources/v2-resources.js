@@ -27,9 +27,7 @@ export default async function decorate(block) {
   const subtitles = [...contentCol.querySelectorAll('h1, h2, h3, h4, h5, h6')];
   subtitles.forEach((subt) => subt.classList.add(`${blockName}__subtitle`));
 
-  const contentElmts = [...contentCol.children];
-
-  contentElmts.forEach((el) => {
+  [...contentCol.children].forEach((el) => {
     const link = el.querySelector('a');
     const buttonClasses = isMagazineVariant ? ['button', 'button--primary', 'button--large'] : ['standalone-link'];
     link?.classList.add(...buttonClasses);
