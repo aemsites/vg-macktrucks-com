@@ -924,6 +924,10 @@ main .section.responsive-title h1 {
   --testimonial-line-height: 120%;
   --testimonial-letter-spacing: -0.0225rem;
 
+  /* GT America Compressed, 48px, 90% */
+  --heading-compressed-font-size: 3rem; /* 18px */
+  --heading-compressed-line-height: 90%;
+
   /* In page navigation */
   --inpage-navigation-height: 0;
 
