@@ -2,7 +2,7 @@ import {
   sampleRUM,
   loadCSS,
   loadBlock,
-  loadBlocks,
+  loadSections,
   loadHeader,
   loadFooter,
 } from './aem.js';
@@ -194,7 +194,7 @@ export async function loadTemplate(doc, templateName) {
  */
 export async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -214,6 +214,8 @@ export async function loadLazy(doc) {
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  // TODO: Shouldn't we load fonts here?
 }
 
 /**
@@ -221,8 +223,8 @@ export async function loadLazy(doc) {
  * the user experience.
  */
 export function loadDelayed() {
-  // eslint-disable-next-line import/no-cycle
   window.setTimeout(() => {
+    // TODO: Fix this dependency cycle!
     // eslint-disable-next-line import/no-cycle
     import('./delayed.js');
   }, 3000);

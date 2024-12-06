@@ -1,6 +1,6 @@
 import {
   readBlockConfig,
-  loadBlocks,
+  loadSections,
   getMetadata,
 } from '../../scripts/aem.js';
 import {
@@ -190,7 +190,7 @@ export default async function decorate(block) {
   addScrollToTopButton(block);
 
   await decorateIcons(block);
-  await loadBlocks(block);
+  await loadSections(block);
 
   const onFormLoaded = (mutationList) => {
     for (const mutation of mutationList) {
