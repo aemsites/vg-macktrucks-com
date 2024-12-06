@@ -7,7 +7,8 @@ import {
   decorateBlock,
   decorateTemplateAndTheme,
   getMetadata,
-  // TODO: Uncomment to proceed with the improment on the method loadEager to load the first section
+  // TODO: Uncomment to proceed with the improvement
+  // on the method loadEager to load the first section
   // waitForFirstImage,
   // loadSection,
   loadSections,
