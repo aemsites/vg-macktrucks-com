@@ -125,7 +125,7 @@ const updateChart = async (chartContainer, performanceData) => {
   const option = {
     legend: {
       icon: 'circle',
-      fontFamily: 'Helvetica Neue LT Pro 75 Bold',
+      fontFamily: 'Inter 75 Bold',
       top: 'top',
       left: MQ.matches ? 'auto' : '0',
       right: MQ.matches ? '0' : 'auto',

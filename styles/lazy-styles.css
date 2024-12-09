@@ -24,46 +24,54 @@
 
 /* Subheads, Body Copy, & Legal Copy */
 @font-face {
-  font-family: 'Helvetica Neue LT Pro 55 Roman';
-  src: url('../fonts/HelveticaNeueLTPro-55Roman.otf') format('opentype');
+  font-family: 'Inter 55 Regular';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap') format('woff2');
+  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Helvetica Neue LT Pro 65 Medium';
-  src: url('../fonts/HelveticaNeueLTPro-65Md.otf') format('opentype');
+  font-family: 'Inter 65 Medium';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap') format('woff2');
+  font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Helvetica Neue LT Pro 75 Bold';
-  src: url('../fonts/HelveticaNeueLTPro-75Bd.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 56 Roman Italic';
-  src: url('../fonts/HelveticaNeueLTPro-56It.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 66 Medium Italic';
-  src: url('../fonts/HelveticaNeueLTPro-66MdIt.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 76 Bold Italic';
-  src: url('../fonts/HelveticaNeueLTPro-76BdIt.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue 85 Heavy';
-  src: url('../fonts/helveticaneueltpro-hv.woff') format('woff');
+  font-family: 'Inter 75 Bold';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap') format('woff2');
   font-weight: 700;
-  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter 56 Regular Italic';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400&style=italic&display=swap') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter 66 Medium Italic';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@500&style=italic&display=swap') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter 76 Bold Italic';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@700&style=italic&display=swap') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter 85 ExtraBold';
+  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap') format('woff2');
+  font-weight: 800;
   font-display: swap;
 }
 
@@ -86,14 +94,14 @@
 
 /* Alternate Fonts */
 @font-face {
-  font-family: 'Arial Regular Text Fallback';
-  src: local(arial);
+  font-family: 'Inter Regular Text Fallback';
+  src: local(inter);
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Arial Bold Headline Fallback';
-  src: local(arial);
+  font-family: 'Inter Bold Headline Fallback';
+  src: local(inter);
   font-weight: bold;
   font-display: swap;
 }
