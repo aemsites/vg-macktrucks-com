@@ -86,14 +86,14 @@
 
 /* Alternate Fonts */
 @font-face {
-  font-family: 'Arial Regular Text Fallback';
-  src: local(arial);
+  font-family: 'Inter Regular Text Fallback';
+  src: local(inter);
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Arial Bold Headline Fallback';
-  src: local(arial);
+  font-family: 'Inter Bold Headline Fallback';
+  src: local(inter);
   font-weight: bold;
   font-display: swap;
 }
