@@ -84,7 +84,7 @@ const addForm = async (block) => {
 
   block.style.display = displayValue;
 
-  const formObj = document.querySelector('form');
+  const formObj = formWrapper.querySelector('form');
 
   formObj.addEventListener('submit', (e) => {
     if (formContent.onSubmit) {
@@ -110,6 +110,13 @@ const addForm = async (block) => {
 };
 
 export default async function decorate(block) {
+  const forceLoad = block?.getAttribute('data-force-load');
+
+  if (forceLoad === 'true') {
+    await addForm(block);
+    return;
+  }
+
   const observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) {
       observer.disconnect();
