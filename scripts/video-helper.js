@@ -127,7 +127,6 @@ export function addSoundcloudShowHandler(link) {
     const title = link.closest('div')?.querySelector('h1, h2, h3');
     const text = link.closest('div')?.querySelector('p:not(.button-container, .image)');
 
-    // eslint-disable-next-line import/no-cycle
     import('../common/modal/modal-component.js').then((modal) => {
       const episodeInfo = document.createElement('div');
       episodeInfo.classList.add('modal-soundcloud');
