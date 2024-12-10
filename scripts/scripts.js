@@ -28,7 +28,6 @@ import {
   formatStringToArray,
   getPlaceholders,
   TRUCK_CONFIGURATOR_URLS,
-  loadDelayed,
   loadTemplate,
   slugify,
   variantsClassesToBEM,
@@ -527,6 +526,19 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
+
+  // TODO: Shouldn't we load fonts here?
+}
+
+/**
+ * loads everything that happens a lot later, without impacting
+ * the user experience.
+ */
+export function loadDelayed() {
+  window.setTimeout(() => {
+    import('./delayed.js');
+  }, 3000);
+  // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {

@@ -1,10 +1,5 @@
 import {
-  sampleRUM,
   loadCSS,
-  loadBlock,
-  loadSections,
-  loadHeader,
-  loadFooter,
 } from './aem.js';
 
 let placeholders = null;
@@ -187,48 +182,6 @@ export async function loadTemplate(doc, templateName) {
     // eslint-disable-next-line no-console
     console.log(`failed to load block ${templateName}`, error);
   }
-}
-
-/**
- * loads everything that doesn't need to be delayed.
- */
-export async function loadLazy(doc) {
-  const main = doc.querySelector('main');
-  await loadSections(main);
-
-  const { hash } = window.location;
-  const element = hash ? doc.getElementById(hash.substring(1)) : false;
-  if (hash && element) element.scrollIntoView();
-  const header = doc.querySelector('header');
-
-  loadHeader(header);
-  loadFooter(doc.querySelector('footer'));
-
-  const subnav = header?.querySelector('.block.sub-nav');
-  if (subnav) {
-    loadBlock(subnav);
-  }
-
-  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
-
-  // TODO: Shouldn't we load fonts here?
-}
-
-/**
- * loads everything that happens a lot later, without impacting
- * the user experience.
- */
-export function loadDelayed() {
-  window.setTimeout(() => {
-    // TODO: Fix this dependency cycle!
-    // eslint-disable-next-line import/no-cycle
-    import('./delayed.js');
-  }, 3000);
-  // load anything that can be postponed to the latest here
 }
 
 export const removeEmptyTags = (block) => {
