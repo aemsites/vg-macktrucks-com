@@ -1,6 +1,10 @@
 import { unwrapDivs } from '../../scripts/common.js';
 import { getMetadata } from '../../scripts/aem.js';
-import { fetchMagazineArticles, sortArticlesByDateField } from '../../scripts/services/magazine.service.js';
+import {
+  fetchMagazineData,
+  sortArticlesByDateField,
+  formatArticlesArray,
+} from '../../scripts/services/magazine.service.js';
 
 const blockName = 'v2-recommendations';
 
@@ -87,10 +91,12 @@ const buildBlock = (articles, block) => {
  * @returns {void}
  */
 export default async function decorate(block) {
-  const articles = await fetchMagazineArticles();
-  if (!articles.length) return;
+  const queryVariables = { facets: [] };
+  const allData = await fetchMagazineData(queryVariables);
+  const allArticles = formatArticlesArray(allData?.items);
+  if (!allArticles.length) return;
 
-  const sortedArticles = sortArticlesByDateField(articles, 'date');
+  const sortedArticles = sortArticlesByDateField(allArticles, 'date');
   const category = getMetadata('article-category');
   const filteredArticles = getFilteredArticles(sortedArticles, category);
 

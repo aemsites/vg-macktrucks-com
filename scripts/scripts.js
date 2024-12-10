@@ -29,6 +29,7 @@ import {
   loadTemplate,
   slugify,
   variantsClassesToBEM,
+  getLocale,
 } from './common.js';
 import {
   isVideoLink,
@@ -482,7 +483,7 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main, head);
     document.body.classList.add('appear');
-    const language = getMetadata('locale') || 'en';
+    const language = getLocale();
     document.documentElement.lang = language;
     const templateName = getMetadata('template');
     if (templateName) await loadTemplate(doc, templateName);
@@ -780,7 +781,7 @@ if (document.documentElement.classList.contains('truck-configurator')) {
 
     window.addEventListener('reactRouterChange', (e) => {
       const newLocation = e.detail;
-
+      // eslint-disable-next-line no-console
       console.info('[truck-configurator]: React Router location changed:', newLocation);
 
       if (newLocation.pathname && newLocation.pathname !== '/' && disableHeader) {

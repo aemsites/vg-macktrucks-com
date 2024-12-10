@@ -5,8 +5,8 @@ import {
   decorateIcons,
 } from '../../scripts/common.js';
 import {
-  removeArticlesWithNoImage,
-  fetchMagazineArticles,
+  fetchMagazineData,
+  formatArticlesArray,
 } from '../../scripts/services/magazine.service.js';
 import { setCarouselPosition, listenScroll } from '../../scripts/carousel-helper.js';
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
@@ -18,8 +18,9 @@ const activeCarouselClass = `${blockName}__carousel-item--active`;
 let autoScrollEnabled = true;
 const maxAmountOfTabs = 4;
 
-const allArticles = await fetchMagazineArticles();
-const allArticlesWithImage = removeArticlesWithNoImage(allArticles);
+const queryVariables = { facets: [] };
+const allData = await fetchMagazineData(queryVariables);
+const allArticles = formatArticlesArray(allData?.items);
 
 let activeVideo = null;
 
@@ -182,7 +183,7 @@ export default async function decorate(block) {
 
   const tabItems = block.querySelectorAll(':scope > div');
 
-  buildTabItems(carouselItems, tabNavigation, tabItems, allArticlesWithImage);
+  buildTabItems(carouselItems, tabNavigation, tabItems, allArticles);
 
   const handleAutoScroll = (isEnabled) => {
     if (isEnabled) {

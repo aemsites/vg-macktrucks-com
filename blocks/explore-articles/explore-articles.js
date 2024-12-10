@@ -1,17 +1,18 @@
-import { createElement, getTextLabel } from '../../scripts/common.js';
+import { createElement, getTextLabel, capitalizeWords } from '../../scripts/common.js';
 import {
-  fetchMagazineArticles,
-  getArticleTagsJSON,
-  removeArticlesWithNoImage,
+  fetchMagazineData,
+  formatArticlesArray,
+  formatFacetsArray,
 } from '../../scripts/services/magazine.service.js';
 
-const allArticles = await fetchMagazineArticles();
-const allArticlesWithImage = removeArticlesWithNoImage(allArticles);
-const allArticleTags = await getArticleTagsJSON();
-const allCategories = allArticleTags.categories;
-const allTrucks = allArticleTags.trucks;
 const blockName = 'explore-articles';
 
+const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
+const allData = await fetchMagazineData(queryVariables);
+const allArticles = formatArticlesArray(allData?.items);
+const allFacets = formatFacetsArray(allData?.facets);
+
+const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
 
 const articlesPerChunk = 4;
@@ -34,7 +35,7 @@ const getOptions = (list, placeholder) => {
   list.unshift(placeholder);
   list.forEach((el) => {
     const option = createElement('option', { props: { value: el } });
-    option.innerText = el;
+    option.innerText = capitalizeWords(el);
     if (el.length !== 0) options.push(option);
   });
   return options;
@@ -49,59 +50,29 @@ const buildSelect = (type, array, text) => {
   return select;
 };
 
-const buildArticle = (e) => {
-  const article = createElement('div', { classes: ['article'] });
-  const articleImage = createElement('div', { classes: 'article-image' });
-  const articleContent = createElement('div', { classes: 'article-content' });
-
+const buildArticle = (e, idx) => {
   const linkUrl = new URL(e.path, window.location.origin);
-
-  const categoriesWithDash = e.category.replaceAll(' ', '-').toLowerCase();
+  const categoriesWithDash = e.category;
   const categoryUrl = new URL(`magazine/categories/${categoriesWithDash}`, window.location.origin);
-
-  const image = createElement('img', {
-    classes: 'image',
-    props: { src: e.image },
-  });
-  articleImage.append(image);
-
-  if (e.category.length !== 0) {
-    const category = createElement('a', {
-      classes: 'article-category',
-      props: { href: categoryUrl },
-    });
-    category.innerText = e.category;
-    articleContent.append(category);
-  }
-
-  const link = createElement('a', {
-    classes: 'article-link',
-    props: { href: linkUrl },
-  });
-
-  const title = createElement('h3', { classes: 'article-title' });
-  title.innerText = e.title;
-  link.append(title);
-
-  if (e.subtitle.length !== 0) {
-    const subtitle = createElement('p', { classes: 'article-subtitle' });
-    subtitle.innerText = e.subtitle;
-    link.append(subtitle);
-  }
-  articleContent.append(link);
-
-  if (e.truck.length !== 0) {
-    const truck = createElement('div', { classes: 'article-truck' });
-    const truckText = createElement('p', { classes: 'article-truck-text' });
-    truckText.innerText = e.truck;
-    const truckIcon = createElement('img', {
-      classes: 'article-truck-icon',
-      props: { src: '/icons/Truck_Key_icon.svg', alt: 'truck icon' },
-    });
-    truck.append(truckIcon, truckText);
-    articleContent.append(truck);
-  }
-  article.append(articleImage, articleContent);
+  const article = createElement('div', { classes: 'article', props: { id: `group-${idx}` } });
+  const articleContent = document.createRange().createContextualFragment(`
+      <div class="article-image">
+          <img src="${e.image}" alt="article image" class="image">
+      </div>
+      <div class="article-content">
+          ${e.category ? `<a href="${categoryUrl}" class="article-category">${e.category}</a>` : ''}
+          <a href="${linkUrl}" class="article-link">
+            <h3 class="article-title">${e.title}</h3>
+            ${e.description ? `<p class="article-subtitle">${e.description}</p>` : ''}
+          </a>
+          ${e.truck ? `
+            <div class="article-truck">
+              <img src="/icons/Truck_Key_icon.svg" alt="truck icon" class="article-truck-icon">
+              <p class="article-truck-text">${e.truck}</p>
+            </div>` : ''}
+      </div>
+  `);
+  article.append(articleContent);
   return article;
 };
 
@@ -136,8 +107,7 @@ const getArticleGroups = (artGroup) => {
   artGroup.forEach((articleGroup, idx) => {
     const group = [idx];
     articleGroup.forEach((el) => {
-      const article = buildArticle(el);
-      article.id = `group-${idx}`;
+      const article = buildArticle(el, idx);
       group.push(article);
     });
     groups.push(group);
@@ -185,25 +155,22 @@ const handleForm = () => {
   counter = 1;
   const fieldset = document.querySelector('#explore-magazine-fieldset');
   const selects = fieldset.querySelectorAll('select');
-  const [category, truck] = selects;
+  const [catSelect, truckSelect] = selects;
 
-  const filteredList = allArticlesWithImage.filter((article) => {
-    const criteria = [
-      category.value === categoryPlaceholder && truck.value === truckPlaceholder,
-      category.value === categoryPlaceholder && truck.value === article.truck,
-      category.value === article.category && truck.value === truckPlaceholder,
-      category.value === article.category && truck.value === article.truck,
-    ];
-    const [criteria1, criteria2, criteria3, criteria4] = criteria;
+  const filteredList = allArticles.filter((art) => {
+    const truckValue = truckSelect.value.toLowerCase();
+    const truckMatch = art.truck?.some((truck) => truck.toLowerCase() === truckValue);
+    const categoryMatch = art.category.toLowerCase() === catSelect.value.toLowerCase();
 
-    if (criteria1 || criteria2 || criteria3 || criteria4) {
-      return article;
-    }
-    return null;
+    return (
+      (catSelect.value === categoryPlaceholder && truckSelect.value === truckPlaceholder)
+      || (catSelect.value === categoryPlaceholder && truckMatch)
+      || (categoryMatch && truckSelect.value === truckPlaceholder)
+      || (categoryMatch && truckMatch)
+    );
   });
 
   const articleList = document.querySelector(`.${blockName}-articles`);
-
   articleList.textContent = '';
   const filteredArticles = buildArticleList(filteredList, 0);
   articleList.append(filteredArticles);
@@ -219,8 +186,8 @@ const buildFieldset = () => {
   const categoryField = createElement('div', { classes: 'category-field' });
   const trucksField = createElement('div', { classes: 'trucks-field' });
 
-  categoryField.append(buildSelect('categories', allCategories, categoryPlaceholder));
-  trucksField.append(buildSelect('trucks', allTrucks, truckPlaceholder));
+  categoryField.append(buildSelect('category', allCategories, categoryPlaceholder));
+  trucksField.append(buildSelect('truck', allTrucks, truckPlaceholder));
 
   fieldset.append(categoryField, trucksField);
 
@@ -235,20 +202,18 @@ export default async function decorate(block) {
   const [title, text] = children;
 
   const generalSection = createElement('div', { classes: `${blockName}-section` });
+  const contentWrapper = document.createRange().createContextualFragment(`
+      <div class="${blockName}-heading">
+          <h4 class="${blockName}-title" >${title.innerText}</h4>
+          <p class="${blockName}-text" >${text.innerText}</p>
+      </div>
+      <div class="${blockName}-content">
+      </div>
+  `);
 
-  const headingSection = createElement('div', { classes: `${blockName}-heading` });
-  const contentSection = createElement('div', { classes: `${blockName}-content` });
+  contentWrapper.querySelector(`.${blockName}-content`).append(buildFieldset(), buildArticleList(allArticles, 0));
 
-  const h4Element = createElement('h4', { classes: `${blockName}-title` });
-  h4Element.innerText = title.innerText;
-  text.classList.add(`${blockName}-text`);
-
-  headingSection.append(h4Element, text);
-  contentSection.append(buildFieldset());
-
-  contentSection.append(buildArticleList(allArticlesWithImage, 0));
-
-  generalSection.append(headingSection, contentSection);
+  generalSection.append(contentWrapper);
 
   block.textContent = '';
   block.append(generalSection);
