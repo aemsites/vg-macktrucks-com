@@ -13,13 +13,13 @@ export function fetchAutosuggest(term, autosuggestEle, rowEle, func) {
     variables: {
       tenant: TENANT,
       term,
-      locale: language,
+      language,
       sizeSuggestions: 5,
     },
   }).then(({ errors, data }) => {
     if (errors) {
       // eslint-disable-next-line no-console
-      console.log('%cSomething went wrong', { errors });
+      console.log({ errors });
     } else {
       const {
         edssuggest: {
