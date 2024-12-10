@@ -82,11 +82,14 @@
 .explore-articles-articles .article .article-image {
   position: absolute;
   z-index: -1;
+  width: 100%;
 }
 
 .explore-articles-articles .article-image img {
-  object-fit: cover;
+  display: block;
   height: 300px;
+  width: 100%;
+  object-fit: cover;
 }
 
 .explore-articles-articles .article .article-content {

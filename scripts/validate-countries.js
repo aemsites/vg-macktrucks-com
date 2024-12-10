@@ -7,6 +7,7 @@ export const splitString = (str) => str.split(',').map((item) => item.trim());
 
 export const getUserCountryName = async (lat, lng) => {
   if (!GOOGLE_API_KEY) {
+    // eslint-disable-next-line no-console
     console.error('Google API key is missing');
     return null;
   }

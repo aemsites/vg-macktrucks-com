@@ -3,7 +3,6 @@ import {
   createOptimizedPicture,
 } from '../../scripts/aem.js';
 import { createElement } from '../../scripts/common.js';
-import { getArticleTags } from '../../scripts/services/magazine.service.js';
 
 async function buildArticleHero({ truckTags, categoryTag } = {}) {
   const title = getMetadata('og:title');
@@ -88,8 +87,8 @@ async function buildShareSection() {
 }
 
 export default async function decorate(doc) {
-  const categoryTag = await getArticleTags('categories');
-  const truckTags = await getArticleTags('trucks');
+  const categoryTag = getMetadata('article-category');
+  const truckTags = getMetadata('truck');
 
   const container = doc.querySelector('main');
 

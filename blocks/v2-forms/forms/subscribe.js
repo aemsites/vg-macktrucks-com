@@ -1,4 +1,4 @@
-import { getMetadata } from '../../../scripts/aem.js';
+import { getLocale } from '../../../scripts/common.js';
 
 const formContent = `
 <div class="v2-forms__fields-container">
@@ -16,7 +16,7 @@ const formContent = `
       maxlength="254"
       required
     />
-    <input type="hidden" id="form-locale" name="form-locale" value="${getMetadata('locale')}" />
+    <input type="hidden" id="form-locale" name="form-locale" value="${getLocale()}" />
     <button class="submit-button" type="submit" aria-label=""></button>
   </span>
   <span class="v2-forms__validation-message">

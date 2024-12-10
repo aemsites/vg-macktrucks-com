@@ -1,8 +1,7 @@
 import { decorateIcons, getTextLabel } from '../../scripts/common.js';
 import {
-  fetchMagazineArticles,
-  sortArticlesByDateInURL,
-  removeArticlesWithNoImage,
+  fetchMagazineData,
+  formatArticlesArray,
 } from '../../scripts/services/magazine.service.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
@@ -38,11 +37,11 @@ const defaultAmount = 9;
 let currentAmount = 0;
 
 const getData = async () => {
-  const allArticles = await fetchMagazineArticles();
-  const allArticlesWithImage = removeArticlesWithNoImage(allArticles);
-  const sortedArticlesByDate = sortArticlesByDateInURL(allArticlesWithImage);
+  const queryVariables = { sort: 'LAST_MODIFIED_DESC' };
+  const allData = await fetchMagazineData(queryVariables);
+  const allArticles = formatArticlesArray(allData?.items);
   // Preparing the data for every collage item
-  const collageItemsData = sortedArticlesByDate.map((article) => {
+  const collageItemsData = allArticles.map((article) => {
     const {
       title, image, path, category,
     } = article;
