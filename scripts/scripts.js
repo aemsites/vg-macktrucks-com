@@ -6,10 +6,8 @@ import {
   decorateBlock,
   decorateTemplateAndTheme,
   getMetadata,
-  // TODO: Uncomment to proceed with the improvement
-  // on the method loadEager to load the first section
-  // waitForFirstImage,
-  // loadSection,
+  waitForFirstImage,
+  loadSection,
   loadSections,
   loadBlock,
   loadCSS,
@@ -485,15 +483,12 @@ async function loadEager(doc) {
     const templateName = getMetadata('template');
     if (templateName) await loadTemplate(doc, templateName);
 
-    // TODO: This needs further improvements in our codebase to be implemented:
-    // Note: One of the problems, this section might have a component that needs the
-    // getLabelText which depends on a request to load the placeholders
-    // await loadSection(main.querySelector('.section'), waitForFirstImage);
+    await getPlaceholders();
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   } else {
     document.documentElement.lang = 'en';
+    await getPlaceholders();
   }
-
-  await getPlaceholders();
 }
 
 /**
