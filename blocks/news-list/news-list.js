@@ -7,6 +7,8 @@ import { readBlockConfig } from '../../scripts/aem.js';
 export default async function decorate(block) {
   const config = readBlockConfig(block);
 
+  // TODO: This is a duplicate of the logic in news-sidebar.js
+  // Review this hard coded logic attached to the url
   const type = window.location.pathname.startsWith('/parts-and-services/support/body-builders')
     ? 'body-builder-news'
     : 'mack-news';

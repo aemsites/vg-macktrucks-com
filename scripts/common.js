@@ -56,7 +56,6 @@ const {
   tools,
   truckConfiguratorUrls,
   newsFeedConfig,
-  bodyBuilderNewsConfig,
   feeds,
 } = await getConstantValues();
 
@@ -68,7 +67,6 @@ export const HEADER_CONFIGS = formatValues(headerConfig?.data);
 export const TOOLS_CONFIGS = formatValues(tools?.data);
 export const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
 export const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
-export const BODY_BUILDER_NEWS_CONFIGS = formatValues(bodyBuilderNewsConfig?.data);
 export const FEEDS = formatValuesByKey(feeds?.data);
 
 export async function getPlaceholders() {

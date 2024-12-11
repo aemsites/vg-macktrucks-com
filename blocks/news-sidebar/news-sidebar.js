@@ -4,6 +4,8 @@ import {
 } from '../../scripts/services/news.service.js';
 
 export default async function decorate(block) {
+  // TODO: This is a duplicate of the logic in news-list.js
+  // Review this hard coded logic attached to the url
   const type = window.location.pathname.startsWith('/parts-and-services/support/body-builders')
     ? 'body-builder-news'
     : 'mack-news';
