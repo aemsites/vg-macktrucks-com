@@ -13,7 +13,7 @@ export function fetchAutosuggest(term, autosuggestEle, rowEle, func) {
     variables: {
       tenant: TENANT,
       term,
-      locale: language,
+      language,
       sizeSuggestions: 5,
     },
   }).then(({ errors, data }) => {
