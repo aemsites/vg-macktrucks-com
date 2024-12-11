@@ -9,28 +9,25 @@ async function buildArticleHero({ truckTags, categoryTag } = {}) {
   const headPic = getMetadata('og:image');
   const headAlt = getMetadata('og:image:alt');
 
-  const truckModel = truckTags || getMetadata('truck');
-  const category = categoryTag || getMetadata('category');
-
   const section = createElement('div', { classes: ['section', 'template', 'article-template', 'article-hero-container'] });
 
   const headImg = createOptimizedPicture(headPic, headAlt);
   const articleHeroImage = createElement('div', { classes: 'article-hero-image' });
   const articleHeroContent = createElement('div', { classes: 'article-hero-content' });
 
-  const categoryUrl = category.toLowerCase().replaceAll(' ', '-');
+  const categoryUrl = categoryTag.toLowerCase().replaceAll(' ', '-');
   const categorySpan = createElement('a', {
     classes: 'article-hero-category',
     props: { href: `/magazine/categories/${categoryUrl}` },
   });
-  categorySpan.innerText = category;
+  categorySpan.innerText = categoryTag;
 
   const titleH4 = createElement('h4', { classes: 'article-hero-title' });
   titleH4.innerText = title;
 
   const truck = createElement('div', { classes: 'article-hero-truck' });
   const truckText = createElement('p', { classes: 'truck-text' });
-  truckText.innerText = truckModel;
+  truckText.innerText = truckTags;
   const truckIcon = createElement('img', {
     classes: 'truck-icon',
     props: { src: '/icons/Truck_Key_icon.svg', alt: 'truck icon' },
@@ -40,7 +37,7 @@ async function buildArticleHero({ truckTags, categoryTag } = {}) {
   truck.append(truckIcon, truckText);
 
   articleHeroContent.append(categorySpan, titleH4);
-  if (truckModel.length !== 0) articleHeroContent.append(truck);
+  if (truckTags.length !== 0) articleHeroContent.append(truck);
   section.append(articleHeroImage, articleHeroContent);
 
   return section;
