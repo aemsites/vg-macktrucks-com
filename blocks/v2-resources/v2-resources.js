@@ -8,7 +8,7 @@ export default async function decorate(block) {
   const isMagazineVariant = block.classList.contains(`${blockName}--magazine`);
 
   if (isMagazineVariant) {
-    block.parentElement.parentElement.classList.add(`${blockName}-wrapper__magazine`);
+    block.closest('.section').classList.add(`${blockName}-wrapper__magazine`);
   }
 
   const contentWrapper = block.querySelector(':scope > div');
