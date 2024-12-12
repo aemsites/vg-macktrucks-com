@@ -15,7 +15,7 @@ const allFacets = formatFacetsArray(allData?.facets);
 const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
 
-const articlesPerChunk = 4;
+const artsPerChunk = 4;
 let counter = 1;
 
 const divideArray = (mainArray, perChunk) => {
@@ -50,6 +50,19 @@ const buildSelect = (type, array, text) => {
   return select;
 };
 
+const createTruckSection = (trucks) => {
+  const truckList = trucks?.map((item) => item.replace('Mack ', '')).join(', ');
+  return `
+    <div class="article-truck">
+      <img
+        class="truck-icon"
+        src="/icons/Truck_Key_icon.svg"
+        alt="truck icon"
+      />
+      <p class="article-truck-text">${truckList}</p>
+    </div>`;
+};
+
 const buildArticle = (e, idx) => {
   const linkUrl = new URL(e.path, window.location.origin);
   const categoriesWithDash = e.category;
@@ -65,11 +78,8 @@ const buildArticle = (e, idx) => {
             <h3 class="article-title">${e.title}</h3>
             ${e.description ? `<p class="article-subtitle">${e.description}</p>` : ''}
           </a>
-          ${e.truck ? `
-            <div class="article-truck">
-              <img src="/icons/Truck_Key_icon.svg" alt="truck icon" class="article-truck-icon">
-              <p class="article-truck-text">${e.truck}</p>
-            </div>` : ''}
+          ${e.truck ? createTruckSection(e.truck) : ''}
+
       </div>
   `);
   article.append(articleContent);
@@ -123,31 +133,28 @@ const buildFirstArticles = (art, section) => {
 };
 
 const buildArticleList = (articles) => {
-  const groupedArticles = divideArray(articles, articlesPerChunk);
+  const groupedArticles = divideArray(articles, artsPerChunk);
   const articleGroups = getArticleGroups(groupedArticles);
-  const totalArticlesNumber = addAllArrays(groupedArticles);
+  const totalArts = addAllArrays(groupedArticles);
   const amountOfGroups = articleGroups.length;
 
-  const paginationSection = createElement('div', { classes: 'pagination-section' });
   const articlesSection = createElement('div', { classes: `${blockName}-articles` });
-
-  const amountOfArticles = createElement('p', { classes: 'article-amount' });
-  amountOfArticles.textContent = (totalArticlesNumber !== 0) ? `${totalArticlesNumber} articles` : getTextLabel('No article Message');
-
-  paginationSection.append(amountOfArticles);
-  articlesSection.append(paginationSection);
-
-  const moreSection = createElement('div', { classes: `${blockName}-more` });
-  const moreButton = createElement('button', { classes: 'more-btn' });
-  moreButton.textContent = getTextLabel('Load more articles button');
-  moreButton.addEventListener('click', (evt) => loadMoreArticles(evt, articleGroups, amountOfGroups));
-  if (totalArticlesNumber > articlesPerChunk) moreSection.append(moreButton);
+  const articlesContent = document.createRange().createContextualFragment(`
+      <div class="pagination-section">
+        <p class="article-amount">${totalArts !== 0 ? `${totalArts} articles` : getTextLabel('No article Message')}</p>
+      </div>
+      <div class="article-list"></div>
+      <div class="${blockName}-more">
+        ${totalArts > artsPerChunk ? `<button class="more-btn">${getTextLabel('Load more articles button')}</button>` : ''}
+      </div>
+    `);
 
   if (articleGroups.length !== 0) {
-    const articleListSection = createElement('div', { classes: 'article-list' });
-    buildFirstArticles(articleGroups, articleListSection);
-    articlesSection.append(articleListSection, moreSection);
+    buildFirstArticles(articleGroups, articlesContent.querySelector('.article-list'));
+    articlesContent.querySelector('.more-btn')?.addEventListener('click', (evt) => loadMoreArticles(evt, articleGroups, amountOfGroups));
   }
+  articlesSection.append(articlesContent);
+
   return articlesSection;
 };
 
@@ -178,21 +185,20 @@ const handleForm = () => {
 
 const buildFieldset = () => {
   const formSection = createElement('div', { classes: `${blockName}-fieldset` });
-  const form = createElement('form', ['form', 'filter-list'], { method: 'get', name: 'article-fieldset' });
-  form.addEventListener('change', handleForm);
+  const formFragment = document.createRange().createContextualFragment(`
+    <form>
+      <fieldset class="fieldset filter-list" method="get" name="article-fieldset" id="explore-magazine-fieldset">
+          <div class="category-field"></div>
+          <div class="trucks-field"></div>
+      </fieldset>
+    </form>
+  `);
 
-  const fieldset = createElement('fieldset', { classes: ['fieldset', 'filter-list'], props: { method: 'get', name: 'article-fieldset', id: 'explore-magazine-fieldset' } });
+  formFragment.querySelector('form').addEventListener('change', handleForm);
+  formFragment.querySelector('.category-field').append(buildSelect('category', allCategories, categoryPlaceholder));
+  formFragment.querySelector('.trucks-field').append(buildSelect('truck', allTrucks, truckPlaceholder));
 
-  const categoryField = createElement('div', { classes: 'category-field' });
-  const trucksField = createElement('div', { classes: 'trucks-field' });
-
-  categoryField.append(buildSelect('category', allCategories, categoryPlaceholder));
-  trucksField.append(buildSelect('truck', allTrucks, truckPlaceholder));
-
-  fieldset.append(categoryField, trucksField);
-
-  form.append(fieldset);
-  formSection.append(form);
+  formSection.append(formFragment);
 
   return formSection;
 };
@@ -203,12 +209,11 @@ export default async function decorate(block) {
 
   const generalSection = createElement('div', { classes: `${blockName}-section` });
   const contentWrapper = document.createRange().createContextualFragment(`
-      <div class="${blockName}-heading">
-          <h4 class="${blockName}-title" >${title.innerText}</h4>
-          <p class="${blockName}-text" >${text.innerText}</p>
-      </div>
-      <div class="${blockName}-content">
-      </div>
+    <div class="${blockName}-heading">
+      <h4 class="${blockName}-title" >${title.innerText}</h4>
+      <p class="${blockName}-text" >${text.innerText}</p>
+    </div>
+    <div class="${blockName}-content"></div>
   `);
 
   contentWrapper.querySelector(`.${blockName}-content`).append(buildFieldset(), buildArticleList(allArticles, 0));
