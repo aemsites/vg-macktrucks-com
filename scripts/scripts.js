@@ -1,5 +1,4 @@
 import {
-  sampleRUM,
   buildBlock,
   loadHeader,
   loadFooter,
@@ -7,8 +6,9 @@ import {
   decorateBlock,
   decorateTemplateAndTheme,
   getMetadata,
-  waitForLCP,
-  loadBlocks,
+  waitForFirstImage,
+  loadSection,
+  loadSections,
   loadBlock,
   loadCSS,
   readBlockConfig,
@@ -25,7 +25,6 @@ import {
   formatStringToArray,
   getPlaceholders,
   TRUCK_CONFIGURATOR_URLS,
-  loadDelayed,
   loadTemplate,
   slugify,
   variantsClassesToBEM,
@@ -212,8 +211,6 @@ export const decorateButtons = (element) => {
   });
 };
 
-const LCP_BLOCKS = []; // add your LCP blocks to the list
-window.hlx.RUM_GENERATION = 'project-1'; // add your RUM generation information here
 window.mack = window.mack || {};
 window.mack.newsData = window.mack.newsData || {
   news: [],
@@ -253,8 +250,10 @@ function buildHeroBlock(main) {
   const header = main.querySelector('h1');
   const picture = main.querySelector('picture');
   const heroBlock = main.querySelector('.hero, .v2-hero');
-  if (heroBlock) return;
-  // eslint-disable-next-line no-bitwise
+  if (heroBlock) {
+    return;
+  }
+
   if (header && picture
     // eslint-disable-next-line no-bitwise
     && (header.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
@@ -305,7 +304,6 @@ function buildAutoBlocks(main, head) {
       buildV2SubNavigation(main, head);
     }
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
 }
@@ -314,7 +312,6 @@ export function decorateLinks(block) {
   [...block.querySelectorAll('a')]
     .filter(({ href }) => !!href)
     .forEach((link) => {
-      /* eslint-disable no-use-before-define */
       if (isVideoLink(link)) {
         addVideoShowHandler(link);
         return;
@@ -447,7 +444,6 @@ function buildInpageNavigationBlock(main, classname) {
  * Decorates the main element.
  * @param {Element} main The main element
  */
-// eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main, head) {
   if (head) {
     const pageStyle = head.querySelector('[name="style"]')?.content;
@@ -488,12 +484,13 @@ async function loadEager(doc) {
     document.documentElement.lang = language;
     const templateName = getMetadata('template');
     if (templateName) await loadTemplate(doc, templateName);
-    await waitForLCP(LCP_BLOCKS);
+
+    await getPlaceholders();
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   } else {
     document.documentElement.lang = 'en';
+    await getPlaceholders();
   }
-
-  await getPlaceholders();
 }
 
 /**
@@ -502,7 +499,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -524,9 +521,19 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
+
+  // TODO: Shouldn't we load fonts here?
+}
+
+/**
+ * loads everything that happens a lot later, without impacting
+ * the user experience.
+ */
+export function loadDelayed() {
+  window.setTimeout(() => {
+    import('./delayed.js');
+  }, 3000);
+  // load anything that can be postponed to the latest here
 }
 
 async function loadPage() {
