@@ -1,7 +1,6 @@
 import { getOrigin, getLocale, getTextLabel } from '../common.js';
 import { fetchData, magazineSearchQuery, TENANT } from '../search-api.js';
 
-let allArticleData;
 /**
  * Fetches all magazine articles from GraphQL endpoint.
  * @async
@@ -19,6 +18,7 @@ export const fetchMagazineData = async ({
   facets = null,
   article,
 } = {}) => {
+  let allArticleData = [];
   const variables = {
     tenant,
     language,
