@@ -152,15 +152,7 @@ function addPaginationButtons(block) {
 }
 
 function updateActiveHotspot(event, clickedNum, block) {
-  const totalSlides = block.querySelectorAll('.features').length;
-  let slideNumber;
-  if (clickedNum > totalSlides) {
-    slideNumber = 1;
-  } else if (clickedNum < 1) {
-    slideNumber = totalSlides;
-  } else {
-    slideNumber = clickedNum;
-  }
+  const slideNumber = ((clickedNum > 3) && 1) || ((clickedNum < 1) && 3) || clickedNum;
 
   previousSpot = clickedNum;
 

@@ -1,11 +1,10 @@
-import { createElement, FEEDS } from '../../scripts/common.js';
+import { createElement } from '../../scripts/common.js';
 import {
+  feedsInfo,
   getBodyBuilderNews, getMackNews, PagingInfo,
-} from '../../scripts/services/news.service.js';
+} from '../../scripts/news.js';
 
 export default async function decorate(block) {
-  // TODO: This is a duplicate of the logic in news-list.js
-  // Review this hard coded logic attached to the url
   const type = window.location.pathname.startsWith('/parts-and-services/support/body-builders')
     ? 'body-builder-news'
     : 'mack-news';
@@ -21,14 +20,11 @@ export default async function decorate(block) {
 
   const rssLink = createElement('a', {
     classes: ['news-sidebar-rss-icon'],
-    props: { href: FEEDS[type]?.path },
+    props: { href: feedsInfo[type].feedPath },
   });
+  rssLink.textContent = 'News RSS';
 
-  if (FEEDS[type]) {
-    rssLink.textContent = 'News RSS';
-    list.appendChild(rssLink);
-  }
-
+  list.appendChild(rssLink);
   list.appendChild(getParentCategoryLink(window.location.pathname));
 
   newsPage.forEach((newsData) => {
@@ -71,12 +67,10 @@ export default async function decorate(block) {
   });
   const selectEl = div.firstElementChild;
 
-  if (FEEDS[type]) {
-    const clonedRssLink = rssLink.cloneNode(true);
-    selectContainer.appendChild(clonedRssLink);
-    selectContainer.appendChild(selectEl);
-    block.append(selectContainer);
-  }
+  const clonedRssLink = rssLink.cloneNode(true);
+  selectContainer.appendChild(clonedRssLink);
+  selectContainer.appendChild(selectEl);
+  block.append(selectContainer);
 
   select.addEventListener('change', (event) => {
     const selectedNews = newsPage.find((item) => item.path === event.target.value);
