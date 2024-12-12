@@ -1,5 +1,15 @@
+import { variantsClassesToBEM } from '../../scripts/common.js';
+
+const blockName = 'v2-resources';
+const variantClasses = ['magazine'];
+
 export default async function decorate(block) {
-  const blockName = 'v2-resources';
+  variantsClassesToBEM(block.classList, variantClasses, blockName);
+  const isMagazineVariant = block.classList.contains(`${blockName}--magazine`);
+
+  if (isMagazineVariant) {
+    block.closest('.section').classList.add(`${blockName}-wrapper__magazine`);
+  }
 
   const contentWrapper = block.querySelector(':scope > div');
   contentWrapper.classList.add(`${blockName}__content-wrapper`);
@@ -17,16 +27,9 @@ export default async function decorate(block) {
   const subtitles = [...contentCol.querySelectorAll('h1, h2, h3, h4, h5, h6')];
   subtitles.forEach((subt) => subt.classList.add(`${blockName}__subtitle`));
 
-  const contentElmts = [...contentCol.children];
-
-  contentElmts.forEach((el, idx) => {
-    const tagName = el.tagName.toLowerCase();
-    const isButton = [...el.classList].includes('button-container');
-    if (tagName === 'p' && isButton) {
-      const link = el.querySelector('a');
-      link.classList.add('standalone-link');
-      contentElmts[idx - 1].insertAdjacentElement('afterend', link);
-      el.remove();
-    }
+  [...contentCol.children].forEach((el) => {
+    const link = el.querySelector('a');
+    const buttonClasses = isMagazineVariant ? ['button', 'button--primary', 'button--large'] : ['standalone-link'];
+    link?.classList.add(...buttonClasses);
   });
 }
