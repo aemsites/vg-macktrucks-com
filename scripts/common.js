@@ -1,5 +1,6 @@
 import {
   loadCSS,
+  getMetadata,
 } from './aem.js';
 
 let placeholders = null;
