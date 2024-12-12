@@ -17,7 +17,7 @@ const CLASSES = {
 
 const getItemTitleContainer = (item) => item.querySelector('div:nth-child(3)');
 const getItemCategoryTitleContainer = (item) => item.querySelector('div:nth-child(2)');
-const getItemLink = (item) => item.querySelector('div:nth-child(3) > a');
+const getItemLink = (item) => item.querySelector('div:nth-child(3) > a, div:nth-child(3) > p > a');
 
 const arrowButtonElement = () => createElement('span', { classes: ['icon', 'icon-arrow-right'] });
 
@@ -79,7 +79,7 @@ const removeInnerLink = (link) => {
 };
 
 const decorateNewItemContainer = (item, itemContainer, innerLink) => {
-  const { href, title } = innerLink;
+  const { href = '', title = '' } = innerLink || {};
   const newItemContainer = createElement('a', {
     classes: CLASSES.itemLinkClass,
     props: { href, title, tabindex: -1 },
@@ -90,7 +90,10 @@ const decorateNewItemContainer = (item, itemContainer, innerLink) => {
   const itemCategoryTitleContainer = getItemCategoryTitleContainer(item);
   const itemTitleContainer = getItemTitleContainer(item);
 
-  removeInnerLink(innerLink);
+  if (innerLink) {
+    removeInnerLink(innerLink);
+  }
+
   item.classList.add(CLASSES.itemContainer);
   clearElementAttributes(itemTitleContainer)
     .classList.add(CLASSES.itemTitle);

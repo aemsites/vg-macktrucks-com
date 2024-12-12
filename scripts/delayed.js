@@ -20,11 +20,6 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
-const parsedData = JSON.parse(ACC_ENG_TRACKING);
-const splitData = extractObjectFromArray(parsedData);
-
-const { piAId, piCId, piHostname } = splitData;
-
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
@@ -101,6 +96,10 @@ async function loadHotjar() {
 
 // Account Engagement Tracking Code
 async function loadAccountEngagementTracking() {
+  const {
+    piAId = null, piCId = null, piHostname = null,
+  } = extractObjectFromArray(JSON.parse(ACC_ENG_TRACKING));
+  if (!piAId || !piCId || !piHostname) return;
   const body = document.querySelector('body');
   const script = document.createElement('script');
   script.type = 'text/javascript';

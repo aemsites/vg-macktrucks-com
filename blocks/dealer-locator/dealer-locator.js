@@ -19,13 +19,14 @@ export default async function decorate(block) {
   // add the zip code to the input search, if it is present
   const zipCode = hasZipLocation ? escapeHTML(searchParams.get('l')) : null;
   const datasource = block.textContent.trim();
+
   window.locatorConfig = {
     asist: false,
     showAsistDialog: true,
     consolidateFilters: true,
     selectedBrand: 'mack',
     dataSource: datasource,
-    apiKey: GOOGLE_API_KEY,
+    apiKey: GOOGLE_API_KEY || '',
     amenities: ['Appointments Accepted', 'Bilingual Service', 'Driver Lounge', 'Free Pickup and Delivery', 'Hotel Shuttle', 'Internet Service', 'Laundry', 'Showers', 'Telephones', 'Trailer Parking', 'Video Games'],
   };
 

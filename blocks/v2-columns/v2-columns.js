@@ -60,9 +60,6 @@ export default async function decorate(block) {
       if (!e.classList.contains('list-title')) e.classList.add(`${blockName}__body`);
     });
 
-    block.querySelectorAll(`ul.${blockName}__body li`).forEach((item) => {
-      item.classList.add('li--hyphen');
-    });
     const buttons = [...col.querySelectorAll('.button-container a')];
 
     if (isBackgroundImageVariant) {

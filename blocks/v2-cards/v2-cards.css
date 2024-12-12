@@ -80,11 +80,6 @@
   margin-right: 12px;
 }
 
-.v2-cards__text-wrapper li::before {
-  margin-right: 5px;
-  content: url('../../icons/bullet.svg');
-}
-
 .v2-cards__text-wrapper .v2-cards__button-container {
   margin-top: 16px;
 }
@@ -196,14 +191,13 @@
 .v2-cards.v2-cards--heading-with-arrow .v2-cards__heading a {
   color: var(--text-color);
   width: 100%;
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: inline-block;
 }
 
 .v2-cards.v2-cards--heading-with-arrow .v2-cards__heading a::after {
   height: 28px;
   width: 28px;
+  float: right;
   content: url('../../icons/arrow-right.svg');
 }
 

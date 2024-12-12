@@ -33,18 +33,19 @@ export default async function decorate(block) {
     const items = iconList.querySelectorAll('li');
     items.forEach((item) => {
       item.classList.add(`${blockName}__list-item`);
-      const figure = createElement('figure');
       const image = item.querySelector('picture');
+      const figure = createElement('figure');
       const pElmt = createElement('figcaption');
       const liText = item.innerText.trim();
       pElmt.textContent = liText;
-      figure.append(image, pElmt);
+
+      if (image) {
+        figure.append(image);
+      }
+
+      figure.append(pElmt);
       item.textContent = '';
       item.append(figure);
-    });
-  } else {
-    block.querySelectorAll('li').forEach((item) => {
-      item.classList.add('li--hyphen');
     });
   }
 

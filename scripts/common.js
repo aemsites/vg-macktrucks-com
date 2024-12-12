@@ -336,6 +336,7 @@ async function getConstantValues() {
  * @returns {Object} An parsed object with those values and keys
  */
 export const extractObjectFromArray = (data) => {
+  if (!Array.isArray(data)) return {};
   const obj = {};
   for (const item of data) {
     try {
@@ -458,6 +459,7 @@ export const getJsonFromUrl = async (route) => {
  *                     original input.
  */
 export const formatStringToArray = (inputString) => {
+  if (typeof inputString !== 'string') return [];
   // eslint-disable-next-line no-useless-escape
   const cleanedString = inputString.replace(/[\[\]\\'"]+/g, '');
   return cleanedString.split(',')
