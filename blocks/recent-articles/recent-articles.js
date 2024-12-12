@@ -31,10 +31,7 @@ const createList = (articles) => `
     return (
       `<li class="${blockName}-${firstOrRestClass}-item">
         <div class="${blockName}-${firstOrRestClass}-image">
-          <a href="${linkUrl}">
-            ${pictureTag}
-          </a>
-          </a>
+          <a href="${linkUrl}">${pictureTag}</a>
         </div>
         ${(idx === 0 && e.category) ? `<a class="${blockName}-${firstOrRestClass}-category" href="${categoryUrl}">${e.category}</a>` : ''}
         <a class="${blockName}-${firstOrRestClass}-title" href="">${e.title}</a>

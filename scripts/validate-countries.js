@@ -22,7 +22,6 @@ export const getUserCountryName = async (lat, lng) => {
 const checkForRedirect = (list, country, url) => {
   // Check if country is included in the list that comes from the metadata
   if (!list.includes(country)) {
-    // eslint-disable-next-line no-console
     console.error('Truck configurator not avaliable for:', country);
     const completeUrl = window.location.origin + url;
     window.location.replace(completeUrl);
