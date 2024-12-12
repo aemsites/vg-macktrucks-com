@@ -1,5 +1,15 @@
-import { getMetadata } from '../aem.js';
-import { FEEDS } from '../common.js';
+import { getMetadata } from './aem.js';
+
+export const feedsInfo = {
+  'mack-news': {
+    feedPath: '/mack-news/feed.xml',
+    jsonSource: '/mack-news/feed.json',
+  },
+  'body-builder-news': {
+    feedPath: '/parts-and-services/support/body-builders/news-and-events/feed.xml',
+    jsonSource: '/body-builder-news.json',
+  },
+};
 
 /**
  * @typedef {Object} NewsPost
@@ -18,10 +28,7 @@ import { FEEDS } from '../common.js';
  * @returns {Promise<NewsPost[]>}
  */
 export async function getBodyBuilderNews(pagingInfo) {
-  if (!FEEDS['body-builder-news']) {
-    throw new Error('Body builder news feed not configured');
-  }
-  const allPosts = await fetchJsonFeed(FEEDS['body-builder-news'].source, pagingInfo);
+  const allPosts = await fetchJsonFeed(feedsInfo['body-builder-news'].jsonSource, pagingInfo);
   allPosts.sort(sortNewsByDate);
 
   if (pagingInfo.pageSize > 0) {
@@ -42,10 +49,7 @@ export async function getBodyBuilderNews(pagingInfo) {
  * @returns {Promise<NewsPost[]>}
  */
 export async function getMackNews(path, pagingInfo, filter = 'none') {
-  if (!FEEDS['mack-news']) {
-    throw new Error('Mack news feed not configured');
-  }
-  const allPosts = await fetchJsonFeed(FEEDS['mack-news']?.source, pagingInfo);
+  const allPosts = await fetchJsonFeed(feedsInfo['mack-news'].jsonSource, pagingInfo);
   let filteredPosts = allPosts.filter((page) => page.template === 'mack-news');
   filteredPosts.sort(sortNewsByDate);
 
