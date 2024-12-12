@@ -42,13 +42,13 @@ const createList = (articles) => `
         ${(idx === 0) ? `<a class="${blockName}-${firstOrRestClass}-link" href="${linkUrl}">${readNowText}</a>` : ''}
       </li>`
     );
-  }).join('')};
+  }).join('')}
   </ul>`;
 
 export default async function decorate(block) {
   const limit = extractLimitFromBlock(block) || defaultLimit;
 
-  const queryVariables = { limit: limit + 1, facets: [], sort: 'LAST_MODIFIED_DESC' };
+  const queryVariables = { limit: limit + 1, sort: 'LAST_MODIFIED_DESC' };
   const allData = await fetchMagazineData(queryVariables);
   const allArticles = formatArticlesArray(allData?.items);
 

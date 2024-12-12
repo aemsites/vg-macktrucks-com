@@ -2,9 +2,8 @@ import { getOrigin, getLocale, getTextLabel } from '../common.js';
 import { fetchData, magazineSearchQuery, TENANT } from '../search-api.js';
 
 let allArticleData;
-
 /**
- * Fetches magazine articles from a URL in constants file.
+ * Fetches all magazine articles from GraphQL endpoint.
  * @async
  * @param {Object} - An object with the query configurations
  * @returns {Promise<Array>} - A promise that resolves to an array of articles and facets.
@@ -12,13 +11,13 @@ let allArticleData;
 export const fetchMagazineData = async ({
   limit,
   offset = 0,
-  tags = null,
-  q = 'truck',
+  q = 'Mack',
   sort = 'BEST_MATCH',
   tenant = TENANT,
   language = getLocale().split('-')[0].toUpperCase(),
   category = 'magazine',
-  facets = ['ARTICLE', 'TOPIC', 'TRUCK'],
+  facets = null,
+  article,
 } = {}) => {
   const variables = {
     tenant,
@@ -29,7 +28,7 @@ export const fetchMagazineData = async ({
     offset,
     facets,
     sort,
-    article: tags || {},
+    article,
   };
 
   try {
@@ -163,7 +162,7 @@ export const extractLimitFromBlock = (block) => {
  */
 export const clearRepeatedArticles = (articles) => articles.filter((e) => {
   const currentArticlePath = window.location.href.split('/').pop();
-  const path = e.path.split('/').pop();
+  const path = e.path?.split('/').pop();
   if (path !== currentArticlePath) return e;
   return null;
 });
@@ -181,7 +180,6 @@ export const sortArticlesByDateField = (articles, dateField) => articles
   }))
   .sort((a, b) => b.timestamp - a.timestamp);
 
-// TODO check if these 3 last functions are still necessary
 /**
  * Sorts the array of articles by the date that appears in the URL
  * @param {Array} articles - The articles array
@@ -205,19 +203,7 @@ export const sortArticlesByDateInURL = (articles) => articles.sort((a, b) => {
 });
 
 /**
- * Extracts the matching tags from an array of tags and an array of article tags
- * and returns a string of matching tags
- * @param {Array} tags - An array of tags from the JSON file
- * @param {Array} articleTags - An array of article:tags
- * @returns {string} A string of matching tags
+ * Checks whether the current page is a magazine template.
  */
-export function getMetadataFromTags(tags, articleTags) {
-  if (!tags || !articleTags) {
-    return '';
-  }
-
-  const matchingTags = [...articleTags]
-    .filter((tag) => tags.includes(tag.content))
-    .map((tag) => tag.content);
-  return matchingTags && matchingTags?.length > 0 ? matchingTags.join(', ') : '';
-}
+export const isMagazineTemplate = document.body.classList.contains('v2-magazine')
+|| document.body.classList.contains('magazine');

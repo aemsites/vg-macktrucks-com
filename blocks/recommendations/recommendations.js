@@ -6,9 +6,9 @@ import {
 import {
   extractLimitFromBlock,
   clearRepeatedArticles,
-  sortArticlesByDateField,
   fetchMagazineData,
   formatArticlesArray,
+  isMagazineTemplate,
 } from '../../scripts/services/magazine.service.js';
 import { getMetadata, createOptimizedPicture } from '../../scripts/aem.js';
 
@@ -17,7 +17,20 @@ const readNowText = getTextLabel('READ NOW');
 const defaultLimit = 2;
 const blockName = 'recommendations';
 
-const createList = (articles, template) => `
+const createTruckSection = (trucks) => {
+  const truckList = trucks?.map((item) => item.replace('Mack ', '')).join(', ');
+  return `
+    <div class="${blockName}-truck">
+      <img
+        class="truck-icon"
+        src="/icons/Truck_Key_icon.svg"
+        alt="truck icon"
+      />
+      <p class="${blockName}-truck-text">${truckList}</p>
+    </div>`;
+};
+
+const createList = (articles) => `
   <ul class="${blockName}-list">
     ${articles.map((e, idx) => {
     const picture = createOptimizedPicture(e.image, e.title);
@@ -28,17 +41,6 @@ const createList = (articles, template) => `
     const categoryWithDash = articleCategory.replaceAll(' ', '-').toLowerCase();
     const categoryUrl = new URL(`magazine/categories/${categoryWithDash}`, getOrigin());
 
-    const truckList = e.truck?.join(', ');
-    const truckSection = `
-      <div class="${blockName}-truck">
-        <img
-          class="truck-icon"
-          src="/icons/Truck_Key_icon.svg"
-          alt="truck icon"
-        />
-        <p class="${blockName}-truck-text">${truckList}</p>
-      </div>`;
-
     return (`
       <li class="${blockName}-item ${blockName}-item-${idx}">
         <div class="${blockName}-image">
@@ -47,9 +49,9 @@ const createList = (articles, template) => `
           </a>
         </div>
         <div class="${blockName}-text-content">
-          ${e.category && template ? `<a class="${blockName}-category" href="${categoryUrl}">${e.category}</a>` : ''}
+          ${e.category && isMagazineTemplate ? `<a class="${blockName}-category" href="${categoryUrl}">${e.category}</a>` : ''}
           <a class="${blockName}-title" href="${linkUrl}">${e.title}</a>
-          ${e.truck && !template ? truckSection : ''}
+          ${e.truck && !isMagazineTemplate ? createTruckSection(e.truck) : ''}
           <a class="${blockName}-link" href="${linkUrl}">${readNowText}</a>
         </div>
       </li>`
@@ -59,22 +61,24 @@ const createList = (articles, template) => `
 
 export default async function decorate(block) {
   const limit = extractLimitFromBlock(block) || defaultLimit;
-  const isTemplate = document.body.classList.contains('magazine');
   const category = getMetadata('article-category');
 
-  const queryVariables = { facets: ['ARTICLE'] };
+  const queryVariables = {
+    limit: limit + 1,
+    facets: ['ARTICLE'],
+    sort: 'LAST_MODIFIED_DESC',
+    article: { category },
+  };
   const allData = await fetchMagazineData(queryVariables);
   const allArticles = formatArticlesArray(allData?.items);
 
-  const recommendedArticles = allArticles.filter((e) => e.category === category);
-  const sortedArticles = sortArticlesByDateField(recommendedArticles, 'lastModified');
-  const filteredArticles = clearRepeatedArticles(sortedArticles);
+  const filteredArticles = clearRepeatedArticles(allArticles);
   const selectedArticles = filteredArticles.slice(0, limit);
 
   const recommendationsSection = createElement('div', { classes: `${blockName}-section` });
   const recommendationsContent = document.createRange().createContextualFragment(`
         <h3 class="${blockName}-section-title">${recommendationsText}</h3>
-        ${createList(selectedArticles, isTemplate)}
+        ${createList(selectedArticles)}
       `);
 
   recommendationsSection.append(recommendationsContent);
