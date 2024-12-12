@@ -1,6 +1,4 @@
-// eslint-disable-next-line import/no-cycle
-import { sampleRUM, loadScript } from './aem.js';
-// eslint-disable-next-line import/no-cycle
+import { loadScript } from './aem.js';
 import {
   isPerformanceAllowed,
   isSocialAllowed,
@@ -19,9 +17,6 @@ const {
   HOTJAR_ID = false,
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
-
-// Core Web Vitals RUM collection
-sampleRUM('cwv');
 
 // COOKIE ACCEPTANCE CHECKING
 if (isPerformanceAllowed()) {
