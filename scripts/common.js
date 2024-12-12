@@ -1,5 +1,6 @@
 import {
   loadCSS,
+  getMetadata,
 } from './aem.js';
 
 let placeholders = null;
@@ -610,4 +611,10 @@ export function addTargetBlankToExternalLink(link) {
   }
 }
 
+/**
+ * Recieves a lowercase string and capitalizes it.
+ * Useful for elements not reachable by css fe: select <options>
+ * @param {string} str - lowercase string fe: 'mack trucks'.
+ * @returns {string} The capitalized string fe: 'Mack Trucks'.
+ */
 export const capitalizeWords = (str) => str.split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
