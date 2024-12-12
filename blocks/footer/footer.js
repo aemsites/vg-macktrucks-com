@@ -176,7 +176,7 @@ export default async function decorate(block) {
     const newsletterEl = await setupNewsletterForm(block, footerMenuEl);
     newMenu.append(newsletterEl);
 
-    menuEl.innerHTML = footerMenuEl.innerHTML;
+    menuEl.append(footerMenuEl);
     const menuList = menuEl.querySelectorAll(':scope > div');
     menuList.forEach((item) => item.classList.add(`${CLASSES.menu}__column`));
     if (menuEl.children.length) {
@@ -192,7 +192,8 @@ export default async function decorate(block) {
     newFooter.append(footerLegalEl);
   }
 
-  block.innerHTML = newFooter.innerHTML;
+  block.innerHTML = '';
+  block.append(newFooter);
 
   addScrollToTopButton(block);
 
