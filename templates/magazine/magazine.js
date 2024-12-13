@@ -84,8 +84,8 @@ async function buildShareSection() {
 }
 
 export default async function decorate(doc) {
-  const categoryTag = getMetadata('article-category');
-  const truckTags = getMetadata('truck');
+  const categoryTag = getMetadata('article-category') || '';
+  const truckTags = getMetadata('truck') || '';
 
   const container = doc.querySelector('main');
 
