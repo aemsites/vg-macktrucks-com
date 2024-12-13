@@ -7,9 +7,7 @@ import {
 
 const blockName = 'explore-articles';
 
-const artsPerChunk = 4;
-
-const queryVariables = { limit: artsPerChunk, facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
+const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
 const allMagazineData = await fetchMagazineData(queryVariables);
 const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
@@ -19,6 +17,7 @@ const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
 
 let counter = 1;
+const artsPerChunk = 4;
 
 const divideArray = (mainArray, perChunk) => {
   const dividedArrays = mainArray.reduce((resultArray, item, index) => {
