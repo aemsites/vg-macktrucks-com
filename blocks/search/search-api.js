@@ -1,8 +1,10 @@
 import { SEARCH_URLS } from '../../scripts/common.js';
 
 const { SEARCH_URL_DEV, SEARCH_URL_PROD } = SEARCH_URLS;
-const isProd = !window.location.host.includes('hlx.page') && !window.location.host.includes('localhost');
-const SEARCH_LINK = !isProd ? SEARCH_URL_DEV : SEARCH_URL_PROD;
+const isProd = !window.location.host.includes('hlx.page')
+               && !window.location.host.includes('aem.page')
+               && !window.location.host.includes('localhost');
+const SEARCH_LINK = isProd ? SEARCH_URL_PROD : SEARCH_URL_DEV;
 
 export async function fetchData(queryObj) {
   try {
