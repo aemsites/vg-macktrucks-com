@@ -25,28 +25,28 @@
 /* Subheads, Body Copy, & Legal Copy */
 @font-face {
   font-family: 'Inter 55 Regular';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap') format('woff2');
+  src: url('../fonts/Inter.ttf') format('truetype');
   font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Inter 65 Medium';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap') format('woff2');
+  src: url('../fonts/Inter.ttf') format('truetype');
   font-weight: 500;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Inter 75 Bold';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@700&display=swap') format('woff2');
+  src: url('../fonts/Inter.ttf') format('truetype');
   font-weight: 700;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Inter 56 Regular Italic';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@400&style=italic&display=swap') format('woff2');
+  src: url('../fonts/Inter-Italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -54,7 +54,7 @@
 
 @font-face {
   font-family: 'Inter 66 Medium Italic';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@500&style=italic&display=swap') format('woff2');
+  src: url('../fonts/Inter-Italic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
   font-display: swap;
@@ -62,7 +62,7 @@
 
 @font-face {
   font-family: 'Inter 76 Bold Italic';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@700&style=italic&display=swap') format('woff2');
+  src: url('../fonts/Inter-Italic.ttf') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -70,7 +70,7 @@
 
 @font-face {
   font-family: 'Inter 85 ExtraBold';
-  src: url('https://fonts.googleapis.com/css2?family=Inter:wght@800&display=swap') format('woff2');
+  src: url('../fonts/Inter.ttf') format('truetype');
   font-weight: 800;
   font-display: swap;
 }
