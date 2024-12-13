@@ -7,16 +7,17 @@ import {
 
 const blockName = 'explore-articles';
 
-const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
+const artsPerChunk = 4;
+
+const queryVariables = { limit: artsPerChunk, facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
 const allMagazineData = await fetchMagazineData(queryVariables);
 const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
-const filteredArray = allArticles.filter((art) => art.category !== 'Magazine');
+const totalArticlesNumber = allMagazineData?.count;
 
 const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
 
-const artsPerChunk = 4;
 let counter = 1;
 
 const divideArray = (mainArray, perChunk) => {
@@ -106,15 +107,6 @@ const loadMoreArticles = (evt, articleGroups, amountOfGroups) => {
   counter += 1;
 };
 
-const addAllArrays = (array) => {
-  const initialValue = 0;
-  const totalArticles = array.reduce(
-    (acc, curr) => acc + curr.length,
-    initialValue,
-  );
-  return totalArticles;
-};
-
 const getArticleGroups = (artGroup) => {
   const groups = [];
   artGroup.forEach((articleGroup, idx) => {
@@ -138,7 +130,6 @@ const buildFirstArticles = (art, section) => {
 const buildArticleList = (articles) => {
   const groupedArticles = divideArray(articles, artsPerChunk);
   const articleGroups = getArticleGroups(groupedArticles);
-  const totalArticlesNumber = addAllArrays(groupedArticles);
   const amountOfGroups = articleGroups.length;
 
   const articlesSection = createElement('div', { classes: `${blockName}-articles` });
@@ -221,7 +212,7 @@ export default async function decorate(block) {
     <div class="${blockName}-content"></div>
   `);
 
-  contentWrapper.querySelector(`.${blockName}-content`).append(buildFieldset(), buildArticleList(filteredArray, 0));
+  contentWrapper.querySelector(`.${blockName}-content`).append(buildFieldset(), buildArticleList(allArticles, 0));
 
   generalSection.append(contentWrapper);
 
