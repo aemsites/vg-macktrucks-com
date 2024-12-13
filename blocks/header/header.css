@@ -236,6 +236,7 @@ a.header__link {
   background: inherit;
   border: none;
   justify-content: center;
+  font-family: var(--ff-body);
 }
 
 .header__link.header__action-link {
