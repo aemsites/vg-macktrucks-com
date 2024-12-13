@@ -19,8 +19,8 @@ let autoScrollEnabled = true;
 const maxAmountOfTabs = 4;
 
 const queryVariables = { facets: [] };
-const allData = await fetchMagazineData(queryVariables);
-const allArticles = formatArticlesArray(allData?.items);
+const allMagazineData = await fetchMagazineData(queryVariables);
+const allArticles = formatArticlesArray(allMagazineData?.items);
 
 let activeVideo = null;
 

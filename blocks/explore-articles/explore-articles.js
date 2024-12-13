@@ -8,9 +8,9 @@ import {
 const blockName = 'explore-articles';
 
 const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
-const allData = await fetchMagazineData(queryVariables);
-const allArticles = formatArticlesArray(allData?.items);
-const allFacets = formatFacetsArray(allData?.facets);
+const allMagazineData = await fetchMagazineData(queryVariables);
+const allArticles = formatArticlesArray(allMagazineData?.items);
+const allFacets = formatFacetsArray(allMagazineData?.facets);
 
 const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
@@ -65,27 +65,27 @@ const createTruckSection = (trucks) => {
     </div>`;
 };
 
-const buildArticle = (e, idx) => {
-  const linkUrl = new URL(e.path, window.location.origin);
-  const categoriesWithDash = e.category;
+const buildArticle = (article, idx) => {
+  const linkUrl = new URL(article.path, window.location.origin);
+  const categoriesWithDash = article.category.replaceAll(' ', '-').toLowerCase();
   const categoryUrl = new URL(`magazine/categories/${categoriesWithDash}`, window.location.origin);
-  const article = createElement('div', { classes: 'article', props: { id: `group-${idx}` } });
+  const articleDiv = createElement('div', { classes: 'article', props: { id: `group-${idx}` } });
   const articleContent = document.createRange().createContextualFragment(`
       <div class="article-image">
-          <img src="${e.image}" alt="article image" class="image">
+          <img src="${article.image}" alt="article image" class="image">
       </div>
       <div class="article-content">
-          ${e.category ? `<a href="${categoryUrl}" class="article-category">${e.category}</a>` : ''}
+          ${article.category ? `<a href="${categoryUrl}" class="article-category">${article.category}</a>` : ''}
           <a href="${linkUrl}" class="article-link">
-            <h3 class="article-title">${e.title}</h3>
-            ${e.description ? `<p class="article-subtitle">${e.description}</p>` : ''}
+            <h3 class="article-title">${article.title}</h3>
+            ${article.description ? `<p class="article-subtitle">${article.description}</p>` : ''}
           </a>
-          ${e.truck ? createTruckSection(e.truck) : ''}
+          ${article.truck ? createTruckSection(article.truck) : ''}
 
       </div>
   `);
-  article.append(articleContent);
-  return article;
+  articleDiv.append(articleContent);
+  return articleDiv;
 };
 
 const loadMoreArticles = (evt, articleGroups, amountOfGroups) => {
@@ -137,17 +137,19 @@ const buildFirstArticles = (art, section) => {
 const buildArticleList = (articles) => {
   const groupedArticles = divideArray(articles, artsPerChunk);
   const articleGroups = getArticleGroups(groupedArticles);
-  const totalArts = addAllArrays(groupedArticles);
+  const totalArticlesNumber = addAllArrays(groupedArticles);
   const amountOfGroups = articleGroups.length;
 
   const articlesSection = createElement('div', { classes: `${blockName}-articles` });
   const articlesContent = document.createRange().createContextualFragment(`
       <div class="pagination-section">
-        <p class="article-amount">${totalArts !== 0 ? `${totalArts} articles` : getTextLabel('No article Message')}</p>
+        <p class="article-amount">
+          ${totalArticlesNumber !== 0 ? `${totalArticlesNumber} articles` : getTextLabel('No article Message')}
+        </p>
       </div>
       <div class="article-list"></div>
       <div class="${blockName}-more">
-        ${totalArts > artsPerChunk ? `<button class="more-btn">${getTextLabel('Load more articles button')}</button>` : ''}
+        ${totalArticlesNumber > artsPerChunk ? `<button class="more-btn">${getTextLabel('Load more articles button')}</button>` : ''}
       </div>
     `);
 

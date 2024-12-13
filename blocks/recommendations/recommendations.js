@@ -32,12 +32,12 @@ const createTruckSection = (trucks) => {
 
 const createList = (articles) => `
   <ul class="${blockName}-list">
-    ${articles.map((e, idx) => {
-    const picture = createOptimizedPicture(e.image, e.title);
+    ${articles.map((article, idx) => {
+    const picture = createOptimizedPicture(article.image, article.title);
     const pictureTag = picture.outerHTML;
-    const linkUrl = new URL(e.path, getOrigin());
+    const linkUrl = new URL(article.path, getOrigin());
 
-    const articleCategory = e.category;
+    const articleCategory = article.category;
     const categoryWithDash = articleCategory.replaceAll(' ', '-').toLowerCase();
     const categoryUrl = new URL(`magazine/categories/${categoryWithDash}`, getOrigin());
 
@@ -49,9 +49,9 @@ const createList = (articles) => `
           </a>
         </div>
         <div class="${blockName}-text-content">
-          ${e.category && isMagazineTemplate ? `<a class="${blockName}-category" href="${categoryUrl}">${e.category}</a>` : ''}
-          <a class="${blockName}-title" href="${linkUrl}">${e.title}</a>
-          ${e.truck && !isMagazineTemplate ? createTruckSection(e.truck) : ''}
+          ${article.category && isMagazineTemplate ? `<a class="${blockName}-category" href="${categoryUrl}">${article.category}</a>` : ''}
+          <a class="${blockName}-title" href="${linkUrl}">${article.title}</a>
+          ${article.truck && !isMagazineTemplate ? createTruckSection(article.truck) : ''}
           <a class="${blockName}-link" href="${linkUrl}">${readNowText}</a>
         </div>
       </li>`
@@ -69,8 +69,8 @@ export default async function decorate(block) {
     sort: 'LAST_MODIFIED_DESC',
     article: { category },
   };
-  const allData = await fetchMagazineData(queryVariables);
-  const allArticles = formatArticlesArray(allData?.items);
+  const allMagazineData = await fetchMagazineData(queryVariables);
+  const allArticles = formatArticlesArray(allMagazineData?.items);
 
   const filteredArticles = clearRepeatedArticles(allArticles);
   const selectedArticles = filteredArticles.slice(0, limit);

@@ -38,8 +38,8 @@ let currentAmount = 0;
 
 const getData = async () => {
   const queryVariables = { sort: 'LAST_MODIFIED_DESC' };
-  const allData = await fetchMagazineData(queryVariables);
-  const allArticles = formatArticlesArray(allData?.items);
+  const allMagazineData = await fetchMagazineData(queryVariables);
+  const allArticles = formatArticlesArray(allMagazineData?.items);
   // Preparing the data for every collage item
   const collageItemsData = allArticles.map((article) => {
     const {
