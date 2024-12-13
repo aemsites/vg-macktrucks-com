@@ -30,6 +30,7 @@ import {
   variantsClassesToBEM,
   getLocale,
 } from './common.js';
+
 import {
   isVideoLink,
   addVideoShowHandler,

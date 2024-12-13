@@ -19,7 +19,7 @@ export function fetchAutosuggest(term, autosuggestEle, rowEle, func) {
   }).then(({ errors, data }) => {
     if (errors) {
       // eslint-disable-next-line no-console
-      console.log({ errors });
+      console.log('%cSomething went wrong', { errors });
     } else {
       const {
         edssuggest: {

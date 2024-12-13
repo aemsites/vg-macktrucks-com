@@ -4,13 +4,9 @@ import {
   generateId,
   getTextLabel,
   HEADER_CONFIGS,
-
   getLanguagePath,
 } from '../../scripts/common.js';
-import {
-  createOptimizedPicture,
-  getMetadata,
-} from '../../scripts/aem.js';
+import { createOptimizedPicture, getMetadata } from '../../scripts/aem.js';
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 
 // check if the header has to have a login and/or a search button

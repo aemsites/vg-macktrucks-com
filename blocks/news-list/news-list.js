@@ -1,12 +1,14 @@
-import { createElement } from '../../scripts/common.js';
+import { createElement, FEEDS } from '../../scripts/common.js';
 import {
-  feedsInfo, getBodyBuilderNews, getMackNews, PagingInfo,
-} from '../../scripts/news.js';
+  getBodyBuilderNews, getMackNews, PagingInfo,
+} from '../../scripts/services/news.service.js';
 import { readBlockConfig } from '../../scripts/aem.js';
 
 export default async function decorate(block) {
   const config = readBlockConfig(block);
 
+  // TODO: This is a duplicate of the logic in news-sidebar.js
+  // Review this hard coded logic attached to the url
   const type = window.location.pathname.startsWith('/parts-and-services/support/body-builders')
     ? 'body-builder-news'
     : 'mack-news';
@@ -14,13 +16,14 @@ export default async function decorate(block) {
   const filter = config.filter || '';
   block.textContent = '';
 
-  // eslint-disable-next-line function-call-argument-newline,function-paren-newline
-  const rssLink = createElement('a', {
-    classes: ['title-with-icon'],
-    props: { href: feedsInfo[type].feedPath, target: '_blank' },
-  });
-  rssLink.textContent = 'News RSS';
-  block.append(rssLink);
+  if (FEEDS[type]) {
+    const rssLink = createElement('a', {
+      classes: ['title-with-icon'],
+      props: { href: FEEDS[type]?.path, target: '_blank' },
+    });
+    rssLink.textContent = 'News RSS';
+    block.append(rssLink);
+  }
 
   const pagingInfo = new PagingInfo();
   const posts = type === 'body-builder-news'

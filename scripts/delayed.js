@@ -36,7 +36,7 @@ if (isTargetingAllowed()) {
 // add more delayed functionality here
 
 // Prevent the cookie banner from loading when running in library
-if (DATA_DOMAIN_SCRIPT && !window.location.pathname.includes('srcdoc')
+if (!window.location.pathname.includes('srcdoc')
   && !isDevHost()) {
   loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
     type: 'text/javascript',

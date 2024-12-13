@@ -5,11 +5,65 @@ import {
 
 let placeholders = null;
 
+export const formatValues = (values) => {
+  const obj = {};
+  /* eslint-disable-next-line */
+  if (values) values.forEach(({ name, value }) => obj[name] = value);
+  return obj;
+};
+
+// The `key` key MUST exist in the object
+// The rest of the params will be key-value pairs of the main key
+export const formatValuesByKey = (values) => (values
+  && values.reduce((acc, { key, ...rest }) => {
+    acc[key] = rest;
+    return acc;
+  }, {}))
+  || {};
+
 export const getLanguagePath = () => {
   const { pathname } = new URL(window.location.href);
   const langCodeMatch = pathname.match('^(/[a-z]{2}(-[a-z]{2})?/).*');
   return langCodeMatch ? langCodeMatch[1] : '/';
 };
+
+/**
+ * Loads the constants file where configuration values are stored
+ */
+async function getConstantValues() {
+  const url = `${getLanguagePath()}constants.json`;
+  let constants;
+  try {
+    const response = await fetch(url).then((resp) => resp.json());
+    if (!response.ok) {
+      constants = response;
+    }
+  } catch (error) {
+    throw new Error('Error with constants file', error);
+  }
+  return constants;
+}
+
+const {
+  searchConfig,
+  cookieValues,
+  magazineConfig,
+  headerConfig,
+  tools,
+  truckConfiguratorUrls,
+  newsFeedConfig,
+  feeds,
+} = await getConstantValues();
+
+// This data comes from the sharepoint 'constants.xlsx' file
+export const SEARCH_CONFIGS = formatValues(searchConfig?.data);
+export const COOKIE_CONFIGS = formatValues(cookieValues?.data);
+export const MAGAZINE_CONFIGS = formatValues(magazineConfig?.data);
+export const HEADER_CONFIGS = formatValues(headerConfig?.data);
+export const TOOLS_CONFIGS = formatValues(tools?.data);
+export const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
+export const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
+export const FEEDS = formatValuesByKey(feeds?.data);
 
 export async function getPlaceholders() {
   const url = `${getLanguagePath()}placeholder.json`;
@@ -266,24 +320,6 @@ export const slugify = (text) => (
 );
 
 /**
- * Loads the constants file where configuration values are stored
- */
-async function getConstantValues() {
-  const url = `${getLanguagePath()}constants.json`;
-  let constants;
-  try {
-    const response = await fetch(url).then((resp) => resp.json());
-    if (!response.ok) {
-      constants = response;
-    }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Error with constants file', error);
-  }
-  return constants;
-}
-
-/**
  * Extracts the values from an array in format: ['key1: value1', 'key2: value2', 'key3: value3']
  * and returns this into an object with those keys and values:
  * { key1: value1, key2: value2, key3: value3 }
@@ -307,34 +343,6 @@ export const extractObjectFromArray = (data) => {
   }
   return obj;
 };
-
-export const formatValues = (values) => {
-  const obj = {};
-  /* eslint-disable-next-line */
-  if (values) values.forEach(({ name, value }) => obj[name] = value);
-  return obj;
-};
-
-const {
-  searchConfig,
-  cookieValues,
-  magazineConfig,
-  headerConfig,
-  tools,
-  truckConfiguratorUrls,
-  newsFeedConfig,
-  bodyBuilderNewsConfig,
-} = await getConstantValues();
-
-// This data comes from the sharepoint 'constants.xlsx' file
-export const SEARCH_CONFIGS = formatValues(searchConfig?.data);
-export const COOKIE_CONFIGS = formatValues(cookieValues?.data);
-export const MAGAZINE_CONFIGS = formatValues(magazineConfig?.data);
-export const HEADER_CONFIGS = formatValues(headerConfig?.data);
-export const TOOLS_CONFIGS = formatValues(tools?.data);
-export const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
-export const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
-export const BODY_BUILDER_NEWS_CONFIGS = formatValues(bodyBuilderNewsConfig?.data);
 
 /**
  * Check if one trust group is checked.
