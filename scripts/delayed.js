@@ -5,9 +5,8 @@ import {
   isTargetingAllowed,
   extractObjectFromArray,
   COOKIE_CONFIGS,
+  isDevHost,
 } from './common.js';
-
-const devHosts = ['localhost', 'hlx.page', 'hlx.live', 'aem.page', 'aem.live'];
 
 // COOKIE ACCEPTANCE AND IDs default to false in case no ID is present
 const {
@@ -37,8 +36,8 @@ if (isTargetingAllowed()) {
 // add more delayed functionality here
 
 // Prevent the cookie banner from loading when running in library
-if (DATA_DOMAIN_SCRIPT && !window.location.pathname.includes('srcdoc')
-  && !devHosts.some((url) => window.location.host.includes(url))) {
+if (!window.location.pathname.includes('srcdoc')
+  && !isDevHost()) {
   loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
     type: 'text/javascript',
     charset: 'UTF-8',
@@ -64,7 +63,7 @@ if (DATA_DOMAIN_SCRIPT && !window.location.pathname.includes('srcdoc')
   };
 }
 
-if (devHosts.some((url) => window.location.host.includes(url))) {
+if (isDevHost()) {
   import('./validate-elements.js');
 }
 
