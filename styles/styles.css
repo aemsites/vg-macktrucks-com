@@ -8,7 +8,7 @@
   font-family: "fontawesome Fallback";
   font-style: normal;
   font-weight: 400;
-  src: local("Arial");
+  src: local("Inter");
   ascent-override: 93.75%;
   descent-override: 6.25%;
   line-gap-override: 0.00%;
@@ -92,18 +92,19 @@
   /* Font family */
 
   /* Alternate fonts */
-  --fallback-ff-texts: "Arial Regular Text Fallback", helvetica, sans-serif;
-  --fallback-ff-headlines: "Arial Bold Headline Fallback", helvetica, sans-serif;
-  --fallback-ff-accents: "Arial Regular Text Fallback", helvetica, sans-serif;
+  --fallback-ff-default: inter, sans-serif;
+  --fallback-ff-texts: "Inter Regular Text Fallback", sans-serif;
+  --fallback-ff-headlines: "Inter Bold Headline Fallback", sans-serif;
+  --fallback-ff-accents: "Inter Regular Text Fallback", sans-serif;
 
   /* Headlines */
   --ff-headline-medium: "GT America Extended Medium", var(--fallback-ff-headlines);
   --ff-headline-compressed: "GT America Compressed Regular", var(--fallback-ff-headlines);
-  --ff-subheadings-medium: "Helvetica Neue LT Pro 65 Medium", var(--fallback-ff-texts);
+  --ff-subheadings-medium: "Inter 65 Medium", var(--fallback-ff-texts);
 
   /* Body */
-  --ff-body: "Helvetica Neue LT Pro 55 Roman", var(--fallback-ff-texts);
-  --ff-body-bold: "Helvetica Neue LT Pro 75 Bold", var(--fallback-ff-texts);
+  --ff-body: "Inter 55 Regular", var(--fallback-ff-texts);
+  --ff-body-bold: "Inter 75 Bold", var(--fallback-ff-texts);
   --ff-testimonial: "GT America Extended Regular", var(--fallback-ff-accents);
   --ff-accents: "GT America Mono Regular", var(--fallback-ff-accents);
 
@@ -122,15 +123,15 @@
   --headline-2-line-height: 115%;
   --headline-2-letter-spacing: -2%;
 
-  /* Helvetica Neue LT Pro, 65 Medium, 32px, 115% / 28px, 115% */
+  /* Inter, 65 Medium, 32px, 115% / 28px, 115% */
   --headline-3-font-size: 2.8rem; /* 28px */
   --headline-3-line-height: 115%;
 
-  /* Helvetica Neue LT Pro, 65 Medium, 24px, 140%  */
+  /* Inter, 65 Medium, 24px, 140%  */
   --headline-4-font-size: 2.4rem; /* 24px */
   --headline-4-line-height: 140%;
 
-  /* Helvetica Neue LT Pro, 65 Medium, 18px, 140%  */
+  /* Inter, 65 Medium, 18px, 140%  */
   --headline-5-font-size: 1.8rem; /* 18px */
   --headline-5-line-height: 140%;
 
@@ -147,10 +148,10 @@
   OLD CSS VARIABLES
   */
 
-  --ff-helvetica-heavy: "Helvetica Neue 85 Heavy", var(--fallback-ff-texts);
-  --ff-helvetica-roman-italic: "Helvetica Neue LT Pro 56 Roman Italic", var(--fallback-ff-texts);
-  --ff-helvetica-medium-italic: "Helvetica Neue LT Pro 66 Medium Italic", var(--fallback-ff-texts);
-  --ff-helvetica-bold-italic: "Helvetica Neue LT Pro 76 Bold Italic", var(--fallback-ff-texts);
+  --ff-inter-extrabold: "Inter 85 ExtraBold", var(--fallback-ff-texts);
+  --ff-inter-regular-italic: "Inter 56 Regular Italic", var(--fallback-ff-texts);
+  --ff-inter-medium-italic: "Inter 66 Medium Italic", var(--fallback-ff-texts);
+  --ff-inter-bold-italic: "Inter 76 Bold Italic", var(--fallback-ff-texts);
 
   /* Accent elements */
   --ff-accents-medium: "GT America Mono Medium", var(--fallback-ff-accents);
@@ -815,32 +816,32 @@ main .section.section-width {
   }
 }
 
-main .section.helvetica-55 {
+main .section.font-55 {
   font-family: var(--ff-body);
 }
 
-main .section.helvetica-65 {
+main .section.font-65 {
   font-family: var(--ff-subheadings-medium);
 }
 
-main .section.helvetica-75 {
+main .section.font-75 {
   font-family: var(--ff-body-bold);
 }
 
-main .section.helvetica-56 {
-  font-family: var(--ff-helvetica-roman-italic);
+main .section.font-56 {
+  font-family: var(--ff-inter-regular-italic);
 }
 
-main .section.helvetica-66 {
-  font-family: var(--ff-helvetica-medium-italic);
+main .section.font-66 {
+  font-family: var(--ff-inter-medium-italic);
 }
 
-main .section.helvetica-76 {
-  font-family: var(--ff-helvetica-bold-italic);
+main .section.font-76 {
+  font-family: var(--ff-inter-bold-italic);
 }
 
 main .section.responsive-title h1 {
-  font-family: var(--ff-helvetica-heavy);
+  font-family: var(--ff-inter-extrabold);
   font-size: var(--heading-2-mobile-size-l);
 }
 
@@ -870,13 +871,13 @@ main .section.responsive-title h1 {
   /* GT America, Extended Medium, 32px, 115%, -2% / 28px, 115%, -2% */
   --headline-2-font-size: 1.75rem; /* 28px */
 
-  /* Helvetica Neue LT Pro, 65 Medium, 32px, 115% / 28px, 115% */
+  /* Inter, 65 Medium, 32px, 115% / 28px, 115% */
   --headline-3-font-size: 1.75rem; /* 28px */
 
-  /* Helvetica Neue LT Pro, 65 Medium, 24px, 140%  */
+  /* Inter, 65 Medium, 24px, 140%  */
   --headline-4-font-size: 1.5rem; /* 24px */
 
-  /* Helvetica Neue LT Pro, 65 Medium, 18px, 140%  */
+  /* Inter, 65 Medium, 18px, 140%  */
   --headline-5-font-size: 1.125rem; /* 18px */
 
   /* Body font sizes */
@@ -890,11 +891,11 @@ main .section.responsive-title h1 {
   /* stylelint-disable-next-line number-max-precision */
   --body-font-size-xxs: 0.8125rem; /* 13px */
 
-  /* Helvetica Neue LT Pro, 55 Roman / Helvetica Neue LT Pro, 75 Bold, 16px, 150%  */
+  /* Inter, 55 Regular / Inter, 75 Bold, 16px, 150%  */
   --body-1-font-size: 1rem; /* 16px */
   --body-1-line-height: 150%;
 
-  /* Helvetica Neue LT Pro, 55 Roman / Helvetica Neue LT Pro, 75 Bold, 13px, 160%  */
+  /* Inter, 55 Regular / Inter, 75 Bold, 13px, 160%  */
   /* stylelint-disable-next-line number-max-precision */
   --body-2-font-size: 0.8125rem; /* 13px */
   --body-2-line-height: 160%;
@@ -907,15 +908,15 @@ main .section.responsive-title h1 {
   --accent-2-font-size: 0.875rem; /* 14px */
   --accent-2-line-height: 120%;
 
-  /* Helvetica Neue LT Pro, 75 Bold, 14px, 16px */
+  /* Inter, 75 Bold, 14px, 16px */
   --label-font-size: 0.875rem; /* 14px */
   --label-line-height: 16px;
 
-  /* Helvetica Neue LT Pro, 75 Bold, 14px, 16px */
+  /* Inter, 75 Bold, 14px, 16px */
   --label-font-size-small: 0.75rem; /* 12px */
   --label-line-height-small: 16px;
 
-  /* Helvetica Neue LT Pro, 55 Roman, 14px, 18px */
+  /* Inter, 55 Regular, 14px, 18px */
   --button-font-size: 0.875rem; /* 14px */
   --button-line-height: 18px;
 
@@ -923,6 +924,10 @@ main .section.responsive-title h1 {
   --testimonial-font-size: 1.125rem; /* 18px */
   --testimonial-line-height: 120%;
   --testimonial-letter-spacing: -0.0225rem;
+
+  /* GT America Compressed, 48px, 90% */
+  --heading-compressed-font-size: 3rem; /* 18px */
+  --heading-compressed-line-height: 90%;
 
   /* In page navigation */
   --inpage-navigation-height: 0;
