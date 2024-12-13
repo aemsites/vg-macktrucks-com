@@ -11,6 +11,7 @@ const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC
 const allMagazineData = await fetchMagazineData(queryVariables);
 const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
+const filteredArray = allArticles.filter((art) => art.category !== 'Magazine');
 
 const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
@@ -220,7 +221,7 @@ export default async function decorate(block) {
     <div class="${blockName}-content"></div>
   `);
 
-  contentWrapper.querySelector(`.${blockName}-content`).append(buildFieldset(), buildArticleList(allArticles, 0));
+  contentWrapper.querySelector(`.${blockName}-content`).append(buildFieldset(), buildArticleList(filteredArray, 0));
 
   generalSection.append(contentWrapper);
 
