@@ -54,6 +54,7 @@ function addBackgroundImage(section, picture) {
  * Decorates all sections in a container element.
  * @param {Element} main The container element
  */
+// TODO: Remove this and use the one in aem.js
 export function decorateSections(main) {
   main.querySelectorAll(':scope > div').forEach((section) => {
     const wrappers = [];
