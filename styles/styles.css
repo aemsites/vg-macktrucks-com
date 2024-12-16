@@ -92,10 +92,10 @@
   /* Font family */
 
   /* Alternate fonts */
-  --fallback-ff-default: inter, sans-serif;
-  --fallback-ff-texts: "Inter Regular Text Fallback", sans-serif;
-  --fallback-ff-headlines: "Inter Bold Headline Fallback", sans-serif;
-  --fallback-ff-accents: "Inter Regular Text Fallback", sans-serif;
+  --fallback-ff-default: "Inter", sans-serif;
+  --fallback-ff-texts: "Inter", sans-serif;
+  --fallback-ff-headlines: "Inter", sans-serif;
+  --fallback-ff-accents: "Inter", sans-serif;
 
   /* Headlines */
   --ff-headline-medium: "GT America Extended Medium", var(--fallback-ff-headlines);
