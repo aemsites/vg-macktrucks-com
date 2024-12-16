@@ -97,8 +97,8 @@ const createModal = () => {
           [videoId] = match;
         }
 
-        // eslint-disable-next-line no-unused-vars
-        const modalVideoComponent = new VideoComponent(videoId);
+        new VideoComponent(videoId);
+
         videoOrIframe = createVideo(
           null,
           newContent,

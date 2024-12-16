@@ -72,7 +72,6 @@ if (isDevHost()) {
 // Google Analytics
 async function loadGoogleTagManager() {
   // google tag manager
-  // eslint-disable-next-line func-names
   (function (w, d, s, l, i) {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
@@ -87,14 +86,12 @@ async function loadGoogleTagManager() {
 
 // Hotjar
 async function loadHotjar() {
-  /* eslint-disable */
   (function(h,o,t,j,a,r){
     h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
     h._hjSettings={hjid:HOTJAR_ID,hjsv:6}; a=o.getElementsByTagName('head')[0];
     r=o.createElement('script');r.async=1; r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
     a.appendChild(r);
   })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-  /* eslint-enable */
 }
 
 // Account Engagement Tracking Code
@@ -114,7 +111,6 @@ async function loadAccountEngagementTracking() {
 
 // FaceBook Pixel
 async function loadFacebookPixel() {
-  /* eslint-disable */
   (function (f, b, e, v, n, t, s) {
     if (f.fbq) return; n = f.fbq = function () {
       n.callMethod
@@ -137,7 +133,6 @@ async function loadFacebookPixel() {
 
 // LinkedIn Insight Tag
 async function loadLinkedInInsightTag() {
-  /* eslint-disable */
   var _linkedin_partner_id = LINKEDIN_PARTNER_ID;
   window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
   window._linkedin_data_partner_ids.push(_linkedin_partner_id);

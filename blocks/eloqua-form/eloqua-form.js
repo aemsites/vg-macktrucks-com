@@ -107,7 +107,6 @@ const thankYouResponse = (elqForm, thankYou) => {
   };
 };
 
-// eslint-disable no-console
 const addForm = async (block) => {
   // hidding till ready to display
   const displayValue = block.style.display;

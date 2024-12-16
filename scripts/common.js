@@ -4,8 +4,9 @@ let placeholders = null;
 
 export const formatValues = (values) => {
   const obj = {};
-  /* eslint-disable-next-line */
-  if (values) values.forEach(({ name, value }) => obj[name] = value);
+  if (values) {
+    values.forEach(({ name, value }) => (obj[name] = value));
+  }
   return obj;
 };
 
@@ -424,8 +425,8 @@ export const formatStringToArray = (inputString) => {
   if (typeof inputString !== 'string') {
     return [];
   }
-  // eslint-disable-next-line no-useless-escape
-  const cleanedString = inputString.replace(/[\[\]\\'"]+/g, '');
+
+  const cleanedString = inputString.replace(/[[\]\\'"]+/g, '');
   return cleanedString
     .split(',')
     .map((item) => item.trim())

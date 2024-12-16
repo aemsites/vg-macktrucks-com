@@ -4,8 +4,6 @@ import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
 
 let commonScript;
-// eslint-disable-next-line no-unused-vars
-let lib;
 
 document.body.innerHTML = await readFile({ path: './dummy.html' });
 document.head.innerHTML = await readFile({ path: './head.html' });
@@ -15,7 +13,7 @@ describe('createElement', () => {
 
   before(async () => {
     commonScript = await import('../../scripts/common.js');
-    lib = await import('../../scripts/aem.js');
+    await import('../../scripts/aem.js');
 
     createElement = commonScript.createElement;
 

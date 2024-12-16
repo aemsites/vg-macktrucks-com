@@ -1,4 +1,3 @@
-// eslint-disable no-console
 const addInventory = async (block) => {
   // hiding till ready to display
   const displayValue = block.style.display;
