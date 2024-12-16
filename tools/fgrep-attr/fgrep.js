@@ -132,14 +132,6 @@ function displayResult(result) {
     editLink.href = `#${result.pathname}`;
     editLink.onclick = () => edit(result.pathname, window.scrollY);
     p.append(' ', editLink);
-    if (
-      result.occurences.forEach((e) => {
-        const occurence = document.createElement('p');
-        occurence.textContent = e;
-        p.append(occurence);
-      })
-    ) {
-    }
     resultDisplay.appendChild(p);
   }
 }
@@ -177,7 +169,6 @@ async function fgrepFiles(sitemap, pattern, connections) {
   }
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export async function run() {
   sitemapURLs = [];
   totalSize = 0;

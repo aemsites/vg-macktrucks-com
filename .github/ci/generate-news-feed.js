@@ -95,7 +95,7 @@ async function createFeed() {
     allPosts.forEach((post) => {
       const link = FEED_SITE_ROOT + post.path;
       const date = post.date || post.publicationDate;
-      const dateFormatted = new Date(date * 1000) || new Date();
+      const dateFormatted = new Date(date * 1000);
 
       feed.addItem({
         title: post.title,
@@ -110,7 +110,7 @@ async function createFeed() {
     const dir = path.parse(TARGET_FILE).dir;
 
     if (!fs.existsSync(dir)) {
-      console.log('Folder doesn\' exist: ', dir);
+      console.log('Folder does not exist: ', dir);
       console.log('Creating folder: ', dir);
 
       fs.mkdirSync(dir);

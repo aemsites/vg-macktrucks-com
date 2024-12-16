@@ -1,5 +1,4 @@
 import { loadCSS } from '../../scripts/aem.js';
-// eslint-disable-next-line import/no-cycle
 import {
   createIframe,
   createVideo,
@@ -158,7 +157,12 @@ const createModal = () => {
     document.querySelector('.modal-content video')?.pause();
     document.querySelector('.modal-content iframe')?.setAttribute('src', '');
 
-    let onHideTransitionCancel;
+    const onHideTransitionCancel = (event) => {
+      if (event.target === modalBackground) {
+        modalBackground.removeEventListener('transitionend', onHideTransitionEnd);
+      }
+    };
+
     const onHideTransitionEnd = (event) => {
       if (event.target === modalBackground) {
         clearModalContent();
@@ -166,12 +170,6 @@ const createModal = () => {
         if (onHideTransitionCancel) {
           modalBackground.removeEventListener('transitioncancel', onHideTransitionCancel);
         }
-      }
-    };
-
-    onHideTransitionCancel = (event) => {
-      if (event.target === modalBackground) {
-        modalBackground.removeEventListener('transitionend', onHideTransitionEnd);
       }
     };
 
