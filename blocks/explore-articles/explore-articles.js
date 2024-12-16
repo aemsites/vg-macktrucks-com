@@ -7,7 +7,6 @@ const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC
 const allMagazineData = await fetchMagazineData(queryVariables);
 const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
-const totalArticlesNumber = allMagazineData?.count;
 
 const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
@@ -128,21 +127,28 @@ const buildFirstArticles = (art, section) => {
   });
 };
 
+const addAllArrays = (array) => {
+  const initialValue = 0;
+  const total = array.reduce((acc, curr) => acc + curr.length, initialValue);
+  return total;
+};
+
 const buildArticleList = (articles) => {
   const groupedArticles = divideArray(articles, artsPerChunk);
   const articleGroups = getArticleGroups(groupedArticles);
+  const selectedArticlesNumber = addAllArrays(groupedArticles);
   const amountOfGroups = articleGroups.length;
 
   const articlesSection = createElement('div', { classes: `${blockName}-articles` });
   const articlesContent = document.createRange().createContextualFragment(`
       <div class="pagination-section">
         <p class="article-amount">
-          ${totalArticlesNumber !== 0 ? `${totalArticlesNumber} articles` : getTextLabel('No article Message')}
+          ${selectedArticlesNumber !== 0 ? `${selectedArticlesNumber} articles` : getTextLabel('No article Message')}
         </p>
       </div>
       <div class="article-list"></div>
       <div class="${blockName}-more">
-        ${totalArticlesNumber > artsPerChunk ? `<button class="more-btn">${getTextLabel('Load more articles button')}</button>` : ''}
+        ${selectedArticlesNumber > artsPerChunk ? `<button class="more-btn">${getTextLabel('Load more articles button')}</button>` : ''}
       </div>
     `);
 
