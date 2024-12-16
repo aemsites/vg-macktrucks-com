@@ -9,11 +9,7 @@ import {
   VideoEventManager,
   AEM_ASSETS,
 } from '../../scripts/video-helper.js';
-import {
-  createElement,
-  decorateIcons,
-  getTextLabel,
-} from '../../scripts/common.js';
+import { createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
 
 const { videoIdRegex } = AEM_ASSETS;
 const videoEventManager = new VideoEventManager();
@@ -23,11 +19,7 @@ class VideoComponent {
     this.videoId = videoId;
     this.blockName = 'modal';
 
-    videoEventManager.register(
-      this.videoId,
-      this.blockName,
-      (event) => handleVideoMessage(event, this.videoId, this.blockName),
-    );
+    videoEventManager.register(this.videoId, this.blockName, (event) => handleVideoMessage(event, this.videoId, this.blockName));
   }
 
   unregister() {
@@ -41,13 +33,11 @@ const createModal = () => {
   const modalBackground = createElement('div', { classes: ['modal-background', HIDE_MODAL_CLASS] });
 
   modalBackground.addEventListener('click', () => {
-    // eslint-disable-next-line no-use-before-define
     hideModal();
   });
 
   const keyDownAction = (event) => {
     if (event.key === 'Escape') {
-      // eslint-disable-next-line no-use-before-define
       hideModal();
     }
   };
@@ -64,7 +54,7 @@ const createModal = () => {
   const closeIcon = createElement('span', { classes: ['icon', 'icon-close'] });
   closeButton.append(closeIcon);
   modalBackground.appendChild(closeButton);
-  // eslint-disable-next-line no-use-before-define
+
   closeButton.addEventListener('click', () => hideModal());
 
   decorateIcons(closeButton);
@@ -79,7 +69,7 @@ const createModal = () => {
     modalBackground.style = '';
     window.addEventListener('keydown', keyDownAction);
 
-    if (newContent && (typeof newContent !== 'string')) {
+    if (newContent && typeof newContent !== 'string') {
       // opening modal
       clearModalContent();
       modalContent.classList.add(...classes);
@@ -110,15 +100,22 @@ const createModal = () => {
 
         // eslint-disable-next-line no-unused-vars
         const modalVideoComponent = new VideoComponent(videoId);
-        videoOrIframe = createVideo(null, newContent, 'modal-video', {
-          autoplay: 'any',
-          disablePictureInPicture: true,
-          loop: false,
-          muted: false,
-          playsinline: true,
-          title: 'video',
-          language: document.documentElement.lang,
-        }, false, videoId);
+        videoOrIframe = createVideo(
+          null,
+          newContent,
+          'modal-video',
+          {
+            autoplay: 'any',
+            disablePictureInPicture: true,
+            loop: false,
+            muted: false,
+            playsinline: true,
+            title: 'video',
+            language: document.documentElement.lang,
+          },
+          false,
+          videoId,
+        );
         modalContent.append(videoOrIframe);
       } else {
         // otherwise load it as iframe
@@ -190,7 +187,4 @@ const createModal = () => {
 
 const { showModal, hideModal } = createModal();
 
-export {
-  showModal,
-  hideModal,
-};
+export { showModal, hideModal };

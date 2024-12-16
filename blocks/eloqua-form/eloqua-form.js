@@ -21,13 +21,13 @@ const loadFormStyles = (el) => {
 
 const loadFormScripts = async (elqForm) => {
   // loading scripts one by one to prevent inappropriate script execution order.
-  // eslint-disable-next-line no-restricted-syntax
+
   for (const script of [...elqForm.querySelectorAll('script')]) {
     let waitForLoad = Promise.resolve();
     const scriptAttrs = {};
 
     // coping all script attribute to the new one
-    // eslint-disable-next-line no-loop-func
+
     script.getAttributeNames().forEach((attrName) => {
       const attrValue = script.getAttribute(attrName);
       scriptAttrs[attrName] = attrValue;
@@ -48,7 +48,7 @@ const loadFormScripts = async (elqForm) => {
     }
 
     script.remove();
-    // eslint-disable-next-line no-await-in-loop
+
     await waitForLoad;
   }
 };
@@ -89,8 +89,9 @@ const thankYouResponse = (elqForm, thankYou) => {
       const body = new FormData(this);
       const { action, method } = this;
       fetch(action, { method, body, redirect: 'manual' }).then((resp) => {
-        // eslint-disable-next-line no-console
-        if (!resp.ok) console.error(`form submission failed: ${resp.status} / ${resp.statusText}`);
+        if (!resp.ok) {
+          console.error(`form submission failed: ${resp.status} / ${resp.statusText}`);
+        }
         const firstContent = thankYou.firstElementChild;
         if (firstContent.tagName === 'A') {
           // redirect to thank you page
@@ -125,7 +126,6 @@ const addForm = async (block) => {
   const data = await fetch(`${window.hlx.codeBasePath}/blocks/eloqua-form/forms/${formName}.html`);
 
   if (!data.ok) {
-    // eslint-disable-next-line no-console
     console.error(`failed to load form: ${formName}`);
     block.innerHTML = '';
     return;
@@ -167,19 +167,22 @@ export const addNoCookieMessage = (messageContainer) => {
 };
 
 export default async function decorate(block) {
-  const observer = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) {
-      if (!isTargetingAllowed()) {
-        addNoCookieMessage(block);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        if (!isTargetingAllowed()) {
+          addNoCookieMessage(block);
 
-        return;
+          return;
+        }
+
+        observer.disconnect();
+        addForm(block);
       }
-
-      observer.disconnect();
-      addForm(block);
-    }
-  }, {
-    rootMargin: '300px',
-  });
+    },
+    {
+      rootMargin: '300px',
+    },
+  );
   observer.observe(block);
 }

@@ -1,10 +1,5 @@
-import {
-  createElement,
-  decorateIcons,
-} from '../../scripts/common.js';
-import {
-  getMetadata,
-} from '../../scripts/aem.js';
+import { createElement, decorateIcons } from '../../scripts/common.js';
+import { getMetadata } from '../../scripts/aem.js';
 
 const blockName = 'v2-sub-navigation';
 
@@ -28,7 +23,9 @@ const toggleDropdown = (dropdownWrapper) => (e) => {
  */
 const fetchSubNavHtml = async (content) => {
   const response = await fetch(`${content}.plain.html`);
-  if (!response.ok) throw new Error('Failed to fetch sub-navigation content');
+  if (!response.ok) {
+    throw new Error('Failed to fetch sub-navigation content');
+  }
   return document.createRange().createContextualFragment(await response.text());
 };
 
@@ -79,12 +76,14 @@ const createDropdownContainer = (activeItem, list) => {
 const extractAnchorAttributes = (fragment) => {
   const [mobileAnchor, desktopAnchor] = [...fragment.querySelectorAll('p a')];
 
-  return mobileAnchor && desktopAnchor ? {
-    mobileAnchorText: mobileAnchor.textContent,
-    desktopAnchorText: desktopAnchor.textContent,
-    anchorHref: mobileAnchor.href || desktopAnchor.href,
-    anchorTitle: desktopAnchor.title,
-  } : null;
+  return mobileAnchor && desktopAnchor
+    ? {
+        mobileAnchorText: mobileAnchor.textContent,
+        desktopAnchorText: desktopAnchor.textContent,
+        anchorHref: mobileAnchor.href || desktopAnchor.href,
+        anchorTitle: desktopAnchor.title,
+      }
+    : null;
 };
 
 /**
@@ -187,7 +186,9 @@ const setupSubNavigation = async (block, content) => {
   try {
     const fragment = await fetchSubNavHtml(content);
     const list = fragment.querySelector('ul');
-    if (!list) return;
+    if (!list) {
+      return;
+    }
 
     list.className = `${blockName}__items`;
     const items = setupNavItems(list);
@@ -198,7 +199,9 @@ const setupSubNavigation = async (block, content) => {
     const subNavWrapper = createElement('div', { classes: `${blockName}__wrapper` });
     const dropdownWrapper = createDropdownContainer(activeItem, list);
     const anchorsAttributes = extractAnchorAttributes(fragment);
-    if (!anchorsAttributes) return;
+    if (!anchorsAttributes) {
+      return;
+    }
 
     const anchor = createSubNavAnchor(anchorsAttributes);
     subNavWrapper.append(dropdownWrapper, anchor);
@@ -219,7 +222,6 @@ const setupSubNavigation = async (block, content) => {
 
     document.addEventListener('click', toggleDropdown(dropdownWrapper));
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(error.message);
   }
 };

@@ -10,7 +10,9 @@ export default function decorate(block) {
   const defaultActive = tabTitles.firstElementChild;
   defaultActive.className = 'active';
   // make tab-titles focusable
-  [...tabTitles.children].forEach((li) => { li.tabIndex = 0; });
+  [...tabTitles.children].forEach((li) => {
+    li.tabIndex = 0;
+  });
   // add picture & text wrappers a css class
   [...items].forEach((item) => {
     const picture = item.querySelector('picture');
@@ -20,7 +22,9 @@ export default function decorate(block) {
   });
 
   const setActiveTab = (e) => {
-    if (e.target.localName !== 'li') return;
+    if (e.target.localName !== 'li') {
+      return;
+    }
     const { parentElement } = e.target;
     const idx = [...parentElement.children].indexOf(e.target);
     [...parentElement.children].forEach((li, i) => {
@@ -33,6 +37,8 @@ export default function decorate(block) {
 
   tabTitles.onclick = (e) => setActiveTab(e);
   tabTitles.onkeydown = (e) => {
-    if (e.key === 'Enter') setActiveTab(e);
+    if (e.key === 'Enter') {
+      setActiveTab(e);
+    }
   };
 }

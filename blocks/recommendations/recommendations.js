@@ -1,8 +1,4 @@
-import {
-  createElement,
-  getOrigin,
-  getTextLabel,
-} from '../../scripts/common.js';
+import { createElement, getOrigin, getTextLabel } from '../../scripts/common.js';
 import {
   fetchMagazineArticles,
   getArticleTags,
@@ -21,7 +17,7 @@ const blockName = 'recommendations';
 export default async function decorate(block) {
   const container = block.closest(`.${blockName}-container`);
   const limit = extractLimitFromBlock(block) || defaultLimit;
-  const category = await getArticleTags('categories') || getMetadata('category');
+  const category = (await getArticleTags('categories')) || getMetadata('category');
   const allArticles = await fetchMagazineArticles();
   const allArticlesWithImage = removeArticlesWithNoImage(allArticles);
 
@@ -71,7 +67,9 @@ export default async function decorate(block) {
         classes: 'truck-icon',
         props: { src: '/icons/Truck_Key_icon.svg', alt: 'truck icon' },
       });
-      if (e.truck.length !== 0) truck.append(truckIcon, truckText);
+      if (e.truck.length !== 0) {
+        truck.append(truckIcon, truckText);
+      }
 
       const link = createElement('a', {
         classes: `${blockName}-link`,

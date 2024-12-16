@@ -1,8 +1,4 @@
-import {
-  createElement,
-  getOrigin,
-  getTextLabel,
-} from '../../scripts/common.js';
+import { createElement, getOrigin, getTextLabel } from '../../scripts/common.js';
 import {
   fetchMagazineArticles,
   getArticleTagsJSON,
@@ -39,7 +35,7 @@ export default async function decorate(block) {
 
   selectedArticles.forEach((e, idx) => {
     const linkUrl = new URL(e.path, getOrigin());
-    const firstOrRest = (idx === 0) ? 'first' : 'rest';
+    const firstOrRest = idx === 0 ? 'first' : 'rest';
 
     const item = createElement('li', { classes: `${blockName}-${firstOrRest}-item` });
 

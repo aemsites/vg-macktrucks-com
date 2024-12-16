@@ -21,7 +21,9 @@ const decorateVideo = (link) => {
 
 export default function decorate(block) {
   const isAutoBlock = block.classList.contains('auto-block');
-  if (isAutoBlock) return;
+  if (isAutoBlock) {
+    return;
+  }
   const contentWrapper = block.querySelector(':scope > div > div');
   const parentContainer = contentWrapper.parentElement;
   // check if it has a video or an image
@@ -34,12 +36,16 @@ export default function decorate(block) {
   const mediaWrapper = createElement('div', { classes: 'hero-content-media' });
 
   // transform link into a video tag
-  if (videoLink) decorateVideo(videoLink);
+  if (videoLink) {
+    decorateVideo(videoLink);
+  }
 
   // move aside all media elements: image, video...
   parentContainer.prepend(mediaWrapper);
   mediaWrapper.appendChild(pictureWrapper);
-  if (videoWrapper) mediaWrapper.appendChild(videoWrapper);
+  if (videoWrapper) {
+    mediaWrapper.appendChild(videoWrapper);
+  }
 
   contentContainer.appendChild(contentWrapper);
   parentContainer.appendChild(contentContainer);

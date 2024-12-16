@@ -88,7 +88,9 @@ const buildBlock = (articles, block) => {
  */
 export default async function decorate(block) {
   const articles = await fetchMagazineArticles();
-  if (!articles.length) return;
+  if (!articles.length) {
+    return;
+  }
 
   const sortedArticles = sortArticlesByDateField(articles, 'date');
   const category = getMetadata('article-category');

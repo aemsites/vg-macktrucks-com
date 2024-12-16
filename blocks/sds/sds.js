@@ -5,9 +5,7 @@ function newId() {
 }
 
 function calcScrollHeight(rowgroup) {
-  return [...rowgroup.children]
-    .map((child) => child.clientHeight)
-    .reduce((l, r) => l + r, 0);
+  return [...rowgroup.children].map((child) => child.clientHeight).reduce((l, r) => l + r, 0);
 }
 
 function expand(event) {
@@ -23,11 +21,19 @@ function normalizeCells(cells, rowheaderRole = 'rowheader', cellRole = 'cell') {
   [...cells].forEach((cell, j) => {
     cell.normalize();
     // remove any blank text nodes
-    if (cell.firstChild && cell.firstChild.nodeType === 3 && cell.firstChild.nodeValue.trim() === '') cell.firstChild.remove();
-    if (cell.lastChild && cell.lastChild.nodeType === 3 && cell.lastChild.nodeValue.trim() === '') cell.lastChild.remove();
+    if (cell.firstChild && cell.firstChild.nodeType === 3 && cell.firstChild.nodeValue.trim() === '') {
+      cell.firstChild.remove();
+    }
+    if (cell.lastChild && cell.lastChild.nodeType === 3 && cell.lastChild.nodeValue.trim() === '') {
+      cell.lastChild.remove();
+    }
     // remove leading or trailing breaks
-    if (cell.firstChild && cell.firstChild.tagName === 'BR') cell.firstChild.remove();
-    if (cell.lastChild && cell.lastChild.tagName === 'BR') cell.lastChild.remove();
+    if (cell.firstChild && cell.firstChild.tagName === 'BR') {
+      cell.firstChild.remove();
+    }
+    if (cell.lastChild && cell.lastChild.tagName === 'BR') {
+      cell.lastChild.remove();
+    }
     // wrap text-only cells with a <p>
     if (cell.children.length === 0 && !cell.querySelector('p') && cell.textContent !== '') {
       const text = cell.innerHTML;
@@ -43,9 +49,9 @@ function normalizeCells(cells, rowheaderRole = 'rowheader', cellRole = 'cell') {
 }
 
 function activateMobileColumn(block, index) {
-  block.querySelectorAll('.cell.expand')
-    .forEach((cell) => cell.classList.remove('expand'));
-  block.querySelectorAll(`.image-header .cell:nth-child(${index}),.row .cell:nth-child(${index + 1})`)
+  block.querySelectorAll('.cell.expand').forEach((cell) => cell.classList.remove('expand'));
+  block
+    .querySelectorAll(`.image-header .cell:nth-child(${index}),.row .cell:nth-child(${index + 1})`)
     .forEach((cell) => cell.classList.add('expand'));
   // adjust the height of all expanded rowgroups
   block.querySelectorAll('[role="rowgroup"][aria-hidden="false"]').forEach((rowgroup) => {
@@ -71,8 +77,8 @@ export default function decorate(block) {
     const mobileColumnHeader = createElement('div', { classes: 'column-header-mobile' });
     const select = `<select>
       ${[...header.querySelectorAll('[role="columnheader"]')]
-    .map((columnHeader, i) => `<option value="${i + 1}">${columnHeader.textContent}</option>`)
-    .join('')}
+        .map((columnHeader, i) => `<option value="${i + 1}">${columnHeader.textContent}</option>`)
+        .join('')}
       </select>`;
     const fragment = document.createRange().createContextualFragment(select);
     mobileColumnHeader.appendChild(fragment);
@@ -93,9 +99,7 @@ export default function decorate(block) {
     const cells = row.children;
     const firstChild = cells[0].firstElementChild;
 
-    if (cells.length === 1
-      && (!singleColumn
-        || (cells[0].children.length === 1 && firstChild && firstChild.tagName === 'STRONG'))) {
+    if (cells.length === 1 && (!singleColumn || (cells[0].children.length === 1 && firstChild && firstChild.tagName === 'STRONG'))) {
       const button = createElement('button', {
         classes: 'rowgroup-header',
         props: { type: 'button' },
@@ -114,7 +118,9 @@ export default function decorate(block) {
       row.className = 'row';
       row.role = 'row';
       rowCount += 1;
-      if (rowgroup) rowgroup.appendChild(row);
+      if (rowgroup) {
+        rowgroup.appendChild(row);
+      }
       normalizeCells(cells);
     }
   }

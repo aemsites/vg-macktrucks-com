@@ -1,9 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
-import {
-  createElement,
-  debounce,
-  decorateIcons,
-} from '../../scripts/common.js';
+import { createElement, debounce, decorateIcons } from '../../scripts/common.js';
 
 const blockName = 'v2-inpage-navigation';
 
@@ -64,8 +60,7 @@ const wrapSectionItems = (elements) => {
     const elementRect = item.getBoundingClientRect();
 
     // Calculate the vertical space occupied by the element within the viewport
-    const verticalSpace = Math.min(elementRect.bottom, viewportHeight)
-      - Math.max(elementRect.top, 0);
+    const verticalSpace = Math.min(elementRect.bottom, viewportHeight) - Math.max(elementRect.top, 0);
 
     // Calculate the ratio of vertical space to the viewport height
     const spaceRatio = verticalSpace / viewportHeight;
@@ -94,7 +89,9 @@ const updateActive = (id) => {
   const activeItemInList = document.querySelector(`.${blockName}__item--active`);
 
   // Prevent reassign active value
-  if (activeItemInList?.firstElementChild?.dataset.id === id) return;
+  if (activeItemInList?.firstElementChild?.dataset.id === id) {
+    return;
+  }
 
   // Remove focus position
   document.activeElement.blur();
@@ -107,7 +104,9 @@ const updateActive = (id) => {
 
   if (id) {
     const selectedButton = [...itemsButton].find((button) => button.dataset.id === id);
-    if (!selectedButton) return;
+    if (!selectedButton) {
+      return;
+    }
     selectedItem.textContent = selectedButton.textContent;
     selectedButton.parentNode.classList.add(`${blockName}__item--active`);
 
@@ -132,7 +131,8 @@ export default async function decorate(block) {
 
   [...itemsWrapper.children].forEach((item, index) => {
     const classes = [`${blockName}__item`];
-    if (index === 0) { // Default selected item
+    if (index === 0) {
+      // Default selected item
       classes.push(`${blockName}__item--active`);
       selectedItem.textContent = item.textContent;
     }
@@ -179,26 +179,27 @@ export default async function decorate(block) {
 
   const sectionsList = document.querySelectorAll('main .section');
   // listen scroll to change the url + navigation item
-  window.addEventListener('scroll', debounce(() => {
-    // Calculate intersectionRatio from all section items
-    const elementsData = wrapSectionItems(sectionsList);
+  window.addEventListener(
+    'scroll',
+    debounce(() => {
+      // Calculate intersectionRatio from all section items
+      const elementsData = wrapSectionItems(sectionsList);
 
-    // Get intersected item that occupies most of the space in the viewport
-    const intersectedItem = elementsData.reduce((prev, current) => (
-      prev.intersectionRatio > current.intersectionRatio ? prev : current
-    ));
+      // Get intersected item that occupies most of the space in the viewport
+      const intersectedItem = elementsData.reduce((prev, current) => (prev.intersectionRatio > current.intersectionRatio ? prev : current));
 
-    if (intersectedItem.element.dataset?.inpageid) {
-      updateActive(intersectedItem.element.dataset.inpageid);
-    } else {
-      updateActive();
-    }
+      if (intersectedItem.element.dataset?.inpageid) {
+        updateActive(intersectedItem.element.dataset.inpageid);
+      } else {
+        updateActive();
+      }
 
-    // detecting if the element inpage nav sticks to navigation
-    const navHeight = Number.parseInt(getComputedStyle(block).getPropertyValue('--nav-height'), 10);
-    const isStuck = block.getBoundingClientRect().top <= navHeight;
-    block.classList[isStuck ? 'add' : 'remove']('v2-inpage-navigation--stuck');
-  }));
+      // detecting if the element inpage nav sticks to navigation
+      const navHeight = Number.parseInt(getComputedStyle(block).getPropertyValue('--nav-height'), 10);
+      const isStuck = block.getBoundingClientRect().top <= navHeight;
+      block.classList[isStuck ? 'add' : 'remove']('v2-inpage-navigation--stuck');
+    }),
+  );
 
   decorateIcons(block);
 }

@@ -6,8 +6,12 @@ function addTitlesListener(container) {
   const tabTitles = container.querySelectorAll('h4');
   container.onclick = (e) => {
     const { target } = e;
-    if (isInitialPainting) return;
-    if (target.localName !== 'h4') return;
+    if (isInitialPainting) {
+      return;
+    }
+    if (target.localName !== 'h4') {
+      return;
+    }
     const tabContent = target.nextElementSibling;
     const contentWrapper = tabContent.querySelector('.content-wrapper');
     const isActive = target.classList.contains('active');
@@ -18,7 +22,9 @@ function addTitlesListener(container) {
       target.classList.toggle('active', !isActive);
     }
     // tab fold/unfold animation
-    if (MQ.matches && isActive) return;
+    if (MQ.matches && isActive) {
+      return;
+    }
     [...tabTitles].forEach((title) => {
       title.nextElementSibling.style.height = 0;
     });
@@ -43,10 +49,14 @@ function addClickListener(container) {
   slideControls.onclick = (e) => {
     const { target } = e;
     e.preventDefault();
-    if (target.localName !== 'a') return;
+    if (target.localName !== 'a') {
+      return;
+    }
     const activeSlide = slidesContainer.querySelector('.active');
     const isArrow = target.classList.contains('slide-control');
-    let movement; let targetSlide; let targetArrow;
+    let movement;
+    let targetSlide;
+    let targetArrow;
     if (isArrow) {
       const isNext = target.classList.contains('btn-next');
       const lastSlide = (length - 1) * -100;
@@ -56,18 +66,25 @@ function addClickListener(container) {
       targetArrow = target;
       targetSlide = isNext ? +slideIndex + 1 : +slideIndex - 1;
       movement = slideIndex * -100 + sum;
-      if (isOutOfRange(isNext, movement, lastSlide)) return;
+      if (isOutOfRange(isNext, movement, lastSlide)) {
+        return;
+      }
     } else {
       targetSlide = +target.dataset.value;
       movement = targetSlide * -100;
-      if (targetSlide === length - 1) targetArrow = nextBtn;
-      else if (targetSlide === 0) targetArrow = previousBtn;
+      if (targetSlide === length - 1) {
+        targetArrow = nextBtn;
+      } else if (targetSlide === 0) {
+        targetArrow = previousBtn;
+      }
     }
     slidesContainer.style = `translate: ${movement}%`;
     activeSlide.classList.remove('active');
     slidesContainer.querySelector(`[data-value="${targetSlide}"]`).classList.add('active');
     [...arrows].forEach((arrow) => arrow.classList.remove('disabled'));
-    if (targetSlide === length - 1 || targetSlide === 0) targetArrow.classList.add('disabled');
+    if (targetSlide === length - 1 || targetSlide === 0) {
+      targetArrow.classList.add('disabled');
+    }
     [...paginationBtns].forEach((btn) => btn.classList.remove('active'));
     slideControls.querySelector(`[data-value="${targetSlide}"]`).classList.add('active');
   };
@@ -80,7 +97,7 @@ function addSliderControls(contentWrapper, slidesLength) {
   const nextBtn = document.createElement('a');
   const pagination = document.createElement('div');
   const navList = document.createElement('ul');
-  // eslint-disable-next-line no-plusplus
+
   for (let i = 0; i < slidesLength; i++) {
     const li = document.createElement('li');
     const a = document.createElement('a');
@@ -200,7 +217,9 @@ function setupInitialStyles(container) {
     }, 3000);
   });
   resizeObserver.observe(contentWrapper);
-  if (MQ.matches) tabTitle.classList.add('active');
+  if (MQ.matches) {
+    tabTitle.classList.add('active');
+  }
 }
 
 export default function decorate(block) {

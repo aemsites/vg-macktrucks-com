@@ -1,12 +1,5 @@
 import { loadScript } from './aem.js';
-import {
-  isPerformanceAllowed,
-  isSocialAllowed,
-  isTargetingAllowed,
-  extractObjectFromArray,
-  COOKIE_CONFIGS,
-  isDevHost,
-} from './common.js';
+import { isPerformanceAllowed, isSocialAllowed, isTargetingAllowed, extractObjectFromArray, COOKIE_CONFIGS, isDevHost } from './common.js';
 
 // COOKIE ACCEPTANCE AND IDs default to false in case no ID is present
 const {
@@ -20,24 +13,33 @@ const {
 
 // COOKIE ACCEPTANCE CHECKING
 if (isPerformanceAllowed()) {
-  if (GTM_ID) loadGoogleTagManager();
-  if (HOTJAR_ID) loadHotjar();
+  if (GTM_ID) {
+    loadGoogleTagManager();
+  }
+  if (HOTJAR_ID) {
+    loadHotjar();
+  }
 }
 
 if (isSocialAllowed()) {
-  if (FACEBOOK_ID) loadFacebookPixel();
-  if (LINKEDIN_PARTNER_ID) loadLinkedInInsightTag();
+  if (FACEBOOK_ID) {
+    loadFacebookPixel();
+  }
+  if (LINKEDIN_PARTNER_ID) {
+    loadLinkedInInsightTag();
+  }
 }
 
 if (isTargetingAllowed()) {
-  if (ACC_ENG_TRACKING) loadAccountEngagementTracking();
+  if (ACC_ENG_TRACKING) {
+    loadAccountEngagementTracking();
+  }
 }
 
 // add more delayed functionality here
 
 // Prevent the cookie banner from loading when running in library
-if (!window.location.pathname.includes('srcdoc')
-  && !isDevHost()) {
+if (!window.location.pathname.includes('srcdoc') && !isDevHost()) {
   loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
     type: 'text/javascript',
     charset: 'UTF-8',
@@ -72,9 +74,15 @@ async function loadGoogleTagManager() {
   // google tag manager
   // eslint-disable-next-line func-names
   (function (w, d, s, l, i) {
-    w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); const f = d.getElementsByTagName(s)[0]; const j = d.createElement(s); const
-      dl = l !== 'dataLayer' ? `&l=${l}` : ''; j.async = true; j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`; f.parentNode.insertBefore(j, f);
-  }(window, document, 'script', 'dataLayer', GTM_ID));
+    w[l] = w[l] || [];
+    w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    const f = d.getElementsByTagName(s)[0];
+    const j = d.createElement(s);
+    const dl = l !== 'dataLayer' ? `&l=${l}` : '';
+    j.async = true;
+    j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', GTM_ID);
 }
 
 // Hotjar
@@ -91,10 +99,10 @@ async function loadHotjar() {
 
 // Account Engagement Tracking Code
 async function loadAccountEngagementTracking() {
-  const {
-    piAId = null, piCId = null, piHostname = null,
-  } = extractObjectFromArray(JSON.parse(ACC_ENG_TRACKING));
-  if (!piAId || !piCId || !piHostname) return;
+  const { piAId = null, piCId = null, piHostname = null } = extractObjectFromArray(JSON.parse(ACC_ENG_TRACKING));
+  if (!piAId || !piCId || !piHostname) {
+    return;
+  }
   const body = document.querySelector('body');
   const script = document.createElement('script');
   script.type = 'text/javascript';

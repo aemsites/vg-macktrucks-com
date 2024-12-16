@@ -10,11 +10,7 @@ const { GOOGLE_API_KEY } = TOOLS_CONFIGS;
  * @returns {string} The escaped string
  */
 function escapeHTML(input) {
-  return input.replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+  return input.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
 }
 
 /**
@@ -110,22 +106,20 @@ export default async function decorate(block) {
 
     block.innerHTML = sharedTemplate;
 
-    loadComponentScript('/blocks/v2-dealer-locator/shared/vendor/jquery.min.js')
-      .then(() => {
-        // These scripts depend on jquery
+    loadComponentScript('/blocks/v2-dealer-locator/shared/vendor/jquery.min.js').then(() => {
+      // These scripts depend on jquery
 
-        if (isExportMarket) {
-          loadComponentScript('/blocks/v2-dealer-locator/versions/export/sidebar-maps.js');
-        } else {
-          loadComponentScript('/blocks/v2-dealer-locator/versions/default/sidebar-maps.js');
-        }
+      if (isExportMarket) {
+        loadComponentScript('/blocks/v2-dealer-locator/versions/export/sidebar-maps.js');
+      } else {
+        loadComponentScript('/blocks/v2-dealer-locator/versions/default/sidebar-maps.js');
+      }
 
-        loadComponentScript('/blocks/v2-dealer-locator/shared/my-dealer.js');
-      });
+      loadComponentScript('/blocks/v2-dealer-locator/shared/my-dealer.js');
+    });
 
-    loadComponentScript('/blocks/v2-dealer-locator/shared/vendor/moment.js')
-      .then(() => {
-        loadComponentScript('/blocks/v2-dealer-locator/shared/vendor/moment-timezone.min.js');
-      });
+    loadComponentScript('/blocks/v2-dealer-locator/shared/vendor/moment.js').then(() => {
+      loadComponentScript('/blocks/v2-dealer-locator/shared/vendor/moment-timezone.min.js');
+    });
   }
 }

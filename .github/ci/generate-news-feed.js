@@ -52,18 +52,16 @@ async function getConstantValues() {
  * @return {Promise<FeedConfig[]>}
  */
 async function getFeedConfig() {
-  const {
-    newsFeedConfig,
-  } = await getConstantValues();
-  
+  const { newsFeedConfig } = await getConstantValues();
+
   return newsFeedConfig?.data || [];
-};
+}
 
 /**
  * @return {Promise<void>}
  */
 async function createFeed() {
-  let feedsConfigurations = await getFeedConfig();
+  const feedsConfigurations = await getFeedConfig();
 
   if (!feedsConfigurations) {
     console.error('No feed configurations found');
@@ -71,28 +69,19 @@ async function createFeed() {
   }
 
   for (const feedConfig of feedsConfigurations) {
-    const {
-      LANGUAGE,
-      SOURCE_ENDPOINT,
-      TARGET_FILE,
-      FEED_TITLE,
-      FEED_SITE_ROOT,
-      FEED_LINK,
-      FEED_DESCRIPTION,
-      LIMIT,
-    } = feedConfig;
-  
+    const { LANGUAGE, SOURCE_ENDPOINT, TARGET_FILE, FEED_TITLE, FEED_SITE_ROOT, FEED_LINK, FEED_DESCRIPTION, LIMIT } = feedConfig;
+
     const PARSED_LIMIT = Number(LIMIT);
-  
+
     const allPosts = await fetchBlogPosts(SOURCE_ENDPOINT, PARSED_LIMIT);
 
     console.log(`Generating feed "${FEED_TITLE}" - "${FEED_LINK}"`);
     console.log(`Found ${allPosts.length} posts`);
-  
+
     const newestPost = allPosts
       .map((post) => new Date(post.publicationDate * 1000))
       .reduce((maxDate, date) => (date > maxDate ? date : maxDate), new Date(0));
-  
+
     const feed = new Feed({
       title: FEED_TITLE,
       description: FEED_DESCRIPTION,
@@ -102,7 +91,7 @@ async function createFeed() {
       generator: `${FEED_TITLE} - Feed Generator`,
       language: LANGUAGE,
     });
-  
+
     allPosts.forEach((post) => {
       const link = FEED_SITE_ROOT + post.path;
       const date = post.date || post.publicationDate;
@@ -132,7 +121,6 @@ async function createFeed() {
     console.log('Wrote file to: ', TARGET_FILE);
     console.log('-----------------------------------');
   }
-
 }
 
 /**
@@ -181,5 +169,4 @@ async function fetchBlogPosts(endpoint, limit) {
   return allPosts;
 }
 
-createFeed()
-  .catch((e) => console.error(e));
+createFeed().catch((e) => console.error(e));

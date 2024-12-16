@@ -1,13 +1,5 @@
-import {
-  readBlockConfig,
-  loadBlock,
-  getMetadata,
-} from '../../scripts/aem.js';
-import {
-  createElement,
-  decorateIcons,
-  getTextLabel,
-} from '../../scripts/common.js';
+import { readBlockConfig, loadBlock, getMetadata } from '../../scripts/aem.js';
+import { createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
 
 const PLACEHOLDERS = {
   subscribe: getTextLabel('SUBSCRIBE TO BULLDOG'),
@@ -77,7 +69,9 @@ async function setupNewsletterForm(footerBlock, footerMenuEl) {
   const emailInput = newsletterEl.querySelector('input[name="email"]');
   const pdtForm = newsletterEl.querySelector(':scope form');
 
-  if (pdtForm) pdtForm.className = 'pardot-form';
+  if (pdtForm) {
+    pdtForm.className = 'pardot-form';
+  }
 
   // change the submit button to arrow button
   // and display it sticked to the right side of email input
@@ -105,7 +99,9 @@ export default async function decorate(block) {
     block.classList.add(`${CLASSES.blockName}__custom`);
   }
 
-  if (cfgMetadata) footerPath = cfgMetadata;
+  if (cfgMetadata) {
+    footerPath = cfgMetadata;
+  }
 
   const resp = await fetch(`${footerPath}.plain.html`);
   const html = await resp.text();
@@ -165,7 +161,9 @@ export default async function decorate(block) {
     const socialMedia = footerMenuEl.querySelector(':scope > div ul');
     socialMedia.classList.add(`${CLASSES.menu}__socialmedia`);
     const socialLinks = socialMedia.querySelectorAll('a');
-    [...socialLinks].forEach((a) => { a.target = '_blank'; });
+    [...socialLinks].forEach((a) => {
+      a.target = '_blank';
+    });
     newMenu.appendChild(socialMedia);
     // remove div which contained logo and social media
     footerMenuEl.firstElementChild.remove();

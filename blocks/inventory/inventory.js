@@ -8,7 +8,6 @@ const addInventory = async (block) => {
   const data = await fetch(`${window.hlx.codeBasePath}/blocks/inventory/html/${truckName}.html`);
 
   if (!data.ok) {
-    // eslint-disable-next-line no-console
     console.error(`failed to load html: ${truckName}`);
     block.innerHTML = '';
     return;
@@ -24,7 +23,7 @@ const addInventory = async (block) => {
   });
 
   // loading scripts one by one to prevent inappropriate script execution order.
-  // eslint-disable-next-line no-restricted-syntax
+
   for (const script of [...block.querySelectorAll('script')]) {
     let waitForLoad = Promise.resolve();
     // the script element added by innerHTML is NOT executed
@@ -47,10 +46,9 @@ const addInventory = async (block) => {
     script.remove();
     document.body.append(newScript);
 
-    // eslint-disable-next-line no-await-in-loop
     await waitForLoad;
   }
-  // eslint-disable-next-line no-use-before-define
+
   removeContactButtons(block);
   block.style.display = displayValue;
 };
@@ -74,13 +72,16 @@ const removeContactButtons = async (block) => {
 };
 
 export default async function decorate(block) {
-  const observer = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) {
-      observer.disconnect();
-      addInventory(block);
-    }
-  }, {
-    rootMargin: '300px',
-  });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        observer.disconnect();
+        addInventory(block);
+      }
+    },
+    {
+      rootMargin: '300px',
+    },
+  );
   observer.observe(block);
 }

@@ -19,35 +19,39 @@ const apiConfig = {
 };
 
 // list of things to be display for each recall
-const valueDisplayList = [{
-  key: 'recall_date',
-},
-{
-  key: 'mfr_recall_number',
-},
-{
-  key: 'nhtsa_recall_number',
-},
-{
-  key: 'tc_recall_nbr',
-},
-{
-  key: 'mfr_recall_status',
-},
-{
-  key: 'recall_description',
-  class: `${blockName}__detail-item--column`,
-},
-{
-  key: 'safety_risk_description',
-  class: `${blockName}__detail-item--column`,
-}, {
-  key: 'remedy_description',
-  class: `${blockName}__detail-item--column`,
-}, {
-  key: 'mfr_notes',
-  class: `${blockName}__detail-item--column`,
-}];
+const valueDisplayList = [
+  {
+    key: 'recall_date',
+  },
+  {
+    key: 'mfr_recall_number',
+  },
+  {
+    key: 'nhtsa_recall_number',
+  },
+  {
+    key: 'tc_recall_nbr',
+  },
+  {
+    key: 'mfr_recall_status',
+  },
+  {
+    key: 'recall_description',
+    class: `${blockName}__detail-item--column`,
+  },
+  {
+    key: 'safety_risk_description',
+    class: `${blockName}__detail-item--column`,
+  },
+  {
+    key: 'remedy_description',
+    class: `${blockName}__detail-item--column`,
+  },
+  {
+    key: 'mfr_notes',
+    class: `${blockName}__detail-item--column`,
+  },
+];
 
 // use this to map values from API
 const recallStatus = {
@@ -90,7 +94,7 @@ function setStorageItem(key, value) {
   // store the value as object along with expiry date
   const result = {
     data: value,
-    expireTime: Date.now() + (60 * 60 * 1000), // set the expiry from the current date for a day
+    expireTime: Date.now() + 60 * 60 * 1000, // set the expiry from the current date for a day
   };
 
   // stringify the result and the data in original storage
@@ -104,7 +108,6 @@ async function fetchRefreshDate() {
     setStorageItem('refreshDate-MT', response.refresh_date);
     return response.refresh_date;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error fetching refresh date:', error);
   }
   return null;
@@ -112,7 +115,9 @@ async function fetchRefreshDate() {
 
 function renderRecalls(recallsData) {
   const resultText = document.querySelector(`.${blockName}__results-text`);
-  let resultContent = getTextLabel('result text').replace(/\${count}/, recallsData.number_of_recalls).replace(/\${vin}/, recallsData.vin);
+  let resultContent = getTextLabel('result text')
+    .replace(/\${count}/, recallsData.number_of_recalls)
+    .replace(/\${vin}/, recallsData.vin);
 
   const blockEl = document.querySelector(`.${blockName}__recalls-wrapper`);
 
@@ -207,22 +212,19 @@ async function fetchRecalls(e) {
     if (vin) {
       try {
         const { url, key } = getAPIConfig();
-        getJsonFromUrl(`${url}vin/${vin}?api_key=${key}&mode=company`)
-          .then((response) => {
-            if (response.error_code) {
-              resultText.innerHTML = `${getTextLabel('no recalls')} ${vin}`;
-            } else {
-              response.recalls.sort((a, b) => (b.mfr_recall_status - a.mfr_recall_status)
-                || (new Date(b.date) - new Date(a.date)));
-              renderRecalls(response);
-            }
+        getJsonFromUrl(`${url}vin/${vin}?api_key=${key}&mode=company`).then((response) => {
+          if (response.error_code) {
+            resultText.innerHTML = `${getTextLabel('no recalls')} ${vin}`;
+          } else {
+            response.recalls.sort((a, b) => b.mfr_recall_status - a.mfr_recall_status || new Date(b.date) - new Date(a.date));
+            renderRecalls(response);
+          }
 
-            const vinInput = document.querySelector('.vin-number__input');
-            vinInput.value = '';
-            submitBtn.disabled = false;
-          });
+          const vinInput = document.querySelector('.vin-number__input');
+          vinInput.value = '';
+          submitBtn.disabled = false;
+        });
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error('Error fetching Recalls:', error);
       }
       return null;
