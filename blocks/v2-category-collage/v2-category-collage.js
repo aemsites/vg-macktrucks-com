@@ -1,8 +1,5 @@
 import { createElement, clearElementAttributes, decorateIcons } from '../../scripts/common.js';
-import {
-  isVideoLink,
-  createVideo,
-} from '../../scripts/video-helper.js';
+import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-category-collage';
 
@@ -95,10 +92,8 @@ const decorateNewItemContainer = (item, itemContainer, innerLink) => {
   }
 
   item.classList.add(CLASSES.itemContainer);
-  clearElementAttributes(itemTitleContainer)
-    .classList.add(CLASSES.itemTitle);
-  clearElementAttributes(itemCategoryTitleContainer)
-    .classList.add(CLASSES.itemCategoryTitle);
+  clearElementAttributes(itemTitleContainer).classList.add(CLASSES.itemTitle);
+  clearElementAttributes(itemCategoryTitleContainer).classList.add(CLASSES.itemCategoryTitle);
 
   itemTitleContainer.append(arrowButtonElement());
 

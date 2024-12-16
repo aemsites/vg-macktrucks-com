@@ -1,9 +1,4 @@
-import {
-  getImageURLs,
-  createResponsivePicture,
-  variantsClassesToBEM,
-  createElement,
-} from '../../scripts/common.js';
+import { getImageURLs, createResponsivePicture, variantsClassesToBEM, createElement } from '../../scripts/common.js';
 
 export default async function decorate(block) {
   const blockName = 'v2-pencil-promo';
@@ -15,8 +10,11 @@ export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 
   block.classList.add(`${blockName}__${isPencil ? 'pencil' : 'promo'}-banner`);
-  if (isPencil) block.parentElement.classList.add('full-width');
-  else block.classList.add(`${blockName}__promo-banner--with-image`);
+  if (isPencil) {
+    block.parentElement.classList.add('full-width');
+  } else {
+    block.classList.add(`${blockName}__promo-banner--with-image`);
+  }
 
   const bannerImage = block.querySelector('picture');
   if (isPencil && bannerImage !== null) {
@@ -26,10 +24,7 @@ export default async function decorate(block) {
     const imageURLs = getImageURLs(images);
     const imageData = imageURLs.map((src) => ({ src, breakpoints: [] }));
 
-    const breakpoints0 = [
-      { media: '(min-width: 600px)', width: 800 },
-      { width: 600 },
-    ];
+    const breakpoints0 = [{ media: '(min-width: 600px)', width: 800 }, { width: 600 }];
 
     const breakpoints1 = [
       { media: '(min-width: 744px)', width: 800 },

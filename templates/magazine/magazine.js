@@ -37,7 +37,9 @@ async function buildArticleHero({ truckTags, categoryTag } = {}) {
   truck.append(truckIcon, truckText);
 
   articleHeroContent.append(categorySpan, titleH4);
-  if (truckTags.length !== 0) articleHeroContent.append(truck);
+  if (truckTags.length !== 0) {
+    articleHeroContent.append(truck);
+  }
   section.append(articleHeroImage, articleHeroContent);
 
   return section;
@@ -45,7 +47,8 @@ async function buildArticleHero({ truckTags, categoryTag } = {}) {
 
 async function buildSection(container, sectionName = '') {
   const selectedContent = container.querySelector(`.${sectionName}-container .${sectionName}-wrapper`);
-  const classes = sectionName === 'breadcrumbs' ? ['section', 'template', 'article-template', `${sectionName}-container`] : `${sectionName}-container`;
+  const classes =
+    sectionName === 'breadcrumbs' ? ['section', 'template', 'article-template', `${sectionName}-container`] : `${sectionName}-container`;
   const sectionContainer = createElement('div', { classes });
   sectionContainer.append(selectedContent);
 
@@ -83,6 +86,15 @@ async function buildShareSection() {
   return shareSection;
 }
 
+async function loadInnerBlocks(container) {
+  // Lets wait for the placeholders to be loaded since the blocks might have them as a dependency
+  await getPlaceholders();
+
+  container.querySelectorAll('.block').forEach((block) => {
+    loadBlock(block);
+  });
+}
+
 export default async function decorate(doc) {
   const categoryTag = getMetadata('article-category') || '';
   const truckTags = getMetadata('truck') || '';
@@ -93,14 +105,7 @@ export default async function decorate(doc) {
   const articleTexts = createElement('div', { classes: ['section', 'template', 'article-template', 'article-texts-container'] });
   const currentArticle = createElement('div', { classes: 'current-article-container' });
 
-  const [
-    breadSection,
-    heroSection,
-    shareSection1,
-    shareSection2,
-    recentSection,
-    recommendationsSection,
-  ] = await Promise.all([
+  const [breadSection, heroSection, shareSection1, shareSection2, recentSection, recommendationsSection] = await Promise.all([
     buildSection(container, 'breadcrumb'),
     buildArticleHero({ truckTags, categoryTag }),
     buildShareSection(),
@@ -129,21 +134,14 @@ export default async function decorate(doc) {
 
   parentSection.insertAdjacentElement('afterbegin', firstHeading);
 
-  currentArticle.append(
-    firstHeading,
-    author,
-    shareSection1,
-    parentSection,
-    shareSection2,
-  );
+  currentArticle.append(firstHeading, author, shareSection1, parentSection, shareSection2);
   articleTexts.append(currentArticle, recommendationsSection, recentSection);
-  article.append(
-    breadSection,
-    heroSection,
-    articleTexts,
-    ...(subscribeContent ? [subscribeContent] : []),
-  );
+  article.append(breadSection, heroSection, articleTexts, ...(subscribeContent ? [subscribeContent] : []));
 
   container.innerText = '';
   container.append(article);
+
+  // loadInnerBlocks is an async function
+  // Lets run it async without wait, no need...
+  loadInnerBlocks(container);
 }

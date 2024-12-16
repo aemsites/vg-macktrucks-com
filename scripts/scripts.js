@@ -31,10 +31,7 @@ import {
   getLocale,
 } from './common.js';
 
-import {
-  isVideoLink,
-  addVideoShowHandler,
-} from './video-helper.js';
+import { isVideoLink, addVideoShowHandler } from './video-helper.js';
 import { validateCountries } from './validate-countries.js';
 
 const disableHeader = getMetadata('disable-header').toLowerCase() === 'true';
@@ -54,6 +51,7 @@ function addBackgroundImage(section, picture) {
  * Decorates all sections in a container element.
  * @param {Element} main The container element
  */
+// TODO: Remove this and use the one in aem.js
 export function decorateSections(main) {
   main.querySelectorAll(':scope > div').forEach((section) => {
     const wrappers = [];
@@ -63,7 +61,9 @@ export function decorateSections(main) {
         const wrapper = document.createElement('div');
         wrappers.push(wrapper);
         defaultContent = e.tagName !== 'DIV';
-        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+        if (defaultContent) {
+          wrapper.classList.add('default-content-wrapper');
+        }
       }
       wrappers[wrappers.length - 1].append(e);
     });
@@ -80,9 +80,12 @@ export function decorateSections(main) {
         if (key === 'style') {
           const styles = meta.style.split(',').map((style) => toClassName(style.trim()));
           styles.forEach((style) => section.classList.add(style));
-        } if (key === 'background') {
+        }
+        if (key === 'background') {
           const picture = sectionMeta.querySelector('picture');
-          if (picture) addBackgroundImage(section, meta[key]);
+          if (picture) {
+            addBackgroundImage(section, meta[key]);
+          }
         } else {
           section.dataset[toCamelCase(key)] = meta[key];
         }
@@ -117,9 +120,15 @@ const getButtonClass = (up, twoUp) => {
   const twoUpTag = twoUp.tagName;
 
   if (isSingleChild(twoUp)) {
-    if (upTag === 'STRONG' && twoUpTag === 'P') return 'button button--primary';
-    if (upTag === 'STRONG' && twoUpTag === 'LI') return 'button arrowed';
-    if (upTag === 'EM' && twoUpTag === 'P') return 'button button--secondary';
+    if (upTag === 'STRONG' && twoUpTag === 'P') {
+      return 'button button--primary';
+    }
+    if (upTag === 'STRONG' && twoUpTag === 'LI') {
+      return 'button arrowed';
+    }
+    if (upTag === 'EM' && twoUpTag === 'P') {
+      return 'button button--secondary';
+    }
   }
 
   if ((upTag === 'STRONG' || upTag === 'EM') && (twoUpTag === 'STRONG' || twoUpTag === 'EM')) {
@@ -149,11 +158,17 @@ const handleLinkDecoration = (link) => {
   const threeUp = twoUp.parentElement;
 
   if (getMetadata('style') === 'redesign-v2') {
-    if (['STRONG', 'EM'].includes(up.tagName)) reparentChildren(up);
-    if (['STRONG', 'EM'].includes(twoUp.tagName)) reparentChildren(twoUp);
+    if (['STRONG', 'EM'].includes(up.tagName)) {
+      reparentChildren(up);
+    }
+    if (['STRONG', 'EM'].includes(twoUp.tagName)) {
+      reparentChildren(twoUp);
+    }
 
     const buttonClass = getButtonClass(up, twoUp);
-    if (buttonClass) link.className = `${buttonClass}`;
+    if (buttonClass) {
+      link.className = `${buttonClass}`;
+    }
 
     addClassToContainer(up);
     addClassToContainer(twoUp);
@@ -178,8 +193,7 @@ const handleLinkDecoration = (link) => {
       twoUp.parentElement.className = 'button-container';
       link.appendChild(arrow);
     }
-    if (up.tagName === 'LI' && twoUp.children.length === 1
-      && link.children.length > 0 && link.firstElementChild.tagName === 'STRONG') {
+    if (up.tagName === 'LI' && twoUp.children.length === 1 && link.children.length > 0 && link.firstElementChild.tagName === 'STRONG') {
       const arrow = createElement('span', { classes: ['fa', 'fa-arrow-right'] });
       link.className = 'button arrowed';
       twoUp.className = 'button-container';
@@ -254,9 +268,7 @@ function buildHeroBlock(main) {
     return;
   }
 
-  if (header && picture
-    // eslint-disable-next-line no-bitwise
-    && (header.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
+  if (header && picture && header.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING) {
     const section = document.createElement('div');
     section.append(buildBlock('hero', { elems: [picture, header] }));
     section.querySelector('.hero').classList.add('auto-block');
@@ -378,7 +390,7 @@ const createInpageNavigation = (main) => {
     if (title) {
       const countDuplicated = tabItemsObj.filter((item) => item.title === title)?.length || 0;
       const order = parseFloat(section.dataset.inpageOrder);
-      const anchorID = (countDuplicated > 0) ? slugify(`${section.dataset.inpage}-${countDuplicated}`) : slugify(section.dataset.inpage);
+      const anchorID = countDuplicated > 0 ? slugify(`${section.dataset.inpage}-${countDuplicated}`) : slugify(section.dataset.inpage);
       const obj = {
         title,
         id: anchorID,
@@ -448,7 +460,8 @@ export function decorateMain(main, head) {
   if (head) {
     const pageStyle = head.querySelector('[name="style"]')?.content;
     if (pageStyle) {
-      pageStyle.split(',')
+      pageStyle
+        .split(',')
         .map((style) => toClassName(style.trim()))
         .forEach((style) => main.classList.add(style));
     }
@@ -483,7 +496,9 @@ async function loadEager(doc) {
     const language = getLocale();
     document.documentElement.lang = language;
     const templateName = getMetadata('template');
-    if (templateName) await loadTemplate(doc, templateName);
+    if (templateName) {
+      await loadTemplate(doc, templateName);
+    }
 
     await getPlaceholders();
     await loadSection(main.querySelector('.section'), waitForFirstImage);
@@ -503,7 +518,9 @@ async function loadLazy(doc) {
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
-  if (hash && element) element.scrollIntoView();
+  if (hash && element) {
+    element.scrollIntoView();
+  }
   const header = doc.querySelector('header');
   const subnav = header.querySelector('.block.sub-nav');
 
@@ -607,11 +624,13 @@ export function loadAsBlock(blockName, blockContent, options = {}) {
 export function domEl(tag, ...items) {
   const element = document.createElement(tag);
 
-  if (!items || items.length === 0) return element;
+  if (!items || items.length === 0) {
+    return element;
+  }
 
   if (!(items[0] instanceof Element || items[0] instanceof HTMLElement) && typeof items[0] === 'object') {
     const [attributes, ...rest] = items;
-    // eslint-disable-next-line no-param-reassign
+
     items = rest;
 
     Object.entries(attributes).forEach(([key, value]) => {
@@ -624,10 +643,7 @@ export function domEl(tag, ...items) {
   }
 
   items.forEach((item) => {
-    // eslint-disable-next-line no-param-reassign
-    item = item instanceof Element || item instanceof HTMLElement
-      ? item
-      : document.createTextNode(item);
+    item = item instanceof Element || item instanceof HTMLElement ? item : document.createTextNode(item);
     element.appendChild(item);
   });
 
@@ -638,23 +654,57 @@ export function domEl(tag, ...items) {
     More shorthand functions can be added for very common DOM elements below.
     domEl function from above can be used for one-off DOM element occurrences.
   */
-export function div(...items) { return domEl('div', ...items); }
-export function p(...items) { return domEl('p', ...items); }
-export function a(...items) { return domEl('a', ...items); }
-export function h1(...items) { return domEl('h1', ...items); }
-export function h2(...items) { return domEl('h2', ...items); }
-export function h3(...items) { return domEl('h3', ...items); }
-export function h4(...items) { return domEl('h4', ...items); }
-export function h5(...items) { return domEl('h5', ...items); }
-export function h6(...items) { return domEl('h6', ...items); }
-export function ul(...items) { return domEl('ul', ...items); }
-export function li(...items) { return domEl('li', ...items); }
-export function i(...items) { return domEl('i', ...items); }
-export function img(...items) { return domEl('img', ...items); }
-export function span(...items) { return domEl('span', ...items); }
-export function input(...items) { return domEl('input', ...items); }
-export function form(...items) { return domEl('form', ...items); }
-export function button(...items) { return domEl('button', ...items); }
+export function div(...items) {
+  return domEl('div', ...items);
+}
+export function p(...items) {
+  return domEl('p', ...items);
+}
+export function a(...items) {
+  return domEl('a', ...items);
+}
+export function h1(...items) {
+  return domEl('h1', ...items);
+}
+export function h2(...items) {
+  return domEl('h2', ...items);
+}
+export function h3(...items) {
+  return domEl('h3', ...items);
+}
+export function h4(...items) {
+  return domEl('h4', ...items);
+}
+export function h5(...items) {
+  return domEl('h5', ...items);
+}
+export function h6(...items) {
+  return domEl('h6', ...items);
+}
+export function ul(...items) {
+  return domEl('ul', ...items);
+}
+export function li(...items) {
+  return domEl('li', ...items);
+}
+export function i(...items) {
+  return domEl('i', ...items);
+}
+export function img(...items) {
+  return domEl('img', ...items);
+}
+export function span(...items) {
+  return domEl('span', ...items);
+}
+export function input(...items) {
+  return domEl('input', ...items);
+}
+export function form(...items) {
+  return domEl('form', ...items);
+}
+export function button(...items) {
+  return domEl('button', ...items);
+}
 
 /* Helper for delaying something like
 takes function as argument, default timout = 200
@@ -664,7 +714,9 @@ export function debounce(func, timeout = 200) {
   return (...args) => {
     clearTimeout(timer);
 
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    timer = setTimeout(() => {
+      func.apply(this, args);
+    }, timeout);
   };
 }
 
@@ -675,7 +727,9 @@ export function debounce(func, timeout = 200) {
  * @returns list of elements that pass the children check
  */
 export function getAllElWithChildren(elements, childrenCheck, isOpposite = false) {
-  if (isOpposite) return [...elements].filter((el) => !el.querySelector(childrenCheck));
+  if (isOpposite) {
+    return [...elements].filter((el) => !el.querySelector(childrenCheck));
+  }
   return [...elements].filter((el) => el.querySelector(childrenCheck));
 }
 
@@ -683,7 +737,9 @@ export function getAllElWithChildren(elements, childrenCheck, isOpposite = false
 const allLinks = [...document.querySelectorAll('a'), ...document.querySelectorAll('button')];
 allLinks.forEach((link) => {
   const linkText = link.innerText;
-  if (linkText[0] !== '[') return;
+  if (linkText[0] !== '[') {
+    return;
+  }
   const brackets = linkText.match(/^\[(.*?)\]/);
   const rawProperties = brackets && brackets[1];
   const propertyArray = rawProperties?.split(',');
@@ -718,7 +774,9 @@ function buildTruckLineupBlock(main, classname) {
   const mainChildren = [...main.querySelectorAll(':scope > div')];
   mainChildren.forEach((section, i2) => {
     const isTruckCarousel = section.dataset.truckCarousel;
-    if (!isTruckCarousel) return;
+    if (!isTruckCarousel) {
+      return;
+    }
 
     // save carousel position
     nextElement = mainChildren[i2 + 1];
@@ -740,7 +798,8 @@ function buildTruckLineupBlock(main, classname) {
 
   if (tabItems.length > 0) {
     const tabbedCarouselSection = createTruckLineupSection(tabItems, classname);
-    if (nextElement) { // if we saved a position push the carousel in that position if not
+    if (nextElement) {
+      // if we saved a position push the carousel in that position if not
       main.insertBefore(tabbedCarouselSection, nextElement);
     } else {
       main.append(tabbedCarouselSection);
@@ -767,7 +826,9 @@ function hasConfigURLs() {
 if (document.documentElement.classList.contains('truck-configurator')) {
   const allowedCountries = getMetadata('allowed-countries');
   const errorPageUrl = getMetadata('redirect-url');
-  if (allowedCountries && errorPageUrl) validateCountries(allowedCountries, errorPageUrl);
+  if (allowedCountries && errorPageUrl) {
+    validateCountries(allowedCountries, errorPageUrl);
+  }
 
   const container = createElement('div', { props: { id: 'configurator' } });
   const main = document.querySelector('main');

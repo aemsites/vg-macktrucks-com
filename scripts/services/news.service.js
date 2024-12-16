@@ -98,7 +98,7 @@ async function fetchJsonFeed(jsonFeedPath, pagingInfo) {
     const json = await resp.json();
     const { total, data } = json;
     window.mack.newsData.news.push();
-    pagingInfo.allLoaded = total <= (window.mack.newsData.offset + queryLimit);
+    pagingInfo.allLoaded = total <= window.mack.newsData.offset + queryLimit;
     pagingInfo.offset += queryLimit;
     return data;
   }

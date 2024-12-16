@@ -50,14 +50,18 @@ export default async function decorate(block) {
       const hasLinkList = isListVariant && (e.tagName.toLowerCase() === 'ul' || e.tagName.toLowerCase() === 'ol');
 
       if (hasLinkList) {
-        if (is3LinksVariant) linkList.append(getLastTextElmts(col));
+        if (is3LinksVariant) {
+          linkList.append(getLastTextElmts(col));
+        }
         linkList.append(e);
       } else if (!isPretitle && !isButton) {
         bodyElmts.push(e);
       }
     });
     bodyElmts.forEach((e) => {
-      if (!e.classList.contains('list-title')) e.classList.add(`${blockName}__body`);
+      if (!e.classList.contains('list-title')) {
+        e.classList.add(`${blockName}__body`);
+      }
     });
 
     const buttons = [...col.querySelectorAll('.button-container a')];
@@ -72,7 +76,9 @@ export default async function decorate(block) {
         btnContainer.replaceWith(btn);
         btnSection.append(btn);
       });
-      if (!picture) col.append(btnSection);
+      if (!picture) {
+        col.append(btnSection);
+      }
       if (isListVariant) {
         linkList.querySelectorAll('a').forEach((e) => e.classList.add('standalone-link'));
         col.append(linkList);
@@ -81,7 +87,7 @@ export default async function decorate(block) {
       if (hasHeader) {
         const defaultContent = blockParent.querySelector('.default-content-wrapper');
         const header = [...defaultContent.querySelectorAll('h1, h2, h3, h4, h5, h6')];
-        header[0].classList.add(`${blockName}__body-header`, (!blockParent.classList.contains('header-no-mark') && 'with-marker'));
+        header[0].classList.add(`${blockName}__body-header`, !blockParent.classList.contains('header-no-mark') && 'with-marker');
         bodyElmts[0].insertAdjacentElement('beforebegin', header[0]);
         defaultContent.remove();
       }

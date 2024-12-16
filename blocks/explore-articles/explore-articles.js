@@ -94,14 +94,18 @@ const loadMoreArticles = (evt, articleGroups, amountOfGroups) => {
   const activeButton = evt.srcElement;
   const allShownArticles = document.querySelectorAll('.article');
   const lastShownArticle = allShownArticles[allShownArticles.length - 1];
-  const lastShownId = +(lastShownArticle.id.split('-').pop());
+  const lastShownId = +lastShownArticle.id.split('-').pop();
   const nextArticleGroup = articleGroups[lastShownId + 1];
 
   nextArticleGroup.forEach((e, idx) => {
-    if (idx !== 0) lastShownArticle.insertAdjacentElement('afterend', e);
+    if (idx !== 0) {
+      lastShownArticle.insertAdjacentElement('afterend', e);
+    }
   });
 
-  if ((amountOfGroups - 1) <= counter) activeButton.remove();
+  if (amountOfGroups - 1 <= counter) {
+    activeButton.remove();
+  }
 
   counter += 1;
 };
@@ -122,7 +126,9 @@ const getArticleGroups = (artGroup) => {
 const buildFirstArticles = (art, section) => {
   const firstArticles = art[0];
   firstArticles.forEach((e, idx) => {
-    if (idx !== 0) section.append(e);
+    if (idx !== 0) {
+      section.append(e);
+    }
   });
 };
 

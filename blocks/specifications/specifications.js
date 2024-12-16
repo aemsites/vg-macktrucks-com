@@ -7,7 +7,9 @@ const buildLinkAndList = (block) => {
   const lis = block.querySelectorAll('li');
 
   lis.forEach((li) => {
-    if (li.textContent.length === 0) li.remove();
+    if (li.textContent.length === 0) {
+      li.remove();
+    }
   });
   uls.forEach((ul) => {
     ul.classList.add('link-and-list');
@@ -66,7 +68,9 @@ const buildDefaultSpecs = (block) => {
         item.append(text);
       }
       const extraArrowSpan = item.querySelector('span');
-      if (extraArrowSpan) extraArrowSpan.remove();
+      if (extraArrowSpan) {
+        extraArrowSpan.remove();
+      }
       specsList.append(item);
     });
   } else if (ulElements.length > 1) {
@@ -77,7 +81,9 @@ const buildDefaultSpecs = (block) => {
 
       const subtitle = e.parentNode.querySelector('p');
       subtitle.classList.add('specs-item-subtitle');
-      if (idx <= 2) item.append(subtitle);
+      if (idx <= 2) {
+        item.append(subtitle);
+      }
 
       const liElements = [...e.querySelectorAll('li')];
       const features = createElement('div', { classes: 'feature-list' });
@@ -108,7 +114,9 @@ const buildDefaultSpecs = (block) => {
         text.append(strongTag);
         item.append(text);
       } else {
-        if (picture) item.append(picture);
+        if (picture) {
+          item.append(picture);
+        }
         const link = e.querySelector('a');
         if (link) {
           link.classList.remove('button', 'primary');

@@ -1,14 +1,5 @@
-import {
-  adjustPretitle,
-  createElement,
-  decorateIcons,
-  getTextLabel,
-  unwrapDivs,
-} from '../../scripts/common.js';
-import {
-  listenScroll,
-  createArrowControls,
-} from '../../scripts/carousel-helper.js';
+import { adjustPretitle, createElement, decorateIcons, getTextLabel, unwrapDivs } from '../../scripts/common.js';
+import { listenScroll, createArrowControls } from '../../scripts/carousel-helper.js';
 
 const blockName = 'v2-feature-carousel';
 
@@ -37,7 +28,8 @@ const updateActiveClass = (elements, entry) => {
   });
 };
 
-const arrowFragment = () => document.createRange().createContextualFragment(`<li>
+const arrowFragment = () =>
+  document.createRange().createContextualFragment(`<li>
   <button aria-label="${getTextLabel('Previous')}" class="${blockName}__button ${blockName}__button-prev">
     <span class="icon icon-arrow-right" />
   </button>

@@ -1,9 +1,4 @@
-import {
-  isSocialAllowed,
-  createElement,
-  deepMerge,
-  getTextLabel,
-} from './common.js';
+import { isSocialAllowed, createElement, deepMerge, getTextLabel } from './common.js';
 
 // videoURLRegex: verify if a given string follows a specific pattern indicating it is a video URL
 // videoIdRegex: extract the video ID from the URL
@@ -52,18 +47,17 @@ export function isAEMVideoUrl(url) {
 
 export function isVideoLink(link) {
   const linkString = link.getAttribute('href');
-  return (linkString.includes('youtube.com/embed/')
-    || videoURLRegex.test(linkString)
-    || isLowResolutionVideoUrl(linkString))
-    && link.closest('.block.embed') === null;
+  return (
+    (linkString.includes('youtube.com/embed/') || videoURLRegex.test(linkString) || isLowResolutionVideoUrl(linkString)) &&
+    link.closest('.block.embed') === null
+  );
 }
 
 export function selectVideoLink(links, preferredType, videoType = videoTypes.both) {
   const linksArray = Array.isArray(links) ? links : [...links];
   const hasConsentForSocialVideos = isSocialAllowed();
   const isTypeBoth = videoType === videoTypes.both;
-  const prefersYouTube = (hasConsentForSocialVideos && preferredType !== 'local')
-                      || (!isTypeBoth && videoType === videoTypes.youtube);
+  const prefersYouTube = (hasConsentForSocialVideos && preferredType !== 'local') || (!isTypeBoth && videoType === videoTypes.youtube);
 
   const findLinkByCondition = (conditionFn) => linksArray.find((link) => conditionFn(link.getAttribute('href')));
 
@@ -71,8 +65,12 @@ export function selectVideoLink(links, preferredType, videoType = videoTypes.bot
   const youTubeLink = findLinkByCondition((href) => href.includes('youtube.com/embed/'));
   const localMediaLink = findLinkByCondition((href) => href.split('?')[0].endsWith('.mp4'));
 
-  if (aemVideoLink) return aemVideoLink;
-  if (prefersYouTube && youTubeLink) return youTubeLink;
+  if (aemVideoLink) {
+    return aemVideoLink;
+  }
+  if (prefersYouTube && youTubeLink) {
+    return youTubeLink;
+  }
   return localMediaLink;
 }
 
@@ -90,7 +88,6 @@ export function createLowResolutionBanner() {
 }
 
 export function showVideoModal(linkUrl) {
-  // eslint-disable-next-line import/no-cycle
   import('../common/modal/modal-component.js').then((modal) => {
     let beforeBanner = {};
 
@@ -113,8 +110,7 @@ export function addVideoShowHandler(link) {
 }
 
 export function isSoundcloudLink(link) {
-  return link.getAttribute('href').includes('soundcloud.com/player')
-    && link.closest('.block.embed') === null;
+  return link.getAttribute('href').includes('soundcloud.com/player') && link.closest('.block.embed') === null;
 }
 
 export function addSoundcloudShowHandler(link) {
@@ -299,15 +295,18 @@ const setVideoEvents = (video, playPauseButton, props) => {
 
   // Fallback to make sure the video is automatically played
   if (props.autoplay === true) {
-    video.addEventListener('loadedmetadata', () => {
-      setTimeout(() => {
-        if (video.paused) {
-          // eslint-disable-next-line no-console
-          console.warn('Failed to autoplay video, fallback code executed');
-          video.play();
-        }
-      }, 500);
-    }, { once: true });
+    video.addEventListener(
+      'loadedmetadata',
+      () => {
+        setTimeout(() => {
+          if (video.paused) {
+            console.warn('Failed to autoplay video, fallback code executed');
+            video.play();
+          }
+        }, 500);
+      },
+      { once: true },
+    );
   } else {
     video.removeAttribute('autoplay');
   }
@@ -351,14 +350,10 @@ const createAndConfigureVideo = (src, className, props, block) => {
  * @param {string} [videoId=''] - Identifier for the video, used for external video sources.
  * @returns {HTMLElement} - The created video element (<video> or <iframe>) with specified configs.
  */
-export const createVideo = (block, src, className = '', props = {}, localVideo = true, videoId = '') => (
-  localVideo
-    ? createAndConfigureVideo(src, className, props, block)
-    : createIframeElement(src, className, props, videoId)
-);
+export const createVideo = (block, src, className = '', props = {}, localVideo = true, videoId = '') =>
+  localVideo ? createAndConfigureVideo(src, className, props, block) : createIframeElement(src, className, props, videoId);
 
 const logVideoEvent = (eventName, videoId, timeStamp, blockName = 'video') => {
-  // eslint-disable-next-line no-console
   console.info(`[${blockName}] ${eventName} for ${videoId} at ${timeStamp}`);
 };
 
@@ -376,14 +371,15 @@ const formatDebugTime = (date) => {
 };
 
 export const handleVideoMessage = (event, videoId, blockName = 'video') => {
-  if (!event.origin.endsWith(aemCloudDomain)) return;
+  if (!event.origin.endsWith(aemCloudDomain)) {
+    return;
+  }
   if (event.data.type === 'embedded-video-player-event') {
     const timeStamp = formatDebugTime(new Date());
 
     logVideoEvent(event.data.name, event.data.videoId, timeStamp, blockName);
 
     if (event.data.name === 'video-config' && event.data.videoId === videoId) {
-      // eslint-disable-next-line no-console
       console.info('Sending video config:', getVideoConfig(videoId), timeStamp);
       event.source.postMessage(JSON.stringify(getVideoConfig(videoId)), '*');
     }
@@ -413,9 +409,7 @@ class VideoEventManager {
   }
 
   unregister(videoId, blockName) {
-    this.registrations = this.registrations.filter(
-      (reg) => reg.videoId !== videoId || reg.blockName !== blockName,
-    );
+    this.registrations = this.registrations.filter((reg) => reg.videoId !== videoId || reg.blockName !== blockName);
   }
 
   handleMessage(event) {

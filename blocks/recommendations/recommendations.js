@@ -1,8 +1,4 @@
-import {
-  createElement,
-  getOrigin,
-  getTextLabel,
-} from '../../scripts/common.js';
+import { createElement, getOrigin, getTextLabel } from '../../scripts/common.js';
 import {
   extractLimitFromBlock,
   clearRepeatedArticles,

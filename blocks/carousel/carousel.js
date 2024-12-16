@@ -1,6 +1,4 @@
-import {
-  isVideoLink, selectVideoLink, wrapImageWithVideoLink, addVideoShowHandler,
-} from '../../scripts/video-helper.js';
+import { isVideoLink, selectVideoLink, wrapImageWithVideoLink, addVideoShowHandler } from '../../scripts/video-helper.js';
 import { createElement } from '../../scripts/common.js';
 
 const debounceDelay = 30;
@@ -8,11 +6,10 @@ const debounceDelay = 30;
 function isInViewport(el) {
   const rect = el.getBoundingClientRect();
   return (
-    rect.top >= 0
-      && rect.left >= 0
-      && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-      && rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   );
 }
 
@@ -31,7 +28,9 @@ function initScroll(slidesList, onActiveItemChange) {
     const scrollOffset = calcCarouselItemsOffset(slidesList);
     let index = 0;
     // how many items have scrolled out?
-    while (slidesList.scrollLeft - scrollOffset * (index + 1) > 0) index += 1;
+    while (slidesList.scrollLeft - scrollOffset * (index + 1) > 0) {
+      index += 1;
+    }
 
     if (activeIndex !== index) {
       activeIndex = index;
@@ -52,7 +51,9 @@ function adjustWidthAndControls(block, carousel, ...controls) {
 
   let resizeTimeout;
   window.addEventListener('resize', () => {
-    if (resizeTimeout) clearTimeout(resizeTimeout);
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout);
+    }
     resizeTimeout = setTimeout(toggle, debounceDelay);
   });
 
@@ -104,7 +105,9 @@ function createDesktopControls(ul) {
 
   // Check if the carousel is inside a magazine article and if NOT hide the controls
   const isMagazineArticle = document.querySelector('.magazine');
-  if (!isMagazineArticle) desktopControls.classList.add('hidden');
+  if (!isMagazineArticle) {
+    desktopControls.classList.add('hidden');
+  }
 
   return desktopControls;
 }
@@ -114,7 +117,9 @@ function createDotControls(ul) {
   const dotControls = createElement('ul', { classes: 'mobile-controls' });
   [...ul.children].forEach((item, j) => {
     const control = createElement('li');
-    if (!j) control.className = 'active';
+    if (!j) {
+      control.className = 'active';
+    }
     const button = createElement('button', { props: { type: 'button' } });
     button.textContent = j + 1;
     control.append(button);
@@ -122,8 +127,7 @@ function createDotControls(ul) {
       dotControls.querySelector('li.active').classList.remove('active');
       control.classList.add('active');
 
-      const left = item.offsetLeft + item.offsetWidth / 2
-        - (item.parentNode.offsetLeft + item.parentNode.offsetWidth / 2);
+      const left = item.offsetLeft + item.offsetWidth / 2 - (item.parentNode.offsetLeft + item.parentNode.offsetWidth / 2);
       ul.scrollTo({ top: 0, left, behavior: 'smooth' });
     });
 
@@ -133,12 +137,16 @@ function createDotControls(ul) {
 
   let scrollTimeout;
   ul.addEventListener('scroll', () => {
-    if (scrollTimeout) clearTimeout(scrollTimeout);
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
     scrollTimeout = setTimeout(() => {
       const scrollOffset = calcCarouselItemsOffset(ul);
       let index = 0;
       // how many items have scrolled out?
-      while (ul.scrollLeft - scrollOffset * (index + 1) > 0) index += 1;
+      while (ul.scrollLeft - scrollOffset * (index + 1) > 0) {
+        index += 1;
+      }
       dotControls.querySelector('li.active').classList.remove('active');
       dotControls.children[index].classList.add('active');
     }, debounceDelay);

@@ -15,9 +15,7 @@ export default async function decorate(block) {
     const accordionHeader = row.querySelector(
       ':scope > div > h1, :scope > div > h2, :scope > div > h3, :scope > div > h4, :scope > div > h5, :scope > div > h6',
     );
-    const accordionContent = row.querySelector(
-      ':scope > div:nth-child(2)',
-    );
+    const accordionContent = row.querySelector(':scope > div:nth-child(2)');
 
     const headerButton = createElement('button', { classes: 'accordion-header-button' });
     const headerEl = createElement('h2', { classes: 'accordion-header' });

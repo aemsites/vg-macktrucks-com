@@ -25,7 +25,9 @@ const allArticles = formatArticlesArray(allMagazineData?.items);
 let activeVideo = null;
 
 const handleVideoAutoplay = (carouselItem, index) => {
-  if (!carouselItem || !carouselItem.children[index]) return;
+  if (!carouselItem || !carouselItem.children[index]) {
+    return;
+  }
 
   const currentVideo = carouselItem.children[index].querySelector('video');
 
@@ -105,7 +107,7 @@ const appendMediaToFigure = (figure, picture, links) => {
 
 const buildTabItems = (carousel, navigation, items, articles) => {
   items.forEach((item, index) => {
-    if (index <= (maxAmountOfTabs - 1)) {
+    if (index <= maxAmountOfTabs - 1) {
       const picture = item.querySelector('picture');
       const links = item.querySelectorAll('a');
       const tabContent = Array.from(links).find((link) => !link.classList.contains('text-link-with-video'));

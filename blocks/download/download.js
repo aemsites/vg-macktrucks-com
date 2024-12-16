@@ -77,10 +77,13 @@ const buildNewDownloadBlock = (block) => {
             ${subTitle}
           </small>
         </div>
-    ${newCondition.length === 0 ? ''
-    : `<div class='download-new-label'>
+    ${
+      newCondition.length === 0
+        ? ''
+        : `<div class='download-new-label'>
       ${newCondition}
-    </div>`}
+    </div>`
+    }
     </a>`;
     downloadNewList.append(downloadItem);
   });

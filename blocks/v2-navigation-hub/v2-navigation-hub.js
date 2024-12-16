@@ -40,7 +40,9 @@ export default function decorate(block) {
   cardNavigation.className = blockNames.cardNavigation;
   cardNavTitle.className = blockNames.cardNavTitle;
   cardNavList.className = blockNames.cardNavList;
-  cardNavLinks.forEach((link) => { link.className = 'standalone-link'; });
+  cardNavLinks.forEach((link) => {
+    link.className = 'standalone-link';
+  });
   mediaContainer.className = `${blockNames.media} ${blockNames.column}`;
   mediaImage.className = blockNames.mediaImage;
 

@@ -54,7 +54,7 @@ export const fetchMagazineData = async ({
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Error fetching magazine articles:', error);
-    return null;
+    return [];
   }
 };
 
@@ -136,7 +136,9 @@ export const formatFacetsArray = (facets) => {
  * @returns {Array} An array of values
  */
 export function getValuesFromObjectsArray(array = []) {
-  if (!Array.isArray(array) || array.length === 0) return [];
+  if (!Array.isArray(array) || array.length === 0) {
+    return [];
+  }
   return array.map((item) => Object.values(item)[0]);
 }
 
@@ -163,7 +165,9 @@ export const extractLimitFromBlock = (block) => {
 export const clearRepeatedArticles = (articles) => articles.filter((e) => {
   const currentArticlePath = window.location.href.split('/').pop();
   const path = e.path?.split('/').pop();
-  if (path !== currentArticlePath) return e;
+  if (path !== currentArticlePath) {
+    return e;
+  }
   return null;
 });
 
@@ -173,34 +177,36 @@ export const clearRepeatedArticles = (articles) => articles.filter((e) => {
  * @param {string} dateField - The date field to sort by (e.g., 'lastModified' or 'date').
  * @returns {Array} - A new array of articles sorted by the most recent date.
  */
-export const sortArticlesByDateField = (articles, dateField) => articles
-  .map((article) => ({
-    ...article,
-    timestamp: new Date(article[dateField]).getTime(),
-  }))
-  .sort((a, b) => b.timestamp - a.timestamp);
+export const sortArticlesByDateField = (articles, dateField) =>
+  articles
+    .map((article) => ({
+      ...article,
+      timestamp: new Date(article[dateField]).getTime(),
+    }))
+    .sort((a, b) => b.timestamp - a.timestamp);
 
 /**
  * Sorts the array of articles by the date that appears in the URL
  * @param {Array} articles - The articles array
  * @returns {Array} The same array but sorted
  */
-export const sortArticlesByDateInURL = (articles) => articles.sort((a, b) => {
-  const aPath = a.path.split('/');
-  const bPath = b.path.split('/');
-  const aYear = aPath[3];
-  const aMonth = aPath[4];
-  const bYear = bPath[3];
-  const bMonth = bPath[4];
+export const sortArticlesByDateInURL = (articles) =>
+  articles.sort((a, b) => {
+    const aPath = a.path.split('/');
+    const bPath = b.path.split('/');
+    const aYear = aPath[3];
+    const aMonth = aPath[4];
+    const bYear = bPath[3];
+    const bMonth = bPath[4];
 
-  const aDate = new Date(`${aYear}-${aMonth}`);
-  const bDate = new Date(`${bYear}-${bMonth}`);
+    const aDate = new Date(`${aYear}-${aMonth}`);
+    const bDate = new Date(`${bYear}-${bMonth}`);
 
-  if (aDate.getTime() === bDate.getTime()) {
-    return b.lastModified - a.lastModified;
-  }
-  return bDate - aDate;
-});
+    if (aDate.getTime() === bDate.getTime()) {
+      return b.lastModified - a.lastModified;
+    }
+    return bDate - aDate;
+  });
 
 /**
  * Checks whether the current page is a magazine template.

@@ -1,7 +1,4 @@
-import {
-  createElement,
-  variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { createElement, variantsClassesToBEM } from '../../scripts/common.js';
 
 const blockName = 'v2-icon-cards';
 const variantClasses = ['no-background', 'alt-font-size'];
@@ -19,8 +16,12 @@ export default async function decorate(block) {
   const hasHeader = parentSection.classList.contains('header-with-mark');
   const hasExtraColumn = columns.length === 4;
 
-  if (hasExtraColumn) block.classList.add(`${blockName}--4-cols`);
-  if (hasExtraColumn && hasHeader) parentSection.querySelector('.default-content-wrapper').classList.add(`${blockName}--4-cols-header`);
+  if (hasExtraColumn) {
+    block.classList.add(`${blockName}--4-cols`);
+  }
+  if (hasExtraColumn && hasHeader) {
+    parentSection.querySelector('.default-content-wrapper').classList.add(`${blockName}--4-cols-header`);
+  }
 
   columns.forEach((col, idx) => {
     const isExtraColumn = idx === 3;
@@ -35,7 +36,9 @@ export default async function decorate(block) {
       const isButton = [...e.classList].includes('button-container');
       const isPretitle = nextElmt?.tagName.toLowerCase()[0] === 'h';
 
-      if (!isPretitle && !isButton) bodyElmts.push(e);
+      if (!isPretitle && !isButton) {
+        bodyElmts.push(e);
+      }
     });
     bodyElmts.forEach((e) => e.classList.add(`${blockName}__body`));
 
@@ -46,9 +49,7 @@ export default async function decorate(block) {
         buttonContainer.replaceWith(btn);
       }
 
-      if (btn.classList.contains('button--primary')
-          || btn.classList.contains('button--secondary')
-          || btn.classList.contains('button--red')) {
+      if (btn.classList.contains('button--primary') || btn.classList.contains('button--secondary') || btn.classList.contains('button--red')) {
         btn.classList.add('button--small');
       } else {
         btn.classList.add('standalone-link', `${blockName}__button`);

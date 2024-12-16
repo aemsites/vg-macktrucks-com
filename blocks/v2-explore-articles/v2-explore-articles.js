@@ -42,14 +42,15 @@ const getData = async () => {
   const allArticles = formatArticlesArray(allMagazineData?.items);
   // Preparing the data for every collage item
   const collageItemsData = allArticles.map((article) => {
-    const {
-      title, image, path, category,
-    } = article;
+    const { title, image, path, category } = article;
     const linkUrl = new URL(path, window.location.origin);
     const picture = createOptimizedPicture(new URL(image, window.location.origin), title, true);
     picture.setAttribute('tabindex', '0');
     return {
-      title, picture, linkUrl, category,
+      title,
+      picture,
+      linkUrl,
+      category,
     };
   });
 
@@ -78,8 +79,7 @@ const getData = async () => {
 const buildFiltersExtraLine = (articlesAmount) => {
   // TODO: to be restored to enable the sort filter
   // const sortPlaceholderList = LABELS.SORT_PLACEHOLDERS.split(',');
-  const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', defaultAmount)
-    .replace('$1', articlesAmount);
+  const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', defaultAmount).replace('$1', articlesAmount);
   return `
     <div class="${CLASSES.showing}">
       ${showingText}
@@ -95,8 +95,9 @@ const buildFiltersExtraLine = (articlesAmount) => {
   // </div>
 };
 
-const buildArticlesTemplate = (articles) => articles.reduce((accumulator, article) => {
-  const collageItemFragment = `
+const buildArticlesTemplate = (articles) =>
+  articles.reduce((accumulator, article) => {
+    const collageItemFragment = `
     <a class="${CLASSES.collageItemLink}" href="${article.linkUrl.toString()}">
       <div class="${CLASSES.collageItemContent}">
         <div class="${CLASSES.collageItemCategoryTitle}">${article.category}</div>
@@ -108,9 +109,9 @@ const buildArticlesTemplate = (articles) => articles.reduce((accumulator, articl
       ${article.picture.outerHTML}
     </a>
   `;
-  return `${accumulator}
+    return `${accumulator}
     <div class="${CLASSES.collageItemContainer}">${collageItemFragment}</div>`;
-}, '');
+  }, '');
 
 // TODO: replace the filters div with the following code
 /*
@@ -120,7 +121,8 @@ const buildArticlesTemplate = (articles) => articles.reduce((accumulator, articl
     ${buildFiltersTemplate()}
   </div>
 */
-const buildTemplate = (articles, articlesAmount) => docRange.createContextualFragment(`
+const buildTemplate = (articles, articlesAmount) =>
+  docRange.createContextualFragment(`
   <div class="${CLASSES.filters}">
   </div>
   <div class="${CLASSES.extraLine}">

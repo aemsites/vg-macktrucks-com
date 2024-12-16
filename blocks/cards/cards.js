@@ -15,7 +15,9 @@ const updateListElements = (ul, isDarkVar = false, isCTABlock = false) => {
     if (isCTABlock) {
       const buttons = li.querySelectorAll('.cards-card-body .button-container');
       const { length } = buttons;
-      if (length === 0) return;
+      if (length === 0) {
+        return;
+      }
       // Last button is the one we want to use at card level
       const tempLink = [...buttons].at(-1).querySelector('a');
       const newLink = createElement('a', {
@@ -34,7 +36,7 @@ const recalcMaxHeight = (elements, initMaxHeight) => {
   const newMaxHeight = elements.reduce((maxHeight, el) => {
     el.style.height = '';
 
-    return (el.offsetHeight > maxHeight ? el.offsetHeight : maxHeight);
+    return el.offsetHeight > maxHeight ? el.offsetHeight : maxHeight;
   }, initMaxHeight);
 
   return newMaxHeight;
@@ -51,7 +53,9 @@ const observerFallBack = (changes, observer, cards, imgMaxHeight) => {
     const isAttribute = change.type === 'attributes';
     const isStatus = isAttribute && change.attributeName === 'data-section-status';
     const isLoaded = isStatus && change.target.dataset.sectionStatus === 'loaded';
-    if (!isLoaded) return;
+    if (!isLoaded) {
+      return;
+    }
     let maxHeight = imgMaxHeight;
     const { children } = cards;
     [...children].forEach((card) => {
@@ -67,7 +71,9 @@ const observerFallBack = (changes, observer, cards, imgMaxHeight) => {
           setHeightForCards(children, maxHeight);
         });
       }
-      if (height > maxHeight) maxHeight = height;
+      if (height > maxHeight) {
+        maxHeight = height;
+      }
     });
     setHeightForCards(children, maxHeight);
     observer.disconnect();
@@ -76,9 +82,7 @@ const observerFallBack = (changes, observer, cards, imgMaxHeight) => {
 
 const setSameHeightCards = (block, cards, imgMaxHeight) => {
   const parentSection = block.closest('[data-section-status]');
-  const observer = new MutationObserver(
-    (changes) => observerFallBack(changes, observer, cards, imgMaxHeight),
-  );
+  const observer = new MutationObserver((changes) => observerFallBack(changes, observer, cards, imgMaxHeight));
   observer.observe(parentSection, { attributes: true, attributeFilter: ['data-section-status'] });
 };
 
@@ -92,22 +96,21 @@ export default function decorate(block) {
     const li = document.createElement('li');
     li.innerHTML = row.innerHTML;
     [...li.children].forEach((div) => {
-      const hasPicture = isCTABlock
-        ? div.querySelector('picture')
-        : div.children.length === 1 && div.querySelector('picture');
-      if (hasPicture) div.className = 'cards-card-image';
-      else div.className = 'cards-card-body';
+      const hasPicture = isCTABlock ? div.querySelector('picture') : div.children.length === 1 && div.querySelector('picture');
+      if (hasPicture) {
+        div.className = 'cards-card-image';
+      } else {
+        div.className = 'cards-card-body';
+      }
     });
     ul.append(li);
   });
-  ul.querySelectorAll('img')
-    .forEach((img) => {
-      if (isDarkVar) {
-        imgMaxHeight = img.height > imgMaxHeight ? img.height : imgMaxHeight;
-      }
-      img.closest('picture')
-        .replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]));
-    });
+  ul.querySelectorAll('img').forEach((img) => {
+    if (isDarkVar) {
+      imgMaxHeight = img.height > imgMaxHeight ? img.height : imgMaxHeight;
+    }
+    img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }]));
+  });
 
   // add background black
   if (isDarkVar) {

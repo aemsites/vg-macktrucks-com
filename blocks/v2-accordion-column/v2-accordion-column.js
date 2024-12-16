@@ -1,8 +1,4 @@
-import {
-  createElement,
-  decorateIcons,
-  variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { createElement, decorateIcons, variantsClassesToBEM } from '../../scripts/common.js';
 
 const CLASSES = {
   blockName: 'v2-accordion-column',
@@ -14,10 +10,13 @@ const variants = Object.values(CLASSES).splice(1);
 
 const addAccordionClass = (item) => {
   const hasPicture = item.querySelector('picture');
-  if (hasPicture) item.classList.add(`${blockName}__item-image`);
-  else {
+  if (hasPicture) {
+    item.classList.add(`${blockName}__item-image`);
+  } else {
     const header = item.querySelector(':is(h1, h2, h3, h4, h5, h6)');
-    if (header) header.classList.add(`${blockName}__item-title`);
+    if (header) {
+      header.classList.add(`${blockName}__item-title`);
+    }
     item.classList.add(`${blockName}__item-description`);
   }
 };
@@ -28,9 +27,10 @@ export default function decorate(block) {
   const itemsContainer = createElement('div', { classes: `${blockName}__items-container` });
   const hasLeftClass = block.classList.contains(left); // accordion at left side
   /** @type {boolean} */
-  const isLeftVariant = hasLeftClass
-    || (!hasLeftClass && !!accordionItems[0].lastElementChild.querySelector('picture'));
-  if (!hasLeftClass && isLeftVariant) block.classList.add(left);
+  const isLeftVariant = hasLeftClass || (!hasLeftClass && !!accordionItems[0].lastElementChild.querySelector('picture'));
+  if (!hasLeftClass && isLeftVariant) {
+    block.classList.add(left);
+  }
   variantsClassesToBEM(block.classList, variants, blockName);
   block.parentElement.classList.add('full-width');
 
@@ -40,9 +40,7 @@ export default function decorate(block) {
     buttons.forEach((el) => {
       el.classList.add(`${blockName}__button-container`);
       [...el.querySelectorAll('a')].forEach((link) => {
-        if (link.classList.contains('button--primary')
-            || link.classList.contains('button--secondary')
-            || link.classList.contains('button--red')) {
+        if (link.classList.contains('button--primary') || link.classList.contains('button--secondary') || link.classList.contains('button--red')) {
           link.classList.add('button--small');
         } else {
           link.classList.add('standalone-link', `${blockName}__button`);
@@ -59,12 +57,16 @@ export default function decorate(block) {
 
     // add the proper classes to each accordion item
     item.classList.add(`${blockName}__item`);
-    if (i === 0) item.classList.add('active');
+    if (i === 0) {
+      item.classList.add('active');
+    }
     colItems.forEach((col) => addAccordionClass(col));
     colBtnTitle.prepend(item.querySelector(`.${blockName}__item-title`), dropdownArrowIcon);
     colBtnTitle.onclick = () => {
       const active = accordionContainer.querySelector('.active');
-      if (active && active !== item) active.classList.remove('active');
+      if (active && active !== item) {
+        active.classList.remove('active');
+      }
       item.classList.add('active');
     };
     item.prepend(colBtnTitle);

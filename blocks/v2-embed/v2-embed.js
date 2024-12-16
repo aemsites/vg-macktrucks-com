@@ -1,10 +1,4 @@
-import {
-  addVideoConfig,
-  createVideo,
-  handleVideoMessage,
-  VideoEventManager,
-  AEM_ASSETS,
-} from '../../scripts/video-helper.js';
+import { addVideoConfig, createVideo, handleVideoMessage, VideoEventManager, AEM_ASSETS } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-embed';
 const videoEventManager = new VideoEventManager();
@@ -13,11 +7,7 @@ class VideoComponent {
   constructor(videoId) {
     this.videoId = videoId;
 
-    videoEventManager.register(
-      this.videoId,
-      blockName,
-      (event) => handleVideoMessage(event, this.videoId, blockName),
-    );
+    videoEventManager.register(this.videoId, blockName, (event) => handleVideoMessage(event, this.videoId, blockName));
   }
 
   unregister() {
@@ -27,8 +17,7 @@ class VideoComponent {
 
 const extractAspectRatio = (block) => {
   const aspectRatioRegex = /aspect-ratio-(\d+)-(\d+)/;
-  const aspectRatioClass = Array.from(block.classList)
-    .find((className) => aspectRatioRegex.test(className));
+  const aspectRatioClass = Array.from(block.classList).find((className) => aspectRatioRegex.test(className));
 
   if (!aspectRatioClass) {
     return null;
@@ -74,13 +63,11 @@ export default function decorate(block) {
   const match = link?.match(AEM_ASSETS.videoIdRegex);
 
   if (!link) {
-    // eslint-disable-next-line no-console
     console.warn(`[${blockName}]: There is no video link`);
     return;
   }
 
   if (!match) {
-    // eslint-disable-next-line no-console
     console.warn(`[${blockName}]: Video link is incorrect: ${link}`);
     return;
   }
@@ -101,8 +88,7 @@ export default function decorate(block) {
 
   configureVideo(block, videoId);
 
-  // eslint-disable-next-line no-unused-vars
-  const embedVideoComponent = new VideoComponent(block.videoId);
+  new VideoComponent(block.videoId);
   const videoElement = createVideo(block, link, `${blockName}__frame`, videoProps, false, videoId);
 
   block.innerHTML = '';
