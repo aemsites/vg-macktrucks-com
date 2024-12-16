@@ -1,8 +1,9 @@
 import {
   getMetadata,
   createOptimizedPicture,
+  loadBlock,
 } from '../../scripts/aem.js';
-import { createElement } from '../../scripts/common.js';
+import { createElement, getPlaceholders } from '../../scripts/common.js';
 import { getArticleTags } from '../../scripts/services/magazine.service.js';
 
 async function buildArticleHero({ truckTags, categoryTag } = {}) {
@@ -87,6 +88,15 @@ async function buildShareSection() {
   return shareSection;
 }
 
+async function loadInnerBlocks(container) {
+  // Lets wait for the placeholders to be loaded since the blocks might have them as a dependency
+  await getPlaceholders();
+
+  container.querySelectorAll('.block').forEach((block) => {
+    loadBlock(block);
+  });
+}
+
 export default async function decorate(doc) {
   const categoryTag = await getArticleTags('categories');
   const truckTags = await getArticleTags('trucks');
@@ -150,4 +160,8 @@ export default async function decorate(doc) {
 
   container.innerText = '';
   container.append(article);
+
+  // loadInnerBlocks is an async function
+  // Lets run it async without wait, no need...
+  loadInnerBlocks(container);
 }
