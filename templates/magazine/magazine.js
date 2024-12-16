@@ -1,14 +1,10 @@
 import { getMetadata, createOptimizedPicture, loadBlock } from '../../scripts/aem.js';
 import { createElement, getPlaceholders } from '../../scripts/common.js';
-import { getArticleTags } from '../../scripts/services/magazine.service.js';
 
 async function buildArticleHero({ truckTags, categoryTag } = {}) {
   const title = getMetadata('og:title');
   const headPic = getMetadata('og:image');
   const headAlt = getMetadata('og:image:alt');
-
-  const truckModel = truckTags || getMetadata('truck');
-  const category = categoryTag || getMetadata('category');
 
   const section = createElement('div', { classes: ['section', 'template', 'article-template', 'article-hero-container'] });
 
@@ -16,19 +12,19 @@ async function buildArticleHero({ truckTags, categoryTag } = {}) {
   const articleHeroImage = createElement('div', { classes: 'article-hero-image' });
   const articleHeroContent = createElement('div', { classes: 'article-hero-content' });
 
-  const categoryUrl = category.toLowerCase().replaceAll(' ', '-');
+  const categoryUrl = categoryTag.toLowerCase().replaceAll(' ', '-');
   const categorySpan = createElement('a', {
     classes: 'article-hero-category',
     props: { href: `/magazine/categories/${categoryUrl}` },
   });
-  categorySpan.innerText = category;
+  categorySpan.innerText = categoryTag;
 
   const titleH4 = createElement('h4', { classes: 'article-hero-title' });
   titleH4.innerText = title;
 
   const truck = createElement('div', { classes: 'article-hero-truck' });
   const truckText = createElement('p', { classes: 'truck-text' });
-  truckText.innerText = truckModel;
+  truckText.innerText = truckTags;
   const truckIcon = createElement('img', {
     classes: 'truck-icon',
     props: { src: '/icons/Truck_Key_icon.svg', alt: 'truck icon' },
@@ -38,7 +34,7 @@ async function buildArticleHero({ truckTags, categoryTag } = {}) {
   truck.append(truckIcon, truckText);
 
   articleHeroContent.append(categorySpan, titleH4);
-  if (truckModel.length !== 0) {
+  if (truckTags.length !== 0) {
     articleHeroContent.append(truck);
   }
   section.append(articleHeroImage, articleHeroContent);
@@ -97,8 +93,8 @@ async function loadInnerBlocks(container) {
 }
 
 export default async function decorate(doc) {
-  const categoryTag = await getArticleTags('categories');
-  const truckTags = await getArticleTags('trucks');
+  const categoryTag = getMetadata('article-category') || '';
+  const truckTags = getMetadata('truck') || '';
 
   const container = doc.querySelector('main');
 

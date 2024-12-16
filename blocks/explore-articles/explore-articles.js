@@ -1,17 +1,19 @@
-import { createElement, getTextLabel } from '../../scripts/common.js';
-import { fetchMagazineArticles, getArticleTagsJSON, removeArticlesWithNoImage } from '../../scripts/services/magazine.service.js';
+import { createElement, getTextLabel, capitalizeWords } from '../../scripts/common.js';
+import { fetchMagazineData, formatArticlesArray, formatFacetsArray } from '../../scripts/services/magazine.service.js';
 
-const allArticles = await fetchMagazineArticles();
-const allArticlesWithImage = removeArticlesWithNoImage(allArticles);
-const allArticleTags = await getArticleTagsJSON();
-const allCategories = allArticleTags.categories;
-const allTrucks = allArticleTags.trucks;
 const blockName = 'explore-articles';
 
+const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
+const allMagazineData = await fetchMagazineData(queryVariables);
+const allArticles = formatArticlesArray(allMagazineData?.items);
+const allFacets = formatFacetsArray(allMagazineData?.facets);
+const totalArticlesNumber = allMagazineData?.count;
+
+const { truck: allTrucks, category: allCategories } = allFacets;
 const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
 
-const articlesPerChunk = 4;
 let counter = 1;
+const artsPerChunk = 4;
 
 const divideArray = (mainArray, perChunk) => {
   const dividedArrays = mainArray.reduce((resultArray, item, index) => {
@@ -30,7 +32,7 @@ const getOptions = (list, placeholder) => {
   list.unshift(placeholder);
   list.forEach((el) => {
     const option = createElement('option', { props: { value: el } });
-    option.innerText = el;
+    option.innerText = capitalizeWords(el);
     if (el.length !== 0) {
       options.push(option);
     }
@@ -47,60 +49,40 @@ const buildSelect = (type, array, text) => {
   return select;
 };
 
-const buildArticle = (e) => {
-  const article = createElement('div', { classes: ['article'] });
-  const articleImage = createElement('div', { classes: 'article-image' });
-  const articleContent = createElement('div', { classes: 'article-content' });
+const createTruckSection = (trucks) => {
+  const truckList = trucks?.map((item) => item.replace('Mack ', '')).join(', ');
+  return `
+    <div class="article-truck">
+      <img
+        class="truck-icon"
+        src="/icons/Truck_Key_icon.svg"
+        alt="truck icon"
+      />
+      <p class="article-truck-text">${truckList}</p>
+    </div>`;
+};
 
-  const linkUrl = new URL(e.path, window.location.origin);
-
-  const categoriesWithDash = e.category.replaceAll(' ', '-').toLowerCase();
+const buildArticle = (article, idx) => {
+  const linkUrl = new URL(article.path, window.location.origin);
+  const categoriesWithDash = article.category.replaceAll(' ', '-').toLowerCase();
   const categoryUrl = new URL(`magazine/categories/${categoriesWithDash}`, window.location.origin);
+  const articleDiv = createElement('div', { classes: 'article', props: { id: `group-${idx}` } });
+  const articleContent = document.createRange().createContextualFragment(`
+      <div class="article-image">
+          <img src="${article.image}" alt="article image" class="image">
+      </div>
+      <div class="article-content">
+          ${article.category ? `<a href="${categoryUrl}" class="article-category">${article.category}</a>` : ''}
+          <a href="${linkUrl}" class="article-link">
+            <h3 class="article-title">${article.title}</h3>
+            ${article.description ? `<p class="article-subtitle">${article.description}</p>` : ''}
+          </a>
+          ${article.truck ? createTruckSection(article.truck) : ''}
 
-  const image = createElement('img', {
-    classes: 'image',
-    props: { src: e.image },
-  });
-  articleImage.append(image);
-
-  if (e.category.length !== 0) {
-    const category = createElement('a', {
-      classes: 'article-category',
-      props: { href: categoryUrl },
-    });
-    category.innerText = e.category;
-    articleContent.append(category);
-  }
-
-  const link = createElement('a', {
-    classes: 'article-link',
-    props: { href: linkUrl },
-  });
-
-  const title = createElement('h3', { classes: 'article-title' });
-  title.innerText = e.title;
-  link.append(title);
-
-  if (e.subtitle.length !== 0) {
-    const subtitle = createElement('p', { classes: 'article-subtitle' });
-    subtitle.innerText = e.subtitle;
-    link.append(subtitle);
-  }
-  articleContent.append(link);
-
-  if (e.truck.length !== 0) {
-    const truck = createElement('div', { classes: 'article-truck' });
-    const truckText = createElement('p', { classes: 'article-truck-text' });
-    truckText.innerText = e.truck;
-    const truckIcon = createElement('img', {
-      classes: 'article-truck-icon',
-      props: { src: '/icons/Truck_Key_icon.svg', alt: 'truck icon' },
-    });
-    truck.append(truckIcon, truckText);
-    articleContent.append(truck);
-  }
-  article.append(articleImage, articleContent);
-  return article;
+      </div>
+  `);
+  articleDiv.append(articleContent);
+  return articleDiv;
 };
 
 const loadMoreArticles = (evt, articleGroups, amountOfGroups) => {
@@ -124,19 +106,12 @@ const loadMoreArticles = (evt, articleGroups, amountOfGroups) => {
   counter += 1;
 };
 
-const addAllArrays = (array) => {
-  const initialValue = 0;
-  const totalArticles = array.reduce((acc, curr) => acc + curr.length, initialValue);
-  return totalArticles;
-};
-
 const getArticleGroups = (artGroup) => {
   const groups = [];
   artGroup.forEach((articleGroup, idx) => {
     const group = [idx];
     articleGroup.forEach((el) => {
-      const article = buildArticle(el);
-      article.id = `group-${idx}`;
+      const article = buildArticle(el, idx);
       group.push(article);
     });
     groups.push(group);
@@ -154,33 +129,29 @@ const buildFirstArticles = (art, section) => {
 };
 
 const buildArticleList = (articles) => {
-  const groupedArticles = divideArray(articles, articlesPerChunk);
+  const groupedArticles = divideArray(articles, artsPerChunk);
   const articleGroups = getArticleGroups(groupedArticles);
-  const totalArticlesNumber = addAllArrays(groupedArticles);
   const amountOfGroups = articleGroups.length;
 
-  const paginationSection = createElement('div', { classes: 'pagination-section' });
   const articlesSection = createElement('div', { classes: `${blockName}-articles` });
-
-  const amountOfArticles = createElement('p', { classes: 'article-amount' });
-  amountOfArticles.textContent = totalArticlesNumber !== 0 ? `${totalArticlesNumber} articles` : getTextLabel('No article Message');
-
-  paginationSection.append(amountOfArticles);
-  articlesSection.append(paginationSection);
-
-  const moreSection = createElement('div', { classes: `${blockName}-more` });
-  const moreButton = createElement('button', { classes: 'more-btn' });
-  moreButton.textContent = getTextLabel('Load more articles button');
-  moreButton.addEventListener('click', (evt) => loadMoreArticles(evt, articleGroups, amountOfGroups));
-  if (totalArticlesNumber > articlesPerChunk) {
-    moreSection.append(moreButton);
-  }
+  const articlesContent = document.createRange().createContextualFragment(`
+      <div class="pagination-section">
+        <p class="article-amount">
+          ${totalArticlesNumber !== 0 ? `${totalArticlesNumber} articles` : getTextLabel('No article Message')}
+        </p>
+      </div>
+      <div class="article-list"></div>
+      <div class="${blockName}-more">
+        ${totalArticlesNumber > artsPerChunk ? `<button class="more-btn">${getTextLabel('Load more articles button')}</button>` : ''}
+      </div>
+    `);
 
   if (articleGroups.length !== 0) {
-    const articleListSection = createElement('div', { classes: 'article-list' });
-    buildFirstArticles(articleGroups, articleListSection);
-    articlesSection.append(articleListSection, moreSection);
+    buildFirstArticles(articleGroups, articlesContent.querySelector('.article-list'));
+    articlesContent.querySelector('.more-btn')?.addEventListener('click', (evt) => loadMoreArticles(evt, articleGroups, amountOfGroups));
   }
+  articlesSection.append(articlesContent);
+
   return articlesSection;
 };
 
@@ -188,25 +159,22 @@ const handleForm = () => {
   counter = 1;
   const fieldset = document.querySelector('#explore-magazine-fieldset');
   const selects = fieldset.querySelectorAll('select');
-  const [category, truck] = selects;
+  const [catSelect, truckSelect] = selects;
 
-  const filteredList = allArticlesWithImage.filter((article) => {
-    const criteria = [
-      category.value === categoryPlaceholder && truck.value === truckPlaceholder,
-      category.value === categoryPlaceholder && truck.value === article.truck,
-      category.value === article.category && truck.value === truckPlaceholder,
-      category.value === article.category && truck.value === article.truck,
-    ];
-    const [criteria1, criteria2, criteria3, criteria4] = criteria;
+  const filteredList = allArticles.filter((art) => {
+    const truckValue = truckSelect.value.toLowerCase();
+    const truckMatch = art.truck?.some((truck) => truck.toLowerCase() === truckValue);
+    const categoryMatch = art.category.toLowerCase() === catSelect.value.toLowerCase();
 
-    if (criteria1 || criteria2 || criteria3 || criteria4) {
-      return article;
-    }
-    return null;
+    return (
+      (catSelect.value === categoryPlaceholder && truckSelect.value === truckPlaceholder) ||
+      (catSelect.value === categoryPlaceholder && truckMatch) ||
+      (categoryMatch && truckSelect.value === truckPlaceholder) ||
+      (categoryMatch && truckMatch)
+    );
   });
 
   const articleList = document.querySelector(`.${blockName}-articles`);
-
   articleList.textContent = '';
   const filteredArticles = buildArticleList(filteredList, 0);
   articleList.append(filteredArticles);
@@ -214,24 +182,20 @@ const handleForm = () => {
 
 const buildFieldset = () => {
   const formSection = createElement('div', { classes: `${blockName}-fieldset` });
-  const form = createElement('form', ['form', 'filter-list'], { method: 'get', name: 'article-fieldset' });
-  form.addEventListener('change', handleForm);
+  const formFragment = document.createRange().createContextualFragment(`
+    <form>
+      <fieldset class="fieldset filter-list" method="get" name="article-fieldset" id="explore-magazine-fieldset">
+          <div class="category-field"></div>
+          <div class="trucks-field"></div>
+      </fieldset>
+    </form>
+  `);
 
-  const fieldset = createElement('fieldset', {
-    classes: ['fieldset', 'filter-list'],
-    props: { method: 'get', name: 'article-fieldset', id: 'explore-magazine-fieldset' },
-  });
+  formFragment.querySelector('form').addEventListener('change', handleForm);
+  formFragment.querySelector('.category-field').append(buildSelect('category', allCategories, categoryPlaceholder));
+  formFragment.querySelector('.trucks-field').append(buildSelect('truck', allTrucks, truckPlaceholder));
 
-  const categoryField = createElement('div', { classes: 'category-field' });
-  const trucksField = createElement('div', { classes: 'trucks-field' });
-
-  categoryField.append(buildSelect('categories', allCategories, categoryPlaceholder));
-  trucksField.append(buildSelect('trucks', allTrucks, truckPlaceholder));
-
-  fieldset.append(categoryField, trucksField);
-
-  form.append(fieldset);
-  formSection.append(form);
+  formSection.append(formFragment);
 
   return formSection;
 };
@@ -241,20 +205,17 @@ export default async function decorate(block) {
   const [title, text] = children;
 
   const generalSection = createElement('div', { classes: `${blockName}-section` });
+  const contentWrapper = document.createRange().createContextualFragment(`
+    <div class="${blockName}-heading">
+      <h4 class="${blockName}-title" >${title.innerText}</h4>
+      <p class="${blockName}-text" >${text.innerText}</p>
+    </div>
+    <div class="${blockName}-content"></div>
+  `);
 
-  const headingSection = createElement('div', { classes: `${blockName}-heading` });
-  const contentSection = createElement('div', { classes: `${blockName}-content` });
+  contentWrapper.querySelector(`.${blockName}-content`).append(buildFieldset(), buildArticleList(allArticles, 0));
 
-  const h4Element = createElement('h4', { classes: `${blockName}-title` });
-  h4Element.innerText = title.innerText;
-  text.classList.add(`${blockName}-text`);
-
-  headingSection.append(h4Element, text);
-  contentSection.append(buildFieldset());
-
-  contentSection.append(buildArticleList(allArticlesWithImage, 0));
-
-  generalSection.append(headingSection, contentSection);
+  generalSection.append(contentWrapper);
 
   block.textContent = '';
   block.append(generalSection);

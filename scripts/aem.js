@@ -46,6 +46,7 @@ function sampleRUM(checkpoint, data) {
               .trim();
           } catch (err) {
             /* error structure was not as expected */
+            console.error(err);
           }
           return errData;
         };
@@ -111,6 +112,7 @@ function sampleRUM(checkpoint, data) {
     document.dispatchEvent(new CustomEvent('rum', { detail: { checkpoint, data } }));
   } catch (error) {
     // something went awry
+    console.error(error);
   }
 }
 

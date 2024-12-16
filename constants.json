@@ -26,7 +26,7 @@
           },
           {
               "name": "v1AllowedBlocks",
-              "value": "v1AllowedBlocks"
+              "value": "[\"v2-embed\",\"v2-forms\"]"
           },
           {
               "name": "v2AllowedBlocks",

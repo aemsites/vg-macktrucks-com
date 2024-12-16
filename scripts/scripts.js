@@ -850,7 +850,6 @@ if (document.documentElement.classList.contains('truck-configurator')) {
 
     window.addEventListener('reactRouterChange', (e) => {
       const newLocation = e.detail;
-
       console.info('[truck-configurator]: React Router location changed:', newLocation);
 
       if (newLocation.pathname && newLocation.pathname !== '/' && disableHeader) {

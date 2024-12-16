@@ -278,6 +278,13 @@
     {
       "Key": "tooltip copied text",
       "Text": "Copied!"
+    },    {
+      "Key": "defaultAuthor",
+      "Text": "Mack Trucks"
+    },
+    {
+      "Key": "defaultReadTime",
+      "Text": "10 min"
     }
   ],
   ":type": "sheet"

@@ -625,3 +625,16 @@ export function addTargetBlankToExternalLink(link) {
     link.target = '_blank';
   }
 }
+
+/**
+ * Receives a lowercase string and capitalizes it.
+ * Useful for elements not reachable by css fe: select <options>
+ * @param {string} str - lowercase string fe: 'mack trucks'.
+ * @returns {string} The capitalized string fe: 'Mack Trucks'.
+ */
+export const capitalizeWords = (str) => {
+  return str
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
