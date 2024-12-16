@@ -1,3 +1,4 @@
+/* global fbq */
 import { loadScript } from './aem.js';
 import { isPerformanceAllowed, isSocialAllowed, isTargetingAllowed, extractObjectFromArray, COOKIE_CONFIGS, isDevHost } from './common.js';
 
@@ -72,7 +73,7 @@ if (isDevHost()) {
 // Google Analytics
 async function loadGoogleTagManager() {
   // google tag manager
-  (function (w, d, s, l, i) {
+  (function loadGoogleTagManagerInit(w, d, s, l, i) {
     w[l] = w[l] || [];
     w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
     const f = d.getElementsByTagName(s)[0];
@@ -86,12 +87,19 @@ async function loadGoogleTagManager() {
 
 // Hotjar
 async function loadHotjar() {
-  (function(h,o,t,j,a,r){
-    h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-    h._hjSettings={hjid:HOTJAR_ID,hjsv:6}; a=o.getElementsByTagName('head')[0];
-    r=o.createElement('script');r.async=1; r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+  (function loadHotjarInit(h, o, t, j, a, r) {
+    h.hj =
+      h.hj ||
+      function loadHotjarInitHj() {
+        (h.hj.q = h.hj.q || []).push(arguments);
+      };
+    h._hjSettings = { hjid: HOTJAR_ID, hjsv: 6 };
+    a = o.getElementsByTagName('head')[0];
+    r = o.createElement('script');
+    r.async = 1;
+    r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
     a.appendChild(r);
-  })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
 }
 
 // Account Engagement Tracking Code
@@ -111,40 +119,48 @@ async function loadAccountEngagementTracking() {
 
 // FaceBook Pixel
 async function loadFacebookPixel() {
-  (function (f, b, e, v, n, t, s) {
-    if (f.fbq) return; n = f.fbq = function () {
-      n.callMethod
-        ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+  (function loadFacebookPixelInit(f, b, e, v, n, t, s) {
+    if (f.fbq) {
+      return;
+    }
+    n = f.fbq = function loadFacebookPixelInitFbq() {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
     };
-    if (!f._fbq)f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
-    n.queue = []; t = b.createElement(e); t.async = !0;
-    t.src = v; s = b.getElementsByTagName(e)[0];
+    if (!f._fbq) {
+      f._fbq = n;
+    }
+    n.push = n;
+    n.loaded = !0;
+    n.version = '2.0';
+    n.queue = [];
+    t = b.createElement(e);
+    t.async = !0;
+    t.src = v;
+    s = b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t, s);
-  }(
-    window,
-    document,
-    'script',
-    'https://connect.facebook.net/en_US/fbevents.js',
-  ));
+  })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
   fbq('init', FACEBOOK_ID);
   fbq('track', 'PageView');
-  /* eslint-enable */
 }
 
 // LinkedIn Insight Tag
 async function loadLinkedInInsightTag() {
-  var _linkedin_partner_id = LINKEDIN_PARTNER_ID;
+  const _linkedin_partner_id = LINKEDIN_PARTNER_ID;
   window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
   window._linkedin_data_partner_ids.push(_linkedin_partner_id);
 
-  (function(l) {
-    if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
-    window.lintrk.q=[]}
-    var s = document.getElementsByTagName("script")[0];
-    var b = document.createElement("script");
-    b.type = "text/javascript";b.async = true;
-    b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+  (function loadLinkedInInsightTagInit(l) {
+    if (!l) {
+      window.lintrk = function loadLinkedInInsightTagInitLintrk(a, b) {
+        window.lintrk.q.push([a, b]);
+      };
+      window.lintrk.q = [];
+    }
+    const s = document.getElementsByTagName('script')[0];
+    const b = document.createElement('script');
+    b.type = 'text/javascript';
+    b.async = true;
+    b.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
     s.parentNode.insertBefore(b, s);
   })(window.lintrk);
-  /* eslint-enable */
 }
