@@ -12,20 +12,17 @@
 
 /* eslint-env browser */
 function sampleRUM(checkpoint, data) {
-  // eslint-disable-next-line max-len
   const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
     sampleRUM.enhance = () => {};
     if (!window.hlx.rum) {
       const param = new URLSearchParams(window.location.search).get('rum');
-      const weight = (window.SAMPLE_PAGEVIEWS_AT_RATE === 'high' && 10)
-        || (window.SAMPLE_PAGEVIEWS_AT_RATE === 'low' && 1000)
-        || (param === 'on' && 1)
-        || 100;
+      const weight =
+        (window.SAMPLE_PAGEVIEWS_AT_RATE === 'high' && 10) || (window.SAMPLE_PAGEVIEWS_AT_RATE === 'low' && 1000) || (param === 'on' && 1) || 100;
       const id = Math.random().toString(36).slice(-4);
       const isSelected = param !== 'off' && Math.random() * weight < 1;
-      // eslint-disable-next-line object-curly-newline, max-len
+
       window.hlx.rum = {
         weight,
         id,
@@ -72,7 +69,6 @@ function sampleRUM(checkpoint, data) {
         sampleRUM.baseURL = sampleRUM.baseURL || new URL(window.RUM_BASE || '/', new URL('https://rum.hlx.page'));
         sampleRUM.collectBaseURL = sampleRUM.collectBaseURL || sampleRUM.baseURL;
         sampleRUM.sendPing = (ck, time, pingData = {}) => {
-          // eslint-disable-next-line max-len, object-curly-newline
           const rumData = JSON.stringify({
             weight,
             id,
@@ -81,35 +77,27 @@ function sampleRUM(checkpoint, data) {
             t: time,
             ...pingData,
           });
-          const urlParams = window.RUM_PARAMS
-            ? `?${new URLSearchParams(window.RUM_PARAMS).toString()}`
-            : '';
-          const { href: url, origin } = new URL(
-            `.rum/${weight}${urlParams}`,
-            sampleRUM.collectBaseURL,
-          );
-          const body = origin === window.location.origin
-            ? new Blob([rumData], { type: 'application/json' })
-            : rumData;
+          const urlParams = window.RUM_PARAMS ? `?${new URLSearchParams(window.RUM_PARAMS).toString()}` : '';
+          const { href: url, origin } = new URL(`.rum/${weight}${urlParams}`, sampleRUM.collectBaseURL);
+          const body = origin === window.location.origin ? new Blob([rumData], { type: 'application/json' }) : rumData;
           navigator.sendBeacon(url, body);
-          // eslint-disable-next-line no-console
+
           console.debug(`ping:${ck}`, pingData);
         };
         sampleRUM.sendPing('top', timeShift());
 
         sampleRUM.enhance = () => {
           // only enhance once
-          if (document.querySelector('script[src*="rum-enhancer"]')) return;
+          if (document.querySelector('script[src*="rum-enhancer"]')) {
+            return;
+          }
           const { enhancerVersion, enhancerHash } = sampleRUM.enhancerContext || {};
           const script = document.createElement('script');
           if (enhancerHash) {
             script.integrity = enhancerHash;
             script.setAttribute('crossorigin', 'anonymous');
           }
-          script.src = new URL(
-            `.rum/@adobe/helix-rum-enhancer@${enhancerVersion || '^2'}/src/index.js`,
-            sampleRUM.baseURL,
-          ).href;
+          script.src = new URL(`.rum/@adobe/helix-rum-enhancer@${enhancerVersion || '^2'}/src/index.js`, sampleRUM.baseURL).href;
           document.head.appendChild(script);
         };
         if (!window.hlx.RUM_MANUAL_ENHANCE) {
@@ -141,7 +129,6 @@ function setup() {
     try {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.log(error);
     }
   }
@@ -164,10 +151,10 @@ function init() {
 function toClassName(name) {
   return typeof name === 'string'
     ? name
-      .toLowerCase()
-      .replace(/[^0-9a-z]/gi, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
+        .toLowerCase()
+        .replace(/[^0-9a-z]/gi, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
     : '';
 }
 
@@ -185,7 +172,6 @@ function toCamelCase(name) {
  * @param {Element} block The block element
  * @returns {object} The block config
  */
-// eslint-disable-next-line import/prefer-default-export
 function readBlockConfig(block) {
   const config = {};
   block.querySelectorAll(':scope > div').forEach((row) => {
@@ -216,7 +202,9 @@ function readBlockConfig(block) {
           } else {
             value = ps.map((p) => p.textContent);
           }
-        } else value = row.children[1].textContent;
+        } else {
+          value = row.children[1].textContent;
+        }
         config[name] = value;
       }
     }
@@ -254,7 +242,6 @@ async function loadScript(src, attrs) {
       const script = document.createElement('script');
       script.src = src;
       if (attrs) {
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
         for (const attr in attrs) {
           script.setAttribute(attr, attrs[attr]);
         }
@@ -276,9 +263,7 @@ async function loadScript(src, attrs) {
  */
 function getMetadata(name, doc = document) {
   const attr = name && name.includes(':') ? 'property' : 'name';
-  const meta = [...doc.head.querySelectorAll(`meta[${attr}="${name}"]`)]
-    .map((m) => m.content)
-    .join(', ');
+  const meta = [...doc.head.querySelectorAll(`meta[${attr}="${name}"]`)].map((m) => m.content).join(', ');
   return meta || '';
 }
 
@@ -290,12 +275,7 @@ function getMetadata(name, doc = document) {
  * @param {Array} [breakpoints] Breakpoints and corresponding params (eg. width)
  * @returns {Element} The picture element
  */
-function createOptimizedPicture(
-  src,
-  alt = '',
-  eager = false,
-  breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }],
-) {
+function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
   const { pathname } = url;
@@ -304,7 +284,9 @@ function createOptimizedPicture(
   // webp
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
+    if (br.media) {
+      source.setAttribute('media', br.media);
+    }
     source.setAttribute('type', 'image/webp');
     source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
     picture.appendChild(source);
@@ -314,7 +296,9 @@ function createOptimizedPicture(
   breakpoints.forEach((br, i) => {
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
-      if (br.media) source.setAttribute('media', br.media);
+      if (br.media) {
+        source.setAttribute('media', br.media);
+      }
       source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
       picture.appendChild(source);
     } else {
@@ -339,9 +323,13 @@ function decorateTemplateAndTheme() {
     });
   };
   const template = getMetadata('template');
-  if (template) addClasses(document.body, template);
+  if (template) {
+    addClasses(document.body, template);
+  }
   const theme = getMetadata('theme');
-  if (theme) addClasses(document.body, theme);
+  if (theme) {
+    addClasses(document.body, theme);
+  }
 }
 
 /**
@@ -349,20 +337,7 @@ function decorateTemplateAndTheme() {
  * @param {Element} block the block element
  */
 function wrapTextNodes(block) {
-  const validWrappers = [
-    'P',
-    'PRE',
-    'UL',
-    'OL',
-    'PICTURE',
-    'TABLE',
-    'H1',
-    'H2',
-    'H3',
-    'H4',
-    'H5',
-    'H6',
-  ];
+  const validWrappers = ['P', 'PRE', 'UL', 'OL', 'PICTURE', 'TABLE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
   const wrap = (el) => {
     const wrapper = document.createElement('p');
@@ -372,14 +347,10 @@ function wrapTextNodes(block) {
 
   block.querySelectorAll(':scope > div > div').forEach((blockColumn) => {
     if (blockColumn.hasChildNodes()) {
-      const hasWrapper = !!blockColumn.firstElementChild
-        && validWrappers.some((tagName) => blockColumn.firstElementChild.tagName === tagName);
+      const hasWrapper = !!blockColumn.firstElementChild && validWrappers.some((tagName) => blockColumn.firstElementChild.tagName === tagName);
       if (!hasWrapper) {
         wrap(blockColumn);
-      } else if (
-        blockColumn.firstElementChild.tagName === 'PICTURE'
-        && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())
-      ) {
+      } else if (blockColumn.firstElementChild.tagName === 'PICTURE' && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())) {
         wrap(blockColumn);
       }
     }
@@ -401,21 +372,11 @@ function decorateButtons(element) {
           a.className = 'button'; // default
           up.classList.add('button-container');
         }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
+        if (up.childNodes.length === 1 && up.tagName === 'STRONG' && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button primary';
           twoup.classList.add('button-container');
         }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
+        if (up.childNodes.length === 1 && up.tagName === 'EM' && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
         }
@@ -467,7 +428,9 @@ function decorateSections(main) {
         const wrapper = document.createElement('div');
         wrappers.push(wrapper);
         defaultContent = e.tagName !== 'DIV';
-        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+        if (defaultContent) {
+          wrapper.classList.add('default-content-wrapper');
+        }
       }
       wrappers[wrappers.length - 1].append(e);
     });
@@ -501,7 +464,6 @@ function decorateSections(main) {
  * @param {string} [prefix] Location of placeholders
  * @returns {object} Window placeholders object
  */
-// eslint-disable-next-line import/prefer-default-export
 async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};
   if (!window.placeholders[prefix]) {
@@ -578,14 +540,11 @@ async function loadBlock(block) {
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(
-              `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`
-            );
+            const mod = await import(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`);
             if (mod.default) {
               await mod.default(block);
             }
           } catch (error) {
-            // eslint-disable-next-line no-console
             console.log(`failed to load module for ${blockName}`, error);
           }
           resolve();
@@ -593,7 +552,6 @@ async function loadBlock(block) {
       });
       await Promise.all([cssLoaded, decorationComplete]);
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
     }
     block.dataset.blockStatus = 'loaded';
@@ -615,7 +573,9 @@ function decorateBlock(block) {
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
-    if (section) section.classList.add(`${shortBlockName}-container`);
+    if (section) {
+      section.classList.add(`${shortBlockName}-container`);
+    }
   }
 }
 
@@ -679,10 +639,11 @@ async function loadSection(section, loadCallback) {
     section.dataset.sectionStatus = 'loading';
     const blocks = [...section.querySelectorAll('div.block')];
     for (let i = 0; i < blocks.length; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
       await loadBlock(blocks[i]);
     }
-    if (loadCallback) await loadCallback(section);
+    if (loadCallback) {
+      await loadCallback(section);
+    }
     section.dataset.sectionStatus = 'loaded';
     section.style.display = null;
   }
@@ -696,7 +657,6 @@ async function loadSection(section, loadCallback) {
 async function loadSections(element) {
   const sections = [...element.querySelectorAll('div.section')];
   for (let i = 0; i < sections.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
     await loadSection(sections[i]);
     if (i === 0 && sampleRUM.enhance) {
       sampleRUM.enhance();

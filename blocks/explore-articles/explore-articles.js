@@ -1,9 +1,5 @@
 import { createElement, getTextLabel } from '../../scripts/common.js';
-import {
-  fetchMagazineArticles,
-  getArticleTagsJSON,
-  removeArticlesWithNoImage,
-} from '../../scripts/services/magazine.service.js';
+import { fetchMagazineArticles, getArticleTagsJSON, removeArticlesWithNoImage } from '../../scripts/services/magazine.service.js';
 
 const allArticles = await fetchMagazineArticles();
 const allArticlesWithImage = removeArticlesWithNoImage(allArticles);
@@ -35,7 +31,9 @@ const getOptions = (list, placeholder) => {
   list.forEach((el) => {
     const option = createElement('option', { props: { value: el } });
     option.innerText = el;
-    if (el.length !== 0) options.push(option);
+    if (el.length !== 0) {
+      options.push(option);
+    }
   });
   return options;
 };
@@ -110,24 +108,25 @@ const loadMoreArticles = (evt, articleGroups, amountOfGroups) => {
   const activeButton = evt.srcElement;
   const allShownArticles = document.querySelectorAll('.article');
   const lastShownArticle = allShownArticles[allShownArticles.length - 1];
-  const lastShownId = +(lastShownArticle.id.split('-').pop());
+  const lastShownId = +lastShownArticle.id.split('-').pop();
   const nextArticleGroup = articleGroups[lastShownId + 1];
 
   nextArticleGroup.forEach((e, idx) => {
-    if (idx !== 0) lastShownArticle.insertAdjacentElement('afterend', e);
+    if (idx !== 0) {
+      lastShownArticle.insertAdjacentElement('afterend', e);
+    }
   });
 
-  if ((amountOfGroups - 1) <= counter) activeButton.remove();
+  if (amountOfGroups - 1 <= counter) {
+    activeButton.remove();
+  }
 
   counter += 1;
 };
 
 const addAllArrays = (array) => {
   const initialValue = 0;
-  const totalArticles = array.reduce(
-    (acc, curr) => acc + curr.length,
-    initialValue,
-  );
+  const totalArticles = array.reduce((acc, curr) => acc + curr.length, initialValue);
   return totalArticles;
 };
 
@@ -148,7 +147,9 @@ const getArticleGroups = (artGroup) => {
 const buildFirstArticles = (art, section) => {
   const firstArticles = art[0];
   firstArticles.forEach((e, idx) => {
-    if (idx !== 0) section.append(e);
+    if (idx !== 0) {
+      section.append(e);
+    }
   });
 };
 
@@ -162,7 +163,7 @@ const buildArticleList = (articles) => {
   const articlesSection = createElement('div', { classes: `${blockName}-articles` });
 
   const amountOfArticles = createElement('p', { classes: 'article-amount' });
-  amountOfArticles.textContent = (totalArticlesNumber !== 0) ? `${totalArticlesNumber} articles` : getTextLabel('No article Message');
+  amountOfArticles.textContent = totalArticlesNumber !== 0 ? `${totalArticlesNumber} articles` : getTextLabel('No article Message');
 
   paginationSection.append(amountOfArticles);
   articlesSection.append(paginationSection);
@@ -171,7 +172,9 @@ const buildArticleList = (articles) => {
   const moreButton = createElement('button', { classes: 'more-btn' });
   moreButton.textContent = getTextLabel('Load more articles button');
   moreButton.addEventListener('click', (evt) => loadMoreArticles(evt, articleGroups, amountOfGroups));
-  if (totalArticlesNumber > articlesPerChunk) moreSection.append(moreButton);
+  if (totalArticlesNumber > articlesPerChunk) {
+    moreSection.append(moreButton);
+  }
 
   if (articleGroups.length !== 0) {
     const articleListSection = createElement('div', { classes: 'article-list' });
@@ -214,7 +217,10 @@ const buildFieldset = () => {
   const form = createElement('form', ['form', 'filter-list'], { method: 'get', name: 'article-fieldset' });
   form.addEventListener('change', handleForm);
 
-  const fieldset = createElement('fieldset', { classes: ['fieldset', 'filter-list'], props: { method: 'get', name: 'article-fieldset', id: 'explore-magazine-fieldset' } });
+  const fieldset = createElement('fieldset', {
+    classes: ['fieldset', 'filter-list'],
+    props: { method: 'get', name: 'article-fieldset', id: 'explore-magazine-fieldset' },
+  });
 
   const categoryField = createElement('div', { classes: 'category-field' });
   const trucksField = createElement('div', { classes: 'trucks-field' });

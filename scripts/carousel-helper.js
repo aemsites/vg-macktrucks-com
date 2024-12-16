@@ -1,16 +1,19 @@
 import { createElement } from './common.js';
 
 export const listenScroll = (carousel, elements, updateFn, threshold = 1) => {
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        updateFn(elements, entry);
-      }
-    });
-  }, {
-    root: carousel,
-    threshold,
-  });
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          updateFn(elements, entry);
+        }
+      });
+    },
+    {
+      root: carousel,
+      threshold,
+    },
+  );
 
   elements.forEach((el) => {
     io.observe(el);
@@ -35,7 +38,8 @@ export const createArrowControls = (carousel, scrollSelector, controlClasses, ar
     let index = [...activeItem.parentNode.children].indexOf(activeItem);
     if (direction === 'left') {
       index -= 1;
-      if (index === -1) { // Go to the last item if at the start
+      if (index === -1) {
+        // Go to the last item if at the start
         index = carousel.childElementCount;
       }
     } else {

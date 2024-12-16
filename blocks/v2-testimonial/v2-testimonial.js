@@ -1,12 +1,5 @@
-import {
-  isVideoLink,
-  selectVideoLink,
-} from '../../scripts/video-helper.js';
-import {
-  removeEmptyTags,
-  unwrapDivs,
-  variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { isVideoLink, selectVideoLink } from '../../scripts/video-helper.js';
+import { removeEmptyTags, unwrapDivs, variantsClassesToBEM } from '../../scripts/common.js';
 
 const blockName = 'v2-testimonial';
 const variantClasses = ['media-left', 'media-right', 'overlap'];
@@ -25,7 +18,6 @@ const handleVideoLinks = (videoLinks) => {
     return;
   }
 
-  // eslint-disable-next-line no-console
   console.warn(`[${blockName}]: No proper video link provided for current cookie settings!`);
 };
 
@@ -46,14 +38,12 @@ const createVideoSection = (col) => {
 const handleBlockquotes = (block, firstHeading) => {
   let blockquotes = block.querySelectorAll('blockquote');
   if (blockquotes.length === 0) {
-    // eslint-disable-next-line no-console
     console.warn(`[${blockName}]: No blockquote found in the column! Will try to create a blockquote from the text.`);
 
     const blockquoteCol = block.querySelector(`.${blockName}__blockquote-container`);
     const paragraphs = blockquoteCol.querySelectorAll('p:only-child, p:not(:last-child)');
 
     if (paragraphs.length === 0) {
-      // eslint-disable-next-line no-console
       console.error(`[${blockName}]: No paragraphs found in the column!`);
       return;
     }

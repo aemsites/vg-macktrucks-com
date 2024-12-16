@@ -35,16 +35,16 @@ export default async function decorate(block) {
   const cardsHeadings = [...block.querySelectorAll('h1, h2, h3, h4, h5, h6')];
   cardsHeadings.forEach((el) => {
     el.classList.add(`${blockName}__heading`);
-    if (el.querySelector('a')) block.classList.add(`${blockName}--heading-with-arrow`);
+    if (el.querySelector('a')) {
+      block.classList.add(`${blockName}--heading-with-arrow`);
+    }
   });
 
   const buttons = [...block.querySelectorAll('.button-container')];
   buttons.forEach((el) => {
     el.classList.add(`${blockName}__button-container`);
     [...el.querySelectorAll('a')].forEach((link) => {
-      if (link.classList.contains('button--primary')
-          || link.classList.contains('button--secondary')
-          || link.classList.contains('button--red')) {
+      if (link.classList.contains('button--primary') || link.classList.contains('button--secondary') || link.classList.contains('button--red')) {
         link.classList.add('button--small');
       } else {
         link.classList.add('standalone-link', `${blockName}__button`);

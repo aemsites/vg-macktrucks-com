@@ -1,9 +1,4 @@
-import {
-  createElement,
-  removeEmptyTags,
-  unwrapDivs,
-  variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { createElement, removeEmptyTags, unwrapDivs, variantsClassesToBEM } from '../../scripts/common.js';
 
 const windowBreakpoint = 1200;
 const getDevice = () => window.innerWidth >= windowBreakpoint;
@@ -16,23 +11,28 @@ const addAccordionClass = (item) => {
     hasPicture.classList.add(`${blockName}__item-image`);
   } else {
     const header = item.querySelector(':is(h1, h2, h3, h4, h5, h6)');
-    if (header) header.classList.add(`${blockName}__item-title`);
+    if (header) {
+      header.classList.add(`${blockName}__item-title`);
+    }
     item.querySelectorAll('p').forEach((p) => p.classList.add(`${blockName}__item-description`));
   }
 };
 
 const watchScroll = (container) => {
   const items = container.querySelectorAll(`.${blockName}__item`);
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const intersecting = entry.isIntersecting;
-      if (intersecting && !getDevice()) {
-        entry.target.classList.add('active');
-      } else if (!getDevice()) {
-        entry.target.classList.remove('active');
-      }
-    });
-  }, { threshold: 0.5 });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const intersecting = entry.isIntersecting;
+        if (intersecting && !getDevice()) {
+          entry.target.classList.add('active');
+        } else if (!getDevice()) {
+          entry.target.classList.remove('active');
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
   items.forEach((item) => {
     if (!getDevice()) {
       observer.observe(item);
@@ -97,7 +97,9 @@ export default function decorate(block) {
 
     // add the proper classes to each accordion item
     item.classList.add(`${blockName}__item`, `number-item-${i + 1}`);
-    if ((i === 0) && (getDevice())) item.classList.add('active');
+    if (i === 0 && getDevice()) {
+      item.classList.add('active');
+    }
     colItems.forEach((col) => addAccordionClass(col, i));
     colBtnTitle.prepend(item.querySelector(`.${blockName}__item-title`), item.querySelector(`.${blockName}__item-description`));
     colBtnTitle.onclick = (e) => {
@@ -108,7 +110,9 @@ export default function decorate(block) {
         itemsContainer.scrollLeft += itemWidth;
       } else {
         const active = accordionContainer.querySelector('.active');
-        if (active && active !== item) active.classList.remove('active');
+        if (active && active !== item) {
+          active.classList.remove('active');
+        }
         item.classList.add('active');
       }
     };

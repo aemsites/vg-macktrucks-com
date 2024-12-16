@@ -18,13 +18,19 @@ export default async function decorate(block) {
     }
   });
 
-  if (content[1].firstElementChild.tagName === 'PICTURE') contentWrapper.classList.add(`${blockName}__content-wrapper--image-right`);
+  if (content[1].firstElementChild.tagName === 'PICTURE') {
+    contentWrapper.classList.add(`${blockName}__content-wrapper--image-right`);
+  }
 
   const header = [...block.querySelectorAll('h1, h2, h3, h4, h5, h6')];
-  header.forEach((h) => { h.classList.add(`${blockName}__title`); });
+  header.forEach((h) => {
+    h.classList.add(`${blockName}__title`);
+  });
 
   const text = [...block.querySelectorAll('p')];
-  text.forEach((t) => { t.classList.add(`${blockName}__text`); });
+  text.forEach((t) => {
+    t.classList.add(`${blockName}__text`);
+  });
 
   if (block.classList.contains(`${blockName}--with-icons`)) {
     const iconList = block.querySelector('ul');

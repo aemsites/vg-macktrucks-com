@@ -1,8 +1,4 @@
-import {
-  unwrapDivs,
-  variantsClassesToBEM,
-  debounce,
-} from '../../scripts/common.js';
+import { unwrapDivs, variantsClassesToBEM, debounce } from '../../scripts/common.js';
 
 const variantClasses = ['16-9', '4-3'];
 const blockName = 'v2-image-banner';
@@ -27,7 +23,9 @@ const findMatchingSource = (picture) => {
  */
 const getImgSrc = (block) => {
   const picture = block.querySelector('picture');
-  if (!picture) return '';
+  if (!picture) {
+    return '';
+  }
 
   const matchingSource = findMatchingSource(picture);
   if (matchingSource) {
@@ -55,7 +53,9 @@ const setImgSrc = (block, imgSrc) => {
  */
 const updateImageSrc = (block, currentMediaQuery) => {
   const picture = block.querySelector('picture');
-  if (!picture) return currentMediaQuery;
+  if (!picture) {
+    return currentMediaQuery;
+  }
 
   const matchingSource = findMatchingSource(picture);
   const newMediaQuery = matchingSource ? matchingSource.getAttribute('media') : '';

@@ -11,7 +11,6 @@ export const fetchMagazineArticles = async () => {
     const response = await getJsonFromUrl('/magazine-articles.json');
 
     if (!response?.data) {
-      // eslint-disable-next-line no-console
       console.warn('No data found in response.');
       return [];
     }
@@ -20,7 +19,6 @@ export const fetchMagazineArticles = async () => {
 
     return Array.isArray(data) ? data : [data];
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error(`Error fetching articles: ${error.message || error}`);
     return [];
   }
@@ -44,7 +42,9 @@ export const removeArticlesWithNoImage = (articles) => {
  * @returns {Array} An array of values
  */
 export function getValuesFromObjectsArray(array = []) {
-  if (!Array.isArray(array) || array.length === 0) return [];
+  if (!Array.isArray(array) || array.length === 0) {
+    return [];
+  }
   return array.map((item) => Object.values(item)[0]);
 }
 
@@ -68,12 +68,15 @@ export const extractLimitFromBlock = (block) => {
  * @param {Array} articles - The articles array
  * @returns {Array} The articles without the opened one
  */
-export const clearRepeatedArticles = (articles) => articles.filter((e) => {
-  const currentArticlePath = window.location.href.split('/').pop();
-  const path = e.path.split('/').pop();
-  if (path !== currentArticlePath) return e;
-  return null;
-});
+export const clearRepeatedArticles = (articles) =>
+  articles.filter((e) => {
+    const currentArticlePath = window.location.href.split('/').pop();
+    const path = e.path.split('/').pop();
+    if (path !== currentArticlePath) {
+      return e;
+    }
+    return null;
+  });
 
 /**
  * Sorts articles by the specified date field in descending order.
@@ -81,12 +84,13 @@ export const clearRepeatedArticles = (articles) => articles.filter((e) => {
  * @param {string} dateField - The date field to sort by (e.g., 'lastModified' or 'date').
  * @returns {Array} - A new array of articles sorted by the most recent date.
  */
-export const sortArticlesByDateField = (articles, dateField) => articles
-  .map((article) => ({
-    ...article,
-    timestamp: new Date(article[dateField]).getTime(),
-  }))
-  .sort((a, b) => b.timestamp - a.timestamp);
+export const sortArticlesByDateField = (articles, dateField) =>
+  articles
+    .map((article) => ({
+      ...article,
+      timestamp: new Date(article[dateField]).getTime(),
+    }))
+    .sort((a, b) => b.timestamp - a.timestamp);
 
 // TODO:
 // THESE FUNCTIONS SHOULD BE DEPRECATED AND DELETED
@@ -103,7 +107,6 @@ export const getArticleCategory = (article, allCategories) => {
     const categoriesSet = new Set(allCategories);
     return articleTags.find((tag) => categoriesSet.has(tag)) || null;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error parsing article tags:', error);
     return null;
   }
@@ -132,7 +135,6 @@ export const getArticleTagsJSON = async () => {
       topics: getValuesFromObjectsArray(tagsJSON.topics?.data),
     };
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error fetching article tags JSON:', error);
     throw new Error('Unable to fetch article tags.');
   }
@@ -143,22 +145,23 @@ export const getArticleTagsJSON = async () => {
  * @param {Array} articles - The articles array
  * @returns {Array} The same array but sorted
  */
-export const sortArticlesByDateInURL = (articles) => articles.sort((a, b) => {
-  const aPath = a.path.split('/');
-  const bPath = b.path.split('/');
-  const aYear = aPath[3];
-  const aMonth = aPath[4];
-  const bYear = bPath[3];
-  const bMonth = bPath[4];
+export const sortArticlesByDateInURL = (articles) =>
+  articles.sort((a, b) => {
+    const aPath = a.path.split('/');
+    const bPath = b.path.split('/');
+    const aYear = aPath[3];
+    const aMonth = aPath[4];
+    const bYear = bPath[3];
+    const bMonth = bPath[4];
 
-  const aDate = new Date(`${aYear}-${aMonth}`);
-  const bDate = new Date(`${bYear}-${bMonth}`);
+    const aDate = new Date(`${aYear}-${aMonth}`);
+    const bDate = new Date(`${bYear}-${bMonth}`);
 
-  if (aDate.getTime() === bDate.getTime()) {
-    return b.lastModified - a.lastModified;
-  }
-  return bDate - aDate;
-});
+    if (aDate.getTime() === bDate.getTime()) {
+      return b.lastModified - a.lastModified;
+    }
+    return bDate - aDate;
+  });
 
 /**
  * Extracts the matching tags from an array of tags and an array of article tags
@@ -172,9 +175,7 @@ export function getMetadataFromTags(tags, articleTags) {
     return '';
   }
 
-  const matchingTags = [...articleTags]
-    .filter((tag) => tags.includes(tag.content))
-    .map((tag) => tag.content);
+  const matchingTags = [...articleTags].filter((tag) => tags.includes(tag.content)).map((tag) => tag.content);
   return matchingTags && matchingTags?.length > 0 ? matchingTags.join(', ') : '';
 }
 
@@ -187,7 +188,6 @@ export function getMetadataFromTags(tags, articleTags) {
 export async function getArticleTags(tagType) {
   const articleTags = document.head.querySelectorAll('meta[property="article:tag"]') || [];
   const tagItems = await fetchArticleTagsJSON();
-  const tags = tagItems && tagItems[tagType]
-    && getValuesFromObjectsArray(tagItems[tagType].data);
+  const tags = tagItems && tagItems[tagType] && getValuesFromObjectsArray(tagItems[tagType].data);
   return getMetadataFromTags(tags, articleTags);
 }

@@ -40,14 +40,13 @@ export default function decorate(block) {
   segmentList.forEach((ul) => {
     ul.classList.add(`${blockName}__segment-list`);
     const segmentListItems = ul.querySelectorAll('li');
-    const segmentNames = Array.from(segmentListItems)
-      .map((item) => {
-        const segmentName = item.textContent.trim().toLowerCase().replaceAll(' ', '-');
-        if (!allSegmentNames.includes(segmentName)) {
-          allSegmentNames.push(segmentName);
-        }
-        return segmentName;
-      });
+    const segmentNames = Array.from(segmentListItems).map((item) => {
+      const segmentName = item.textContent.trim().toLowerCase().replaceAll(' ', '-');
+      if (!allSegmentNames.includes(segmentName)) {
+        allSegmentNames.push(segmentName);
+      }
+      return segmentName;
+    });
     const truck = ul.closest(`.${blockName}__truck`);
     segmentNames.forEach((segment) => {
       truck.classList.add(segment);
@@ -74,7 +73,8 @@ export default function decorate(block) {
     const filterButton = createElement('button', { classes: `${blockName}__segment-button` });
     filterButton.textContent = segment;
 
-    if (index === 0) { // Default selected item
+    if (index === 0) {
+      // Default selected item
       filterButton.classList.add('active');
       selectedItem.textContent = segment;
     }
@@ -83,8 +83,7 @@ export default function decorate(block) {
     li.append(filterButton);
 
     filterButton.addEventListener('click', () => {
-      const clickedSegment = filterButton.textContent.trim()
-        .toLowerCase();
+      const clickedSegment = filterButton.textContent.trim().toLowerCase();
       selectedItem.textContent = clickedSegment;
 
       trucks.forEach((truck) => {

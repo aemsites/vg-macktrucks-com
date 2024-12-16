@@ -1,10 +1,5 @@
 import { readBlockConfig } from '../../scripts/aem.js';
-import {
-  createElement,
-  getTextLabel,
-  variantsClassesToBEM,
-  addTargetBlankToExternalLink,
-} from '../../scripts/common.js';
+import { createElement, getTextLabel, variantsClassesToBEM, addTargetBlankToExternalLink } from '../../scripts/common.js';
 
 const blockName = 'v2-breadcrumb';
 const sectionStatus = 'data-section-status';
@@ -17,8 +12,8 @@ const variantClasses = ['custom'];
 
 const formatText = (str) => str.replace(/-/g, ' ').toLowerCase();
 
-const getPadding = (elCompCSS) => parseInt(elCompCSS.getPropertyValue('padding-left'), 10)
-  + parseInt(elCompCSS.getPropertyValue('padding-right'), 10);
+const getPadding = (elCompCSS) =>
+  parseInt(elCompCSS.getPropertyValue('padding-left'), 10) + parseInt(elCompCSS.getPropertyValue('padding-right'), 10);
 
 const getCrumbsWidth = (block) => {
   const crumbs = block.querySelectorAll(`.${blockName}__crumb-item`);
@@ -54,7 +49,7 @@ const generateCustomUrl = (block) => {
   });
   const keyString = allCrumbs.map((obj) => obj.key).join('/');
 
-  return ([keyString, allCrumbs]);
+  return [keyString, allCrumbs];
 };
 
 export default function decorate(block) {
@@ -121,7 +116,9 @@ export default function decorate(block) {
 
   const checkCrumbsFits = () => {
     // 1st check if home fits, if not it become an ellipsis
-    if (!fitting(block) && crumbs.length > 2) homeEl.textContent = homeText.ellipsis;
+    if (!fitting(block) && crumbs.length > 2) {
+      homeEl.textContent = homeText.ellipsis;
+    }
     // if still doesn't fit, remove active crumb
     if (!fitting(block)) {
       crumbs.at(-1).firstElementChild.textContent = '';
@@ -140,7 +137,9 @@ export default function decorate(block) {
 
   const rObserver = new ResizeObserver((entries) => {
     entries.forEach((entry) => {
-      if (!entry.contentBoxSize) return;
+      if (!entry.contentBoxSize) {
+        return;
+      }
       // add again the content from each item and check if it fits again or not
       homeEl.textContent = hasCustomClass ? `${customLinks[0].key}` : homeText.home;
       crumbs.forEach((crumb, i) => {
@@ -157,15 +156,20 @@ export default function decorate(block) {
   const mObserver = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       // check if the attribute data-section-status has the value 'loaded'
-      if (mutation.attributeName !== sectionStatus) return;
+      if (mutation.attributeName !== sectionStatus) {
+        return;
+      }
       const section = mutation.target;
       const status = section.getAttribute(sectionStatus);
-      if (status !== 'loaded') return;
+      if (status !== 'loaded') {
+        return;
+      }
       rObserver.observe(block);
       mObserver.disconnect();
     });
   });
   mObserver.observe(block.closest('.section'), {
-    childList: true, attributeFilter: [sectionStatus],
+    childList: true,
+    attributeFilter: [sectionStatus],
   });
 }

@@ -1,12 +1,5 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
-import {
-  createElement,
-  removeEmptyTags,
-  getTextLabel,
-  debounce,
-  decorateIcons,
-  variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { createElement, removeEmptyTags, getTextLabel, debounce, decorateIcons, variantsClassesToBEM } from '../../scripts/common.js';
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 import { showModal } from '../../common/modal/modal-component.js';
 
@@ -40,7 +33,6 @@ const udpateArrowsState = (activeSlideIndex, itemsCount) => {
   }
 };
 
-// eslint-disable-next-line max-len
 const setActiveSlide = (activeSlideIndex, carouselItemsList, carouselImagesList, modalContent, behavior) => {
   const itemWidth = carouselItemsList.getBoundingClientRect().width;
 

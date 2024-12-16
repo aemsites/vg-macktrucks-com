@@ -1,6 +1,4 @@
-import {
-  createElement,
-} from '../../scripts/common.js';
+import { createElement } from '../../scripts/common.js';
 
 const blockName = 'v2-slider';
 
@@ -23,7 +21,9 @@ export default async function decorate(block) {
   const images = [...content.querySelectorAll('p > picture')];
   const has2Images = images.length === 2;
 
-  if (has2Images) block.classList.add('two-images');
+  if (has2Images) {
+    block.classList.add('two-images');
+  }
 
   const header = createElement('div', { classes: `${blockName}__header` });
   const heading = [...content.querySelectorAll('h1, h2, h3, h4, h5, h6')][0];
@@ -72,5 +72,7 @@ export default async function decorate(block) {
   }
 
   const buttons = [...content.querySelectorAll('p.button-container')];
-  if (buttons.length > 0) buttons.forEach((btn) => content.appendChild(btn));
+  if (buttons.length > 0) {
+    buttons.forEach((btn) => content.appendChild(btn));
+  }
 }

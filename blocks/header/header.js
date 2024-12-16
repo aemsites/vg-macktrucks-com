@@ -1,11 +1,4 @@
-import {
-  createElement,
-  decorateIcons,
-  generateId,
-  getTextLabel,
-  HEADER_CONFIGS,
-  getLanguagePath,
-} from '../../scripts/common.js';
+import { createElement, decorateIcons, generateId, getTextLabel, HEADER_CONFIGS, getLanguagePath } from '../../scripts/common.js';
 import { createOptimizedPicture, getMetadata } from '../../scripts/aem.js';
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 
@@ -276,7 +269,7 @@ const onAccordionItemClick = (el) => {
   const isTabLink = elClassList.contains(`${blockClass}__tab-link`);
   const isDesktop = desktopMQ.matches;
 
-  if (isDesktop && (!isMainLink && !isTabLink)) {
+  if (isDesktop && !isMainLink && !isTabLink) {
     return;
   }
 
@@ -292,11 +285,13 @@ const onAccordionItemClick = (el) => {
     if (isDesktop && menuEl.classList.contains(`${blockClass}__main-nav-item`)) {
       const openMenus = document.querySelectorAll(`.${blockClass}__menu-open`);
 
-      [...openMenus].filter((menu) => menu !== menuEl).forEach((menu) => {
-        menu.classList.remove(`${blockClass}__menu-open`);
-        menu.querySelector(':scope > a').setAttribute('aria-expanded', false);
-        setTabIndexForLinks(menu, '-1');
-      });
+      [...openMenus]
+        .filter((menu) => menu !== menuEl)
+        .forEach((menu) => {
+          menu.classList.remove(`${blockClass}__menu-open`);
+          menu.querySelector(':scope > a').setAttribute('aria-expanded', false);
+          setTabIndexForLinks(menu, '-1');
+        });
 
       setTabIndexForLinks(menuEl, '0');
     }
@@ -319,49 +314,51 @@ const buildMenuContent = (menuData, navEl) => {
 
   [...menus.children].forEach((menuItemData) => {
     const tabName = menuItemData.querySelector(':scope > p > a');
-    if (!tabName) return;
+    if (!tabName) {
+      return;
+    }
 
     const categories = [...menuItemData.querySelectorAll(':scope > div')];
     const navLink = navLinks.find((el) => el.textContent.trim() === tabName.textContent.trim());
     const accordionContentWrapper = navLink?.closest(`.${blockClass}__main-nav-item`).querySelector(`.${blockClass}__accordion-content-wrapper`);
 
-    categories.filter((cat) => cat.classList.contains('menu')).forEach((cat) => {
-      const title = cat.querySelector(':scope > a');
-      const list = cat.querySelector(':scope > ul');
-      let extraClass = '';
+    categories
+      .filter((cat) => cat.classList.contains('menu'))
+      .forEach((cat) => {
+        const title = cat.querySelector(':scope > a');
+        const list = cat.querySelector(':scope > ul');
+        let extraClass = '';
 
-      title?.classList.add(`${blockClass}__link`, `${blockClass}__link-accordion`, `${blockClass}__menu-heading`);
-      title?.removeAttribute('href');
+        title?.classList.add(`${blockClass}__link`, `${blockClass}__link-accordion`, `${blockClass}__menu-heading`);
+        title?.removeAttribute('href');
 
-      if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS)
-        || cat.classList.contains(tabsVariants.TAB)
-      ) {
-        title?.classList.add(`${blockClass}__tab-link`);
-      }
+        if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS) || cat.classList.contains(tabsVariants.TAB)) {
+          title?.classList.add(`${blockClass}__tab-link`);
+        }
 
-      if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS)) {
-        extraClass = `${blockClass}__main-link-wrapper--${tabsVariants.TAB_WITH_CARDS}`;
-      }
+        if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS)) {
+          extraClass = `${blockClass}__main-link-wrapper--${tabsVariants.TAB_WITH_CARDS}`;
+        }
 
-      if (cat.classList.contains(tabsVariants.TAB)) {
-        extraClass = `${blockClass}__main-link-wrapper--${tabsVariants.TAB}`;
-      }
+        if (cat.classList.contains(tabsVariants.TAB)) {
+          extraClass = `${blockClass}__main-link-wrapper--${tabsVariants.TAB}`;
+        }
 
-      list.classList.add(`${blockClass}__category-items`);
-      [...list.querySelectorAll('li')].forEach(rebuildCategoryItem);
-      [...list.querySelectorAll('a')].forEach((el) => el.classList.add(`${blockClass}__link`));
-      [...list.querySelectorAll('li > a:not(.button):not(:only-child)')].forEach((el) => el.classList.add('standalone-link'));
+        list.classList.add(`${blockClass}__category-items`);
+        [...list.querySelectorAll('li')].forEach(rebuildCategoryItem);
+        [...list.querySelectorAll('a')].forEach((el) => el.classList.add(`${blockClass}__link`));
+        [...list.querySelectorAll('li > a:not(.button):not(:only-child)')].forEach((el) => el.classList.add('standalone-link'));
 
-      let menuContent;
+        let menuContent;
 
-      if (!title) {
-        menuContent = document.createRange().createContextualFragment(`
+        if (!title) {
+          menuContent = document.createRange().createContextualFragment(`
           <div class="${blockClass}__menu-content">
             ${list.outerHTML}
           </div>
         `);
-      } else {
-        menuContent = document.createRange().createContextualFragment(`
+        } else {
+          menuContent = document.createRange().createContextualFragment(`
         <div class="${blockClass}__menu-content">
           ${title.outerHTML}
           <div class="${blockClass}__category-content ${blockClass}__accordion-container">
@@ -371,14 +368,14 @@ const buildMenuContent = (menuData, navEl) => {
           </div>
         </div>
       `);
-      }
+        }
 
-      menuContent.querySelector(`.${blockClass}__link-accordion`)?.addEventListener('click', onAccordionItemClick);
-      accordionContentWrapper.append(menuContent);
-      if (extraClass) {
-        accordionContentWrapper.parentElement.classList.add(extraClass);
-      }
-    });
+        menuContent.querySelector(`.${blockClass}__link-accordion`)?.addEventListener('click', onAccordionItemClick);
+        accordionContentWrapper.append(menuContent);
+        if (extraClass) {
+          accordionContentWrapper.parentElement.classList.add(extraClass);
+        }
+      });
 
     const menuFooter = categories.find((el) => el.classList.contains('menu-footer'));
 
@@ -431,31 +428,31 @@ export default async function decorate(block) {
   }
 
   const testHeader = getMetadata('test-header');
-  if (testHeader) navPath = testHeader;
+  if (testHeader) {
+    navPath = testHeader;
+  }
 
   const resp = await fetch(`${navPath}.plain.html`);
 
   if (!resp.ok) {
-    // eslint-disable-next-line no-console
     console.error(`Header is not loaded: ${resp.status}`);
   }
 
   // get the navigation text, turn it into html elements
   const content = document.createRange().createContextualFragment(await resp.text());
 
-  const [
-    logoContainer,
-    navigationContainer,
-    actionsContainer,
-    ...menuContent
-  ] = content.children;
+  const [logoContainer, navigationContainer, actionsContainer, ...menuContent] = content.children;
   const nav = createElement('nav', { classes: [`${blockClass}__nav`] });
   const navContent = document.createRange().createContextualFragment(`
     <div class="${blockClass}__menu-overlay"></div>
     ${createLogo(logoContainer).outerHTML}
-    ${navigationContainer.children.length ? `<div class="${blockClass}__main-links">
+    ${
+      navigationContainer.children.length
+        ? `<div class="${blockClass}__main-links">
       ${createMainLinks(navigationContainer).outerHTML}
-    </div>` : ''}
+    </div>`
+        : ''
+    }
     <div class="${blockClass}__actions">
       ${isMobileMenuDisabled ? '' : mobileActions().outerHTML}
       ${isMobileMenuDisabled ? decorateCTA(actionsContainer).outerHTML : createActions(actionsContainer).outerHTML}
@@ -582,7 +579,9 @@ export default async function decorate(block) {
     const buttonsWithoutIcons = getAllElWithChildren([...actionsLinks.querySelectorAll('a')], '.icon', true);
     const loginLink = actionsLinks.querySelector('.header__action-item a[href*="login"]');
 
-    if (loginLink && LOGIN_DISABLED.toLowerCase() === 'true') loginLink.remove();
+    if (loginLink && LOGIN_DISABLED.toLowerCase() === 'true') {
+      loginLink.remove();
+    }
 
     if (isDesktop) {
       actionsLinksDesktopMountPoint.append(actionsLinks);
