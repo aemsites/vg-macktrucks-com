@@ -627,7 +627,7 @@ export function addTargetBlankToExternalLink(link) {
 }
 
 /**
- * Recieves a lowercase string and capitalizes it.
+ * Receives a lowercase string and capitalizes it.
  * Useful for elements not reachable by css fe: select <options>
  * @param {string} str - lowercase string fe: 'mack trucks'.
  * @returns {string} The capitalized string fe: 'Mack Trucks'.
