@@ -1,9 +1,5 @@
 import { createElement, getTextLabel, capitalizeWords } from '../../scripts/common.js';
-import {
-  fetchMagazineData,
-  formatArticlesArray,
-  formatFacetsArray,
-} from '../../scripts/services/magazine.service.js';
+import { fetchMagazineData, formatArticlesArray, formatFacetsArray } from '../../scripts/services/magazine.service.js';
 
 const blockName = 'explore-articles';
 
@@ -171,10 +167,10 @@ const handleForm = () => {
     const categoryMatch = art.category.toLowerCase() === catSelect.value.toLowerCase();
 
     return (
-      (catSelect.value === categoryPlaceholder && truckSelect.value === truckPlaceholder)
-      || (catSelect.value === categoryPlaceholder && truckMatch)
-      || (categoryMatch && truckSelect.value === truckPlaceholder)
-      || (categoryMatch && truckMatch)
+      (catSelect.value === categoryPlaceholder && truckSelect.value === truckPlaceholder) ||
+      (catSelect.value === categoryPlaceholder && truckMatch) ||
+      (categoryMatch && truckSelect.value === truckPlaceholder) ||
+      (categoryMatch && truckMatch)
     );
   });
 

@@ -632,4 +632,9 @@ export function addTargetBlankToExternalLink(link) {
  * @param {string} str - lowercase string fe: 'mack trucks'.
  * @returns {string} The capitalized string fe: 'Mack Trucks'.
  */
-export const capitalizeWords = (str) => str.split(' ').map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+export const capitalizeWords = (str) => {
+  return str
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};

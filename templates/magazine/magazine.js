@@ -1,8 +1,5 @@
-import {
-  getMetadata,
-  createOptimizedPicture,
-} from '../../scripts/aem.js';
-import { createElement } from '../../scripts/common.js';
+import { getMetadata, createOptimizedPicture, loadBlock } from '../../scripts/aem.js';
+import { createElement, getPlaceholders } from '../../scripts/common.js';
 
 async function buildArticleHero({ truckTags, categoryTag } = {}) {
   const title = getMetadata('og:title');

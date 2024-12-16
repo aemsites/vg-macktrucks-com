@@ -1,10 +1,6 @@
 import { unwrapDivs } from '../../scripts/common.js';
 import { getMetadata } from '../../scripts/aem.js';
-import {
-  fetchMagazineData,
-  sortArticlesByDateField,
-  formatArticlesArray,
-} from '../../scripts/services/magazine.service.js';
+import { fetchMagazineData, sortArticlesByDateField, formatArticlesArray } from '../../scripts/services/magazine.service.js';
 
 const blockName = 'v2-recommendations';
 

@@ -52,7 +52,6 @@ export const fetchMagazineData = async ({
 
     return allArticleData || null;
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error('Error fetching magazine articles:', error);
     return [];
   }
@@ -62,12 +61,11 @@ export const fetchMagazineData = async ({
  * Checks if the given link is actually an image
  * @param {string} link - A string containig a link of an image
  */
-const isImageLink = (link) => `${link}`
-  .split('?')[0].match(/\.(jpeg|jpg|gif|png|svg|bmp|webp)$/) !== null;
+const isImageLink = (link) => `${link}`.split('?')[0].match(/\.(jpeg|jpg|gif|png|svg|bmp|webp)$/) !== null;
 
 /**
-* Returns a default image of the brand.
-*/
+ * Returns a default image of the brand.
+ */
 const getDefaultImage = () => {
   const logoImageURL = '/magazine/categories/media_10b792212a4995e99d13ed3ea3f4a80574ae54979.png';
   return logoImageURL;
@@ -83,33 +81,37 @@ export const formatArticlesArray = (arts) => {
   const defaultReadTime = getTextLabel('defaultReadTime');
   const articleList = [];
 
-  articleList.push(...arts.map((item) => {
-    const filterTag = ['category', 'topic', 'truck']
-      .map((key) => item.metadata.article[key])
-      .filter(Boolean);
+  articleList.push(
+    ...arts.map((item) => {
+      const filterTag = ['category', 'topic', 'truck']
+        .map((key) => {
+          return item.metadata.article[key];
+        })
+        .filter(Boolean);
 
-    const { article, image } = item.metadata;
-    const articleObject = {
-      ...item.metadata,
-      filterTag,
-      author: article.author || defaultAuthor,
-      image: isImageLink(image) ? getOrigin() + image : getDefaultImage(),
-      path: item.metadata?.url,
-      readingTime: /\d+/.test(article.readTime) ? article.readTime : defaultReadTime,
-      isDefaultImage: !isImageLink(image),
-      topic: article.topic,
-      truck: article.truck,
-      date: article.publishDate,
-    };
+      const { article, image } = item.metadata;
+      const articleObject = {
+        ...item.metadata,
+        filterTag,
+        author: article.author || defaultAuthor,
+        image: isImageLink(image) ? getOrigin() + image : getDefaultImage(),
+        path: item.metadata?.url,
+        readingTime: /\d+/.test(article.readTime) ? article.readTime : defaultReadTime,
+        isDefaultImage: !isImageLink(image),
+        topic: article.topic,
+        truck: article.truck,
+        date: article.publishDate,
+      };
 
-    if (article.category) {
-      const [category] = Object.values(article.category);
-      articleObject.category = category;
-    }
+      if (article.category) {
+        const [category] = Object.values(article.category);
+        articleObject.category = category;
+      }
 
-    delete articleObject.article;
-    return articleObject;
-  }));
+      delete articleObject.article;
+      return articleObject;
+    }),
+  );
   return articleList;
 };
 
@@ -162,14 +164,16 @@ export const extractLimitFromBlock = (block) => {
  * @param {Array} articles - The articles array
  * @returns {Array} The articles without the opened one
  */
-export const clearRepeatedArticles = (articles) => articles.filter((e) => {
-  const currentArticlePath = window.location.href.split('/').pop();
-  const path = e.path?.split('/').pop();
-  if (path !== currentArticlePath) {
-    return e;
-  }
-  return null;
-});
+export const clearRepeatedArticles = (articles) => {
+  return articles.filter((e) => {
+    const currentArticlePath = window.location.href.split('/').pop();
+    const path = e.path?.split('/').pop();
+    if (path !== currentArticlePath) {
+      return e;
+    }
+    return null;
+  });
+};
 
 /**
  * Sorts articles by the specified date field in descending order.
@@ -211,5 +215,4 @@ export const sortArticlesByDateInURL = (articles) =>
 /**
  * Checks whether the current page is a magazine template.
  */
-export const isMagazineTemplate = document.body.classList.contains('v2-magazine')
-|| document.body.classList.contains('magazine');
+export const isMagazineTemplate = document.body.classList.contains('v2-magazine') || document.body.classList.contains('magazine');

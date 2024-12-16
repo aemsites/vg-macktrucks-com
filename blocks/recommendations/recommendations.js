@@ -28,32 +28,33 @@ const createTruckSection = (trucks) => {
 
 const createList = (articles) => `
   <ul class="${blockName}-list">
-    ${articles.map((article, idx) => {
-    const picture = createOptimizedPicture(article.image, article.title);
-    const pictureTag = picture.outerHTML;
-    const linkUrl = new URL(article.path, getOrigin());
+    ${articles
+      .map((article, idx) => {
+        const picture = createOptimizedPicture(article.image, article.title);
+        const pictureTag = picture.outerHTML;
+        const linkUrl = new URL(article.path, getOrigin());
 
-    const articleCategory = article.category;
-    const categoryWithDash = articleCategory.replaceAll(' ', '-').toLowerCase();
-    const categoryUrl = new URL(`magazine/categories/${categoryWithDash}`, getOrigin());
+        const articleCategory = article.category;
+        const categoryWithDash = articleCategory.replaceAll(' ', '-').toLowerCase();
+        const categoryUrl = new URL(`magazine/categories/${categoryWithDash}`, getOrigin());
 
-    return (`
-      <li class="${blockName}-item ${blockName}-item-${idx}">
-        <div class="${blockName}-image">
-          <a href="" class="image-link">
-            ${pictureTag}
-          </a>
-        </div>
-        <div class="${blockName}-text-content">
-          ${article.category && isMagazineTemplate ? `<a class="${blockName}-category" href="${categoryUrl}">${article.category}</a>` : ''}
-          <a class="${blockName}-title" href="${linkUrl}">${article.title}</a>
-          ${article.truck && !isMagazineTemplate ? createTruckSection(article.truck) : ''}
-          <a class="${blockName}-link" href="${linkUrl}">${readNowText}</a>
-        </div>
-      </li>`
-    );
-  }).join('')}
-  </ul>`;
+        return `
+        <li class="${blockName}-item ${blockName}-item-${idx}">
+          <div class="${blockName}-image">
+            <a href="" class="image-link">
+              ${pictureTag}
+            </a>
+          </div>
+          <div class="${blockName}-text-content">
+            ${article.category && isMagazineTemplate ? `<a class="${blockName}-category" href="${categoryUrl}">${article.category}</a>` : ''}
+            <a class="${blockName}-title" href="${linkUrl}">${article.title}</a>
+            ${article.truck && !isMagazineTemplate ? createTruckSection(article.truck) : ''}
+            <a class="${blockName}-link" href="${linkUrl}">${readNowText}</a>
+          </div>
+        </li>`;
+      })
+      .join('')}
+    </ul>`;
 
 export default async function decorate(block) {
   const limit = extractLimitFromBlock(block) || defaultLimit;

@@ -1,10 +1,5 @@
 import { createElement, getOrigin, getTextLabel } from '../../scripts/common.js';
-import {
-  extractLimitFromBlock,
-  clearRepeatedArticles,
-  fetchMagazineData,
-  formatArticlesArray,
-} from '../../scripts/services/magazine.service.js';
+import { extractLimitFromBlock, clearRepeatedArticles, fetchMagazineData, formatArticlesArray } from '../../scripts/services/magazine.service.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 const sectionTitle = getTextLabel('Recent article text');
@@ -14,28 +9,29 @@ const blockName = 'recent-articles';
 
 const createList = (articles) => `
   <ul class="${blockName}-list">
-  ${articles.map((article, idx) => {
-    const firstOrRestClass = (idx === 0) ? 'first' : 'rest';
-    const picture = createOptimizedPicture(article.image, article.title);
-    const pictureTag = picture.outerHTML;
-    const linkUrl = new URL(article.path, getOrigin());
+  ${articles
+    .map((article, idx) => {
+      const firstOrRestClass = idx === 0 ? 'first' : 'rest';
+      const picture = createOptimizedPicture(article.image, article.title);
+      const pictureTag = picture.outerHTML;
+      const linkUrl = new URL(article.path, getOrigin());
 
-    const articleCategory = article.category;
-    const categoryWithDash = articleCategory.replaceAll(' ', '-').toLowerCase();
-    const categoryUrl = new URL(`magazine/categories/${categoryWithDash}`, getOrigin());
+      const articleCategory = article.category;
+      const categoryWithDash = articleCategory.replaceAll(' ', '-').toLowerCase();
+      const categoryUrl = new URL(`magazine/categories/${categoryWithDash}`, getOrigin());
 
-    return (`
+      return `
       <li class="${blockName}-${firstOrRestClass}-item">
         <div class="${blockName}-${firstOrRestClass}-image">
           <a href="${linkUrl}">${pictureTag}</a>
         </div>
-        ${(idx === 0 && article.category) ? `<a class="${blockName}-${firstOrRestClass}-category" href="${categoryUrl}">${article.category}</a>` : ''}
+        ${idx === 0 && article.category ? `<a class="${blockName}-${firstOrRestClass}-category" href="${categoryUrl}">${article.category}</a>` : ''}
         <a class="${blockName}-${firstOrRestClass}-title" href="">${article.title}</a>
-        ${(idx === 0 && article.subtitle) ? `<p class="${blockName}-${firstOrRestClass}-subtitle">${article.subtitle}</p>` : ''}
-        ${(idx === 0) ? `<a class="${blockName}-${firstOrRestClass}-link" href="${linkUrl}">${readNowText}</a>` : ''}
-      </li>`
-    );
-  }).join('')}
+        ${idx === 0 && article.subtitle ? `<p class="${blockName}-${firstOrRestClass}-subtitle">${article.subtitle}</p>` : ''}
+        ${idx === 0 ? `<a class="${blockName}-${firstOrRestClass}-link" href="${linkUrl}">${readNowText}</a>` : ''}
+      </li>`;
+    })
+    .join('')}
   </ul>`;
 
 export default async function decorate(block) {

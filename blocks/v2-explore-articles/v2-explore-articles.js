@@ -1,8 +1,5 @@
 import { decorateIcons, getTextLabel } from '../../scripts/common.js';
-import {
-  fetchMagazineData,
-  formatArticlesArray,
-} from '../../scripts/services/magazine.service.js';
+import { fetchMagazineData, formatArticlesArray } from '../../scripts/services/magazine.service.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 const LABELS = {

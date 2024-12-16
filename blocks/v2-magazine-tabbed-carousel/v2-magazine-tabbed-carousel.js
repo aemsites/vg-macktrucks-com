@@ -1,13 +1,5 @@
-import {
-  createElement,
-  unwrapDivs,
-  getTextLabel,
-  decorateIcons,
-} from '../../scripts/common.js';
-import {
-  fetchMagazineData,
-  formatArticlesArray,
-} from '../../scripts/services/magazine.service.js';
+import { createElement, unwrapDivs, getTextLabel, decorateIcons } from '../../scripts/common.js';
+import { fetchMagazineData, formatArticlesArray } from '../../scripts/services/magazine.service.js';
 import { setCarouselPosition, listenScroll } from '../../scripts/carousel-helper.js';
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 
