@@ -1,9 +1,4 @@
-import {
-  getTextLabel,
-  unwrapDivs,
-  decorateIcons,
-  variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { getTextLabel, unwrapDivs, decorateIcons, variantsClassesToBEM } from '../../scripts/common.js';
 import { getMetadata } from '../../scripts/aem.js';
 
 const blockName = 'v2-social-block';
@@ -36,20 +31,26 @@ const buildTemplateBlock = (links, hasAttribution) => {
   const attributionDate = getMetadata('date');
   const attributionAuthor = getMetadata('author');
 
-  const attributionContent = hasAttribution ? `
+  const attributionContent = hasAttribution
+    ? `
     <div class="${CLASSES.attributionWrapper}">
       ${attributionDate ? `<p class="${CLASSES.attributionDate}">${attributionDate}</p>` : ''}
       ${attributionAuthor ? `<p class="${CLASSES.attributionAuthor}">${attributionAuthor}</p>` : ''}
     </div>
-  ` : '';
+  `
+    : '';
 
-  const listItems = links.map(([icon, baseHref]) => `
+  const listItems = links
+    .map(
+      ([icon, baseHref]) => `
     <li class="${CLASSES.listItem}">
       <a href="${baseHref}${window.location.href}" target="_blank">
         <span class="icon icon-${icon}"></span>
       </a>
     </li>
-  `).join('');
+  `,
+    )
+    .join('');
 
   const template = `
     ${attributionContent}
@@ -88,7 +89,6 @@ const addTooltip = (link) => {
         anchorEl.classList.remove(CLASSES.tooltipShow);
       }, 1000);
     } catch (err) {
-      /* eslint-disable-next-line no-console */
       console.error('Failed to copy: ', err);
     }
   });

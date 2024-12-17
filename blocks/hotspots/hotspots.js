@@ -1,7 +1,4 @@
-import {
-  createElement,
-  decorateIcons,
-} from '../../scripts/common.js';
+import { createElement, decorateIcons } from '../../scripts/common.js';
 
 /**
  * @typedef {Object} HotspotContent
@@ -42,11 +39,10 @@ export default function decorate(block) {
 
   addMobileTabNavigation(block, title, hotspotBlockCounter);
 
-  block.querySelector('.hotspot-layover')
-    .addEventListener('click', (event) => {
-      const layoverDialog = block.querySelector('.hotspot-layover-box.is-active');
-      handleCloseLayover(event, layoverDialog, block);
-    });
+  block.querySelector('.hotspot-layover').addEventListener('click', (event) => {
+    const layoverDialog = block.querySelector('.hotspot-layover-box.is-active');
+    handleCloseLayover(event, layoverDialog, block);
+  });
 
   decorateIcons(block);
 }
@@ -74,8 +70,7 @@ function handleClickHotspot(event, iconLink, hotspotId, block) {
  * @param block {HTMLDivElement}
  */
 function handleCloseLayover(event, layoverDialog, block) {
-  block.querySelectorAll('.hotspot-icon-set .active-spot')
-    .forEach((spot) => spot.classList.remove('active-spot'));
+  block.querySelectorAll('.hotspot-icon-set .active-spot').forEach((spot) => spot.classList.remove('active-spot'));
 
   layoverDialog.parentElement.classList.remove('is-active');
   layoverDialog.classList.remove('is-active');
@@ -95,8 +90,7 @@ function switchToOtherHotspot(block, index) {
   dialogs.forEach((box) => box.classList.add('no-animation'));
   dialogs.forEach((box) => box.classList.remove('is-active'));
 
-  block.querySelectorAll('.hotspot-icon-set .active-spot')
-    .forEach((spot) => spot.classList.remove('active-spot'));
+  block.querySelectorAll('.hotspot-icon-set .active-spot').forEach((spot) => spot.classList.remove('active-spot'));
 
   const switchTo = dialogs[index];
   switchTo.classList.add('is-active');
@@ -107,8 +101,7 @@ function switchToOtherHotspot(block, index) {
   // open the new dialog
   setTimeout(() => {
     // workaround: for some reason the animation is still played when the class is added immediately
-    block.querySelectorAll('.hotspot-layover-box')
-      .forEach((box) => box.classList.remove('no-animation'));
+    block.querySelectorAll('.hotspot-layover-box').forEach((box) => box.classList.remove('no-animation'));
   }, 0);
 }
 
@@ -128,12 +121,7 @@ function addDesktopHotspotIcon(hotspot, block, main) {
     },
   });
   iconLink.appendChild(image);
-  iconLink.onclick = (event) => handleClickHotspot(
-    event,
-    iconLink,
-    hotspot.id,
-    block,
-  );
+  iconLink.onclick = (event) => handleClickHotspot(event, iconLink, hotspot.id, block);
 
   main.querySelector('.hotspot-icon-set').append(iconLink);
 }
@@ -173,8 +161,7 @@ function addDesktopLayover(hotspot, block) {
   // don't close if clicked on sidebar
   dialog.addEventListener('click', (event) => event.stopPropagation());
 
-  dialog.querySelector('.hotspot-layover-close')
-    .addEventListener('click', (event) => handleCloseLayover(event, dialog, block));
+  dialog.querySelector('.hotspot-layover-close').addEventListener('click', (event) => handleCloseLayover(event, dialog, block));
 
   block.querySelector('.hotspot-layover').append(...container.childNodes);
 }
@@ -206,14 +193,12 @@ function updateDesktopLayoverBeforeAndNextButtons(block) {
     const prevIndex = index === 0 ? dialogs.length - 1 : index - 1;
     const prevTextHtml = dialogs[prevIndex].querySelector('h3').innerHTML;
     dialog.querySelector('.hotspot-layover-button.prev span').innerHTML = prevTextHtml;
-    dialog.querySelector('.hotspot-layover-button.prev')
-      .addEventListener('click', () => switchToOtherHotspot(block, prevIndex));
+    dialog.querySelector('.hotspot-layover-button.prev').addEventListener('click', () => switchToOtherHotspot(block, prevIndex));
 
     const nextIndex = index === dialogs.length - 1 ? 0 : index + 1;
     const nextTextHtml = dialogs[nextIndex].querySelector('h3').innerHTML;
     dialog.querySelector('.hotspot-layover-button.next span').innerHTML = nextTextHtml;
-    dialog.querySelector('.hotspot-layover-button.next')
-      .addEventListener('click', () => switchToOtherHotspot(block, nextIndex));
+    dialog.querySelector('.hotspot-layover-button.next').addEventListener('click', () => switchToOtherHotspot(block, nextIndex));
   });
 }
 
@@ -308,8 +293,7 @@ function addMobileTabNavigation(block, title, hotspotAreaId) {
     window.scrollTo(0, 0);
 
     // Remove the active class from other active hotspot areas
-    document.querySelectorAll('.section.hotspots-container.active')
-      .forEach((activeHotspotArea) => activeHotspotArea.classList.remove('active'));
+    document.querySelectorAll('.section.hotspots-container.active').forEach((activeHotspotArea) => activeHotspotArea.classList.remove('active'));
 
     // activate the new hotspot area
     const targetHotspotArea = document.querySelector(`.section.hotspots-container[data-hotspot-area-id="${id}"]`);

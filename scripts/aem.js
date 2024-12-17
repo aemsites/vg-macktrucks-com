@@ -11,137 +11,108 @@
  */
 
 /* eslint-env browser */
-
-/**
- * log RUM if part of the sample.
- * @param {string} checkpoint identifies the checkpoint in funnel
- * @param {Object} data additional data for RUM sample
- * @param {string} data.source DOM node that is the source of a checkpoint event,
- * identified by #id or .classname
- * @param {string} data.target subject of the checkpoint event,
- * for instance the href of a link, or a search term
- */
-function sampleRUM(checkpoint, data = {}) {
-  const SESSION_STORAGE_KEY = 'aem-rum';
-  sampleRUM.baseURL = sampleRUM.baseURL
-    || new URL(window.RUM_BASE == null ? 'https://rum.hlx.page' : window.RUM_BASE, window.location);
-  sampleRUM.defer = sampleRUM.defer || [];
-  const defer = (fnname) => {
-    sampleRUM[fnname] = sampleRUM[fnname] || ((...args) => sampleRUM.defer.push({ fnname, args }));
-  };
-  sampleRUM.drain = sampleRUM.drain
-    || ((dfnname, fn) => {
-      sampleRUM[dfnname] = fn;
-      sampleRUM.defer
-        .filter(({ fnname }) => dfnname === fnname)
-        .forEach(({ fnname, args }) => sampleRUM[fnname](...args));
-    });
-  sampleRUM.always = sampleRUM.always || [];
-  sampleRUM.always.on = (chkpnt, fn) => {
-    sampleRUM.always[chkpnt] = fn;
-  };
-  sampleRUM.on = (chkpnt, fn) => {
-    sampleRUM.cases[chkpnt] = fn;
-  };
-  defer('observe');
-  defer('cwv');
+function sampleRUM(checkpoint, data) {
+  const timeShift = () => (window.performance ? window.performance.now() : Date.now() - window.hlx.rum.firstReadTime);
   try {
     window.hlx = window.hlx || {};
+    sampleRUM.enhance = () => {};
     if (!window.hlx.rum) {
-      const usp = new URLSearchParams(window.location.search);
-      const weight = usp.get('rum') === 'on' ? 1 : 100; // with parameter, weight is 1. Defaults to 100.
-      const id = Array.from({ length: 75 }, (_, i) => String.fromCharCode(48 + i))
-        .filter((a) => /\d|[A-Z]/i.test(a))
-        .filter(() => Math.random() * 75 > 70)
-        .join('');
-      const random = Math.random();
-      const isSelected = random * weight < 1;
-      const firstReadTime = window.performance ? window.performance.timeOrigin : Date.now();
-      const urlSanitizers = {
-        full: () => window.location.href,
-        origin: () => window.location.origin,
-        path: () => window.location.href.replace(/\?.*$/, ''),
-      };
-      // eslint-disable-next-line max-len
-      const rumSessionStorage = sessionStorage.getItem(SESSION_STORAGE_KEY)
-        ? JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY))
-        : {};
-      // eslint-disable-next-line max-len
-      rumSessionStorage.pages = (rumSessionStorage.pages ? rumSessionStorage.pages : 0)
-        + 1
-        /* noise */ + (Math.floor(Math.random() * 20) - 10);
-      sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(rumSessionStorage));
-      // eslint-disable-next-line object-curly-newline, max-len
+      const param = new URLSearchParams(window.location.search).get('rum');
+      const weight =
+        (window.SAMPLE_PAGEVIEWS_AT_RATE === 'high' && 10) || (window.SAMPLE_PAGEVIEWS_AT_RATE === 'low' && 1000) || (param === 'on' && 1) || 100;
+      const id = Math.random().toString(36).slice(-4);
+      const isSelected = param !== 'off' && Math.random() * weight < 1;
+
       window.hlx.rum = {
         weight,
         id,
-        random,
         isSelected,
-        firstReadTime,
+        firstReadTime: window.performance ? window.performance.timeOrigin : Date.now(),
         sampleRUM,
-        sanitizeURL: urlSanitizers[window.hlx.RUM_MASK_URL || 'path'],
-        rumSessionStorage,
+        queue: [],
+        collector: (...args) => window.hlx.rum.queue.push(args),
       };
-    }
+      if (isSelected) {
+        const dataFromErrorObj = (error) => {
+          const errData = { source: 'undefined error' };
+          try {
+            errData.target = error.toString();
+            errData.source = error.stack
+              .split('\n')
+              .filter((line) => line.match(/https?:\/\//))
+              .shift()
+              .replace(/at ([^ ]+) \((.+)\)/, '$1@$2')
+              .replace(/ at /, '@')
+              .trim();
+          } catch (err) {
+            /* error structure was not as expected */
+            console.error(err);
+          }
+          return errData;
+        };
 
-    const { weight, id, firstReadTime } = window.hlx.rum;
-    if (window.hlx && window.hlx.rum && window.hlx.rum.isSelected) {
-      const knownProperties = [
-        'weight',
-        'id',
-        'referer',
-        'checkpoint',
-        't',
-        'source',
-        'target',
-        'cwv',
-        'CLS',
-        'FID',
-        'LCP',
-        'INP',
-        'TTFB',
-      ];
-      const sendPing = (pdata = data) => {
-        // eslint-disable-next-line max-len
-        const t = Math.round(
-          window.performance ? window.performance.now() : Date.now() - firstReadTime,
-        );
-        // eslint-disable-next-line object-curly-newline, max-len, no-use-before-define
-        const body = JSON.stringify(
-          {
-            weight, id, referer: window.hlx.rum.sanitizeURL(), checkpoint, t, ...data,
-          },
-          knownProperties,
-        );
-        const url = new URL(`.rum/${weight}`, sampleRUM.baseURL).href;
-        navigator.sendBeacon(url, body);
-        // eslint-disable-next-line no-console
-        console.debug(`ping:${checkpoint}`, pdata);
-      };
-      sampleRUM.cases = sampleRUM.cases || {
-        load: () => sampleRUM('pagesviewed', { source: window.hlx.rum.rumSessionStorage.pages }) || true,
-        cwv: () => sampleRUM.cwv(data) || true,
-        lazy: () => {
-          // use classic script to avoid CORS issues
+        window.addEventListener('error', ({ error }) => {
+          const errData = dataFromErrorObj(error);
+          sampleRUM('error', errData);
+        });
+
+        window.addEventListener('unhandledrejection', ({ reason }) => {
+          let errData = {
+            source: 'Unhandled Rejection',
+            target: reason || 'Unknown',
+          };
+          if (reason instanceof Error) {
+            errData = dataFromErrorObj(reason);
+          }
+          sampleRUM('error', errData);
+        });
+
+        sampleRUM.baseURL = sampleRUM.baseURL || new URL(window.RUM_BASE || '/', new URL('https://rum.hlx.page'));
+        sampleRUM.collectBaseURL = sampleRUM.collectBaseURL || sampleRUM.baseURL;
+        sampleRUM.sendPing = (ck, time, pingData = {}) => {
+          const rumData = JSON.stringify({
+            weight,
+            id,
+            referer: window.location.href,
+            checkpoint: ck,
+            t: time,
+            ...pingData,
+          });
+          const urlParams = window.RUM_PARAMS ? `?${new URLSearchParams(window.RUM_PARAMS).toString()}` : '';
+          const { href: url, origin } = new URL(`.rum/${weight}${urlParams}`, sampleRUM.collectBaseURL);
+          const body = origin === window.location.origin ? new Blob([rumData], { type: 'application/json' }) : rumData;
+          navigator.sendBeacon(url, body);
+
+          console.debug(`ping:${ck}`, pingData);
+        };
+        sampleRUM.sendPing('top', timeShift());
+
+        sampleRUM.enhance = () => {
+          // only enhance once
+          if (document.querySelector('script[src*="rum-enhancer"]')) {
+            return;
+          }
+          const { enhancerVersion, enhancerHash } = sampleRUM.enhancerContext || {};
           const script = document.createElement('script');
-          script.src = new URL(
-            '.rum/@adobe/helix-rum-enhancer@^1/src/index.js',
-            sampleRUM.baseURL,
-          ).href;
+          if (enhancerHash) {
+            script.integrity = enhancerHash;
+            script.setAttribute('crossorigin', 'anonymous');
+          }
+          script.src = new URL(`.rum/@adobe/helix-rum-enhancer@${enhancerVersion || '^2'}/src/index.js`, sampleRUM.baseURL).href;
           document.head.appendChild(script);
-          return true;
-        },
-      };
-      sendPing(data);
-      if (sampleRUM.cases[checkpoint]) {
-        sampleRUM.cases[checkpoint]();
+        };
+        if (!window.hlx.RUM_MANUAL_ENHANCE) {
+          sampleRUM.enhance();
+        }
       }
     }
-    if (sampleRUM.always[checkpoint]) {
-      sampleRUM.always[checkpoint](data);
+    if (window.hlx.rum && window.hlx.rum.isSelected && checkpoint) {
+      window.hlx.rum.collector(checkpoint, data, timeShift());
     }
+    document.dispatchEvent(new CustomEvent('rum', { detail: { checkpoint, data } }));
   } catch (error) {
-    // something went wrong
+    // something went awry
+    console.error(error);
   }
 }
 
@@ -151,6 +122,7 @@ function sampleRUM(checkpoint, data = {}) {
 function setup() {
   window.hlx = window.hlx || {};
   window.hlx.RUM_MASK_URL = 'full';
+  window.hlx.RUM_MANUAL_ENHANCE = true;
   window.hlx.codeBasePath = '';
   window.hlx.lighthouse = new URLSearchParams(window.location.search).get('lighthouse') === 'on';
 
@@ -159,7 +131,6 @@ function setup() {
     try {
       [window.hlx.codeBasePath] = new URL(scriptEl.src).pathname.split('/scripts/scripts.js');
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.log(error);
     }
   }
@@ -171,21 +142,7 @@ function setup() {
 
 function init() {
   setup();
-  sampleRUM('top');
-
-  window.addEventListener('load', () => sampleRUM('load'));
-
-  ['error', 'unhandledrejection'].forEach((event) => {
-    window.addEventListener(event, ({ reason, error }) => {
-      const source = (reason || error).stack
-        .split('\n')
-        .filter((line) => line.match(/https?:\/\//))
-        .shift()
-        .replace(/at ([^ ]+) \((.+)\)/, '$1@$2');
-      const target = (reason || error).toString();
-      sampleRUM('error', { source, target });
-    });
-  });
+  sampleRUM();
 }
 
 /**
@@ -196,10 +153,10 @@ function init() {
 function toClassName(name) {
   return typeof name === 'string'
     ? name
-      .toLowerCase()
-      .replace(/[^0-9a-z]/gi, '-')
-      .replace(/-+/g, '-')
-      .replace(/^-|-$/g, '')
+        .toLowerCase()
+        .replace(/[^0-9a-z]/gi, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-|-$/g, '')
     : '';
 }
 
@@ -217,7 +174,6 @@ function toCamelCase(name) {
  * @param {Element} block The block element
  * @returns {object} The block config
  */
-// eslint-disable-next-line import/prefer-default-export
 function readBlockConfig(block) {
   const config = {};
   block.querySelectorAll(':scope > div').forEach((row) => {
@@ -248,7 +204,9 @@ function readBlockConfig(block) {
           } else {
             value = ps.map((p) => p.textContent);
           }
-        } else value = row.children[1].textContent;
+        } else {
+          value = row.children[1].textContent;
+        }
         config[name] = value;
       }
     }
@@ -286,7 +244,6 @@ async function loadScript(src, attrs) {
       const script = document.createElement('script');
       script.src = src;
       if (attrs) {
-        // eslint-disable-next-line no-restricted-syntax, guard-for-in
         for (const attr in attrs) {
           script.setAttribute(attr, attrs[attr]);
         }
@@ -308,9 +265,7 @@ async function loadScript(src, attrs) {
  */
 function getMetadata(name, doc = document) {
   const attr = name && name.includes(':') ? 'property' : 'name';
-  const meta = [...doc.head.querySelectorAll(`meta[${attr}="${name}"]`)]
-    .map((m) => m.content)
-    .join(', ');
+  const meta = [...doc.head.querySelectorAll(`meta[${attr}="${name}"]`)].map((m) => m.content).join(', ');
   return meta || '';
 }
 
@@ -322,12 +277,7 @@ function getMetadata(name, doc = document) {
  * @param {Array} [breakpoints] Breakpoints and corresponding params (eg. width)
  * @returns {Element} The picture element
  */
-function createOptimizedPicture(
-  src,
-  alt = '',
-  eager = false,
-  breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }],
-) {
+function createOptimizedPicture(src, alt = '', eager = false, breakpoints = [{ media: '(min-width: 600px)', width: '2000' }, { width: '750' }]) {
   const url = new URL(src, window.location.href);
   const picture = document.createElement('picture');
   const { pathname } = url;
@@ -336,7 +286,9 @@ function createOptimizedPicture(
   // webp
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
+    if (br.media) {
+      source.setAttribute('media', br.media);
+    }
     source.setAttribute('type', 'image/webp');
     source.setAttribute('srcset', `${pathname}?width=${br.width}&format=webply&optimize=medium`);
     picture.appendChild(source);
@@ -346,7 +298,9 @@ function createOptimizedPicture(
   breakpoints.forEach((br, i) => {
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
-      if (br.media) source.setAttribute('media', br.media);
+      if (br.media) {
+        source.setAttribute('media', br.media);
+      }
       source.setAttribute('srcset', `${pathname}?width=${br.width}&format=${ext}&optimize=medium`);
       picture.appendChild(source);
     } else {
@@ -371,9 +325,13 @@ function decorateTemplateAndTheme() {
     });
   };
   const template = getMetadata('template');
-  if (template) addClasses(document.body, template);
+  if (template) {
+    addClasses(document.body, template);
+  }
   const theme = getMetadata('theme');
-  if (theme) addClasses(document.body, theme);
+  if (theme) {
+    addClasses(document.body, theme);
+  }
 }
 
 /**
@@ -381,20 +339,7 @@ function decorateTemplateAndTheme() {
  * @param {Element} block the block element
  */
 function wrapTextNodes(block) {
-  const validWrappers = [
-    'P',
-    'PRE',
-    'UL',
-    'OL',
-    'PICTURE',
-    'TABLE',
-    'H1',
-    'H2',
-    'H3',
-    'H4',
-    'H5',
-    'H6',
-  ];
+  const validWrappers = ['P', 'PRE', 'UL', 'OL', 'PICTURE', 'TABLE', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
   const wrap = (el) => {
     const wrapper = document.createElement('p');
@@ -404,14 +349,10 @@ function wrapTextNodes(block) {
 
   block.querySelectorAll(':scope > div > div').forEach((blockColumn) => {
     if (blockColumn.hasChildNodes()) {
-      const hasWrapper = !!blockColumn.firstElementChild
-        && validWrappers.some((tagName) => blockColumn.firstElementChild.tagName === tagName);
+      const hasWrapper = !!blockColumn.firstElementChild && validWrappers.some((tagName) => blockColumn.firstElementChild.tagName === tagName);
       if (!hasWrapper) {
         wrap(blockColumn);
-      } else if (
-        blockColumn.firstElementChild.tagName === 'PICTURE'
-        && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())
-      ) {
+      } else if (blockColumn.firstElementChild.tagName === 'PICTURE' && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())) {
         wrap(blockColumn);
       }
     }
@@ -433,21 +374,11 @@ function decorateButtons(element) {
           a.className = 'button'; // default
           up.classList.add('button-container');
         }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
+        if (up.childNodes.length === 1 && up.tagName === 'STRONG' && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button primary';
           twoup.classList.add('button-container');
         }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
+        if (up.childNodes.length === 1 && up.tagName === 'EM' && twoup.childNodes.length === 1 && twoup.tagName === 'P') {
           a.className = 'button secondary';
           twoup.classList.add('button-container');
         }
@@ -499,7 +430,9 @@ function decorateSections(main) {
         const wrapper = document.createElement('div');
         wrappers.push(wrapper);
         defaultContent = e.tagName !== 'DIV';
-        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+        if (defaultContent) {
+          wrapper.classList.add('default-content-wrapper');
+        }
       }
       wrappers[wrappers.length - 1].append(e);
     });
@@ -533,7 +466,6 @@ function decorateSections(main) {
  * @param {string} [prefix] Location of placeholders
  * @returns {object} Window placeholders object
  */
-// eslint-disable-next-line import/prefer-default-export
 async function fetchPlaceholders(prefix = 'default') {
   window.placeholders = window.placeholders || {};
   if (!window.placeholders[prefix]) {
@@ -563,30 +495,6 @@ async function fetchPlaceholders(prefix = 'default') {
     });
   }
   return window.placeholders[`${prefix}`];
-}
-
-/**
- * Updates all section status in a container element.
- * @param {Element} main The container element
- */
-function updateSectionsStatus(main) {
-  const sections = [...main.querySelectorAll(':scope > div.section')];
-  for (let i = 0; i < sections.length; i += 1) {
-    const section = sections[i];
-    const status = section.dataset.sectionStatus;
-    if (status !== 'loaded') {
-      const loadingBlock = section.querySelector(
-        '.block[data-block-status="initialized"], .block[data-block-status="loading"]',
-      );
-      if (loadingBlock) {
-        section.dataset.sectionStatus = 'loading';
-        break;
-      } else {
-        section.dataset.sectionStatus = 'loaded';
-        section.style.display = null;
-      }
-    }
-  }
 }
 
 /**
@@ -634,14 +542,11 @@ async function loadBlock(block) {
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(
-              `${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`
-            );
+            const mod = await import(`${window.hlx.codeBasePath}/blocks/${blockName}/${blockName}.js`);
             if (mod.default) {
               await mod.default(block);
             }
           } catch (error) {
-            // eslint-disable-next-line no-console
             console.log(`failed to load module for ${blockName}`, error);
           }
           resolve();
@@ -649,26 +554,11 @@ async function loadBlock(block) {
       });
       await Promise.all([cssLoaded, decorationComplete]);
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
     }
     block.dataset.blockStatus = 'loaded';
   }
   return block;
-}
-
-/**
- * Loads JS and CSS for all blocks in a container element.
- * @param {Element} main The container element
- */
-async function loadBlocks(main) {
-  updateSectionsStatus(main);
-  const blocks = [...main.querySelectorAll('div.block')];
-  for (let i = 0; i < blocks.length; i += 1) {
-    // eslint-disable-next-line no-await-in-loop
-    await loadBlock(blocks[i]);
-    updateSectionsStatus(main);
-  }
 }
 
 /**
@@ -685,7 +575,9 @@ function decorateBlock(block) {
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
-    if (section) section.classList.add(`${shortBlockName}-container`);
+    if (section) {
+      section.classList.add(`${shortBlockName}-container`);
+    }
   }
 }
 
@@ -722,17 +614,11 @@ async function loadFooter(footer) {
 }
 
 /**
- * Load LCP block and/or wait for LCP in default content.
- * @param {Array} lcpBlocks Array of blocks
+ * Wait for Image.
+ * @param {Element} section section element
  */
-async function waitForLCP(lcpBlocks) {
-  const block = document.querySelector('.block');
-  const hasLCPBlock = block && lcpBlocks.includes(block.dataset.blockName);
-  if (hasLCPBlock) await loadBlock(block);
-
-  document.body.style.display = null;
-  const lcpCandidate = document.querySelector('main img');
-
+async function waitForFirstImage(section) {
+  const lcpCandidate = section.querySelector('img');
   await new Promise((resolve) => {
     if (lcpCandidate && !lcpCandidate.complete) {
       lcpCandidate.setAttribute('loading', 'eager');
@@ -742,6 +628,42 @@ async function waitForLCP(lcpBlocks) {
       resolve();
     }
   });
+}
+
+/**
+ * Loads all blocks in a section.
+ * @param {Element} section The section element
+ */
+
+async function loadSection(section, loadCallback) {
+  const status = section.dataset.sectionStatus;
+  if (!status || status === 'initialized') {
+    section.dataset.sectionStatus = 'loading';
+    const blocks = [...section.querySelectorAll('div.block')];
+    for (let i = 0; i < blocks.length; i += 1) {
+      await loadBlock(blocks[i]);
+    }
+    if (loadCallback) {
+      await loadCallback(section);
+    }
+    section.dataset.sectionStatus = 'loaded';
+    section.style.display = null;
+  }
+}
+
+/**
+ * Loads all sections.
+ * @param {Element} element The parent element of sections to load
+ */
+
+async function loadSections(element) {
+  const sections = [...element.querySelectorAll('div.section')];
+  for (let i = 0; i < sections.length; i += 1) {
+    await loadSection(sections[i]);
+    if (i === 0 && sampleRUM.enhance) {
+      sampleRUM.enhance();
+    }
+  }
 }
 
 init();
@@ -758,17 +680,17 @@ export {
   fetchPlaceholders,
   getMetadata,
   loadBlock,
-  loadBlocks,
   loadCSS,
   loadFooter,
   loadHeader,
   loadScript,
+  loadSection,
+  loadSections,
   readBlockConfig,
   sampleRUM,
   setup,
   toCamelCase,
   toClassName,
-  updateSectionsStatus,
-  waitForLCP,
+  waitForFirstImage,
   wrapTextNodes,
 };

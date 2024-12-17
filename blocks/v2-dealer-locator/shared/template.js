@@ -47,11 +47,7 @@ const laFilterOptionTemplate = `
       </li>
   </ul>`;
 
-const template = ({
-  zipCode,
-  isMobile,
-  isExportMarket,
-}) => {
+const template = ({ zipCode, isMobile, isExportMarket }) => {
   const rangeFilterValue = isExportMarket ? 75 : 100;
 
   return `<input id="hoverText" value="Please unselect the selected option to click this option" hidden/>

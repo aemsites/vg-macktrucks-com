@@ -38,15 +38,7 @@ const createCarouselStructure = (title, baseBlockName, previousLabel = 'Previous
  * @param {string} baseBlockName - The base class name for the carousel elements.
  * @returns {string} - The HTML string for the carousel card.
  */
-const createCarouselCard = (
-  {
-    picture,
-    text,
-    linkText,
-    linkHref,
-  },
-  baseBlockName,
-) => `
+const createCarouselCard = ({ picture, text, linkText, linkHref }, baseBlockName) => `
   <li class="${baseBlockName}-card">
     <a href="${linkHref}" class="${baseBlockName}-image-link">${picture.outerHTML}</a>
     <p class="${baseBlockName}-tag">${text}</p>
@@ -88,7 +80,9 @@ const scrollToSlide = (elements, direction = 1, debounced = false) => {
   const targetScrollPosition = slides[newSlideIndex].offsetLeft;
 
   const performScroll = () => {
-    if (Math.abs(trackContainer.scrollLeft - targetScrollPosition) < 1) return;
+    if (Math.abs(trackContainer.scrollLeft - targetScrollPosition) < 1) {
+      return;
+    }
 
     trackContainer.scrollTo({
       left: targetScrollPosition,
@@ -189,9 +183,7 @@ const addEventListeners = (elements) => {
 
   const updateCarouselState = () => {
     const slideWidth = calculateSlideWidth(elements.slides);
-    elements.currentSlideIndex = Math.round(
-      trackContainer.scrollLeft / slideWidth,
-    );
+    elements.currentSlideIndex = Math.round(trackContainer.scrollLeft / slideWidth);
     updateButtonVisibility(elements);
     cachedSlideWidth = null;
   };

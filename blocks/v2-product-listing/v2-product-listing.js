@@ -1,11 +1,4 @@
-import {
-  createElement,
-  createResponsivePicture,
-  decorateIcons,
-  getImageURLs,
-  getTextLabel,
-  variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { createElement, createResponsivePicture, decorateIcons, getImageURLs, getTextLabel, variantsClassesToBEM } from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
 const variantClasses = ['with-filter', 'with-dots'];
@@ -40,10 +33,7 @@ function getPictures(imageWrapper) {
   }
 
   if (imageData.length > 2) {
-    imageData[0].breakpoints = [
-      { media: '(min-width: 600px)', width: 600 },
-      { width: 750 },
-    ];
+    imageData[0].breakpoints = [{ media: '(min-width: 600px)', width: 600 }, { width: 750 }];
 
     imageData[1].breakpoints = [
       { media: '(min-width: 1200px)', width: 1200 },
@@ -101,14 +91,13 @@ function buildSegments(segmentList, allSegmentNames) {
   segmentList.forEach((ul) => {
     ul.classList.add(`${blockName}__segment-list`);
     const segmentListItems = ul.querySelectorAll('li');
-    const segmentNames = Array.from(segmentListItems)
-      .map((item) => {
-        const segmentName = item.textContent.trim().toLowerCase().replaceAll(' ', '-');
-        if (!allSegmentNames.includes(segmentName)) {
-          allSegmentNames.push(segmentName);
-        }
-        return segmentName;
-      });
+    const segmentNames = Array.from(segmentListItems).map((item) => {
+      const segmentName = item.textContent.trim().toLowerCase().replaceAll(' ', '-');
+      if (!allSegmentNames.includes(segmentName)) {
+        allSegmentNames.push(segmentName);
+      }
+      return segmentName;
+    });
     const product = ul.closest(`.${blockName}__product`);
     segmentNames.forEach((segment) => {
       product.classList.add(segment);
@@ -171,7 +160,8 @@ function buildFilter(allSegmentNames) {
     const filterButton = createElement('button', { classes: `${blockName}__segment-button` });
     filterButton.textContent = segment;
 
-    if (index === 0) { // Default selected item
+    if (index === 0) {
+      // Default selected item
       filterButton.classList.add('active');
       selectedItem.textContent = segment;
     }

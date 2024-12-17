@@ -324,6 +324,10 @@
   justify-content: space-between;
 }
 
+.search-results-summary-options-wrapper * {
+  font-family: var(--ff-body);
+}
+
 .search-results-wrapper {
   display: flex;
   max-width: 1140px;
@@ -331,6 +335,10 @@
   margin-right: auto;
   padding-right: 0;
   padding-left: 0;
+}
+
+.search-results-wrapper * {
+  font-family: var(--ff-body);
 }
 
 .search-results-wrapper h4 {

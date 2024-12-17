@@ -1,13 +1,5 @@
-import {
-  createElement,
-  unwrapDivs,
-  getTextLabel,
-  decorateIcons,
-} from '../../scripts/common.js';
-import {
-  removeArticlesWithNoImage,
-  fetchMagazineArticles,
-} from '../../scripts/services/magazine.service.js';
+import { createElement, unwrapDivs, getTextLabel, decorateIcons } from '../../scripts/common.js';
+import { fetchMagazineData, formatArticlesArray } from '../../scripts/services/magazine.service.js';
 import { setCarouselPosition, listenScroll } from '../../scripts/carousel-helper.js';
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 
@@ -18,13 +10,16 @@ const activeCarouselClass = `${blockName}__carousel-item--active`;
 let autoScrollEnabled = true;
 const maxAmountOfTabs = 4;
 
-const allArticles = await fetchMagazineArticles();
-const allArticlesWithImage = removeArticlesWithNoImage(allArticles);
+const queryVariables = { facets: [] };
+const allMagazineData = await fetchMagazineData(queryVariables);
+const allArticles = formatArticlesArray(allMagazineData?.items);
 
 let activeVideo = null;
 
 const handleVideoAutoplay = (carouselItem, index) => {
-  if (!carouselItem || !carouselItem.children[index]) return;
+  if (!carouselItem || !carouselItem.children[index]) {
+    return;
+  }
 
   const currentVideo = carouselItem.children[index].querySelector('video');
 
@@ -104,7 +99,7 @@ const appendMediaToFigure = (figure, picture, links) => {
 
 const buildTabItems = (carousel, navigation, items, articles) => {
   items.forEach((item, index) => {
-    if (index <= (maxAmountOfTabs - 1)) {
+    if (index <= maxAmountOfTabs - 1) {
       const picture = item.querySelector('picture');
       const links = item.querySelectorAll('a');
       const tabContent = Array.from(links).find((link) => !link.classList.contains('text-link-with-video'));
@@ -182,7 +177,7 @@ export default async function decorate(block) {
 
   const tabItems = block.querySelectorAll(':scope > div');
 
-  buildTabItems(carouselItems, tabNavigation, tabItems, allArticlesWithImage);
+  buildTabItems(carouselItems, tabNavigation, tabItems, allArticles);
 
   const handleAutoScroll = (isEnabled) => {
     if (isEnabled) {

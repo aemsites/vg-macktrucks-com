@@ -1,11 +1,5 @@
-import {
-  loadBlock,
-} from '../../scripts/aem.js';
-import {
-  createElement,
-  slugify,
-  removeEmptyTags,
-} from '../../scripts/common.js';
+import { loadBlock } from '../../scripts/aem.js';
+import { createElement, slugify, removeEmptyTags } from '../../scripts/common.js';
 
 const blockName = 'v2-specifications';
 
@@ -79,7 +73,9 @@ export default async function decorate(block) {
     }
 
     const classes = [];
-    if (subtitleCounter) classes.push(`${blockName}__list--subtitle`);
+    if (subtitleCounter) {
+      classes.push(`${blockName}__list--subtitle`);
+    }
 
     // apply classes to the content based on items inside
     if (typePicture) {

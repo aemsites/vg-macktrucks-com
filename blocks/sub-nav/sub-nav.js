@@ -1,11 +1,5 @@
-import {
-  decorateButtons, getAllElWithChildren,
-} from '../../scripts/scripts.js';
-import {
-  createElement,
-  getTextLabel,
-  MAGAZINE_CONFIGS,
-} from '../../scripts/common.js';
+import { decorateButtons, getAllElWithChildren } from '../../scripts/scripts.js';
+import { createElement, getTextLabel, MAGAZINE_CONFIGS } from '../../scripts/common.js';
 
 const MQ = window.matchMedia('(min-width: 1140px)');
 const subscribeText = getTextLabel('SUBSCRIBE TO BULLDOG');
@@ -14,7 +8,9 @@ let fullHeight = 0;
 
 function toggleHeightList(ul) {
   const isOpen = ul.classList.contains('open');
-  if (ul.offsetHeight >= fullHeight) fullHeight = ul.offsetHeight;
+  if (ul.offsetHeight >= fullHeight) {
+    fullHeight = ul.offsetHeight;
+  }
   ul.style.maxHeight = `${isOpen ? fullHeight : 0}px`;
 }
 
@@ -32,7 +28,9 @@ function setOverviewUrl(ref, currentUrl) {
 
 async function createSubNav(block, ref) {
   const resp = await fetch(`${ref}.plain.html`);
-  if (!resp.ok) return;
+  if (!resp.ok) {
+    return;
+  }
   const currentUrl = new URL(window.location);
   const { pathname } = currentUrl;
   const overviewUrl = setOverviewUrl(ref, currentUrl);
@@ -68,7 +66,9 @@ async function createSubNav(block, ref) {
   }
   subNavWrapper.append(caretIcon, title, ul);
   block.appendChild(subNavWrapper);
-  if (!MQ.matches) setDefaultHeight(ul);
+  if (!MQ.matches) {
+    setDefaultHeight(ul);
+  }
 
   window.onresize = () => {
     const isDesktop = MQ.matches;
@@ -94,7 +94,9 @@ function toggleListMagazine(el) {
 
 async function buildMagazineSubNav(block, ref) {
   const resp = await fetch(`${ref}.plain.html`);
-  if (!resp.ok) return;
+  if (!resp.ok) {
+    return;
+  }
   const subscribeSection = document.querySelector('[data-form-type="Subscribe-magazine"]');
   const isSubscribeEnabled = !!MAGAZINE_CONFIGS.HREF && !!subscribeSection;
   const text = await resp.text();

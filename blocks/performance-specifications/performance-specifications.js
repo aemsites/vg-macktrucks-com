@@ -1,6 +1,4 @@
-import {
-  a, button, div, domEl, p, ul, li,
-} from '../../scripts/scripts.js';
+import { a, button, div, domEl, p, ul, li } from '../../scripts/scripts.js';
 import { loadScript } from '../../scripts/aem.js';
 import { getTextLabel } from '../../scripts/common.js';
 
@@ -71,7 +69,7 @@ const centerCategoryTab = (tabList, itemTab) => {
 const updateChart = async (chartContainer, performanceData) => {
   if (!window.echarts) {
     // delay by 3 seconds to ensure a good lighthouse score
-    // eslint-disable-next-line no-promise-executor-return
+
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // custom small bundle created on https://echarts.apache.org/en/builder.html
@@ -95,16 +93,15 @@ const updateChart = async (chartContainer, performanceData) => {
     const metrics = Object.keys(performanceData);
 
     const series = metrics.map((title) => {
-      const metricValues = Object.entries(performanceData[title])
-        .map(([rpm, value]) => [Number(rpm), Number(value)]);
+      const metricValues = Object.entries(performanceData[title]).map(([rpm, value]) => [Number(rpm), Number(value)]);
 
-      return ({
+      return {
         type: 'line',
         name: title.toUpperCase(),
         symbolSize: 12,
         smooth: true,
         data: metricValues,
-      });
+      };
     });
 
     // add mark area to first series
@@ -125,7 +122,7 @@ const updateChart = async (chartContainer, performanceData) => {
   const option = {
     legend: {
       icon: 'circle',
-      fontFamily: 'Helvetica Neue LT Pro 75 Bold',
+      fontFamily: 'Inter 75 Bold',
       top: 'top',
       left: MQ.matches ? 'auto' : '0',
       right: MQ.matches ? '0' : 'auto',
@@ -142,10 +139,7 @@ const updateChart = async (chartContainer, performanceData) => {
 
     series: getEchartsSeries(1300, 1700),
     // Global palette:
-    color: [
-      '#b3976b',
-      '#ffffff',
-    ],
+    color: ['#b3976b', '#ffffff'],
     backgroundColor: '#1d1d1d',
 
     grid: {
@@ -237,7 +231,9 @@ const updateChart = async (chartContainer, performanceData) => {
 const renderEngineSpecs = (engineDetails) => {
   const factsDownloadSpecs = engineDetails.facts.filter((fact) => fact[0] === 'download specs')[0]?.[1] || null;
   // remove download specs from facts
-  if (factsDownloadSpecs) engineDetails.facts = engineDetails.facts.filter((fact) => fact[0] !== 'download specs');
+  if (factsDownloadSpecs) {
+    engineDetails.facts = engineDetails.facts.filter((fact) => fact[0] !== 'download specs');
+  }
   const downloadSpecs = factsDownloadSpecs || engineDetails['download specs'] || null;
   // check if the download specs share the same domain as the current page
   const isSameDomain = downloadSpecs && downloadSpecs.includes(window.location.origin);
@@ -245,22 +241,26 @@ const renderEngineSpecs = (engineDetails) => {
   if (downloadSpecs && !isSameDomain) {
     specsLink.hostname = window.location.hostname;
     specsLink.protocol = window.location.protocol;
-    if (window.location.port) specsLink.port = window.location.port;
+    if (window.location.port) {
+      specsLink.port = window.location.port;
+    }
   }
 
   // noinspection JSCheckFunctionSignatures
-  return div({ class: 'key-specs' },
-    domEl('dl', {}, ...engineDetails.facts.map((cells) => [
-      domEl('dt', cells[0]),
-      domEl('dd', cells[1]),
-    ])
-      .flat()),
-    p({ class: 'button-container' },
-      a({
-        class: 'button button--primary download-specs',
-        href: downloadSpecs ? specsLink.toString() : '#',
-        target: '_blank',
-      }, getTextLabel('Download Specs'))),
+  return div(
+    { class: 'key-specs' },
+    domEl('dl', {}, ...engineDetails.facts.map((cells) => [domEl('dt', cells[0]), domEl('dd', cells[1])]).flat()),
+    p(
+      { class: 'button-container' },
+      a(
+        {
+          class: 'button button--primary download-specs',
+          href: downloadSpecs ? specsLink.toString() : '#',
+          target: '_blank',
+        },
+        getTextLabel('Download Specs'),
+      ),
+    ),
   );
 };
 
@@ -306,8 +306,7 @@ const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
       }
 
       // Remove selection from currently selected tabs and set this tab as selected
-      tabList.querySelectorAll('[aria-selected="true"]')
-        .forEach((tab) => tab.setAttribute('aria-selected', false));
+      tabList.querySelectorAll('[aria-selected="true"]').forEach((tab) => tab.setAttribute('aria-selected', false));
       engineButton.setAttribute('aria-selected', true);
 
       refreshDetailView(block);
@@ -324,7 +323,9 @@ const tabListClickHandler = ({ ...params }) => {
     const isIcon = e.target.parentElement.tagName === 'BUTTON';
     const isButton = e.target.tagName === 'BUTTON' || isIcon;
     const isActiveBtn = e.target.getAttribute('aria-selected') === 'true';
-    if (!isButton || isActiveBtn) return;
+    if (!isButton || isActiveBtn) {
+      return;
+    }
 
     const buttonTab = isIcon ? e.target.parentElement : e.target;
     const activeTab = tabList.querySelectorAll('.active');
@@ -336,11 +337,11 @@ const tabListClickHandler = ({ ...params }) => {
     buttonTab.parentElement.classList.add('active');
 
     moveNavigationLine(activeLine, buttonTab, tabList);
-    if (!MQ.matches) centerCategoryTab(tabList, buttonTab.parentElement);
+    if (!MQ.matches) {
+      centerCategoryTab(tabList, buttonTab.parentElement);
+    }
 
-    block.querySelector('.category-detail').replaceWith(
-      renderCategoryDetail(block, engineData.get(block)[buttonTab.dataset.categoryId]),
-    );
+    block.querySelector('.category-detail').replaceWith(renderCategoryDetail(block, engineData.get(block)[buttonTab.dataset.categoryId]));
 
     refreshDetailView(block);
   });
@@ -350,7 +351,9 @@ const tabListHoverHandler = ({ ...params }) => {
   const { tabList, activeLine } = params;
   tabList.addEventListener('mouseover', (e) => {
     const isButton = e.target.tagName === 'BUTTON';
-    if (!isButton) return;
+    if (!isButton) {
+      return;
+    }
     moveNavigationLine(activeLine, e.target, tabList);
   });
 };
@@ -430,16 +433,16 @@ const parseEngineJsonData = (data, block) => {
 
     // remove empty performance data
     Object.keys(engine.performanceData).forEach((key) => {
-      if (Object.values(engine.performanceData[key])[0] === 0
-      && Object.values(engine.performanceData[key])[1] === 0) {
+      if (Object.values(engine.performanceData[key])[0] === 0 && Object.values(engine.performanceData[key])[1] === 0) {
         delete engine.performanceData[key];
       }
     });
 
     const categoryId = engine.series.replaceAll('®', '').toLowerCase().trim();
     if (!engineData.get(block)[categoryId]) {
-      // eslint-disable-next-line no-console
-      console.error(`The engine type ${categoryId} was used in Excel, but the not defined in the Engine-Specifications block. Please update the block used on this page.`);
+      console.error(
+        `The engine type ${categoryId} was used in Excel, but the not defined in the Engine-Specifications block. Please update the block used on this page.`,
+      );
       // create empty object to prevent errors
       engineData.get(block)[categoryId] = { engines: {}, nameHTML: engine.series, descriptionHTML: '' };
     }
@@ -450,7 +453,9 @@ const parseEngineJsonData = (data, block) => {
 export default async function decorate(block) {
   const blockSection = block.closest('.section');
   const sectionTitle = blockSection.querySelector('h2');
-  if (sectionTitle) sectionTitle.classList.add(`${blockName}__section-title`);
+  if (sectionTitle) {
+    sectionTitle.classList.add(`${blockName}__section-title`);
+  }
   engineData.set(block, {});
 
   let jsonUrl;
@@ -490,9 +495,13 @@ export default async function decorate(block) {
   // Render the navigation line below the active tab when the section is loaded
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
-      if (mutation.type !== 'attributes') return;
+      if (mutation.type !== 'attributes') {
+        return;
+      }
       const { sectionStatus } = mutation.target.dataset;
-      if (sectionStatus !== 'loaded') return;
+      if (sectionStatus !== 'loaded') {
+        return;
+      }
       const tabList = block.querySelector('.category-tablist');
       const tabLine = block.querySelector('.active-line');
       moveNavigationLine(tabLine, tabList.querySelector('.active'), tabList);
@@ -503,17 +512,15 @@ export default async function decorate(block) {
   observer.observe(blockSection, { attributes: true, attributeFilter: ['data-section-status'] });
 
   // add category details and engine selection ("XY HP")
-  block.append(
-    renderCategoryDetail(block, engineData.get(block)[initialCategoryId], initialEngineId),
-  );
+  block.append(renderCategoryDetail(block, engineData.get(block)[initialCategoryId], initialEngineId));
 
   // Add detail panel with facts and chart
   const engineDetails = engineData.get(block)[initialCategoryId].engines[initialEngineId];
-  const detailPanel = div({ class: 'details-panel' },
+  const detailPanel = div(
+    { class: 'details-panel' },
     renderEngineSpecs(engineDetails),
-    div({ class: 'performance-chart' },
-      div({ class: 'loading-spinner' }),
-    ));
+    div({ class: 'performance-chart' }, div({ class: 'loading-spinner' })),
+  );
   block.append(detailPanel);
 
   const chartContainer = block.querySelector('.performance-chart');

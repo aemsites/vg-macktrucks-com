@@ -1,13 +1,5 @@
-import {
-  createElement,
-  decorateIcons,
-  getTextLabel,
-} from '../../scripts/common.js';
-import {
-  createArrowControls,
-  listenScroll,
-  setCarouselPosition,
-} from '../../scripts/carousel-helper.js';
+import { createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
+import { createArrowControls, listenScroll, setCarouselPosition } from '../../scripts/carousel-helper.js';
 
 const blockName = 'v2-truck-lineup';
 const tabContentClass = `.${blockName}__content`;
@@ -39,8 +31,8 @@ const setNavigationLine = (tabNavigation) => {
     totalWidth += listItem.getBoundingClientRect().width;
   });
 
-  if ((totalWidth + 32) <= navWidth) {
-    if ((navWidth === 1040) && (viewportWidth >= 1200)) {
+  if (totalWidth + 32 <= navWidth) {
+    if (navWidth === 1040 && viewportWidth >= 1200) {
       tabNavigation.style.setProperty('--truck-lineup-border-scale', `${navWidth}`);
     } else {
       tabNavigation.style.setProperty('--truck-lineup-border-scale', `${navWidth - 32}`);

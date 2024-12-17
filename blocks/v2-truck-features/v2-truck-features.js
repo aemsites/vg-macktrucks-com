@@ -1,6 +1,4 @@
-import {
-  createElement, unwrapDivs, variantsClassesToBEM,
-} from '../../scripts/common.js';
+import { createElement, unwrapDivs, variantsClassesToBEM } from '../../scripts/common.js';
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 
 const blockName = 'v2-truck-features';
@@ -159,10 +157,7 @@ export default async function decorate(block) {
     const inPageNavInPx = Number.parseInt(inPageNav, 10);
     const { top: blockTopPosition, bottom: blockBottomPosition } = block.getBoundingClientRect();
 
-    if (
-      blockTopPosition < navHeightInPx + inPageNavInPx
-      && blockBottomPosition > navHeightInPx + inPageNavInPx
-    ) {
+    if (blockTopPosition < navHeightInPx + inPageNavInPx && blockBottomPosition > navHeightInPx + inPageNavInPx) {
       const blockScrollInPx = Math.abs(blockTopPosition - navHeightInPx - inPageNavInPx);
       const newSlideIndex = Math.floor(blockScrollInPx / slideScrollPaddingInPx);
 

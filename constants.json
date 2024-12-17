@@ -6,7 +6,7 @@
       "data": [
           {
               "name": "GIT_OWNER",
-              "value": "hlxsites"
+              "value": "aemsites"
           },
           {
               "name": "GIT_REPO",
@@ -18,7 +18,7 @@
           },
           {
               "name": "v1SectionClasses",
-              "value": "[\"background\",\"background-top\",\"bg-paper\",\"bg-white-paper\",\"dark-background\",\"center\",\"flex-center\",\"font-l\",\"font-m\",\"font-s\",\"font-xl\",\"font-xxl\",\"font-xs\",\"font-xxs\",\"helvetica-55\",\"helvetica-65\",\"helvetica-75\",\"helvetica-56\",\"helvetica-66\",\"helvetica-76\",\"gap\",\"highlight\",\"line-separator\",\"magazine-listing-content\",\"no-first-line\",\"padding-0\",\"padding-16\",\"padding-32\",\"section-width\",\"text-white\",\"text-black\",\"responsive-title\",\"title-line\",\"title-margin-bottom-0\",\"title-white\",\"wrapper-margin-top-0\"]"
+              "value": "[\"background\",\"background-top\",\"bg-paper\",\"bg-white-paper\",\"dark-background\",\"center\",\"flex-center\",\"font-l\",\"font-m\",\"font-s\",\"font-xl\",\"font-xxl\",\"font-xs\",\"font-xxs\",\"font-55\",\"font-65\",\"font-75\",\"font-56\",\"font-66\",\"font-76\",\"gap\",\"highlight\",\"line-separator\",\"magazine-listing-content\",\"no-first-line\",\"padding-0\",\"padding-16\",\"padding-32\",\"section-width\",\"text-white\",\"text-black\",\"responsive-title\",\"title-line\",\"title-margin-bottom-0\",\"title-white\",\"wrapper-margin-top-0\"]"
           },
           {
               "name": "v2SectionClasses",
@@ -26,7 +26,7 @@
           },
           {
               "name": "v1AllowedBlocks",
-              "value": "v1AllowedBlocks"
+              "value": "[\"v2-embed\",\"v2-forms\"]"
           },
           {
               "name": "v2AllowedBlocks",
@@ -100,20 +100,24 @@
           }
       ]
   },
-  "searchUrls": {
-      "total": 2,
-      "offset": 0,
-      "limit": 2,
-      "data": [
-          {
-              "name": "SEARCH_URL_PROD",
-              "value": "https://kb3ko4nzt2.execute-api.eu-west-1.amazonaws.com/prod/search"
-          },
-          {
-              "name": "SEARCH_URL_DEV",
-              "value": "https://search-api-qa-eds.aws.43636.vnonprod.com/search"
-          }
-      ]
+  "searchConfig": {
+    "total": 3,
+    "offset": 0,
+    "limit": 3,
+    "data": [
+      {
+        "name": "TENANT",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "SEARCH_URL_PROD",
+        "value": "https://kb3ko4nzt2.execute-api.eu-west-1.amazonaws.com/prod/search"
+      },
+      {
+        "name": "SEARCH_URL_DEV",
+        "value": "https://search-api-qa-eds.aws.43636.vnonprod.com/search"
+      }
+    ]
   },
   "fgrep": {
       "total": 3,
@@ -122,7 +126,7 @@
       "data": [
           {
               "name": "GIT_OWNER",
-              "value": "hlxsites"
+              "value": "aemsites"
           },
           {
               "name": "GIT_REPO",

@@ -1,16 +1,10 @@
-import {
-  createElement,
-  decorateIcons,
-} from '../../scripts/common.js';
+import { createElement, decorateIcons } from '../../scripts/common.js';
 import fragmentBlock from '../fragment/fragment.js';
 
 const blockName = 'v2-accordion';
 
 function isContentLinkedCheck(el, startsWithString) {
-  if (
-    (el.children.length === 1 && el.children[0].tagName.toLowerCase() === 'p')
-    || (el.children.length === 0 && el.textContent === el.innerHTML)
-  ) {
+  if ((el.children.length === 1 && el.children[0].tagName.toLowerCase() === 'p') || (el.children.length === 0 && el.textContent === el.innerHTML)) {
     return el.textContent.startsWith(startsWithString);
   }
   return false;

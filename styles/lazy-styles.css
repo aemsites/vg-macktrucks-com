@@ -22,51 +22,6 @@
   font-display: swap;
 }
 
-/* Subheads, Body Copy, & Legal Copy */
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 55 Roman';
-  src: url('../fonts/HelveticaNeueLTPro-55Roman.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 65 Medium';
-  src: url('../fonts/HelveticaNeueLTPro-65Md.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 75 Bold';
-  src: url('../fonts/HelveticaNeueLTPro-75Bd.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 56 Roman Italic';
-  src: url('../fonts/HelveticaNeueLTPro-56It.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 66 Medium Italic';
-  src: url('../fonts/HelveticaNeueLTPro-66MdIt.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue LT Pro 76 Bold Italic';
-  src: url('../fonts/HelveticaNeueLTPro-76BdIt.otf') format('opentype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Helvetica Neue 85 Heavy';
-  src: url('../fonts/helveticaneueltpro-hv.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* Accent elements */
 @font-face {
   font-family: 'GT America Mono Regular';
@@ -81,20 +36,6 @@
   src: url('../fonts/GT-America-Mono-Medium.woff2') format('woff2'),
   url('../fonts/GT-America-Mono-Medium.woff') format('woff');
   letter-spacing: -4%;
-  font-display: swap;
-}
-
-/* Alternate Fonts */
-@font-face {
-  font-family: 'Arial Regular Text Fallback';
-  src: local(arial);
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Arial Bold Headline Fallback';
-  src: local(arial);
-  font-weight: bold;
   font-display: swap;
 }
 

@@ -1,14 +1,8 @@
 import { debounce } from '../../scripts/scripts.js';
-import { getTextLabel } from '../../scripts/common.js';
-import {
-  getFacetsTemplate,
-  getNoResultsTemplate,
-  getMainTemplate,
-  getResultsItemsTemplate,
-  getShowingResultsTemplate,
-} from './templates.js';
+import { getTextLabel, getLocale } from '../../scripts/common.js';
+import { getFacetsTemplate, getNoResultsTemplate, getMainTemplate, getResultsItemsTemplate, getShowingResultsTemplate } from './templates.js';
 
-import { searchQuery, fetchData } from './search-api.js';
+import { searchQuery, fetchData, sanitizeQueryTerm, TENANT } from '../../scripts/search-api.js';
 
 import { fetchAutosuggest, handleArrowDown, handleArrowUp } from './autosuggest.js';
 
@@ -27,28 +21,24 @@ const SEARCH_PARAMS = {
   _q: 'q',
   _start: 'start',
   _sort: 'sort',
-  _tags: 'tags',
+  _article: 'article',
+  _topic: 'topic',
+  _truck: 'truck',
   _category: 'category',
 };
 
 export default function decorate(block) {
-  const section = block.closest('.section');
-  // check if the closest default content wrapper is inside the same section element
-  const siblingDefaultSection = section.querySelector('.default-content-wrapper');
-  const popularSearchWrapper = siblingDefaultSection || section.nextElementSibling;
   const fragmentRange = document.createRange();
-  popularSearchWrapper.classList.add('popular-search');
+  const locale = getLocale();
+  const language = locale.split('-')[0].toUpperCase();
 
   // check if url has query params
-  const {
-    _q,
-    _start,
-    _sort,
-    _tags,
-    _category,
-  } = SEARCH_PARAMS;
+  const { _q, _start, _sort, _article, _topic, _truck, _category } = SEARCH_PARAMS;
+
   const urlParams = new URLSearchParams(window.location.search);
   const searchTerm = urlParams.get(_q);
+  const tenant = TENANT;
+
   let offset = urlParams.get(_start);
   offset = offset ? Number(offset) : 0;
   let resultCount = 0;
@@ -72,16 +62,6 @@ export default function decorate(block) {
   const sortBy = document.getElementById('searchOptionsSection');
   const listEl = block.querySelector('.autosuggest__results-container ul');
 
-  function sanitizeQueryTerm(query) {
-    return query.replace(/[<>]/g, (tag) => {
-      const replacements = {
-        '<': '&lt;',
-        '>': '&gt;',
-      };
-      return replacements[tag] || tag;
-    });
-  }
-
   function searchResults(hideAutoSuggest = true) {
     if (hideAutoSuggest) {
       listEl.textContent = '';
@@ -97,19 +77,26 @@ export default function decorate(block) {
 
   searchBtn.onclick = () => searchResults();
 
-  const onclickHandler = (val) => {
+  const onClickHandler = (val) => {
     input.value = val;
     searchResults();
   };
 
-  const delayFetchData = debounce((term) => fetchAutosuggest(term, listEl, {
-    tag: 'li',
-    class: 'autosuggest__results-item',
-    props: {
-      role: 'option',
-      'data-section-name': 'default',
-    },
-  }, onclickHandler));
+  const delayFetchData = debounce((term) =>
+    fetchAutosuggest(
+      term,
+      listEl,
+      {
+        tag: 'li',
+        class: 'autosuggest__results-item',
+        props: {
+          role: 'option',
+          'data-section-name': 'default',
+        },
+      },
+      onClickHandler,
+    ),
+  );
 
   let liSelected;
   let next;
@@ -168,7 +155,9 @@ export default function decorate(block) {
     const isMore = e.target.textContent.toLowerCase() === 'more';
     e.target.textContent = isMore ? 'Less' : 'More';
     [...facetList.children].forEach((li, i) => {
-      if (i <= 2) return;
+      if (i <= 2) {
+        return;
+      }
       li.classList.toggle('d-none', !isMore);
     });
   };
@@ -192,7 +181,6 @@ export default function decorate(block) {
   };
 
   const updateFilterCheckbox = () => {
-    // const facetsArr = facets.reduce((acc, curVal) => acc.concat(curVal.items), []);
     const form = block.querySelector('form');
     [...form].forEach((field) => {
       const isChecked = facetsFilters.find(({ value }) => value.includes(field.value));
@@ -212,8 +200,7 @@ export default function decorate(block) {
       const facetIndex = facetsFilters.findIndex((item) => item.field === field.dataset.filter);
 
       if (facetIndex > -1) {
-        facetsFilters[facetIndex].value = facetsFilters[facetIndex].value
-          .filter((val) => val !== field.value);
+        facetsFilters[facetIndex].value = facetsFilters[facetIndex].value.filter((val) => val !== field.value);
 
         if (field.checked) {
           facetsFilters[facetIndex].value.push(field.value);
@@ -228,7 +215,7 @@ export default function decorate(block) {
         });
       }
     });
-    const filterParams = [_tags, _category];
+    const filterParams = [_article, _topic, _truck, _category];
 
     filterParams.forEach((item) => {
       const filter = facetsFilters.find(({ field }) => field.toLowerCase() === item);
@@ -246,7 +233,9 @@ export default function decorate(block) {
   };
 
   const addFacetsEvents = (facets) => {
-    if (!facets) return;
+    if (!facets) {
+      return;
+    }
     const facetSidebar = facets.querySelector('.sf-sidebar-container');
     const facetOverlay = facets.querySelector('.sidebar-background');
     const closeBtns = facets.querySelectorAll('.search-close-button, .close-button');
@@ -283,7 +272,9 @@ export default function decorate(block) {
   // handle sort
   const sortResults = block.querySelector('.custom-select-searchstudio-js');
   const sort = urlParams.get(_sort);
-  if (sort) sortResults.value = sort;
+  if (sort) {
+    sortResults.value = sort;
+  }
   sortResults.onchange = (e) => {
     insertUrlParam(_sort, e.target.value);
     fetchResults();
@@ -294,7 +285,8 @@ export default function decorate(block) {
     const queryTerm = sanitizeQueryTerm(input.value);
     let resultsText = '';
     let facetsText = null;
-    if (items.length > 0) { // items by query: 25, count has the total
+    if (items.length > 0) {
+      // items by query: 25, count has the total
       paginationContainer.classList.add('show');
       summary.parentElement.classList.remove('no-results');
       resultsText = getResultsItemsTemplate({ items, queryTerm });
@@ -302,8 +294,7 @@ export default function decorate(block) {
       resultCount = count;
       hasResults = true;
     } else {
-      const noResults = PLACEHOLDERS.noResults.replace('$0', `"${
-        queryTerm.trim() === '' ? ' ' : queryTerm}"`);
+      const noResults = PLACEHOLDERS.noResults.replace('$0', `"<span>${queryTerm.trim() === '' ? ' ' : queryTerm}</span>"`);
       summary.parentElement.classList.add('no-results');
       resultsText = getNoResultsTemplate({ noResults, refine: PLACEHOLDERS.refine });
       hasResults = false;
@@ -314,8 +305,11 @@ export default function decorate(block) {
     facetsWrapper.textContent = '';
     if (hasResults) {
       const newOffset = nextOffset > count ? count : nextOffset;
-      const showingResults = PLACEHOLDERS.showingResults.replace('$0', `${count > 0 ? offset + 1 : 0}`)
-        .replace('$1', newOffset).replace('$2', count).replace('$3', queryTerm);
+      const showingResults = PLACEHOLDERS.showingResults
+        .replace('$0', `${count > 0 ? offset + 1 : 0}`)
+        .replace('$1', newOffset)
+        .replace('$2', count)
+        .replace('$3', queryTerm);
       const showingResultsText = getShowingResultsTemplate(showingResults);
       const summaryFragment = fragmentRange.createContextualFragment(showingResultsText);
       const facetsFragment = fragmentRange.createContextualFragment(facetsText);
@@ -355,7 +349,7 @@ export default function decorate(block) {
     if (offset === 0) {
       isPrevDisabled = 'disabled';
     }
-    if ((nextOffset) >= data.count) {
+    if (nextOffset >= data.count) {
       isNextDisabled = 'disabled';
     }
     prevBtn.setAttribute('disabled', isPrevDisabled);
@@ -369,52 +363,57 @@ export default function decorate(block) {
     const offsetVal = Number(searchParams.get(_start));
     const sortVal = searchParams.get(_sort) || 'BEST_MATCH';
 
-    const tags = searchParams.get(_tags);
-    const category = searchParams.get(_category);
+    const filters = {
+      category: { field: 'CATEGORY', value: _category },
+      article: { field: 'ARTICLE', value: _article },
+      topic: { field: 'TOPIC', value: _topic },
+      truck: { field: 'TRUCK', value: _truck },
+    };
+    const objectFilters = Object.keys(filters);
 
-    if (tags) {
-      facetsFilters.push({
-        field: 'TAGS',
-        value: tags.split(','),
-      });
-    }
-
-    if (category) {
-      facetsFilters.push({
-        field: 'CATEGORY',
-        value: category.split(','),
-      });
-    }
-
-    const isFilters = facetsFilters.length;
     const variables = {
       q: queryTerm,
-      language: 'EN',
+      language,
       limit,
       offset: offsetVal,
-      facets: [{
-        field: 'TAGS',
-      }, {
-        field: 'CATEGORY',
-      }],
       sort: sortVal,
+      tenant,
+      facets: [...objectFilters.map((key) => filters[key].field)],
+      article: {},
     };
 
-    if (isFilters) variables.filters = facetsFilters;
+    objectFilters.forEach((key) => {
+      // check for filters in the url ...
+      const value = searchParams.get(filters[key].value);
+      // updates the variables object ...
+      if (value) {
+        const splittedValue = value.split(',');
+        if (key === 'category') {
+          variables[key] = splittedValue;
+        } else {
+          const articleKey = key === 'article' ? 'category' : key;
+          variables.article[articleKey] = splittedValue;
+        }
+        // and updates the facetsFilters to be used to update the checkboxes
+        facetsFilters.push({
+          field: filters[key].field,
+          value: splittedValue,
+        });
+      }
+    });
 
     fetchData({
-      query: searchQuery(isFilters),
+      query: searchQuery(),
       variables,
     }).then(({ errors, data }) => {
       if (errors) {
-        // eslint-disable-next-line no-console
         console.log('%cSomething went wrong', errors);
       } else {
-        const { macktrucksearch } = data;
+        const { edssearch } = data;
         nextOffset = offset + limit;
-        countSpan.innerText = macktrucksearch.count;
-        showResults(macktrucksearch);
-        updatePaginationDOM(macktrucksearch);
+        countSpan.innerText = edssearch.count;
+        showResults(edssearch);
+        updatePaginationDOM(edssearch);
       }
     });
   }
@@ -442,5 +441,7 @@ export default function decorate(block) {
     }
   });
 
-  if (searchTerm) fetchResults();
+  if (searchTerm) {
+    fetchResults();
+  }
 }

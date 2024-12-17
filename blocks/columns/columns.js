@@ -1,9 +1,4 @@
-import {
-  addVideoShowHandler,
-  isVideoLink,
-  selectVideoLink,
-  wrapImageWithVideoLink,
-} from '../../scripts/video-helper.js';
+import { addVideoShowHandler, isVideoLink, selectVideoLink, wrapImageWithVideoLink } from '../../scripts/video-helper.js';
 import { createElement } from '../../scripts/common.js';
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 
@@ -12,7 +7,9 @@ const decorateUnderline = (col) => {
   const u = col.querySelector('u');
   if (!u) {
     const strong = col.firstElementChild.querySelector('strong');
-    if (strong) strong.parentElement.appendChild(hr);
+    if (strong) {
+      strong.parentElement.appendChild(hr);
+    }
     return;
   }
   const uText = u.textContent;
@@ -24,7 +21,9 @@ const decorateUnderline = (col) => {
 const removeEmptyPs = (pictureWrapper) => {
   const Ps = pictureWrapper.querySelectorAll('p');
   [...Ps].forEach((p) => {
-    if (p.children.length === 0) p.remove();
+    if (p.children.length === 0) {
+      p.remove();
+    }
   });
 };
 
@@ -41,9 +40,7 @@ const videoHandling = (blockEl) => {
   const selectedVideoLink = selectVideoLink(videoLinks);
 
   if (selectedVideoLink) {
-    videoLinks
-      .filter((videoLink) => videoLink.getAttribute('href') !== selectedVideoLink.getAttribute('href'))
-      .forEach((link) => link.remove());
+    videoLinks.filter((videoLink) => videoLink.getAttribute('href') !== selectedVideoLink.getAttribute('href')).forEach((link) => link.remove());
     wrapImageWithVideoLink(selectedVideoLink, picture);
     addVideoShowHandler(selectedVideoLink);
     selectedVideoLink.parentElement.replaceChildren(selectedVideoLink);
@@ -58,7 +55,9 @@ export default function decorate(block) {
   const isPromo = block.classList.contains('promo');
   if (isInfo) {
     const hasAbsolute = block.classList.contains('absolute');
-    if (hasAbsolute) block.closest('.columns-wrapper').classList.add('info', 'absolute');
+    if (hasAbsolute) {
+      block.closest('.columns-wrapper').classList.add('info', 'absolute');
+    }
     cols.forEach((col) => {
       col.className = 'columns-col-wrapper';
       decorateUnderline(col);
@@ -70,8 +69,12 @@ export default function decorate(block) {
     const pictureParent = getAllElWithChildren(parent, 'picture')[0];
     const imgLeft = parent[0].querySelector('picture');
     textParent.className = 'columns-promo-text-wrapper';
-    if (pictureParent) pictureParent.className = 'columns-promo-picture-wrapper';
-    if (imgLeft) textParent.classList.add('columns-promo-img-left');
+    if (pictureParent) {
+      pictureParent.className = 'columns-promo-picture-wrapper';
+    }
+    if (imgLeft) {
+      textParent.classList.add('columns-promo-img-left');
+    }
   }
 
   videoHandling(block);

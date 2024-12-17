@@ -1,13 +1,6 @@
-import {
-  getMetadata,
-  buildBlock,
-  decorateBlock,
-} from '../../scripts/aem.js';
+import { getMetadata, buildBlock, decorateBlock } from '../../scripts/aem.js';
 import { findAndCreateImageLink } from '../../scripts/scripts.js';
-import {
-  createElement,
-  decorateIcons,
-} from '../../scripts/common.js';
+import { createElement, decorateIcons } from '../../scripts/common.js';
 
 async function buildNewsData(h1) {
   const pubdate = getMetadata('date');
@@ -43,9 +36,9 @@ export default async function decorate(doc) {
   // finding picture/video wrappers
   [...mackNewsContent.querySelectorAll('picture, a.image-link')].forEach((pic) => {
     const parent = pic.parentElement;
-    const isParentPicturesWrapper = [...parent.children].every((el) => el.tagName.toLowerCase() === 'picture'
-      || el.classList.contains('image-link')
-      || el.tagName.toLowerCase() === 'br');
+    const isParentPicturesWrapper = [...parent.children].every(
+      (el) => el.tagName.toLowerCase() === 'picture' || el.classList.contains('image-link') || el.tagName.toLowerCase() === 'br',
+    );
 
     if (isParentPicturesWrapper) {
       parent.classList.add('mack-news-pictures-wrapper');

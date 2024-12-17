@@ -1,7 +1,4 @@
-import {
-  createElement,
-  decorateIcons,
-} from '../../scripts/common.js';
+import { createElement, decorateIcons } from '../../scripts/common.js';
 
 /**
  * @typedef {Object} HotspotContent
@@ -59,7 +56,7 @@ function handleClose(block) {
 function handleClickHotspot(event, iconLink, hotspotId, block) {
   event.preventDefault();
 
-  if ((previousSpot > 0) && (Number(hotspotId) === previousSpot)) {
+  if (previousSpot > 0 && Number(hotspotId) === previousSpot) {
     handleClose(block);
     return;
   }
@@ -88,12 +85,7 @@ function addDesktopHotspotIcon(hotspot, block, main) {
   const plusIcon = createElement('img', { props: { src: '/icons/plus.svg' } });
   iconLink.appendChild(plusIcon);
 
-  iconLink.onclick = (event) => handleClickHotspot(
-    event,
-    iconLink,
-    hotspot.id,
-    block,
-  );
+  iconLink.onclick = (event) => handleClickHotspot(event, iconLink, hotspot.id, block);
 
   main.querySelector('.hotspot-icon-set').append(iconLink);
 }
@@ -116,7 +108,9 @@ function addCards(hotspot, main) {
 
   featureBlock.querySelector('picture').innerHTML = hotspot.picture.innerHTML;
   featureBlock.querySelector('.feature-title').innerHTML = hotspot.title.innerHTML;
-  if (Number(hotspot.id) === 1) featureBlock.querySelector('.features').classList.add('is-active');
+  if (Number(hotspot.id) === 1) {
+    featureBlock.querySelector('.features').classList.add('is-active');
+  }
 
   hotspot.text.forEach((p) => {
     const pEl = createElement('p');
@@ -152,7 +146,7 @@ function addPaginationButtons(block) {
 }
 
 function updateActiveHotspot(event, clickedNum, block) {
-  const slideNumber = ((clickedNum > 3) && 1) || ((clickedNum < 1) && 3) || clickedNum;
+  const slideNumber = (clickedNum > 3 && 1) || (clickedNum < 1 && 3) || clickedNum;
 
   previousSpot = clickedNum;
 

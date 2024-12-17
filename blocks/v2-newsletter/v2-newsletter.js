@@ -1,6 +1,4 @@
-import {
-  loadBlock, sampleRUM,
-} from '../../scripts/aem.js';
+import { loadBlock, sampleRUM } from '../../scripts/aem.js';
 import { createElement } from '../../scripts/common.js';
 
 const blockName = 'v2-newsletter';
@@ -43,7 +41,7 @@ export default async function decorate(block) {
   errorEl.remove();
 
   const form = document.createRange().createContextualFragment(`
-    <div class="v2-forms block" data-block-name="v2-forms" data-block-status="">
+    <div class="v2-forms block" data-block-name="v2-forms" data-block-status="" data-force-load="true">
       <div>
         <div>subscribe</div>
       </div>
@@ -53,7 +51,11 @@ export default async function decorate(block) {
     </div>`);
 
   container.append(...form.children);
-  block.replaceWith(container);
 
   await loadBlock(container.querySelector('.v2-forms'));
+
+  const newBlock = createElement('div', { classes: `${blockName}` });
+  newBlock.append(container);
+
+  block.replaceWith(newBlock);
 }

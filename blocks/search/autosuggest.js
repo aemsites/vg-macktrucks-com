@@ -1,36 +1,33 @@
-import { createElement } from '../../scripts/common.js';
-import { autosuggestQuery, fetchData } from './search-api.js';
+import { createElement, getLocale } from '../../scripts/common.js';
+import { autosuggestQuery, fetchData, TENANT } from '../../scripts/search-api.js';
 
 const autoSuggestClass = 'autosuggest-results-item-highlighted';
 
 export function fetchAutosuggest(term, autosuggestEle, rowEle, func) {
   const fragmentRange = document.createRange();
+  const locale = getLocale();
+  const language = locale.split('-')[0].toUpperCase();
 
   fetchData({
     query: autosuggestQuery(),
     variables: {
+      tenant: TENANT,
       term,
-      locale: 'EN',
+      language,
       sizeSuggestions: 5,
     },
   }).then(({ errors, data }) => {
     if (errors) {
-      // eslint-disable-next-line no-console
-      console.log('%cSomething went wrong', errors);
+      console.log('%cSomething went wrong', { errors });
     } else {
-      const {
-        macktrucksuggest: {
-          terms,
-        } = {},
-      } = data;
+      const { edssuggest: { terms } = {} } = data;
       autosuggestEle.textContent = '';
       autosuggestEle.classList.remove('show');
 
       if (terms.length) {
         terms.forEach((val) => {
           const row = createElement(rowEle.tag, { classes: rowEle.class, props: rowEle.props });
-          const suggestFragment = fragmentRange
-            .createContextualFragment(`<b>
+          const suggestFragment = fragmentRange.createContextualFragment(`<b>
             ${val}
           </b>`);
           row.appendChild(suggestFragment);

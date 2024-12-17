@@ -14,7 +14,9 @@ function serialize(obj) {
 function constructPayload(form) {
   const payload = {};
   [...form.elements].forEach((fe) => {
-    if (!fe.name) return;
+    if (!fe.name) {
+      return;
+    }
     if (fe.type === 'radio' && fe.checked) {
       payload[fe.name] = fe.value;
     } else if (fe.type === 'checkbox' && fe.checked) {
@@ -84,7 +86,7 @@ const addForm = async (block) => {
 
   block.style.display = displayValue;
 
-  const formObj = document.querySelector('form');
+  const formObj = formWrapper.querySelector('form');
 
   formObj.addEventListener('submit', (e) => {
     if (formContent.onSubmit) {
@@ -110,13 +112,23 @@ const addForm = async (block) => {
 };
 
 export default async function decorate(block) {
-  const observer = new IntersectionObserver((entries) => {
-    if (entries.some((e) => e.isIntersecting)) {
-      observer.disconnect();
-      addForm(block);
-    }
-  }, {
-    rootMargin: '300px',
-  });
+  const forceLoad = block?.getAttribute('data-force-load');
+
+  if (forceLoad === 'true') {
+    await addForm(block);
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        observer.disconnect();
+        addForm(block);
+      }
+    },
+    {
+      rootMargin: '300px',
+    },
+  );
   observer.observe(block);
 }
