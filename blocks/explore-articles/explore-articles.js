@@ -127,7 +127,7 @@ const buildFirstArticles = (art, section) => {
   });
 };
 
-const addAllArrays = (array) => {
+const getSelectedAmount = (array) => {
   const initialValue = 0;
   const total = array.reduce((acc, curr) => acc + curr.length, initialValue);
   return total;
@@ -136,7 +136,7 @@ const addAllArrays = (array) => {
 const buildArticleList = (articles) => {
   const groupedArticles = divideArray(articles, artsPerChunk);
   const articleGroups = getArticleGroups(groupedArticles);
-  const selectedArticlesNumber = addAllArrays(groupedArticles);
+  const selectedArticlesNumber = getSelectedAmount(groupedArticles);
   const amountOfGroups = articleGroups.length;
 
   const articlesSection = createElement('div', { classes: `${blockName}-articles` });
