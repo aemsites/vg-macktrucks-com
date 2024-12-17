@@ -638,3 +638,8 @@ export const capitalizeWords = (str) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };
+
+export function isInsideSection(element) {
+  const sections = document.querySelectorAll('.section');
+  return Array.from(sections).some((section) => section.contains(element));
+}

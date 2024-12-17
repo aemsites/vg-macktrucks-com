@@ -29,6 +29,7 @@ import {
   slugify,
   variantsClassesToBEM,
   getLocale,
+  isInsideSection,
 } from './common.js';
 
 import { isVideoLink, addVideoShowHandler } from './video-helper.js';
@@ -448,7 +449,14 @@ function buildInpageNavigationBlock(main, classname) {
     // insert in second position, assumption is that Hero should be first
     main.insertBefore(section, main.children[1]);
 
-    decorateBlock(section.querySelector(`.${classname}`));
+    const block = section.querySelector(`.${classname}`);
+
+    decorateBlock(block);
+
+    // Blocks that are not inside of sections will not be automatically loaded
+    if (!isInsideSection(block)) {
+      loadBlock(block);
+    }
   }
 }
 
@@ -805,7 +813,15 @@ function buildTruckLineupBlock(main, classname) {
       main.append(tabbedCarouselSection);
     }
     decorateIcons(tabbedCarouselSection);
-    decorateBlock(tabbedCarouselSection.querySelector(`.${classname}`));
+
+    const block = tabbedCarouselSection.querySelector(`.${classname}`);
+
+    decorateBlock(block);
+
+    // Blocks that are not inside of sections will not be automatically loaded
+    if (!isInsideSection(block)) {
+      loadBlock(block);
+    }
   }
 }
 
