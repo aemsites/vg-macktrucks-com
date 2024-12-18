@@ -636,6 +636,10 @@ async function waitForFirstImage(section) {
  */
 
 async function loadSection(section, loadCallback) {
+  if (!section) {
+    return;
+  }
+
   const status = section.dataset.sectionStatus;
   if (!status || status === 'initialized') {
     section.dataset.sectionStatus = 'loading';
