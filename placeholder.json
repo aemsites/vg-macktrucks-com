@@ -73,11 +73,15 @@
     },
     {
       "Key": "Showing placeholder",
-      "Text": "<strong>Showing <span>$0</span></strong> of $1 stories"
+      "Text": "Showing $0 of $1 stories"
     },
     {
       "Key": "Sort filter placeholders",
       "Text": "Newest,Oldest,Alphabetical"
+    },
+    {
+      "Key": "Sort filter button",
+      "Text": "Filters"
     },
     {
       "Key": "Next",
@@ -278,13 +282,22 @@
     {
       "Key": "tooltip copied text",
       "Text": "Copied!"
-    },    {
+    },
+    {
       "Key": "defaultAuthor",
       "Text": "Mack Trucks"
     },
     {
       "Key": "defaultReadTime",
       "Text": "10 min"
+    },
+    {
+      "Key": "clearAllBtn",
+      "Text": "Clear All"
+    },
+    {
+      "Key": "applyBtn",
+      "Text": "Apply"
     }
   ],
   ":type": "sheet"

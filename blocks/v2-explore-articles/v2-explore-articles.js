@@ -1,5 +1,5 @@
 import { decorateIcons, getTextLabel } from '../../scripts/common.js';
-import { fetchMagazineData, formatArticlesArray } from '../../scripts/services/magazine.service.js';
+import { fetchMagazineData, formatArticlesArray, formatFacetsArray } from '../../scripts/services/magazine.service.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
 const LABELS = {
@@ -9,11 +9,23 @@ const LABELS = {
   SHOWING_PLACEHOLDER: getTextLabel('Showing placeholder'),
   SORT_BY: getTextLabel('Sort by'),
   SORT_PLACEHOLDERS: getTextLabel('Sort filter placeholders'),
+  FILTERS_BUTTON: getTextLabel('Sort filter button'),
+  CLEAR_ALL_BUTTON: getTextLabel('clearAllBtn'),
+  APPLY_BUTTON: getTextLabel('applyBtn'),
 };
 
 const blockName = 'v2-explore-articles';
 const CLASSES = {
+  headSection: `${blockName}__head-section`,
+  filterButton: `${blockName}__filter-button`,
   filters: `${blockName}__filters`,
+  filterList: `${blockName}__filter-list`,
+  selectedFilters: `${blockName}__selected-filters`,
+  selectedFilter: `${blockName}__selected-filter`,
+  clearFiltersBtn: `${blockName}__clear-filters-button`,
+  filterListTitle: `${blockName}__filter-list-title`,
+  facetList: `${blockName}__facet-list`,
+  filterCheckbox: `${blockName}__filter-checkbox`,
   extraLine: `${blockName}__extra-line`,
   filterItem: `${blockName}__filter-item`,
   showing: `${blockName}__showing`,
@@ -31,13 +43,27 @@ const CLASSES = {
 
 const docRange = document.createRange();
 const defaultAmount = 9;
-let currentAmount = 0;
+let totalAmount = 0;
+let offset = 0;
+let counter = 0;
+let appliedFilters = {};
 
-const getData = async () => {
-  const queryVariables = { sort: 'LAST_MODIFIED_DESC' };
+const getData = async (articleSet = {}, offset = 0) => {
+  const queryVariables = {
+    limit: defaultAmount,
+    offset: offset,
+    facets: ['ARTICLE', 'TOPIC', 'TRUCK'],
+    sort: 'PUBLISH_DATE_DESC',
+    article: articleSet,
+  };
+
   const allMagazineData = await fetchMagazineData(queryVariables);
   const allArticles = formatArticlesArray(allMagazineData?.items);
-  // Preparing the data for every collage item
+
+  const allFacets = formatFacetsArray(allMagazineData?.facets);
+  const count = allMagazineData?.count;
+  console.log(count);
+
   const collageItemsData = allArticles.map((article) => {
     const { title, image, path, category } = article;
     const linkUrl = new URL(path, window.location.origin);
@@ -51,49 +77,27 @@ const getData = async () => {
     };
   });
 
-  // TODO: prepare the data to fill the categories, topics, and trucks filters
+  totalAmount = count;
 
   return {
     articles: collageItemsData,
-    // categories: [],
-    // topics: [],
-    // trucks: [],
+    facets: allFacets,
+    count,
   };
 };
 
-// TODO: to be restored to enable the filters
-// const buildFiltersTemplate = () => {
-//   const filtersPlaceholderList = LABELS.FILTERS_PLACEHOLDERS.split(',');
-//   return filtersPlaceholderList.reduce((accumulator, placeholder) => {
-//     const filterFragment = `
-//     <select class="${CLASSES.filterItem}" name="${placeholder}">
-//       <option value="">${placeholder}</option>
-//     </select>`;
-//     return `${accumulator}${filterFragment}`;
-//   }, '');
-// };
-
-const buildFiltersExtraLine = (articlesAmount) => {
-  // TODO: to be restored to enable the sort filter
-  // const sortPlaceholderList = LABELS.SORT_PLACEHOLDERS.split(',');
-  const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', defaultAmount).replace('$1', articlesAmount);
+const buildFiltersExtraLine = (recievedArticles, articlesAmount = totalAmount) => {
+  console.log('test');
+  const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', recievedArticles).replace('$1', articlesAmount);
   return `
     <div class="${CLASSES.showing}">
-      ${showingText}
+      <p>${showingText}</p>
     </div>
   `;
-  // TODO: add the sort filter below the showing div element
-  // <div class="${CLASSES.sortBy}">
-  //   <span>${LABELS.SORT_BY}</span>
-  //   <select class="${CLASSES.filterItem}" name="${LABELS.SORT_BY}">
-  //     ${sortPlaceholderList.reduce((accumulator, placeholder) => `
-  //       ${accumulator}<option value="${placeholder.toLowerCase()}">${placeholder}</option>`, '')}
-  //   </select>
-  // </div>
 };
 
-const buildArticlesTemplate = (articles) =>
-  articles.reduce((accumulator, article) => {
+const buildArticlesTemplate = (articles) => {
+  const collage = articles.reduce((accumulator, article) => {
     const collageItemFragment = `
     <a class="${CLASSES.collageItemLink}" href="${article.linkUrl.toString()}">
       <div class="${CLASSES.collageItemContent}">
@@ -109,21 +113,52 @@ const buildArticlesTemplate = (articles) =>
     return `${accumulator}
     <div class="${CLASSES.collageItemContainer}">${collageItemFragment}</div>`;
   }, '');
+  return collage;
+};
 
-// TODO: replace the filters div with the following code
-/*
-  <div class="${CLASSES.filters}">
-    <input class="${CLASSES.filterItem}" type="search" placeholder="${LABELS.SEARCH}" />
-    <span class="icon icon-search"></span>
-    ${buildFiltersTemplate()}
+const buildFilterLists = (facets) => {
+  let filterList = `
+      <div class="${CLASSES.filterList} hide">
+    `;
+
+  for (const [key, values] of Object.entries(facets)) {
+    filterList += `
+        <fieldset class="${CLASSES.facetList}">
+          <legend>${key}</legend>
+          <ul>
+        
+      `;
+    for (const value of values) {
+      filterList += `
+          <li>
+            <input id="${value.replaceAll(' ', '-')}" name="${value}" class="${CLASSES.filterCheckbox}" type="checkbox">
+            <label for="${value.replaceAll(' ', '-')}">${value}<label>
+          </li>
+        `;
+    }
+    filterList += '</ul></fieldset>';
+  }
+
+  filterList += '</div>';
+  return filterList;
+};
+
+const buildTemplate = (articles, facets, articlesAmount) => {
+  const template = docRange.createContextualFragment(`
+  <div class="${CLASSES.headSection}">
+    <div class="${CLASSES.filterButton}">
+      <button>
+        <span class="icon icon-filter-settings"></span>
+        ${LABELS.FILTERS_BUTTON}</button>
+    </div>
+    <div class="${CLASSES.extraLine}">
+      ${buildFiltersExtraLine(articles.length, articlesAmount)}
+    </div>
   </div>
-*/
-const buildTemplate = (articles, articlesAmount) =>
-  docRange.createContextualFragment(`
   <div class="${CLASSES.filters}">
-  </div>
-  <div class="${CLASSES.extraLine}">
-    ${buildFiltersExtraLine(articlesAmount)}
+    ${buildFilterLists(facets)}
+    <div class="${CLASSES.selectedFilters}"></div>
+    <button class="${CLASSES.clearFiltersBtn} hide">${LABELS.CLEAR_ALL_BUTTON}</button>
   </div>
   <div class="${CLASSES.collageWrapper}">
     <div class="${CLASSES.collage}">
@@ -131,42 +166,132 @@ const buildTemplate = (articles, articlesAmount) =>
     </div>
   </div>
   <div class="${CLASSES.showMoreButtonWrapper}">
-    <button class="${CLASSES.showMoreButton} button button--secondary button--large">
-      ${LABELS.SHOW_MORE}
-    </button>
+    ${totalAmount >= articlesAmount ? `<button class="${CLASSES.showMoreButton} button button--secondary button--large">${LABELS.SHOW_MORE}</button>` : ''}
   </div>
 `);
 
+  return template;
+};
+
 const addEventListeners = (block, articles) => {
-  const showMoreButtonEl = block.querySelector(`.${CLASSES.showMoreButton}`);
+  const selectedFilters = block.querySelector(`.${CLASSES.selectedFilters}`);
+  const clearButton = block.querySelector(`.${CLASSES.clearFiltersBtn}`);
+  const collageEl = block.querySelector(`.${CLASSES.collage}`);
 
-  showMoreButtonEl.addEventListener('click', () => {
-    const collageEl = block.querySelector(`.${CLASSES.collage}`);
-    const amountEl = block.querySelector(`.${CLASSES.showing} strong span`);
-    const newArticles = articles.slice(currentAmount, currentAmount + defaultAmount);
-    const newArticlesTemplate = buildArticlesTemplate(newArticles);
-    const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
-    collageEl.appendChild(newArticlesFragment);
+  // FILTER CLICK
+  const filtersButton = block.querySelector(`.${CLASSES.filterButton} button`);
+  filtersButton.addEventListener('click', async () => {
+    block.querySelector(`.${CLASSES.filterList}`).classList.toggle('hide');
+    filtersButton.classList.toggle('overlay');
 
-    currentAmount += defaultAmount;
-    if (currentAmount >= articles.length) {
-      showMoreButtonEl.remove();
-      currentAmount = articles.length;
+    if (block.querySelector(`.${CLASSES.filterList}`).classList.contains('hide')) {
+      const { articles: newFilteredArticles } = await getData(appliedFilters);
+
+      const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
+      const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
+      collageEl.innerHTML = '';
+      collageEl.appendChild(newArticlesFragment);
     }
-    amountEl.textContent = currentAmount;
+  });
+
+  // CHECKBOX CLICKS
+  const filterCheckboxes = block.querySelectorAll(`.${CLASSES.filterCheckbox}`);
+  filterCheckboxes.forEach((el) => {
+    el.addEventListener('click', (e) => {
+      const facetContainer = el.closest('fieldset').querySelector('legend').innerText;
+      const item = docRange.createContextualFragment(`
+        <div class="${CLASSES.selectedFilter} ${el.id.replaceAll(' ', '-')}-filter">
+          <p>${el.name}<p>
+          <span class="icon icon-close"></span>
+        </div>`);
+      decorateIcons(item);
+
+      clearButton.classList.remove('hide');
+
+      if (el.checked) {
+        // check input
+        selectedFilters.append(item);
+        if (!appliedFilters[facetContainer]) {
+          appliedFilters[facetContainer] = [];
+        }
+        appliedFilters[facetContainer].push(el.name);
+      } else {
+        // uncheck input
+        selectedFilters.querySelector(`.${e.target.id}-filter`).remove();
+        appliedFilters[facetContainer].pop(el.name);
+
+        if (appliedFilters[facetContainer].length === 0) {
+          delete appliedFilters[facetContainer];
+        }
+
+        // once all inputs are unchecked
+        if (selectedFilters.children.length === 0) {
+          delete appliedFilters[facetContainer];
+          clearButton.classList.add('hide');
+        }
+      }
+
+      const selectedCloseIcon = selectedFilters.querySelector(`.${e.target.id}-filter .icon`);
+      selectedCloseIcon?.addEventListener('click', () => {
+        el.checked = false;
+        selectedFilters.querySelector(`.${e.target.id}-filter`).remove();
+        appliedFilters[facetContainer].pop(el.name);
+
+        if (appliedFilters[facetContainer].length === 0) {
+          delete appliedFilters[facetContainer];
+        }
+
+        if (selectedFilters.children.length === 0) {
+          clearButton.classList.add('hide');
+        }
+      });
+    });
+  });
+
+  // CLEAR BUTTON
+  clearButton.addEventListener('click', async () => {
+    clearButton.classList.add('hide');
+    selectedFilters.innerHTML = '';
+    filterCheckboxes.forEach((checkbox) => (checkbox.checked = false));
+    appliedFilters = {};
+    const { articles: newFilteredArticles } = await getData(appliedFilters);
+    const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
+    const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
+    collageEl.innerHTML = '';
+    collageEl.appendChild(newArticlesFragment);
+  });
+
+  // SHOW MORE
+  const showMoreButtonEl = block.querySelector(`.${CLASSES.showMoreButton}`);
+  showMoreButtonEl?.addEventListener('click', async () => {
+    const amountEl = block.querySelector(`.${CLASSES.showing} p`);
+
+    counter = counter + 1;
+    offset = counter * defaultAmount;
+    const { articles: newFilteredArticles } = await getData(appliedFilters, offset);
+    const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
+    const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
+
+    collageEl.appendChild(newArticlesFragment);
+    const displayedArticles = defaultAmount * (counter + 1);
+
+    if (totalAmount <= displayedArticles) {
+      showMoreButtonEl.remove();
+      totalAmount = articles.length;
+    }
+    amountEl.textContent = totalAmount;
     decorateIcons(block);
   });
 };
 
 export default async function decorate(block) {
-  const {
-    articles, // TODO: categories, topics, trucks, are missing
-  } = await getData();
+  const { articles, facets, count } = await getData();
+
   const blockWrapper = block.closest(`.${blockName}-wrapper`);
   const initialArticles = articles.slice(0, defaultAmount);
-  const template = buildTemplate(initialArticles, articles.length);
+  const template = buildTemplate(initialArticles, facets, count);
 
-  currentAmount += defaultAmount;
+  // totalAmount += defaultAmount;
   blockWrapper.classList.add('full-width');
 
   block.appendChild(template);
