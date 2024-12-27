@@ -12,6 +12,8 @@
   align-items: center;
 }
 
+.v2-explore-articles__selected-filter p,
+.v2-explore-articles__clear-filters-button,
 .v2-explore-articles__head-section * {
   font-family: var(--ff-body-bold);
   font-size: var(--body-font-size-xs);
@@ -19,6 +21,7 @@
   margin: 0;
 }
 
+.v2-explore-articles__clear-filters-button,
 .v2-explore-articles__filter-button button {
   background-color: transparent;
   border: none;
@@ -27,15 +30,38 @@
   padding: 0;
 }
 
+.v2-explore-articles__filter-button svg {
+  height: 24px;
+  width: 24px;
+  margin-right: 10px;
+}
+
+.v2-explore-articles__selected-filter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: var(--c-tertiary-light-cool-gray);
+  line-height: 18px;
+  border-radius: 2px;
+  margin: 10px 15px 10px 0;
+  padding: 5px 10px;
+}
+
+.v2-explore-articles__selected-filter svg {
+  height: 24px;
+  width: 24px;
+  margin-left: 5px;
+}
+
+.v2-explore-articles__selected-filter:hover,
+.v2-explore-articles__selected-filter:hover svg,
 .v2-explore-articles__filter-button button:hover {
   color: var(--standalone-link-color-hover);
   cursor: pointer;
 }
 
-.v2-explore-articles__filter-button svg {
-  height: 24px;
-  width: 24px;
-  margin-right: 10px;
+.v2-explore-articles__selected-filter .icon-close {
+  display: flex;
 }
 
 /* collage grid & Show more button */
@@ -115,6 +141,17 @@
   text-align: center;
 }
 
+.v2-explore-articles__no-articles-message {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.v2-explore-articles__no-articles-message.hide {
+  display: none;
+}
+
 @media (min-width: 744px) {
   .v2-explore-articles__head-section {
     max-width: var(--max-width);
@@ -125,7 +162,7 @@
     padding: 10px 0;
     margin: 0 auto;
   }
-  
+
   .v2-explore-articles-container {
     position: relative;
   }
@@ -158,23 +195,9 @@
     min-height: 60px;
   }
 
-  .v2-explore-articles__selected-filter {
-    display: flex;
-    flex-direction: row;
-    background-color: var(--c-tertiary-light-cool-gray);
-    margin: 10px 15px 10px 0;
-    padding: 5px 10px;
-    border-radius: 2px;
-  }
-  
   .v2-explore-articles__selected-filter p {
     text-transform: capitalize;
     margin: 0;
-  }
-
-  .v2-explore-articles__selected-filter svg {
-    height: 24px;    
-    width: 24px;    
   }
 
   .v2-explore-articles__filter-list {

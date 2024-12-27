@@ -12,6 +12,9 @@ const LABELS = {
   FILTERS_BUTTON: getTextLabel('Sort filter button'),
   CLEAR_ALL_BUTTON: getTextLabel('clearAllBtn'),
   APPLY_BUTTON: getTextLabel('applyBtn'),
+  // TODO get these from placeholder?
+  ERROR_TITLE: 'SORRY, YOUR FILTER CRITERIA RETURNED NO RESULTS!',
+  ERROR_TEXT: '"LET\'S REFINE, OR TRY FILTERING BY DIFFERENT FILTER OPTION(S) INSTEAD."',
 };
 
 const blockName = 'v2-explore-articles';
@@ -39,10 +42,11 @@ const CLASSES = {
   collageItemTitle: `${blockName}__collage-item-title`,
   showMoreButton: `${blockName}__show-more-button`,
   showMoreButtonWrapper: `${blockName}__show-more-container`,
+  noArticlesMessage: `${blockName}__no-articles-message`,
 };
 
 const docRange = document.createRange();
-const defaultAmount = 9;
+const defaultAmountOfArticles = 9;
 let totalAmount = 0;
 let offset = 0;
 let counter = 0;
@@ -50,7 +54,7 @@ let appliedFilters = {};
 
 const getData = async (articleSet = {}, offset = 0) => {
   const queryVariables = {
-    limit: defaultAmount,
+    limit: defaultAmountOfArticles,
     offset: offset,
     facets: ['ARTICLE', 'TOPIC', 'TRUCK'],
     sort: 'PUBLISH_DATE_DESC',
@@ -85,7 +89,7 @@ const getData = async (articleSet = {}, offset = 0) => {
   };
 };
 
-const buildFiltersExtraLine = (recievedArticles = defaultAmount, articlesAmount = totalAmount) => {
+const buildFiltersExtraLine = (recievedArticles = defaultAmountOfArticles, articlesAmount = totalAmount) => {
   const showingLabel = recievedArticles < totalAmount ? recievedArticles : totalAmount;
   const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', showingLabel).replace('$1', articlesAmount);
   return `
@@ -127,10 +131,11 @@ const buildFilterLists = (facets) => {
           <ul>
       `;
     for (const value of values) {
+      const itemId = value.replaceAll(' ', '-');
       filterList += `
           <li>
-            <input id="${value.replaceAll(' ', '-')}" name="${value}" class="${CLASSES.filterCheckbox}" type="checkbox">
-            <label for="${value.replaceAll(' ', '-')}">${value}<label>
+            <input id="${itemId}" name="${value}" class="${CLASSES.filterCheckbox}" type="checkbox">
+            <label for="${itemId}">${value}<label>
           </li>
         `;
     }
@@ -143,7 +148,7 @@ const buildFilterLists = (facets) => {
 
 const buildShowMoreBtn = () => {
   const showMoreButton =
-    totalAmount >= defaultAmount
+    totalAmount >= defaultAmountOfArticles
       ? `<button class="${CLASSES.showMoreButton} button button--secondary button--large"> ${LABELS.SHOW_MORE}</button>`
       : '';
 
@@ -175,6 +180,10 @@ const buildTemplate = (articles, facets, articlesAmount) => {
   <div class="${CLASSES.showMoreButtonWrapper}">
     ${buildShowMoreBtn()}
   </div>
+  <div class="${CLASSES.noArticlesMessage} hide">
+    <h3>${LABELS.ERROR_TITLE}</h3>
+    <p>${LABELS.ERROR_TEXT}</p>
+  </div>
 `);
 
   return template;
@@ -191,85 +200,92 @@ const updateArticleList = async (block, offset = 0) => {
   const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
   totalAmount = count;
 
-  const newExtraLine = buildFiltersExtraLine(defaultAmount, totalAmount);
+  const newExtraLine = buildFiltersExtraLine(defaultAmountOfArticles, totalAmount);
   updateHtmlElmt(block, CLASSES.extraLine, newExtraLine);
 
   const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
   updateHtmlElmt(block, CLASSES.collage, newArticlesTemplate);
 
   const showMoreBtnWrapper = block.querySelector(`.${CLASSES.showMoreButtonWrapper}`);
-  showMoreBtnWrapper.classList[newFilteredArticles.length >= count && count < defaultAmount ? 'add' : 'remove']('hide');
+  showMoreBtnWrapper.classList[newFilteredArticles.length >= count && count < defaultAmountOfArticles ? 'add' : 'remove']('hide');
+
+  const noArticlesMessage = block.querySelector(`.${CLASSES.noArticlesMessage}`);
+  noArticlesMessage.classList[count == 0 ? 'remove' : 'add']('hide');
 };
 
 const addEventListeners = (block, articles) => {
-  console.log('change');
-  const selectedFilters = block.querySelector(`.${CLASSES.selectedFilters}`);
-  const clearButton = block.querySelector(`.${CLASSES.clearFiltersBtn}`);
-  const showMoreButtonEl = block.querySelector(`.${CLASSES.showMoreButton}`);
+  const filterEls = {
+    button: block.querySelector(`.${CLASSES.filterButton} button`),
+    list: block.querySelector(`.${CLASSES.filterList}`),
+    clearBtn: block.querySelector(`.${CLASSES.clearFiltersBtn}`),
+    showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
+    selectedFilters: block.querySelector(`.${CLASSES.selectedFilters}`),
+  };
 
-  // FILTER CLICK
-  const filtersButton = block.querySelector(`.${CLASSES.filterButton} button`);
-  filtersButton.addEventListener('click', async () => {
-    block.querySelector(`.${CLASSES.filterList}`).classList.toggle('hide');
-    filtersButton.classList.toggle('overlay');
-
-    if (block.querySelector(`.${CLASSES.filterList}`).classList.contains('hide')) {
-      updateArticleList(block);
-    }
+  // Toggle filters visibility and body overflow
+  filterEls.button?.addEventListener('click', async () => {
+    filterEls.list.classList.toggle('hide');
+    filterEls.button.classList.toggle('overlay');
+    document.body.style.overflow = filterEls.list.classList.contains('hide') ? 'visible' : 'hidden';
+    updateArticleList(block);
   });
 
-  // CHECKBOX CLICKS
-  const checkboxesContainer = block.querySelector(`.${CLASSES.filterList}`);
-  checkboxesContainer.addEventListener('click', (evt) => {
+  // Handle checkbox clicks and selected filters
+  filterEls.list?.addEventListener('click', (evt) => {
     const target = evt.target;
 
     if (target.classList.contains(CLASSES.filterCheckbox)) {
-      const facetContainer = target.closest('fieldset').querySelector('legend').innerText;
+      const facet = target.closest('fieldset').querySelector('legend').innerText;
+      const { name: itemName, id: itemId } = target;
+
+      const itemIndex = appliedFilters[facet]?.indexOf(itemName);
       const item = docRange.createContextualFragment(`
-        <div class="${CLASSES.selectedFilter} ${target.id.replaceAll(' ', '-')}-filter">
-          <p>${target.name}<p>
+        <div class="${CLASSES.selectedFilter} ${itemId}-filter">
+          <p>${itemName}<p>
           <span class="icon icon-close"></span>
         </div>`);
       decorateIcons(item);
 
-      clearButton.classList.remove('hide');
+      filterEls.clearBtn.classList.remove('hide');
 
       if (target.checked) {
-        // check input
-        selectedFilters.append(item);
-        if (!appliedFilters[facetContainer]) {
-          appliedFilters[facetContainer] = [];
+        // add filter to list
+        filterEls.selectedFilters.append(item);
+        // if facet is empty create an empty array and add value
+        if (!appliedFilters[facet]) {
+          appliedFilters[facet] = [];
         }
-        appliedFilters[facetContainer].push(target.name);
+        appliedFilters[facet].push(itemName);
       } else {
         // uncheck input
-        selectedFilters.querySelector(`.${target.id}-filter`).remove();
-        appliedFilters[facetContainer].pop(target.name);
-
-        if (appliedFilters[facetContainer].length === 0) {
-          delete appliedFilters[facetContainer];
+        filterEls.selectedFilters.querySelector(`.${itemId}-filter`).remove();
+        appliedFilters[facet].splice(itemIndex, 1);
+        // delete array key if array is empty
+        if (appliedFilters[facet].length === 0) {
+          delete appliedFilters[facet];
         }
 
-        // once all inputs are unchecked
-        if (selectedFilters.children.length === 0) {
-          delete appliedFilters[facetContainer];
-          clearButton.classList.add('hide');
+        // once all inputs are unchecked hide 'clear all' btn
+        if (filterEls.selectedFilters.children.length === 0) {
+          delete appliedFilters[facet];
+          filterEls.clearBtn.classList.add('hide');
         }
       }
 
-      const selectedCloseIcon = selectedFilters.querySelector(`.${target.id}-filter .icon`);
+      // add closing functionality to X icon
+      const selectedCloseIcon = filterEls.selectedFilters.querySelector(`.${itemId}-filter .icon`);
       selectedCloseIcon?.addEventListener('click', () => {
         target.checked = false;
-        selectedFilters.querySelector(`.${target.id}-filter`).remove();
+        filterEls.selectedFilters.querySelector(`.${itemId}-filter`).remove();
 
-        appliedFilters[facetContainer].pop(target.name);
+        appliedFilters[facet].splice(itemIndex, 1);
 
-        if (appliedFilters[facetContainer].length === 0) {
-          delete appliedFilters[facetContainer];
+        if (appliedFilters[facet].length === 0) {
+          delete appliedFilters[facet];
         }
 
-        if (selectedFilters.children.length === 0) {
-          clearButton.classList.add('hide');
+        if (filterEls.selectedFilters.children.length === 0) {
+          filterEls.clearBtn.classList.add('hide');
         }
 
         updateArticleList(block);
@@ -277,32 +293,31 @@ const addEventListeners = (block, articles) => {
     }
   });
 
-  // CLEAR CHECKBOXES
-  clearButton.addEventListener('click', async () => {
+  // Clear all filters
+  filterEls.clearBtn.addEventListener('click', async () => {
     block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
-    clearButton.classList.add('hide');
-    selectedFilters.innerHTML = '';
+    filterEls.clearBtn.classList.add('hide');
+    filterEls.selectedFilters.innerHTML = '';
     appliedFilters = {};
-
     updateArticleList(block);
   });
 
-  // SHOW MORE
-  showMoreButtonEl?.addEventListener('click', async () => {
+  // Show more articles
+  filterEls.showMoreBtn?.addEventListener('click', async () => {
     const collageEl = block.querySelector(`.${CLASSES.collage}`);
 
     counter = counter + 1;
-    offset = counter * defaultAmount;
+    offset = counter * defaultAmountOfArticles;
 
     const { articles: moreArticles, count } = await getData(appliedFilters, offset);
     const newArticlesTemplate = buildArticlesTemplate(moreArticles);
     const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
 
     collageEl.appendChild(newArticlesFragment);
-    const displayedArticles = defaultAmount * (counter + 1);
+    const displayedArticles = defaultAmountOfArticles * (counter + 1);
 
     if (totalAmount <= displayedArticles) {
-      showMoreButtonEl.remove();
+      filterEls.showMoreBtn.remove();
       totalAmount = articles.length;
     }
     const newExtraLine = buildFiltersExtraLine(displayedArticles, count);
@@ -316,10 +331,9 @@ export default async function decorate(block) {
   const { articles, facets, count } = await getData();
 
   const blockWrapper = block.closest(`.${blockName}-wrapper`);
-  const initialArticles = articles.slice(0, defaultAmount);
+  const initialArticles = articles.slice(0, defaultAmountOfArticles);
   const template = buildTemplate(initialArticles, facets, count);
 
-  // totalAmount += defaultAmount;
   blockWrapper.classList.add('full-width');
 
   block.appendChild(template);
