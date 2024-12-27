@@ -62,7 +62,6 @@ const getData = async (articleSet = {}, offset = 0) => {
 
   const allFacets = formatFacetsArray(allMagazineData?.facets);
   const count = allMagazineData?.count;
-  console.log(count);
 
   const collageItemsData = allArticles.map((article) => {
     const { title, image, path, category } = article;
@@ -86,9 +85,9 @@ const getData = async (articleSet = {}, offset = 0) => {
   };
 };
 
-const buildFiltersExtraLine = (recievedArticles, articlesAmount = totalAmount) => {
-  console.log('test');
-  const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', recievedArticles).replace('$1', articlesAmount);
+const buildFiltersExtraLine = (recievedArticles = defaultAmount, articlesAmount = totalAmount) => {
+  const showingLabel = recievedArticles < totalAmount ? recievedArticles : totalAmount;
+  const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', showingLabel).replace('$1', articlesAmount);
   return `
     <div class="${CLASSES.showing}">
       <p>${showingText}</p>
@@ -126,7 +125,6 @@ const buildFilterLists = (facets) => {
         <fieldset class="${CLASSES.facetList}">
           <legend>${key}</legend>
           <ul>
-        
       `;
     for (const value of values) {
       filterList += `
@@ -141,6 +139,15 @@ const buildFilterLists = (facets) => {
 
   filterList += '</div>';
   return filterList;
+};
+
+const buildShowMoreBtn = () => {
+  const showMoreButton =
+    totalAmount >= defaultAmount
+      ? `<button class="${CLASSES.showMoreButton} button button--secondary button--large"> ${LABELS.SHOW_MORE}</button>`
+      : '';
+
+  return showMoreButton;
 };
 
 const buildTemplate = (articles, facets, articlesAmount) => {
@@ -166,17 +173,39 @@ const buildTemplate = (articles, facets, articlesAmount) => {
     </div>
   </div>
   <div class="${CLASSES.showMoreButtonWrapper}">
-    ${totalAmount >= articlesAmount ? `<button class="${CLASSES.showMoreButton} button button--secondary button--large">${LABELS.SHOW_MORE}</button>` : ''}
+    ${buildShowMoreBtn()}
   </div>
 `);
 
   return template;
 };
 
+const updateHtmlElmt = (block, selectedClass, newEl) => {
+  const container = block.querySelector(`.${selectedClass}`);
+  const newFragment = docRange.createContextualFragment(newEl);
+  container.innerHTML = '';
+  container.append(newFragment);
+};
+
+const updateArticleList = async (block, offset = 0) => {
+  const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
+  totalAmount = count;
+
+  const newExtraLine = buildFiltersExtraLine(defaultAmount, totalAmount);
+  updateHtmlElmt(block, CLASSES.extraLine, newExtraLine);
+
+  const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
+  updateHtmlElmt(block, CLASSES.collage, newArticlesTemplate);
+
+  const showMoreBtnWrapper = block.querySelector(`.${CLASSES.showMoreButtonWrapper}`);
+  showMoreBtnWrapper.classList[newFilteredArticles.length >= count && count < defaultAmount ? 'add' : 'remove']('hide');
+};
+
 const addEventListeners = (block, articles) => {
+  console.log('change');
   const selectedFilters = block.querySelector(`.${CLASSES.selectedFilters}`);
   const clearButton = block.querySelector(`.${CLASSES.clearFiltersBtn}`);
-  const collageEl = block.querySelector(`.${CLASSES.collage}`);
+  const showMoreButtonEl = block.querySelector(`.${CLASSES.showMoreButton}`);
 
   // FILTER CLICK
   const filtersButton = block.querySelector(`.${CLASSES.filterButton} button`);
@@ -185,40 +214,37 @@ const addEventListeners = (block, articles) => {
     filtersButton.classList.toggle('overlay');
 
     if (block.querySelector(`.${CLASSES.filterList}`).classList.contains('hide')) {
-      const { articles: newFilteredArticles } = await getData(appliedFilters);
-
-      const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
-      const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
-      collageEl.innerHTML = '';
-      collageEl.appendChild(newArticlesFragment);
+      updateArticleList(block);
     }
   });
 
   // CHECKBOX CLICKS
-  const filterCheckboxes = block.querySelectorAll(`.${CLASSES.filterCheckbox}`);
-  filterCheckboxes.forEach((el) => {
-    el.addEventListener('click', (e) => {
-      const facetContainer = el.closest('fieldset').querySelector('legend').innerText;
+  const checkboxesContainer = block.querySelector(`.${CLASSES.filterList}`);
+  checkboxesContainer.addEventListener('click', (evt) => {
+    const target = evt.target;
+
+    if (target.classList.contains(CLASSES.filterCheckbox)) {
+      const facetContainer = target.closest('fieldset').querySelector('legend').innerText;
       const item = docRange.createContextualFragment(`
-        <div class="${CLASSES.selectedFilter} ${el.id.replaceAll(' ', '-')}-filter">
-          <p>${el.name}<p>
+        <div class="${CLASSES.selectedFilter} ${target.id.replaceAll(' ', '-')}-filter">
+          <p>${target.name}<p>
           <span class="icon icon-close"></span>
         </div>`);
       decorateIcons(item);
 
       clearButton.classList.remove('hide');
 
-      if (el.checked) {
+      if (target.checked) {
         // check input
         selectedFilters.append(item);
         if (!appliedFilters[facetContainer]) {
           appliedFilters[facetContainer] = [];
         }
-        appliedFilters[facetContainer].push(el.name);
+        appliedFilters[facetContainer].push(target.name);
       } else {
         // uncheck input
-        selectedFilters.querySelector(`.${e.target.id}-filter`).remove();
-        appliedFilters[facetContainer].pop(el.name);
+        selectedFilters.querySelector(`.${target.id}-filter`).remove();
+        appliedFilters[facetContainer].pop(target.name);
 
         if (appliedFilters[facetContainer].length === 0) {
           delete appliedFilters[facetContainer];
@@ -231,11 +257,12 @@ const addEventListeners = (block, articles) => {
         }
       }
 
-      const selectedCloseIcon = selectedFilters.querySelector(`.${e.target.id}-filter .icon`);
+      const selectedCloseIcon = selectedFilters.querySelector(`.${target.id}-filter .icon`);
       selectedCloseIcon?.addEventListener('click', () => {
-        el.checked = false;
-        selectedFilters.querySelector(`.${e.target.id}-filter`).remove();
-        appliedFilters[facetContainer].pop(el.name);
+        target.checked = false;
+        selectedFilters.querySelector(`.${target.id}-filter`).remove();
+
+        appliedFilters[facetContainer].pop(target.name);
 
         if (appliedFilters[facetContainer].length === 0) {
           delete appliedFilters[facetContainer];
@@ -244,32 +271,31 @@ const addEventListeners = (block, articles) => {
         if (selectedFilters.children.length === 0) {
           clearButton.classList.add('hide');
         }
+
+        updateArticleList(block);
       });
-    });
+    }
   });
 
-  // CLEAR BUTTON
+  // CLEAR CHECKBOXES
   clearButton.addEventListener('click', async () => {
+    block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
     clearButton.classList.add('hide');
     selectedFilters.innerHTML = '';
-    filterCheckboxes.forEach((checkbox) => (checkbox.checked = false));
     appliedFilters = {};
-    const { articles: newFilteredArticles } = await getData(appliedFilters);
-    const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
-    const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
-    collageEl.innerHTML = '';
-    collageEl.appendChild(newArticlesFragment);
+
+    updateArticleList(block);
   });
 
   // SHOW MORE
-  const showMoreButtonEl = block.querySelector(`.${CLASSES.showMoreButton}`);
   showMoreButtonEl?.addEventListener('click', async () => {
-    const amountEl = block.querySelector(`.${CLASSES.showing} p`);
+    const collageEl = block.querySelector(`.${CLASSES.collage}`);
 
     counter = counter + 1;
     offset = counter * defaultAmount;
-    const { articles: newFilteredArticles } = await getData(appliedFilters, offset);
-    const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
+
+    const { articles: moreArticles, count } = await getData(appliedFilters, offset);
+    const newArticlesTemplate = buildArticlesTemplate(moreArticles);
     const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
 
     collageEl.appendChild(newArticlesFragment);
@@ -279,7 +305,9 @@ const addEventListeners = (block, articles) => {
       showMoreButtonEl.remove();
       totalAmount = articles.length;
     }
-    amountEl.textContent = totalAmount;
+    const newExtraLine = buildFiltersExtraLine(displayedArticles, count);
+    updateHtmlElmt(block, CLASSES.extraLine, newExtraLine);
+
     decorateIcons(block);
   });
 };
@@ -296,5 +324,6 @@ export default async function decorate(block) {
 
   block.appendChild(template);
   decorateIcons(block);
+
   addEventListeners(block, articles);
 }
