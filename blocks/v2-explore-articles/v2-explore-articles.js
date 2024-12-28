@@ -25,9 +25,12 @@ const CLASSES = {
   filterList: `${blockName}__filter-list`,
   selectedFilters: `${blockName}__selected-filters`,
   selectedFilter: `${blockName}__selected-filter`,
+  applyClearBtns: `${blockName}__apply-clear-buttons`,
+  applyFiltersBtn: `${blockName}__apply-filters-button`,
   clearFiltersBtn: `${blockName}__clear-filters-button`,
   filterListTitle: `${blockName}__filter-list-title`,
   facetList: `${blockName}__facet-list`,
+  facetHeading: `${blockName}__facet-heading`,
   filterCheckbox: `${blockName}__filter-checkbox`,
   extraLine: `${blockName}__extra-line`,
   filterItem: `${blockName}__filter-item`,
@@ -127,7 +130,7 @@ const buildFilterLists = (facets) => {
   for (const [key, values] of Object.entries(facets)) {
     filterList += `
         <fieldset class="${CLASSES.facetList}">
-          <legend>${key}</legend>
+          <legend class="${CLASSES.facetHeading}">${key}</legend>
           <ul>
       `;
     for (const value of values) {
@@ -170,7 +173,10 @@ const buildTemplate = (articles, facets, articlesAmount) => {
   <div class="${CLASSES.filters}">
     ${buildFilterLists(facets)}
     <div class="${CLASSES.selectedFilters}"></div>
-    <button class="${CLASSES.clearFiltersBtn} hide">${LABELS.CLEAR_ALL_BUTTON}</button>
+    <div class="${CLASSES.applyClearBtns} hide">
+      <button class="${CLASSES.applyFiltersBtn}">${LABELS.APPLY_BUTTON}</button>
+      <button class="${CLASSES.clearFiltersBtn}">${LABELS.CLEAR_ALL_BUTTON}</button>
+    </div>
   </div>
   <div class="${CLASSES.collageWrapper}">
     <div class="${CLASSES.collage}">
@@ -197,6 +203,7 @@ const updateHtmlElmt = (block, selectedClass, newEl) => {
 };
 
 const updateArticleList = async (block, offset = 0) => {
+  console.log(appliedFilters);
   const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
   totalAmount = count;
 
@@ -217,6 +224,7 @@ const addEventListeners = (block, articles) => {
   const filterEls = {
     button: block.querySelector(`.${CLASSES.filterButton} button`),
     list: block.querySelector(`.${CLASSES.filterList}`),
+    buttonContainer: block.querySelector(`.${CLASSES.applyClearBtns}`),
     clearBtn: block.querySelector(`.${CLASSES.clearFiltersBtn}`),
     showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
     selectedFilters: block.querySelector(`.${CLASSES.selectedFilters}`),
@@ -235,7 +243,7 @@ const addEventListeners = (block, articles) => {
     const target = evt.target;
 
     if (target.classList.contains(CLASSES.filterCheckbox)) {
-      const facet = target.closest('fieldset').querySelector('legend').innerText;
+      const facet = target.closest('fieldset').querySelector('legend').innerText.toLowerCase();
       const { name: itemName, id: itemId } = target;
 
       const itemIndex = appliedFilters[facet]?.indexOf(itemName);
@@ -246,7 +254,7 @@ const addEventListeners = (block, articles) => {
         </div>`);
       decorateIcons(item);
 
-      filterEls.clearBtn.classList.remove('hide');
+      filterEls.buttonContainer.classList.remove('hide');
 
       if (target.checked) {
         // add filter to list
@@ -268,7 +276,7 @@ const addEventListeners = (block, articles) => {
         // once all inputs are unchecked hide 'clear all' btn
         if (filterEls.selectedFilters.children.length === 0) {
           delete appliedFilters[facet];
-          filterEls.clearBtn.classList.add('hide');
+          filterEls.buttonContainer.classList.add('hide');
         }
       }
 
@@ -285,7 +293,7 @@ const addEventListeners = (block, articles) => {
         }
 
         if (filterEls.selectedFilters.children.length === 0) {
-          filterEls.clearBtn.classList.add('hide');
+          filterEls.buttonContainer.classList.add('hide');
         }
 
         updateArticleList(block);
@@ -296,7 +304,7 @@ const addEventListeners = (block, articles) => {
   // Clear all filters
   filterEls.clearBtn.addEventListener('click', async () => {
     block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
-    filterEls.clearBtn.classList.add('hide');
+    filterEls.buttonContainer.classList.add('hide');
     filterEls.selectedFilters.innerHTML = '';
     appliedFilters = {};
     updateArticleList(block);
