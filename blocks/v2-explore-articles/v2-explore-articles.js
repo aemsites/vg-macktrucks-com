@@ -10,8 +10,9 @@ const LABELS = {
   SORT_BY: getTextLabel('Sort by'),
   SORT_PLACEHOLDERS: getTextLabel('Sort filter placeholders'),
   FILTERS_BUTTON: getTextLabel('Sort filter button'),
-  CLEAR_ALL_BUTTON: getTextLabel('clearAllBtn'),
-  APPLY_BUTTON: getTextLabel('applyBtn'),
+  CLEAR_ALL_BUTTON: getTextLabel('Clear all button'),
+  CLEAR_BUTTON: getTextLabel('Clear button'),
+  APPLY_BUTTON: getTextLabel('Apply button'),
   // TODO get these from placeholder?
   ERROR_TITLE: 'SORRY, YOUR FILTER CRITERIA RETURNED NO RESULTS!',
   ERROR_TEXT: '"LET\'S REFINE, OR TRY FILTERING BY DIFFERENT FILTER OPTION(S) INSTEAD."',
@@ -28,6 +29,7 @@ const CLASSES = {
   applyClearBtns: `${blockName}__apply-clear-buttons`,
   applyFiltersBtn: `${blockName}__apply-filters-button`,
   clearFiltersBtn: `${blockName}__clear-filters-button`,
+  clearAllFiltersBtn: `${blockName}__clear-all-filters-button`,
   filterListTitle: `${blockName}__filter-list-title`,
   facetList: `${blockName}__facet-list`,
   facetHeading: `${blockName}__facet-heading`,
@@ -174,9 +176,10 @@ const buildTemplate = (articles, facets, articlesAmount) => {
     ${buildFilterLists(facets)}
     <div class="${CLASSES.selectedFilters}"></div>
     <div class="${CLASSES.applyClearBtns} hide">
-      <button class="${CLASSES.applyFiltersBtn}">${LABELS.APPLY_BUTTON}</button>
-      <button class="${CLASSES.clearFiltersBtn}">${LABELS.CLEAR_ALL_BUTTON}</button>
-    </div>
+      <button class="${CLASSES.clearFiltersBtn} button button--secondary button--large">${LABELS.CLEAR_BUTTON}</button>
+      <button class="${CLASSES.applyFiltersBtn} button button--primary button--large">${LABELS.APPLY_BUTTON}</button>
+      </div>
+    <a class="${CLASSES.clearAllFiltersBtn} standalone-link hide">${LABELS.CLEAR_ALL_BUTTON}</a>
   </div>
   <div class="${CLASSES.collageWrapper}">
     <div class="${CLASSES.collage}">
@@ -203,7 +206,6 @@ const updateHtmlElmt = (block, selectedClass, newEl) => {
 };
 
 const updateArticleList = async (block, offset = 0) => {
-  console.log(appliedFilters);
   const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
   totalAmount = count;
 
@@ -225,7 +227,7 @@ const addEventListeners = (block, articles) => {
     button: block.querySelector(`.${CLASSES.filterButton} button`),
     list: block.querySelector(`.${CLASSES.filterList}`),
     buttonContainer: block.querySelector(`.${CLASSES.applyClearBtns}`),
-    clearBtn: block.querySelector(`.${CLASSES.clearFiltersBtn}`),
+    clearBtn: block.querySelector(`.${CLASSES.clearAllFiltersBtn}`),
     showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
     selectedFilters: block.querySelector(`.${CLASSES.selectedFilters}`),
   };
@@ -234,7 +236,9 @@ const addEventListeners = (block, articles) => {
   filterEls.button?.addEventListener('click', async () => {
     filterEls.list.classList.toggle('hide');
     filterEls.button.classList.toggle('overlay');
-    document.body.style.overflow = filterEls.list.classList.contains('hide') ? 'visible' : 'hidden';
+    if (window.innerWidth >= 744) {
+      document.body.style.overflow = filterEls.list.classList.contains('hide') ? 'visible' : 'hidden';
+    }
     updateArticleList(block);
   });
 
@@ -255,6 +259,7 @@ const addEventListeners = (block, articles) => {
       decorateIcons(item);
 
       filterEls.buttonContainer.classList.remove('hide');
+      filterEls.clearBtn.classList.remove('hide');
 
       if (target.checked) {
         // add filter to list
@@ -277,6 +282,7 @@ const addEventListeners = (block, articles) => {
         if (filterEls.selectedFilters.children.length === 0) {
           delete appliedFilters[facet];
           filterEls.buttonContainer.classList.add('hide');
+          filterEls.clearBtn.classList.add('hide');
         }
       }
 
@@ -294,6 +300,7 @@ const addEventListeners = (block, articles) => {
 
         if (filterEls.selectedFilters.children.length === 0) {
           filterEls.buttonContainer.classList.add('hide');
+          filterEls.clearBtn.classList.add('hide');
         }
 
         updateArticleList(block);
@@ -305,6 +312,7 @@ const addEventListeners = (block, articles) => {
   filterEls.clearBtn.addEventListener('click', async () => {
     block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
     filterEls.buttonContainer.classList.add('hide');
+    filterEls.clearBtn.classList.add('hide');
     filterEls.selectedFilters.innerHTML = '';
     appliedFilters = {};
     updateArticleList(block);

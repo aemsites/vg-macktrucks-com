@@ -292,11 +292,15 @@
       "Text": "10 min"
     },
     {
-      "Key": "clearAllBtn",
+      "Key": "Clear all button",
       "Text": "Clear All"
     },
     {
-      "Key": "applyBtn",
+      "Key": "Clear button",
+      "Text": "Clear"
+    },
+    {
+      "Key": "Apply button",
       "Text": "Apply"
     }
   ],
