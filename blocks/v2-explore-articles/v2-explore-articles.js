@@ -138,7 +138,7 @@ const buildFilterLists = (facets) => {
         <div class="${CLASSES.facetList}">
           <div class="${CLASSES.facetHeadingWrapper}">
             <h5 class="${CLASSES.facetHeading}">${key}</h5>
-            <span class="icon icon-magazine-chevron"></span>
+            <span class="icon icon-chevron-down-thin"></span>
           </div>
           <ul>
       `;
@@ -247,10 +247,11 @@ const addEventListeners = (block, articles) => {
   const allApplyBtns = [mobileApplyBtn, htmlElts.filterButton];
   // Handles the filter and apply btn clicks
   allApplyBtns.forEach((btn) => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', () => {
       htmlElts.filterList.classList.toggle('hide');
       htmlElts.filterButton.classList.toggle('overlay');
       htmlElts.mobileBtnsContainer.classList.toggle('hide');
+      htmlElts.filterButton.style.setProperty('--display-icon', htmlElts.filterButton.classList.contains('overlay') ? 'inline-flex' : 'none');
 
       // Move filter button to the top of the screen
       const headerHeight = document.querySelector('.header-wrapper').getBoundingClientRect().height;
@@ -320,8 +321,8 @@ const addEventListeners = (block, articles) => {
         if (htmlElts.selectedFilters.children.length === 0) {
           delete appliedFilters[facet];
           htmlElts.clearBtn.classList.add('hide');
-          htmlElts.filterButton.dataset.amount = '';
-          facetHeading.dataset.amount = '';
+          delete htmlElts.filterButton.dataset.amount;
+          delete facetHeading.dataset.amount;
         }
       }
 
@@ -354,7 +355,7 @@ const addEventListeners = (block, articles) => {
     btn.addEventListener('click', async () => {
       htmlElts.clearBtn.classList.add('hide');
       htmlElts.selectedFilters.innerHTML = '';
-      htmlElts.filterButton.dataset.amount = '';
+      delete htmlElts.filterButton.dataset.amount;
       block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
       block.querySelectorAll(`.${CLASSES.facetHeading}`).forEach((heading) => (heading.dataset.amount = ''));
       appliedFilters = {};
