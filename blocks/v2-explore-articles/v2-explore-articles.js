@@ -233,7 +233,7 @@ const updateArticleList = async (block, offset = 0) => {
 
 const addEventListeners = (block, articles) => {
   const htmlElts = {
-    filterButton: block.querySelector(`.${CLASSES.filterButton} a`),
+    filterButton: block.querySelector(`.${CLASSES.filterButton}`),
     filterList: block.querySelector(`.${CLASSES.filterList}`),
     mobileBtnsContainer: block.querySelector(`.${CLASSES.applyClearBtns}`),
     clearBtn: block.querySelector(`.${CLASSES.clearAllFiltersBtn}`),

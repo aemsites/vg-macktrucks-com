@@ -278,7 +278,7 @@
 
 /* HOVER STATES */
 .v2-explore-articles__selected-filter:hover svg,
-.v2-explore-articles__filter-button button:hover {
+.v2-explore-articles__filter-button:hover {
   color: var(--standalone-link-color-hover);
   cursor: pointer;
 }
@@ -321,7 +321,7 @@
     background-color: unset;
   }
 
-  .v2-explore-articles__filter-button a.overlay::after {
+  .v2-explore-articles__filter-button.overlay::after {
     content: '';
     display: block;
     position: absolute;
