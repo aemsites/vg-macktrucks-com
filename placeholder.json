@@ -302,6 +302,10 @@
     {
       "Key": "Apply button",
       "Text": "Apply"
+    },
+    {
+      "Key": "Selected",
+      "Text": "Selected"
     }
   ],
   ":type": "sheet"

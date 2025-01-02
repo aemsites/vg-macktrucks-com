@@ -13,6 +13,7 @@ const LABELS = {
   CLEAR_ALL_BUTTON: getTextLabel('Clear all button'),
   CLEAR_BUTTON: getTextLabel('Clear button'),
   APPLY_BUTTON: getTextLabel('Apply button'),
+  SELECTED: getTextLabel('Selected'),
   // TODO get these from placeholder?
   ERROR_TITLE: 'SORRY, YOUR FILTER CRITERIA RETURNED NO RESULTS!',
   ERROR_TEXT: '"LET\'S REFINE, OR TRY FILTERING BY DIFFERENT FILTER OPTION(S) INSTEAD."',
@@ -137,7 +138,7 @@ const buildFilterLists = (facets) => {
         <div class="${CLASSES.facetList}">
           <div class="${CLASSES.facetHeadingWrapper}">
             <h5 class="${CLASSES.facetHeading}">${key}</h5>
-            <span class="icon icon-chevron-down"></span>
+            <span class="icon icon-magazine-chevron"></span>
           </div>
           <ul>
       `;
@@ -274,7 +275,8 @@ const addEventListeners = (block, articles) => {
     const target = evt.target;
 
     if (target.classList.contains(CLASSES.filterCheckbox)) {
-      const facet = target.closest(`.${CLASSES.facetList}`).querySelector(`.${CLASSES.facetHeading}`).innerText.toLowerCase();
+      const facetHeading = target.closest(`.${CLASSES.facetList}`).querySelector(`.${CLASSES.facetHeading}`);
+      const facet = facetHeading.innerText.toLowerCase();
       const { name: itemName, id: itemId } = target;
 
       // Create applied filter element
@@ -289,6 +291,8 @@ const addEventListeners = (block, articles) => {
       htmlElts.mobileBtnsContainer.classList.remove('hide');
       htmlElts.clearBtn.classList.remove('hide');
 
+      const getSelectedFilters = () => Object.values(appliedFilters).reduce((sum, value) => (Array.isArray(value) ? sum + value.length : sum), 0);
+
       if (target.checked) {
         // add filter to list
         htmlElts.selectedFilters.append(item);
@@ -297,10 +301,16 @@ const addEventListeners = (block, articles) => {
           appliedFilters[facet] = [];
         }
         appliedFilters[facet].push(itemName);
+
+        htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
+        facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
       } else {
         // uncheck input
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
         appliedFilters[facet].splice(itemIndex, 1);
+
+        htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
+        facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
         // delete array key if array is empty
         if (appliedFilters[facet].length === 0) {
           delete appliedFilters[facet];
@@ -310,6 +320,8 @@ const addEventListeners = (block, articles) => {
         if (htmlElts.selectedFilters.children.length === 0) {
           delete appliedFilters[facet];
           htmlElts.clearBtn.classList.add('hide');
+          htmlElts.filterButton.dataset.amount = '';
+          facetHeading.dataset.amount = '';
         }
       }
 
@@ -340,10 +352,13 @@ const addEventListeners = (block, articles) => {
   // Clear all filters from both available buttons
   allClearBtns.forEach((btn) => {
     btn.addEventListener('click', async () => {
-      block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
       htmlElts.clearBtn.classList.add('hide');
       htmlElts.selectedFilters.innerHTML = '';
+      htmlElts.filterButton.dataset.amount = '';
+      block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
+      block.querySelectorAll(`.${CLASSES.facetHeading}`).forEach((heading) => (heading.dataset.amount = ''));
       appliedFilters = {};
+
       updateArticleList(block);
     });
   });
@@ -380,8 +395,7 @@ const addEventListeners = (block, articles) => {
     }
 
     const clickedTarget = e.target.closest(`.${CLASSES.facetHeadingWrapper}`);
-
-    if (e.target.classList.contains(CLASSES.facetHeadingWrapper)) {
+    if (e.target.classList.contains(CLASSES.facetHeadingWrapper) || clickedTarget) {
       clickedTarget.querySelector('svg').classList.toggle('rotate');
 
       const selectedChecklist = e.target.closest(`.${CLASSES.facetList}`);

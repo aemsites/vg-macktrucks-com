@@ -3,6 +3,10 @@
   --filter-line-height: 50px;
 }
 
+.v2-explore-articles {
+  min-height: 80vh;
+}
+
 .v2-explore-articles__head-section {
   display: flex;
   flex-direction: column;
@@ -41,6 +45,12 @@
   padding: 0 16px;
 }
 
+.v2-explore-articles__filter-button::after {
+  content: attr(data-amount);
+  display: inline-block;
+  margin-left: 5px;
+}
+
 .v2-explore-articles__filter-button svg {
   height: 24px;
   width: 24px;
@@ -68,6 +78,8 @@
   top: calc(0px - var(--filter-line-height));
   left: 0;
   z-index: 2;
+
+  /* TODO calculate this height into a variable */
   height: calc(100vh - 198px);
   width: 100%;
   background-color: var(--background-color);
@@ -110,7 +122,14 @@
   font-family: var(--ff-body-bold);
   line-height: var(--body-2-line-height);
   font-weight: 700;
+  color: var(--text-subtle);
   margin: 0;
+}
+
+.v2-explore-articles__facet-heading::after {
+  content: attr(data-amount);
+  display: inline-block;
+  margin-left: 5px;
 }
 
 .v2-explore-articles__filter-list ul {
@@ -125,7 +144,7 @@
 
 .v2-explore-articles__filter-list ul.expand {
   height: auto;
-  padding: 20px 16px;
+  padding: 0 16px 20px;
 }
 
 .v2-explore-articles__filter-list li {
@@ -278,6 +297,7 @@
 
 /* HOVER STATES */
 .v2-explore-articles__selected-filter:hover svg,
+.v2-explore-articles__clear-all-filters-button:hover,
 .v2-explore-articles__filter-button:hover {
   color: var(--standalone-link-color-hover);
   cursor: pointer;
@@ -319,6 +339,10 @@
 
   .v2-explore-articles__filter-button {
     background-color: unset;
+  }
+
+  .v2-explore-articles__filter-button::after {
+    content: unset;
   }
 
   .v2-explore-articles__filter-button.overlay::after {
@@ -395,14 +419,18 @@
     padding: 5px 10px 10px;
   }
 
+  .v2-explore-articles__facet-heading-wrapper svg {
+    display: none;
+  }
+
   .v2-explore-articles__facet-heading {
     width: unset;
     border: none;
     margin: 0;
   }
 
-  .v2-explore-articles__facet-heading-wrapper svg {
-    display: none;
+  .v2-explore-articles__facet-heading::after {
+    content: unset;
   }
 
   .v2-explore-articles__filter-list ul,
