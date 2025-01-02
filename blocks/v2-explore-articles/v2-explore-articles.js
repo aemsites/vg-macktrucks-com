@@ -32,6 +32,7 @@ const CLASSES = {
   clearAllFiltersBtn: `${blockName}__clear-all-filters-button`,
   filterListTitle: `${blockName}__filter-list-title`,
   facetList: `${blockName}__facet-list`,
+  facetHeadingWrapper: `${blockName}__facet-heading-wrapper`,
   facetHeading: `${blockName}__facet-heading`,
   filterCheckbox: `${blockName}__filter-checkbox`,
   extraLine: `${blockName}__extra-line`,
@@ -39,6 +40,7 @@ const CLASSES = {
   showing: `${blockName}__showing`,
   sortBy: `${blockName}__sort-by`,
   collageWrapper: `${blockName}__collage-wrapper`,
+  loadingOverlay: `${blockName}__loading-overlay`,
   collage: `${blockName}__collage`,
   collageItemContainer: `${blockName}__collage-item-container`,
   collageItemLink: `${blockName}__collage-item-link`,
@@ -57,6 +59,7 @@ let offset = 0;
 let counter = 0;
 let appliedFilters = {};
 
+// Gets the data from the API and formats it
 const getData = async (articleSet = {}, offset = 0) => {
   const queryVariables = {
     limit: defaultAmountOfArticles,
@@ -131,8 +134,11 @@ const buildFilterLists = (facets) => {
 
   for (const [key, values] of Object.entries(facets)) {
     filterList += `
-        <fieldset class="${CLASSES.facetList}">
-          <legend class="${CLASSES.facetHeading}">${key}</legend>
+        <div class="${CLASSES.facetList}">
+          <div class="${CLASSES.facetHeadingWrapper}">
+            <h5 class="${CLASSES.facetHeading}">${key}</h5>
+            <span class="icon icon-chevron-down"></span>
+          </div>
           <ul>
       `;
     for (const value of values) {
@@ -144,7 +150,7 @@ const buildFilterLists = (facets) => {
           </li>
         `;
     }
-    filterList += '</ul></fieldset>';
+    filterList += '</ul></div>';
   }
 
   filterList += '</div>';
@@ -164,9 +170,10 @@ const buildTemplate = (articles, facets, articlesAmount) => {
   const template = docRange.createContextualFragment(`
   <div class="${CLASSES.headSection}">
     <div class="${CLASSES.filterButton}">
-      <button>
+      <a class="standalone-link">
         <span class="icon icon-filter-settings"></span>
-        ${LABELS.FILTERS_BUTTON}</button>
+        ${LABELS.FILTERS_BUTTON}
+      </a>
     </div>
     <div class="${CLASSES.extraLine}">
       ${buildFiltersExtraLine(articles.length, articlesAmount)}
@@ -198,6 +205,7 @@ const buildTemplate = (articles, facets, articlesAmount) => {
   return template;
 };
 
+// Updates a single HTML element
 const updateHtmlElmt = (block, selectedClass, newEl) => {
   const container = block.querySelector(`.${selectedClass}`);
   const newFragment = docRange.createContextualFragment(newEl);
@@ -205,6 +213,7 @@ const updateHtmlElmt = (block, selectedClass, newEl) => {
   container.append(newFragment);
 };
 
+// Update the article list with the global object "appliedFilters"
 const updateArticleList = async (block, offset = 0) => {
   const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
   totalAmount = count;
@@ -223,33 +232,52 @@ const updateArticleList = async (block, offset = 0) => {
 };
 
 const addEventListeners = (block, articles) => {
-  const filterEls = {
-    button: block.querySelector(`.${CLASSES.filterButton} button`),
-    list: block.querySelector(`.${CLASSES.filterList}`),
-    buttonContainer: block.querySelector(`.${CLASSES.applyClearBtns}`),
+  const htmlElts = {
+    filterButton: block.querySelector(`.${CLASSES.filterButton} a`),
+    filterList: block.querySelector(`.${CLASSES.filterList}`),
+    mobileBtnsContainer: block.querySelector(`.${CLASSES.applyClearBtns}`),
     clearBtn: block.querySelector(`.${CLASSES.clearAllFiltersBtn}`),
-    showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
+    facetHeadingWrapper: block.querySelectorAll(`.${CLASSES.facetHeadingWrapper}`),
     selectedFilters: block.querySelector(`.${CLASSES.selectedFilters}`),
+    showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
   };
 
-  // Toggle filters visibility and body overflow
-  filterEls.button?.addEventListener('click', async () => {
-    filterEls.list.classList.toggle('hide');
-    filterEls.button.classList.toggle('overlay');
-    if (window.innerWidth >= 744) {
-      document.body.style.overflow = filterEls.list.classList.contains('hide') ? 'visible' : 'hidden';
-    }
-    updateArticleList(block);
+  const mobileApplyBtn = htmlElts.mobileBtnsContainer.querySelector(`.${CLASSES.applyFiltersBtn}`);
+  const allApplyBtns = [mobileApplyBtn, htmlElts.filterButton];
+  // Handles the filter and apply btn clicks
+  allApplyBtns.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      htmlElts.filterList.classList.toggle('hide');
+      htmlElts.filterButton.classList.toggle('overlay');
+      htmlElts.mobileBtnsContainer.classList.toggle('hide');
+
+      // Move filter button to the top of the screen
+      const headerHeight = document.querySelector('.header-wrapper').getBoundingClientRect().height;
+      const yOffset = htmlElts.filterButton.getBoundingClientRect().top + window.scrollY - headerHeight;
+      window.scrollTo({
+        top: yOffset,
+        behavior: 'smooth',
+      });
+
+      // Lock screen when filter opens
+      document.body.classList.toggle('disable-scroll');
+
+      // Apply changes when filter closes.
+      if (htmlElts.filterList.classList.contains('hide')) {
+        updateArticleList(block);
+      }
+    });
   });
 
   // Handle checkbox clicks and selected filters
-  filterEls.list?.addEventListener('click', (evt) => {
+  htmlElts.filterList?.addEventListener('click', (evt) => {
     const target = evt.target;
 
     if (target.classList.contains(CLASSES.filterCheckbox)) {
-      const facet = target.closest('fieldset').querySelector('legend').innerText.toLowerCase();
+      const facet = target.closest(`.${CLASSES.facetList}`).querySelector(`.${CLASSES.facetHeading}`).innerText.toLowerCase();
       const { name: itemName, id: itemId } = target;
 
+      // Create applied filter element
       const itemIndex = appliedFilters[facet]?.indexOf(itemName);
       const item = docRange.createContextualFragment(`
         <div class="${CLASSES.selectedFilter} ${itemId}-filter">
@@ -258,12 +286,12 @@ const addEventListeners = (block, articles) => {
         </div>`);
       decorateIcons(item);
 
-      filterEls.buttonContainer.classList.remove('hide');
-      filterEls.clearBtn.classList.remove('hide');
+      htmlElts.mobileBtnsContainer.classList.remove('hide');
+      htmlElts.clearBtn.classList.remove('hide');
 
       if (target.checked) {
         // add filter to list
-        filterEls.selectedFilters.append(item);
+        htmlElts.selectedFilters.append(item);
         // if facet is empty create an empty array and add value
         if (!appliedFilters[facet]) {
           appliedFilters[facet] = [];
@@ -271,7 +299,7 @@ const addEventListeners = (block, articles) => {
         appliedFilters[facet].push(itemName);
       } else {
         // uncheck input
-        filterEls.selectedFilters.querySelector(`.${itemId}-filter`).remove();
+        htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
         appliedFilters[facet].splice(itemIndex, 1);
         // delete array key if array is empty
         if (appliedFilters[facet].length === 0) {
@@ -279,18 +307,17 @@ const addEventListeners = (block, articles) => {
         }
 
         // once all inputs are unchecked hide 'clear all' btn
-        if (filterEls.selectedFilters.children.length === 0) {
+        if (htmlElts.selectedFilters.children.length === 0) {
           delete appliedFilters[facet];
-          filterEls.buttonContainer.classList.add('hide');
-          filterEls.clearBtn.classList.add('hide');
+          htmlElts.clearBtn.classList.add('hide');
         }
       }
 
-      // add closing functionality to X icon
-      const selectedCloseIcon = filterEls.selectedFilters.querySelector(`.${itemId}-filter .icon`);
+      // Add closing functionality to X icon
+      const selectedCloseIcon = htmlElts.selectedFilters.querySelector(`.${itemId}-filter .icon`);
       selectedCloseIcon?.addEventListener('click', () => {
         target.checked = false;
-        filterEls.selectedFilters.querySelector(`.${itemId}-filter`).remove();
+        htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
 
         appliedFilters[facet].splice(itemIndex, 1);
 
@@ -298,9 +325,9 @@ const addEventListeners = (block, articles) => {
           delete appliedFilters[facet];
         }
 
-        if (filterEls.selectedFilters.children.length === 0) {
-          filterEls.buttonContainer.classList.add('hide');
-          filterEls.clearBtn.classList.add('hide');
+        if (htmlElts.selectedFilters.children.length === 0) {
+          htmlElts.mobileBtnsContainer.classList.add('hide');
+          htmlElts.clearBtn.classList.add('hide');
         }
 
         updateArticleList(block);
@@ -308,18 +335,21 @@ const addEventListeners = (block, articles) => {
     }
   });
 
-  // Clear all filters
-  filterEls.clearBtn.addEventListener('click', async () => {
-    block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
-    filterEls.buttonContainer.classList.add('hide');
-    filterEls.clearBtn.classList.add('hide');
-    filterEls.selectedFilters.innerHTML = '';
-    appliedFilters = {};
-    updateArticleList(block);
+  const mobileClearBtn = htmlElts.mobileBtnsContainer.querySelector(`.${CLASSES.clearFiltersBtn}`);
+  const allClearBtns = [mobileClearBtn, htmlElts.clearBtn];
+  // Clear all filters from both available buttons
+  allClearBtns.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
+      htmlElts.clearBtn.classList.add('hide');
+      htmlElts.selectedFilters.innerHTML = '';
+      appliedFilters = {};
+      updateArticleList(block);
+    });
   });
 
   // Show more articles
-  filterEls.showMoreBtn?.addEventListener('click', async () => {
+  htmlElts.showMoreBtn.addEventListener('click', async () => {
     const collageEl = block.querySelector(`.${CLASSES.collage}`);
 
     counter = counter + 1;
@@ -333,13 +363,30 @@ const addEventListeners = (block, articles) => {
     const displayedArticles = defaultAmountOfArticles * (counter + 1);
 
     if (totalAmount <= displayedArticles) {
-      filterEls.showMoreBtn.remove();
+      htmlElts.showMoreBtn.remove();
       totalAmount = articles.length;
     }
     const newExtraLine = buildFiltersExtraLine(displayedArticles, count);
     updateHtmlElmt(block, CLASSES.extraLine, newExtraLine);
 
     decorateIcons(block);
+  });
+
+  // Toggle filter lists (ul) visibility in mobile
+  htmlElts.filterList.addEventListener('click', (e) => {
+    // Prevent this behaviour in desktop
+    if (window.innerWidth >= 744) {
+      return;
+    }
+
+    const clickedTarget = e.target.closest(`.${CLASSES.facetHeadingWrapper}`);
+
+    if (e.target.classList.contains(CLASSES.facetHeadingWrapper)) {
+      clickedTarget.querySelector('svg').classList.toggle('rotate');
+
+      const selectedChecklist = e.target.closest(`.${CLASSES.facetList}`);
+      selectedChecklist.querySelector('ul').classList.toggle('expand');
+    }
   });
 };
 
