@@ -14,9 +14,8 @@ const LABELS = {
   CLEAR_BUTTON: getTextLabel('Clear button'),
   APPLY_BUTTON: getTextLabel('Apply button'),
   SELECTED: getTextLabel('Selected'),
-  // TODO get these from placeholder?
-  ERROR_TITLE: 'SORRY, YOUR FILTER CRITERIA RETURNED NO RESULTS!',
-  ERROR_TEXT: '"LET\'S REFINE, OR TRY FILTERING BY DIFFERENT FILTER OPTION(S) INSTEAD."',
+  ERROR_TITLE: getTextLabel('Magazine error title'),
+  ERROR_TEXT: getTextLabel('Magazine error text'),
 };
 
 const blockName = 'v2-explore-articles';
