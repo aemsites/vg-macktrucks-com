@@ -54,7 +54,7 @@ const CLASSES = {
 
 const docRange = document.createRange();
 const defaultAmountOfArticles = 9;
-let totalAmount = 0;
+let totalArticleCount = 0;
 let offset = 0;
 let counter = 0;
 let appliedFilters = {};
@@ -88,7 +88,7 @@ const getData = async (articleSet = {}, offset = 0) => {
     };
   });
 
-  totalAmount = count;
+  totalArticleCount = count;
 
   return {
     articles: collageItemsData,
@@ -97,8 +97,8 @@ const getData = async (articleSet = {}, offset = 0) => {
   };
 };
 
-const buildFiltersExtraLine = (recievedArticles = defaultAmountOfArticles, articlesAmount = totalAmount) => {
-  const showingLabel = recievedArticles < totalAmount ? recievedArticles : totalAmount;
+const buildFiltersExtraLine = (recievedArticles = defaultAmountOfArticles, articlesAmount = totalArticleCount) => {
+  const showingLabel = recievedArticles < totalArticleCount ? recievedArticles : totalArticleCount;
   const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', showingLabel).replace('$1', articlesAmount);
   return `
     <div class="${CLASSES.showing}">
@@ -159,7 +159,7 @@ const buildFilterLists = (facets) => {
 
 const buildShowMoreBtn = () => {
   const showMoreButton =
-    totalAmount >= defaultAmountOfArticles
+    totalArticleCount >= defaultAmountOfArticles
       ? `<button class="${CLASSES.showMoreButton} button button--secondary button--large"> ${LABELS.SHOW_MORE}</button>`
       : '';
 
@@ -216,9 +216,9 @@ const updateHtmlElmt = (block, selectedClass, newEl) => {
 // Update the article list with the global object "appliedFilters"
 const updateArticleList = async (block, offset = 0) => {
   const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
-  totalAmount = count;
+  totalArticleCount = count;
 
-  const newExtraLine = buildFiltersExtraLine(defaultAmountOfArticles, totalAmount);
+  const newExtraLine = buildFiltersExtraLine(defaultAmountOfArticles, totalArticleCount);
   updateHtmlElmt(block, CLASSES.extraLine, newExtraLine);
 
   const newArticlesTemplate = buildArticlesTemplate(newFilteredArticles);
@@ -377,9 +377,9 @@ const addEventListeners = (block, articles) => {
     collageEl.appendChild(newArticlesFragment);
     const displayedArticles = defaultAmountOfArticles * (counter + 1);
 
-    if (totalAmount <= displayedArticles) {
+    if (totalArticleCount <= displayedArticles) {
       htmlElts.showMoreBtn.remove();
-      totalAmount = articles.length;
+      totalArticleCount = articles.length;
     }
     const newExtraLine = buildFiltersExtraLine(displayedArticles, count);
     updateHtmlElmt(block, CLASSES.extraLine, newExtraLine);
