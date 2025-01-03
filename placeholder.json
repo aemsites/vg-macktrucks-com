@@ -73,11 +73,15 @@
     },
     {
       "Key": "Showing placeholder",
-      "Text": "<strong>Showing <span>$0</span></strong> of $1 stories"
+      "Text": "Showing $0 of $1 stories"
     },
     {
       "Key": "Sort filter placeholders",
       "Text": "Newest,Oldest,Alphabetical"
+    },
+    {
+      "Key": "Sort filter button",
+      "Text": "Filters"
     },
     {
       "Key": "Next",
@@ -278,13 +282,38 @@
     {
       "Key": "tooltip copied text",
       "Text": "Copied!"
-    },    {
+    },
+    {
       "Key": "defaultAuthor",
       "Text": "Mack Trucks"
     },
     {
       "Key": "defaultReadTime",
       "Text": "10 min"
+    },
+    {
+      "Key": "Clear all button",
+      "Text": "Clear All"
+    },
+    {
+      "Key": "Clear button",
+      "Text": "Clear"
+    },
+    {
+      "Key": "Apply button",
+      "Text": "Apply"
+    },
+    {
+      "Key": "Selected",
+      "Text": "Selected"
+    },
+    {
+      "Key": "Magazine error title",
+      "Text": "SORRY, YOUR FILTER CRITERIA RETURNED NO RESULTS!"
+    },
+    {
+      "Key": "Magazine error text",
+      "Text": "LET'S REFINE, OR TRY FILTERING BY DIFFERENT FILTER OPTION(S) INSTEAD."
     }
   ],
   ":type": "sheet"
