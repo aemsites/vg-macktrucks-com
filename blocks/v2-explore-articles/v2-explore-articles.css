@@ -90,10 +90,7 @@
   top: calc(0px - var(--filter-line-height));
   left: 0;
   z-index: 2;
-  height: calc(
-    100vh - var(--nav-height) - var(--filter-line-height) - var(--bottom-buttons-height)
-  );
-  height: calc(100vh - 198px);
+  height: calc(100vh - var(--nav-height) - var(--filter-line-height) - var(--bottom-buttons-height));
   width: 100%;
   background-color: var(--background-color);
   border: 0;
