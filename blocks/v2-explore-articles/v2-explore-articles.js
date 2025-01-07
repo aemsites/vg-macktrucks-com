@@ -57,7 +57,7 @@ const defaultAmountOfArticles = 9;
 let totalArticleCount = 0;
 let offset = 0;
 let counter = 0;
-let appliedFilters = {};
+const appliedFilters = {};
 
 // Gets the data from the API and formats it
 const getData = async (articleSet = {}, offset = 0) => {
