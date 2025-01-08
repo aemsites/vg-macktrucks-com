@@ -2,6 +2,8 @@ import { decorateIcons, getTextLabel } from '../../scripts/common.js';
 import { fetchMagazineData, formatArticlesArray, formatFacetsArray } from '../../scripts/services/magazine.service.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
+const blockName = 'v2-explore-articles';
+
 const LABELS = {
   SHOW_MORE: getTextLabel('Show More'),
   SEARCH: getTextLabel('Search'),
@@ -10,6 +12,8 @@ const LABELS = {
   SORT_BY: getTextLabel('Sort by'),
   SORT_PLACEHOLDERS: getTextLabel('Sort filter placeholders'),
   FILTERS_BUTTON: getTextLabel('Sort filter button'),
+  TOGGLE_FILTERS_MORE: getTextLabel('Toggle filters more'),
+  TOGGLE_FILTERS_LESS: getTextLabel('Toggle filters less'),
   CLEAR_ALL_BUTTON: getTextLabel('Clear all button'),
   CLEAR_BUTTON: getTextLabel('Clear button'),
   APPLY_BUTTON: getTextLabel('Apply button'),
@@ -18,7 +22,6 @@ const LABELS = {
   ERROR_TEXT: getTextLabel('Magazine error text'),
 };
 
-const blockName = 'v2-explore-articles';
 const CLASSES = {
   headSection: `${blockName}__head-section`,
   filterButton: `${blockName}__filter-button`,
@@ -26,6 +29,9 @@ const CLASSES = {
   filterList: `${blockName}__filter-list`,
   selectedFilters: `${blockName}__selected-filters`,
   selectedFilter: `${blockName}__selected-filter`,
+  toggleFilters: `${blockName}__toggle-filters`,
+  toggleLess: `${blockName}__toggle-less`,
+  toggleMore: `${blockName}__toggle-more`,
   applyClearBtns: `${blockName}__apply-clear-buttons`,
   applyFiltersBtn: `${blockName}__apply-filters-button`,
   clearFiltersBtn: `${blockName}__clear-filters-button`,
@@ -57,7 +63,10 @@ const defaultAmountOfArticles = 9;
 let totalArticleCount = 0;
 let offset = 0;
 let counter = 0;
-const appliedFilters = {};
+let appliedFilters = {};
+const MQ = window.matchMedia('(max-width: 743px)');
+const isMobile = MQ.matches;
+let amountOfFacets = 10000; // high default value
 
 // Gets the data from the API and formats it
 const getData = async (articleSet = {}, offset = 0) => {
@@ -74,6 +83,8 @@ const getData = async (articleSet = {}, offset = 0) => {
 
   const allFacets = formatFacetsArray(allMagazineData?.facets);
   const count = allMagazineData?.count;
+
+  amountOfFacets = Object.values(allFacets)?.reduce((sum, array) => sum + array?.length, 0);
 
   const collageItemsData = allArticles.map((article) => {
     const { title, image, path, category } = article;
@@ -181,12 +192,27 @@ const buildTemplate = (articles, facets, articlesAmount) => {
   </div>
   <div class="${CLASSES.filters}">
     ${buildFilterLists(facets)}
-    <div class="${CLASSES.selectedFilters}"></div>
+    <div class="${CLASSES.selectedFilters}">
+      <button 
+        class="${CLASSES.toggleFilters} ${CLASSES.toggleLess} button button--secondary hide"
+        style="order: ${amountOfFacets + 1 /* ensure that this button always appears last */};">
+        ${LABELS.TOGGLE_FILTERS_LESS}
+      </button>
+    </div>
     <div class="${CLASSES.applyClearBtns} hide">
-      <button class="${CLASSES.clearFiltersBtn} button button--secondary button--large">${LABELS.CLEAR_BUTTON}</button>
-      <button class="${CLASSES.applyFiltersBtn} button button--primary button--large">${LABELS.APPLY_BUTTON}</button>
-      </div>
-    <a class="${CLASSES.clearAllFiltersBtn} standalone-link hide">${LABELS.CLEAR_ALL_BUTTON}</a>
+      <button class="${CLASSES.clearFiltersBtn} button button--secondary button--large">
+        ${LABELS.CLEAR_BUTTON}
+      </button>
+      <button class="${CLASSES.applyFiltersBtn} button button--primary button--large">
+        ${LABELS.APPLY_BUTTON}
+      </button>
+    </div>
+    <button class="${CLASSES.toggleFilters} ${CLASSES.toggleMore} button button--secondary hide">
+      ${LABELS.TOGGLE_FILTERS_MORE}
+    </button>
+    <a class="${CLASSES.clearAllFiltersBtn} standalone-link hide">
+      ${LABELS.CLEAR_ALL_BUTTON}
+    </a>
   </div>
   <div class="${CLASSES.collageWrapper}">
     <div class="${CLASSES.collage}">
@@ -231,13 +257,49 @@ const updateArticleList = async (block, offset = 0) => {
   noArticlesMessage.classList[count == 0 ? 'remove' : 'add']('hide');
 };
 
+// Check toggle buttons to show or hide applied filters
+const handleToggleBtns = (list, filters) => {
+  if (isMobile) {
+    return;
+  }
+
+  const toggleMoreBtn = filters.parentElement.querySelector(`.${CLASSES.toggleMore}`);
+  const toggleLessBtn = filters.parentElement.querySelector(`.${CLASSES.toggleLess}`);
+
+  const listWidth = filters.getBoundingClientRect().width;
+  const listHeight = filters.parentElement.getBoundingClientRect().height;
+  const wrapperWidth = list.parentElement.getBoundingClientRect().width;
+  const maxListWidth = wrapperWidth * 0.75 - 1;
+
+  const listBiggerThanWrapper = listWidth >= maxListWidth;
+  const isMultiLine = listHeight !== 56;
+
+  if (listBiggerThanWrapper) {
+    if (isMultiLine) {
+      toggleMoreBtn.classList.add('hide');
+      toggleLessBtn.classList.remove('hide');
+    } else {
+      toggleMoreBtn.classList.remove('hide');
+      toggleLessBtn.classList.add('hide');
+    }
+  } else {
+    toggleMoreBtn.classList.add('hide');
+    toggleLessBtn.classList.add('hide');
+  }
+};
+
 const addEventListeners = (block, articles) => {
   const htmlElts = {
     filterButton: block.querySelector(`.${CLASSES.filterButton}`),
     filterList: block.querySelector(`.${CLASSES.filterList}`),
+    toggleFilters: block.querySelectorAll(`.${CLASSES.toggleFilters}`),
+    toggleLess: block.querySelector(`.${CLASSES.toggleLess}`),
+    toggleMore: block.querySelector(`.${CLASSES.toggleMore}`),
     mobileBtnsContainer: block.querySelector(`.${CLASSES.applyClearBtns}`),
     clearBtn: block.querySelector(`.${CLASSES.clearAllFiltersBtn}`),
     facetHeadingWrapper: block.querySelectorAll(`.${CLASSES.facetHeadingWrapper}`),
+    facetHeading: block.querySelectorAll(`.${CLASSES.facetHeading}`),
+    filterCheckbox: block.querySelectorAll(`.${CLASSES.filterCheckbox}`),
     selectedFilters: block.querySelector(`.${CLASSES.selectedFilters}`),
     showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
   };
@@ -273,7 +335,6 @@ const addEventListeners = (block, articles) => {
   // Handle checkbox clicks and selected filters
   htmlElts.filterList?.addEventListener('click', (evt) => {
     const target = evt.target;
-
     if (target.classList.contains(CLASSES.filterCheckbox)) {
       const facetHeading = target.closest(`.${CLASSES.facetList}`).querySelector(`.${CLASSES.facetHeading}`);
       const facet = facetHeading.innerText.toLowerCase();
@@ -282,7 +343,7 @@ const addEventListeners = (block, articles) => {
       // Create applied filter element
       const itemIndex = appliedFilters[facet]?.indexOf(itemName);
       const item = docRange.createContextualFragment(`
-        <div class="${CLASSES.selectedFilter} ${itemId}-filter">
+        <div class="${CLASSES.selectedFilter} ${itemId}-filter filter-item">
           <p>${itemName}<p>
           <span class="icon icon-close"></span>
         </div>`);
@@ -304,20 +365,25 @@ const addEventListeners = (block, articles) => {
 
         htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
         facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
+
+        handleToggleBtns(htmlElts.filterList, htmlElts.selectedFilters);
       } else {
         // uncheck input
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
         appliedFilters[facet].splice(itemIndex, 1);
 
-        htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
-        facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
+        htmlElts.filterButton.dataset.amount = getSelectedFilters() > 0 ? `(${getSelectedFilters()} ${LABELS.SELECTED})` : '';
+        facetHeading.dataset.amount = appliedFilters[facet].length > 0 ? `(${appliedFilters[facet].length} ${LABELS.SELECTED})` : '';
+
+        handleToggleBtns(htmlElts.filterList, htmlElts.selectedFilters);
+
         // delete array key if array is empty
         if (appliedFilters[facet].length === 0) {
           delete appliedFilters[facet];
         }
 
         // once all inputs are unchecked hide 'clear all' btn
-        if (htmlElts.selectedFilters.children.length === 0) {
+        if (htmlElts.selectedFilters.querySelectorAll('.filter-item').length === 0) {
           delete appliedFilters[facet];
           htmlElts.clearBtn.classList.add('hide');
           delete htmlElts.filterButton.dataset.amount;
@@ -337,11 +403,11 @@ const addEventListeners = (block, articles) => {
           delete appliedFilters[facet];
         }
 
-        if (htmlElts.selectedFilters.children.length === 0) {
+        if (htmlElts.selectedFilters.querySelectorAll('.filter-item').length === 0) {
           htmlElts.mobileBtnsContainer.classList.add('hide');
           htmlElts.clearBtn.classList.add('hide');
         }
-
+        handleToggleBtns(htmlElts.filterList, htmlElts.selectedFilters);
         updateArticleList(block);
       });
     }
@@ -351,17 +417,33 @@ const addEventListeners = (block, articles) => {
   const allClearBtns = [mobileClearBtn, htmlElts.clearBtn];
   // Clear all filters from both available buttons
   allClearBtns.forEach((btn) => {
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', () => {
+      // Get all currently added filter items
+      const currentFilters = block.querySelectorAll(`.${CLASSES.selectedFilter}`);
+      currentFilters.forEach((filter) => filter.remove());
+
       htmlElts.clearBtn.classList.add('hide');
-      htmlElts.selectedFilters.innerHTML = '';
+      htmlElts.filterCheckbox.forEach((checkbox) => (checkbox.checked = false));
+      htmlElts.facetHeading.forEach((heading) => (heading.dataset.amount = ''));
+      htmlElts.toggleFilters.forEach((btn) => btn.classList.add('hide'));
+      htmlElts.selectedFilters.classList.remove('expand');
       delete htmlElts.filterButton.dataset.amount;
-      block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
-      block.querySelectorAll(`.${CLASSES.facetHeading}`).forEach((heading) => (heading.dataset.amount = ''));
+
       appliedFilters = {};
+      counter = 1;
 
       updateArticleList(block);
     });
   });
+
+  // "Show more" and "Show less" filter buttons
+  htmlElts.toggleFilters.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      htmlElts.toggleMore.classList.toggle('hide');
+      htmlElts.toggleLess.classList.toggle('hide');
+      htmlElts.selectedFilters.classList.toggle('expand');
+    }),
+  );
 
   // Show more articles
   htmlElts.showMoreBtn.addEventListener('click', async () => {

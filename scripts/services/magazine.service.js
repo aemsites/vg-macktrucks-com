@@ -76,12 +76,12 @@ const getDefaultImage = () => {
  * @param {Array} arts - An array of objects as it comes from endpoint
  * @returns {Array} - An array of correctly formatted objects
  */
-export const formatArticlesArray = (arts) => {
+export const formatArticlesArray = (arts = []) => {
   const defaultAuthor = getTextLabel('defaultAuthor');
   const defaultReadTime = getTextLabel('defaultReadTime');
   const articleList = [];
 
-  articleList.push(
+  articleList?.push(
     ...arts.map((item) => {
       const filterTag = ['category', 'topic', 'truck']
         .map((key) => {

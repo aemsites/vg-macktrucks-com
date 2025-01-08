@@ -304,6 +304,14 @@
       "Text": "Apply"
     },
     {
+      "Key": "Toggle filters more",
+      "Text": "Show more"
+    },
+    {
+      "Key": "Toggle filters less",
+      "Text": "Show less"
+    },
+    {
       "Key": "Selected",
       "Text": "Selected"
     },
