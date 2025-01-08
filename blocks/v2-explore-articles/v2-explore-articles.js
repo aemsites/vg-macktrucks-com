@@ -266,11 +266,11 @@ const handleToggleBtns = (list, filters) => {
   const toggleLessBtn = filters.parentElement.querySelector(`.${CLASSES.toggleLess}`);
 
   const toggleMoreBtnWidth = toggleMoreBtn.getBoundingClientRect().width;
-  const listWidth = filters.getBoundingClientRect().width;
-  const listHeight = filters.getBoundingClientRect().height;
+  const { width: listWidth, height: listHeight } = filters.getBoundingClientRect();
   const wrapperWidth = list.parentElement.getBoundingClientRect().width;
 
   const maxListWidth = wrapperWidth * 0.75 - toggleMoreBtnWidth; // set the available space in the wrapper
+
   const listBiggerThanWrapper = listWidth >= maxListWidth; // if list is wider than the container
   const isMultiLine = listHeight > 36; // this is the height of the filter wrapper's height in CSS
 
