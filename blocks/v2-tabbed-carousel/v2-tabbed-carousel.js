@@ -116,10 +116,12 @@ export default function decorate(block) {
 
       figure.append(tabContent.querySelector('picture'));
 
-      const lastItems = [...tabContent.childNodes].at(-1);
-      if (lastItems.nodeType === Node.TEXT_NODE && lastItems.textContent.trim() !== '') {
+      const figCaptionNodes = [...tabContent.childNodes]
+        .filter((node) => node.nodeType === Node.TEXT_NODE || node.nodeName === 'SUP')
+        .filter((node) => node.textContent.trim() !== '');
+      if (figCaptionNodes) {
         const figureCaption = createElement('figcaption');
-        figureCaption.append(lastItems);
+        figureCaption.append(...figCaptionNodes);
         figure.append(figureCaption);
       }
 
