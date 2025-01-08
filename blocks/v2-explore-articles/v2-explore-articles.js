@@ -472,7 +472,7 @@ const addEventListeners = (block, articles) => {
   // Toggle filter lists (ul) visibility in mobile
   htmlElts.filterList.addEventListener('click', (e) => {
     // Prevent this behaviour in desktop
-    if (window.innerWidth >= 744) {
+    if (!isMobile) {
       return;
     }
 
