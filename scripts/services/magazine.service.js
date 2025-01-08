@@ -122,7 +122,7 @@ export const formatArticlesArray = (arts = []) => {
  */
 export const formatFacetsArray = (facets) => {
   const facetObject = {};
-  facets.forEach((facet) => {
+  facets?.forEach((facet) => {
     facet.field = facet.field === 'ARTICLE' ? 'category' : facet.field.toLowerCase();
     const { field: facetName, items: facetItems } = facet;
     const extractedValues = facetItems.map((item) => item.value);
