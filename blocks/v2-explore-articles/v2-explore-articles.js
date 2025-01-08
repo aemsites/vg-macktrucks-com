@@ -262,18 +262,18 @@ const handleToggleBtns = (list, filters) => {
   if (isMobile) {
     return;
   }
-
   const toggleMoreBtn = filters.parentElement.querySelector(`.${CLASSES.toggleMore}`);
   const toggleLessBtn = filters.parentElement.querySelector(`.${CLASSES.toggleLess}`);
 
-  const listWidth = filters.getBoundingClientRect().width;
-  const listHeight = filters.parentElement.getBoundingClientRect().height;
+  const toggleMoreBtnWidth = toggleMoreBtn.getBoundingClientRect().width;
+  const { width: listWidth, height: listHeight } = filters.getBoundingClientRect();
   const wrapperWidth = list.parentElement.getBoundingClientRect().width;
-  const maxListWidth = wrapperWidth * 0.75 - 1;
 
-  const listBiggerThanWrapper = listWidth >= maxListWidth;
-  const isMultiLine = listHeight !== 56;
+  const maxListWidth = wrapperWidth * 0.75 - toggleMoreBtnWidth; // set the available space in the wrapper
+  const listBiggerThanWrapper = listWidth >= maxListWidth; // if list is wider than the container
+  const isMultiLine = listHeight !== 56; // this is the height of the filter wrapper's height in CSS
 
+  // Logic that shows/hides the filter toggle buttons
   if (listBiggerThanWrapper) {
     if (isMultiLine) {
       toggleMoreBtn.classList.add('hide');
