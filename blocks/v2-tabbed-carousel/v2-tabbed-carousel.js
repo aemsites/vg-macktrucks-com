@@ -116,9 +116,9 @@ export default function decorate(block) {
 
       figure.append(tabContent.querySelector('picture'));
 
-      const figCaptionNodes = [...tabContent.childNodes]
-        .filter((node) => node.nodeType === Node.TEXT_NODE || node.nodeName === 'SUP')
-        .filter((node) => node.textContent.trim() !== '');
+      const figCaptionNodes = [...tabContent.childNodes].filter(
+        (node) => (node.nodeType === Node.TEXT_NODE || node.nodeName === 'SUP') && node.textContent.trim() !== '',
+      );
       if (figCaptionNodes) {
         const figureCaption = createElement('figcaption');
         figureCaption.append(...figCaptionNodes);
