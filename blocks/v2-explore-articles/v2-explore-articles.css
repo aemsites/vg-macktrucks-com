@@ -361,6 +361,7 @@
   .v2-explore-articles__filter-button.overlay::after {
     content: '';
     display: block;
+    display: none;
     position: absolute;
     z-index: 2;
     left: 0;
@@ -408,7 +409,8 @@
   }
 
   .v2-explore-articles__filter-list {
-    top: 0;
+    /* top: 0; */
+    top: 150px;
     display: flex;
     justify-content: space-between;
     height: unset;
@@ -457,12 +459,12 @@
     padding: 0;
   }
 
+  .section button.v2-explore-articles__toggle-less.hide,
   .section a.v2-explore-articles__clear-all-filters-button.hide {
     display: none;
   }
 
-  .section button.v2-explore-articles__toggle-more.hide,
-  .section button.v2-explore-articles__toggle-less.hide {
+  .section button.v2-explore-articles__toggle-more.hide {
     opacity: 0;
   }
 
