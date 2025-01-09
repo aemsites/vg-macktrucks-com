@@ -361,7 +361,6 @@
   .v2-explore-articles__filter-button.overlay::after {
     content: '';
     display: block;
-    display: none;
     position: absolute;
     z-index: 2;
     left: 0;
@@ -409,8 +408,7 @@
   }
 
   .v2-explore-articles__filter-list {
-    /* top: 0; */
-    top: 150px;
+    top: 0;
     display: flex;
     justify-content: space-between;
     height: unset;

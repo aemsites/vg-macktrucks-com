@@ -286,7 +286,7 @@ const updateArticleList = async (block, offset = 0) => {
 };
 
 // Check toggle buttons to show or hide applied filters
-const handleToggleBtns = (list, filters) => {
+const handleToggleBtns = (filters, extra = 0) => {
   if (isMobile) {
     return;
   }
@@ -295,14 +295,14 @@ const handleToggleBtns = (list, filters) => {
 
   const toggleMoreBtnWidth = toggleMoreBtn.getBoundingClientRect().width;
   const { width: listWidth, height: listHeight } = filters.getBoundingClientRect();
-  const wrapperWidth = list.parentElement.getBoundingClientRect().width;
+  const wrapperWidth = filters.parentElement.getBoundingClientRect().width;
 
   const maxListWidth = wrapperWidth * 0.75 - toggleMoreBtnWidth; // set the available space in the wrapper
+  const listPlusExtra = listWidth + extra;
 
-  const listBiggerThanWrapper = listWidth >= maxListWidth; // if list is wider than the container
+  const listBiggerThanWrapper = listPlusExtra >= maxListWidth; // if list is wider than the container
   const isMultiLine = listHeight > 36; // this is the height of the filter wrapper's height in CSS
 
-  // Logic that shows/hides the filter toggle buttons
   if (listBiggerThanWrapper) {
     if (isMultiLine) {
       toggleMoreBtn.classList.add('hide');
@@ -395,7 +395,7 @@ const addEventListeners = (block, articles) => {
         htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
         facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
 
-        handleToggleBtns(htmlElts.filterList, htmlElts.selectedFilters);
+        handleToggleBtns(htmlElts.selectedFilters, 29);
       } else {
         // uncheck input
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
@@ -404,7 +404,7 @@ const addEventListeners = (block, articles) => {
         htmlElts.filterButton.dataset.amount = getSelectedFilters() > 0 ? `(${getSelectedFilters()} ${LABELS.SELECTED})` : '';
         facetHeading.dataset.amount = appliedFilters[facet].length > 0 ? `(${appliedFilters[facet].length} ${LABELS.SELECTED})` : '';
 
-        handleToggleBtns(htmlElts.filterList, htmlElts.selectedFilters);
+        handleToggleBtns(htmlElts.selectedFilters);
 
         // delete array key if array is empty
         if (appliedFilters[facet].length === 0) {
@@ -436,7 +436,7 @@ const addEventListeners = (block, articles) => {
           htmlElts.mobileBtnsContainer.classList.add('hide');
           htmlElts.clearBtn.classList.add('hide');
         }
-        handleToggleBtns(htmlElts.filterList, htmlElts.selectedFilters);
+        handleToggleBtns(htmlElts.selectedFilters);
         updateArticleList(block);
       });
     }
