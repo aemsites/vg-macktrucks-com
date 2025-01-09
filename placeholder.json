@@ -80,7 +80,7 @@
       "Text": "Newest,Oldest,Alphabetical"
     },
     {
-      "Key": "Sort filter button",
+      "Key": "Filters",
       "Text": "Filters"
     },
     {
@@ -292,23 +292,23 @@
       "Text": "10 min"
     },
     {
-      "Key": "Clear all button",
+      "Key": "Clear all",
       "Text": "Clear All"
     },
     {
-      "Key": "Clear button",
+      "Key": "Clear",
       "Text": "Clear"
     },
     {
-      "Key": "Apply button",
+      "Key": "Apply",
       "Text": "Apply"
     },
     {
-      "Key": "Toggle more",
+      "Key": "Show more",
       "Text": "Show more"
     },
     {
-      "Key": "Toggle less",
+      "Key": "Show less",
       "Text": "Show less"
     },
     {
