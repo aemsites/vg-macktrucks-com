@@ -487,10 +487,12 @@
   }
 
   .v2-explore-articles__collage {
-    max-width: 1440px;
-    margin: 0 auto;
+    position: relative;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+    max-width: 1440px;
+    background-color: var(--c-primary-white);
+    margin: 0 auto;
   }
 
   .v2-explore-articles__collage-item-container:nth-child(9n + 1) {
