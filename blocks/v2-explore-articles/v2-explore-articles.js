@@ -64,6 +64,7 @@ let totalArticleCount = 0;
 let offset = 0;
 let counter = 0;
 let appliedFilters = {};
+let previousQueryFilters = {};
 const MQ = window.matchMedia('(max-width: 743px)');
 const isMobile = MQ.matches;
 let amountOfFacets = 10000; // high default value
@@ -239,9 +240,36 @@ const updateHtmlElmt = (block, selectedClass, newEl) => {
   container.append(newFragment);
 };
 
+// Compares if 2 objects are the same
+function objectsAreTheSame(obj1, obj2) {
+  // Check objects
+  if (obj1 === obj2) {
+    return true;
+  }
+  // Check amount of keys
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+  if (keys1.length !== keys2.length) {
+    return false;
+  }
+  // Check values
+  for (const key of keys1) {
+    if (!keys2.includes(key) || !objectsAreTheSame(obj1[key], obj2[key])) {
+      return false;
+    }
+  }
+  return true;
+}
+
 // Update the article list with the global object "appliedFilters"
 const updateArticleList = async (block, offset = 0) => {
+  if (objectsAreTheSame(previousQueryFilters, appliedFilters)) {
+    return;
+  }
+
   const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
+  // Store the last query to compare next time
+  previousQueryFilters = JSON.parse(JSON.stringify(appliedFilters));
   totalArticleCount = count;
 
   const newExtraLine = buildFiltersExtraLine(defaultAmountOfArticles, totalArticleCount);
@@ -251,7 +279,7 @@ const updateArticleList = async (block, offset = 0) => {
   updateHtmlElmt(block, CLASSES.collage, newArticlesTemplate);
 
   const showMoreBtnWrapper = block.querySelector(`.${CLASSES.showMoreButtonWrapper}`);
-  showMoreBtnWrapper.classList[newFilteredArticles.length >= count && count < defaultAmountOfArticles ? 'add' : 'remove']('hide');
+  showMoreBtnWrapper.classList[newFilteredArticles.length >= count && count <= defaultAmountOfArticles ? 'add' : 'remove']('hide');
 
   const noArticlesMessage = block.querySelector(`.${CLASSES.noArticlesMessage}`);
   noArticlesMessage.classList[count == 0 ? 'remove' : 'add']('hide');
@@ -472,11 +500,9 @@ const addEventListeners = (block, articles) => {
 
   // Toggle filter lists (ul) visibility in mobile
   htmlElts.filterList.addEventListener('click', (e) => {
-    // Prevent this behaviour in desktop
     if (!isMobile) {
       return;
     }
-
     const clickedTarget = e.target.closest(`.${CLASSES.facetHeadingWrapper}`);
     if (e.target.classList.contains(CLASSES.facetHeadingWrapper) || clickedTarget) {
       clickedTarget.querySelector('svg').classList.toggle('rotate');
