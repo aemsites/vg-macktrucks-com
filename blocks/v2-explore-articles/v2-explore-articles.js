@@ -370,7 +370,6 @@ const addEventListeners = (block, articles) => {
       const { value: itemValue, id: itemId } = target;
 
       // Create applied filter element
-      const itemIndex = appliedFilters[facet]?.indexOf(itemValue);
       const item = docRange.createContextualFragment(`
         <div class="${CLASSES.selectedFilter} ${itemId}-filter filter-item">
           <p>${itemValue}<p>
@@ -391,13 +390,13 @@ const addEventListeners = (block, articles) => {
           appliedFilters[facet] = [];
         }
         appliedFilters[facet].push(itemValue);
-
         htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
         facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
 
         handleToggleBtns(htmlElts.selectedFilters, 29);
       } else {
         // uncheck input
+        const itemIndex = appliedFilters[facet].indexOf(itemValue);
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
         appliedFilters[facet].splice(itemIndex, 1);
 
@@ -423,6 +422,7 @@ const addEventListeners = (block, articles) => {
       // Add closing functionality to X icon
       const selectedCloseIcon = htmlElts.selectedFilters.querySelector(`.${itemId}-filter .icon`);
       selectedCloseIcon?.addEventListener('click', () => {
+        const itemIndex = appliedFilters[facet].indexOf(target.value);
         target.checked = false;
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
 
