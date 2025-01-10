@@ -436,6 +436,10 @@
     padding: 5px 10px 10px;
   }
 
+  .v2-explore-articles__facet-heading-wrapper:hover {
+    background-color: unset;
+  }
+
   .v2-explore-articles__facet-heading-wrapper svg {
     display: none;
   }

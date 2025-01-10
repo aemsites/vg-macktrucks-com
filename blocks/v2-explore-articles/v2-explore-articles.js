@@ -59,13 +59,12 @@ const CLASSES = {
 
 const docRange = document.createRange();
 const defaultAmountOfArticles = 9;
+const widthBreakpoint = 744;
 let totalArticleCount = 0;
 let offset = 0;
 let pageCounter = 0;
 let appliedFilters = {};
 let previousQueryFilters = {};
-const MQ = window.matchMedia('(max-width: 743px)');
-const isMobile = MQ.matches;
 let amountOfFacets = 10000; // high default value
 
 // Gets the data from the API and formats it
@@ -286,7 +285,8 @@ const updateArticleList = async (block, offset = 0) => {
 
 // Check toggle buttons to show or hide applied filters
 const handleToggleBtns = (filters, extra = 0) => {
-  if (isMobile) {
+  const isDesktop = filters.closest('body')?.getBoundingClientRect().width >= widthBreakpoint;
+  if (!isDesktop) {
     return;
   }
   const toggleMoreBtn = filters.parentElement.querySelector(`.${CLASSES.toggleMore}`);
@@ -403,7 +403,6 @@ const addEventListeners = (block) => {
 
         htmlElts.filterButton.dataset.amount = getSelectedFilters() > 0 ? `(${getSelectedFilters()} ${LABELS.SELECTED})` : '';
         facetHeading.dataset.amount = appliedFilters[facet].length > 0 ? `(${appliedFilters[facet].length} ${LABELS.SELECTED})` : '';
-
         handleToggleBtns(htmlElts.selectedFilters);
 
         // delete array key if array is empty
@@ -433,7 +432,6 @@ const addEventListeners = (block) => {
         if (appliedFilters[facet].length === 0) {
           delete appliedFilters[facet];
         }
-
         if (htmlElts.selectedFilters.querySelectorAll('.filter-item').length === 0) {
           htmlElts.mobileBtnsContainer.classList.add('hide');
           htmlElts.clearBtn.classList.add('hide');
@@ -500,9 +498,10 @@ const addEventListeners = (block) => {
     decorateIcons(block);
   });
 
-  // Toggle filter lists (ul) visibility in mobile
+  // Toggle filter lists (ul) visibility only in mobile
   htmlElts.filterList.addEventListener('click', (e) => {
-    if (!isMobile) {
+    const isDesktop = e.target.closest('body')?.getBoundingClientRect().width >= widthBreakpoint;
+    if (isDesktop) {
       return;
     }
     const clickedTarget = e.target.closest(`.${CLASSES.facetHeadingWrapper}`);
@@ -527,5 +526,5 @@ export default async function decorate(block) {
   block.appendChild(template);
   decorateIcons(block);
 
-  addEventListeners(block, articles);
+  addEventListeners(block);
 }
