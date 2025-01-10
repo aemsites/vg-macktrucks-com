@@ -375,12 +375,12 @@
     flex-wrap: wrap;
     gap: 15px;
     max-width: 75%;
-    height: 36px;
+    max-height: 36px;
     box-sizing: border-box;
   }
 
   .v2-explore-articles__selected-filters.expand {
-    height: auto;
+    max-height: unset;
   }
 
   .v2-explore-articles__selected-filter {
@@ -457,13 +457,10 @@
     padding: 0;
   }
 
+  .section button.v2-explore-articles__toggle-more.hide,
   .section button.v2-explore-articles__toggle-less.hide,
   .section a.v2-explore-articles__clear-all-filters-button.hide {
     display: none;
-  }
-
-  .section button.v2-explore-articles__toggle-more.hide {
-    opacity: 0;
   }
 
   .section button.v2-explore-articles__toggle-more,
@@ -471,13 +468,7 @@
   .section a.v2-explore-articles__clear-all-filters-button {
     display: inline-flex;
     align-items: center;
-    max-height: 38px;
     min-width: max-content;
-  }
-
-  .section button.v2-explore-articles__toggle-more,
-  .section button.v2-explore-articles__toggle-less {
-    opacity: 1;
     height: 36px;
     padding: 5px 10px;
   }

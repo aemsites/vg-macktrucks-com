@@ -42,7 +42,6 @@ const CLASSES = {
   facetHeading: `${blockName}__facet-heading`,
   filterCheckbox: `${blockName}__filter-checkbox`,
   extraLine: `${blockName}__extra-line`,
-  filterItem: `${blockName}__filter-item`,
   showing: `${blockName}__showing`,
   sortBy: `${blockName}__sort-by`,
   collageWrapper: `${blockName}__collage-wrapper`,
@@ -293,12 +292,11 @@ const handleToggleBtns = (filters, extra = 0) => {
   const toggleMoreBtn = filters.parentElement.querySelector(`.${CLASSES.toggleMore}`);
   const toggleLessBtn = filters.parentElement.querySelector(`.${CLASSES.toggleLess}`);
 
-  const toggleMoreBtnWidth = toggleMoreBtn.getBoundingClientRect().width;
   const { width: listWidth, height: listHeight } = filters.getBoundingClientRect();
   const wrapperWidth = filters.parentElement.getBoundingClientRect().width;
 
-  const maxListWidth = wrapperWidth * 0.75 - toggleMoreBtnWidth; // set the available space in the wrapper
-  const listPlusExtra = listWidth + extra;
+  const maxListWidth = (wrapperWidth - (window.innerWidth < 1200 ? 20 : 0)) * 0.75; // set the available space in the wrapper
+  const listPlusExtra = listWidth + extra; // when adding filters 29px are missing in the getBoundingClientRect() method
 
   const listBiggerThanWrapper = listPlusExtra >= maxListWidth; // if list is wider than the container
   const isMultiLine = listHeight > 36; // this is the height of the filter wrapper's height in CSS
