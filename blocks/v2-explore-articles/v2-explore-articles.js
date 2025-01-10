@@ -370,7 +370,7 @@ const addEventListeners = (block, articles) => {
       const { value: itemValue, id: itemId } = target;
 
       // Create applied filter element
-      const itemIndex = appliedFilters[facet].indexOf(itemValue);
+      const itemIndex = appliedFilters[facet]?.indexOf(itemValue);
       const item = docRange.createContextualFragment(`
         <div class="${CLASSES.selectedFilter} ${itemId}-filter filter-item">
           <p>${itemValue}<p>
