@@ -61,7 +61,7 @@ const docRange = document.createRange();
 const defaultAmountOfArticles = 9;
 let totalArticleCount = 0;
 let offset = 0;
-let counter = 0;
+let pageCounter = 0;
 let appliedFilters = {};
 let previousQueryFilters = {};
 const MQ = window.matchMedia('(max-width: 743px)');
@@ -108,8 +108,8 @@ const getData = async (articleSet = {}, offset = 0) => {
   };
 };
 
-const buildFiltersExtraLine = (recievedArticles = defaultAmountOfArticles, articlesAmount = totalArticleCount) => {
-  const showingLabel = recievedArticles < totalArticleCount ? recievedArticles : totalArticleCount;
+const buildFiltersExtraLine = (shownArticles, articlesAmount) => {
+  const showingLabel = shownArticles < articlesAmount ? shownArticles : articlesAmount;
   const showingText = LABELS.SHOWING_PLACEHOLDER.replace('$0', showingLabel).replace('$1', articlesAmount);
   return `
     <div class="${CLASSES.showing}">
@@ -316,7 +316,7 @@ const handleToggleBtns = (filters, extra = 0) => {
   }
 };
 
-const addEventListeners = (block, articles) => {
+const addEventListeners = (block) => {
   const htmlElts = {
     filterButton: block.querySelector(`.${CLASSES.filterButton}`),
     filterList: block.querySelector(`.${CLASSES.filterList}`),
@@ -357,6 +357,7 @@ const addEventListeners = (block, articles) => {
       if (htmlElts.filterList.classList.contains('hide')) {
         updateArticleList(block);
         document.body.classList.remove('disable-scroll');
+        pageCounter = 0;
       }
     });
   });
@@ -427,6 +428,7 @@ const addEventListeners = (block, articles) => {
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
 
         appliedFilters[facet].splice(itemIndex, 1);
+        pageCounter = 0;
 
         if (appliedFilters[facet].length === 0) {
           delete appliedFilters[facet];
@@ -459,7 +461,7 @@ const addEventListeners = (block, articles) => {
       delete htmlElts.filterButton.dataset.amount;
 
       appliedFilters = {};
-      counter = 1;
+      pageCounter = 0;
 
       updateArticleList(block);
     });
@@ -478,19 +480,19 @@ const addEventListeners = (block, articles) => {
   htmlElts.showMoreBtn.addEventListener('click', async () => {
     const collageEl = block.querySelector(`.${CLASSES.collage}`);
 
-    counter = counter + 1;
-    offset = counter * defaultAmountOfArticles;
+    pageCounter = pageCounter + 1;
+    offset = pageCounter * defaultAmountOfArticles;
 
     const { articles: moreArticles, count } = await getData(appliedFilters, offset);
     const newArticlesTemplate = buildArticlesTemplate(moreArticles);
     const newArticlesFragment = docRange.createContextualFragment(newArticlesTemplate);
 
     collageEl.appendChild(newArticlesFragment);
-    const displayedArticles = defaultAmountOfArticles * (counter + 1);
+    const displayedArticles = defaultAmountOfArticles * (pageCounter + 1);
+    totalArticleCount = count;
 
     if (totalArticleCount <= displayedArticles) {
-      htmlElts.showMoreBtn.remove();
-      totalArticleCount = articles.length;
+      htmlElts.showMoreBtn.parentElement.classList.add('hide');
     }
     const newExtraLine = buildFiltersExtraLine(displayedArticles, count);
     updateHtmlElmt(block, CLASSES.extraLine, newExtraLine);
