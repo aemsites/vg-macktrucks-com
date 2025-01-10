@@ -81,7 +81,7 @@ export const formatArticlesArray = (arts = []) => {
   const defaultReadTime = getTextLabel('defaultReadTime');
   const articleList = [];
 
-  articleList?.push(
+  articleList.push(
     ...arts.map((item) => {
       const filterTag = ['category', 'topic', 'truck']
         .map((key) => {

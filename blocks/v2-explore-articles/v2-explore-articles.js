@@ -11,7 +11,7 @@ const LABELS = {
   SHOWING_PLACEHOLDER: getTextLabel('Showing placeholder'),
   SORT_BY: getTextLabel('Sort by'),
   SORT_PLACEHOLDERS: getTextLabel('Sort filter placeholders'),
-  FILTERS_BUTTON: getTextLabel('Filters'),
+  FILTERS_BUTTON: getTextLabel('Filter articles'),
   TOGGLE_FILTERS_MORE: getTextLabel('Show more'),
   TOGGLE_FILTERS_LESS: getTextLabel('Show less'),
   CLEAR_ALL_BUTTON: getTextLabel('Clear all'),
@@ -156,7 +156,7 @@ const buildFilterLists = (facets) => {
       const itemId = value.replaceAll(' ', '-');
       filterList += `
           <li>
-            <input id="${itemId}" name="${value}" class="${CLASSES.filterCheckbox}" type="checkbox">
+            <input id="${itemId}" value="${value}" class="${CLASSES.filterCheckbox}" type="checkbox">
             <label for="${itemId}">${value}<label>
           </li>
         `;
@@ -295,13 +295,14 @@ const handleToggleBtns = (filters, extra = 0) => {
   const { width: listWidth, height: listHeight } = filters.getBoundingClientRect();
   const wrapperWidth = filters.parentElement.getBoundingClientRect().width;
 
-  const maxListWidth = (wrapperWidth - (window.innerWidth < 1200 ? 20 : 0)) * 0.75; // set the available space in the wrapper
+  const maxListWidth = wrapperWidth * 0.75 - (window.innerWidth < 1200 ? 48 : 0); // padding of 24 + 24 is set to max 1200 screen
   const listPlusExtra = listWidth + extra; // when adding filters 29px are missing in the getBoundingClientRect() method
 
   const listBiggerThanWrapper = listPlusExtra >= maxListWidth; // if list is wider than the container
+  const sizeDifference = Math.round(maxListWidth - listPlusExtra); // difference between the avialable and the taken space
   const isMultiLine = listHeight > 36; // this is the height of the filter wrapper's height in CSS
 
-  if (listBiggerThanWrapper) {
+  if (listBiggerThanWrapper || sizeDifference < 50) {
     if (isMultiLine) {
       toggleMoreBtn.classList.add('hide');
       toggleLessBtn.classList.remove('hide');
@@ -341,7 +342,7 @@ const addEventListeners = (block, articles) => {
       htmlElts.mobileBtnsContainer.classList.toggle('hide');
       htmlElts.filterButton.style.setProperty('--display-icon', htmlElts.filterButton.classList.contains('overlay') ? 'inline-flex' : 'none');
 
-      // Move filter button to the top of the screen
+      // Scroll to the top so filters open in view
       const headerHeight = document.querySelector('.header-wrapper').getBoundingClientRect().height;
       const yOffset = htmlElts.filterButton.getBoundingClientRect().top + window.scrollY - headerHeight;
       window.scrollTo({
@@ -350,11 +351,12 @@ const addEventListeners = (block, articles) => {
       });
 
       // Lock screen when filter opens
-      document.body.classList.toggle('disable-scroll');
+      document.body.classList.add('disable-scroll');
 
       // Apply changes when filter closes.
       if (htmlElts.filterList.classList.contains('hide')) {
         updateArticleList(block);
+        document.body.classList.remove('disable-scroll');
       }
     });
   });
@@ -365,13 +367,13 @@ const addEventListeners = (block, articles) => {
     if (target.classList.contains(CLASSES.filterCheckbox)) {
       const facetHeading = target.closest(`.${CLASSES.facetList}`).querySelector(`.${CLASSES.facetHeading}`);
       const facet = facetHeading.innerText.toLowerCase();
-      const { name: itemName, id: itemId } = target;
+      const { value: itemValue, id: itemId } = target;
 
       // Create applied filter element
-      const itemIndex = appliedFilters[facet]?.indexOf(itemName);
+      const itemIndex = appliedFilters[facet].indexOf(itemValue);
       const item = docRange.createContextualFragment(`
         <div class="${CLASSES.selectedFilter} ${itemId}-filter filter-item">
-          <p>${itemName}<p>
+          <p>${itemValue}<p>
           <span class="icon icon-close"></span>
         </div>`);
       decorateIcons(item);
@@ -388,7 +390,7 @@ const addEventListeners = (block, articles) => {
         if (!appliedFilters[facet]) {
           appliedFilters[facet] = [];
         }
-        appliedFilters[facet].push(itemName);
+        appliedFilters[facet].push(itemValue);
 
         htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
         facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
