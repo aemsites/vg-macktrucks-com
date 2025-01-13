@@ -953,7 +953,12 @@ main .section.responsive-title h1 {
   --standalone-link-color: var(--c-primary-black);
   --standalone-link-color-active: #555;
   --standalone-link-color-hover: #555;
+
+  /* Border color */
+  --light-border: 1px solid #e1e1e1;
 }
+
+
 
 .redesign-v2 body {
   font-size: var(--body-1-font-size);
