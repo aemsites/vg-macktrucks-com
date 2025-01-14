@@ -68,6 +68,12 @@
   margin-top: 0;
 }
 
+.v2-tabbed-carousel__figure figcaption sup {
+  font-size: 1em;
+  line-height: 0;
+  vertical-align: text-bottom;
+}
+
 /* Navigation */
 .v2-tabbed-carousel__navigation {
   display: flex;
