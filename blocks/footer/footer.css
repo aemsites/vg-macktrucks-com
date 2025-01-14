@@ -246,51 +246,6 @@
   color: var(--c-secondary-silver);
 }
 
-/* Scroll to top */
-
-.scroll-to-top-container {
-  padding: 24px;
-  display: block;
-  position: absolute;
-  top: calc(100vh - 1px);
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-a.scroll-to-top {
-  display: block;
-  border: none;
-  cursor: pointer;
-  padding: 12px;
-  background-color: var(--c-primary-gold);
-  box-shadow: 0 8px 16px rgb(0 0 0 / 30%);
-  position: sticky;
-  top: calc(100vh - 24px - 50px);
-  z-index: 99;
-  pointer-events: all;
-}
-
-.scroll-to-top:hover {
-  background-color: var(--button-secondary-gold-hover);
-}
-
-.scroll-to-top:active {
-  background-color: var(--button-secondary-gold-pressed);
-}
-
-.scroll-to-top:focus-visible {
-  outline: 2px solid var(--border-focus);
-  outline-offset: 2px;
-}
-
-.scroll-to-top svg {
-  transform: rotate(-90deg);
-  height: 24px;
-  width: 24px;
-}
-
 @media (min-width: 1200px) {
   /* Prefooter */
   .prefooter ul {
