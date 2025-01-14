@@ -14,7 +14,7 @@ const LABELS = {
   FILTERS_BUTTON: getTextLabel('Filter articles'),
   TOGGLE_FILTERS_MORE: getTextLabel('Show more'),
   TOGGLE_FILTERS_LESS: getTextLabel('Show less'),
-  CLEAR_ALL_BUTTON: getTextLabel('Clear all'),
+  CLEAR_ALL_BUTTON: getTextLabel('Clear All'),
   CLEAR_BUTTON: getTextLabel('Clear'),
   APPLY_BUTTON: getTextLabel('Apply'),
   SELECTED: getTextLabel('Selected'),
