@@ -2333,10 +2333,6 @@ main .section.v2-dealer-locator-container>div {
   display: initial !important
 }
 
-#scrollToTop, .mobile-dealer, .mobile-electric-dealer, .mobile-uptime-dealer {
-  display: none !important
-}
-
 @media (max-width: 700px) {
   .v2-dealer-locator .slider-arrow {
     left: 80%
