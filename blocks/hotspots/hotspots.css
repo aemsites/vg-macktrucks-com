@@ -514,10 +514,6 @@ footer .block.footer {
   padding-bottom: 110px;
 }
 
-footer .block.footer .scroll-to-top {
-  bottom: 55px;
-}
-
 @media (min-width: 897px) {
   #onetrust-consent-sdk #ot-sdk-btn-floating.ot-floating-button {
     bottom: 10px;
@@ -525,9 +521,5 @@ footer .block.footer .scroll-to-top {
 
   footer .block.footer {
     padding-bottom: 10px;
-  }
-
-  footer .block.footer .scroll-to-top {
-    bottom: 20px;
   }
 }
