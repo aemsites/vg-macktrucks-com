@@ -14,6 +14,13 @@
   padding: 0;
 }
 
+.v2-explore-articles__head-section:first-of-type {
+  padding: 20px 0;
+  gap: 20px;
+}
+
+.v2-explore-articles__sort-button,
+.v2-explore-articles__search-button,
 .v2-explore-articles__filter-button,
 .v2-explore-articles__extra-line {
   display: flex;
@@ -22,6 +29,8 @@
   padding: 0 16px;
 }
 
+.v2-explore-articles__sort-button,
+.v2-explore-articles__search-button,
 .v2-explore-articles__extra-line {
   font-size: var(--body-font-size-xs);
   text-align: center;
@@ -36,6 +45,71 @@
   font-weight: 500;
   letter-spacing: 1.12px;
   margin: 0;
+}
+
+.v2-explore-articles__search-button,
+.v2-explore-articles__sort-button {
+  /* margin: 20px 0; */
+  padding: 0 16px;
+}
+
+.v2-explore-articles__search-button input {
+  width: 100%;
+  border: 1px solid var(--c-primary-black);
+  background-image: url('/icons/search.svg');
+  background-position: 95% 60%;
+  background-repeat: no-repeat;
+  padding: 16px;
+}
+
+.v2-explore-articles__search-button input::placeholder {
+  color: var(--c-primary-black);
+  opacity: 1;
+}
+
+.v2-explore-articles__sort-button {
+  gap: 8px;
+}
+
+.v2-explore-articles__sort-button .switch-label {
+  padding: 4px 0 0;
+}
+
+.v2-explore-articles__sort-button .switch-buttons {
+  position: relative;
+  display: flex;
+  background-color: var(--background-color);
+  border: 1px solid var(--c-primary-black);
+  padding: 4px;
+}
+
+.v2-explore-articles__sort-button button {
+  color: var(--text-color);
+  font-size: var(--body-font-size-xs);
+  position: relative;
+  background-color: transparent;
+  border: none;
+  z-index: 1;
+  padding: 4px 10px;
+  margin: 0;
+}
+
+.v2-explore-articles__sort-button button:first-of-type {
+  margin-right: 4px;
+}
+
+.v2-explore-articles__sort-button .switch-slider {
+  position: absolute;
+  top: 4px;
+  height: 25px;
+  width: 50%;
+  background-color: var(--c-primary-gold);
+  transition: left var(--duration-small) var(--easing-standard);
+}
+
+.v2-explore-articles__sort-button .switch-slider.move-right {
+  /* This moves the slider to the right of the container */
+  left: calc(50% - 4px);
 }
 
 .v2-explore-articles__filter-button {
@@ -62,13 +136,13 @@
   margin-top: 5px;
 }
 
+.v2-explore-articles__head-section svg,
 .v2-explore-articles__filter-button svg,
 .v2-explore-articles__filter-button .icon-close-thin {
   height: 24px;
   width: 24px;
   margin-right: 10px;
 }
-
 
 .v2-explore-articles__filter-list.hide,
 .v2-explore-articles__selected-filter,
@@ -321,6 +395,22 @@
   scale: 1.1;
 }
 
+/* FOCUS STATES */
+.v2-explore-articles__sort-button a:focus-visible,
+.v2-explore-articles__sort-button:focus-visible,
+.v2-explore-articles__sort-button button:focus-visible {
+  outline: 3px solid var(--navigation-line-active-color);
+  outline-offset: -3px;
+}
+
+.v2-explore-articles__search-button input:focus,
+.v2-explore-articles__search-button input:focus-visible,
+.v2-explore-articles__sort-button a:focus,
+.v2-explore-articles__sort-button:focus,
+.v2-explore-articles__sort-button .switch-buttons button:focus {
+  outline: 0;
+}
+
 @media (min-width: 744px) {
   .v2-explore-articles__head-section {
     display: flex;
@@ -331,6 +421,10 @@
     border-top: var(--light-border);
     border-bottom: var(--light-border);
     margin: 0 auto;
+  }
+
+  .v2-explore-articles__search-button input {
+    width: 370px;
   }
 
   .v2-explore-articles-container {
