@@ -3097,18 +3097,18 @@
         <published>2024-12-16T00:00:00.000Z</published>
     </entry>
     <entry>
-        <title type="html"><![CDATA[From Brooklyn to Global Icon: Mack Trucks Celebrates 125 Years of Driving the World Forward]]></title>
-        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-premium-service-contract-using-ai-for-adaptive-maintenance-and-improved-uptimefrom-brooklyn-to-global-icon-mack-trucks-celebrates-125-years-of-driving-the-world-forward</id>
-        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-premium-service-contract-using-ai-for-adaptive-maintenance-and-improved-uptimefrom-brooklyn-to-global-icon-mack-trucks-celebrates-125-years-of-driving-the-world-forward"/>
-        <updated>2025-01-13T00:00:00.000Z</updated>
-        <content type="html"><![CDATA[“For 125 years, Mack Trucks has been more than just a manufacturer – we’ve been helping to build the American success story,” said Stephen Roy, president of Mack Trucks.]]></content>
-        <published>2025-01-13T00:00:00.000Z</published>
-    </entry>
-    <entry>
         <title type="html"><![CDATA[Mack Truck News]]></title>
         <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/</id>
         <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/"/>
         <updated>1970-01-01T00:00:00.000Z</updated>
         <published>1970-01-01T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[From Brooklyn to Global Icon: Mack Trucks Celebrates 125 Years of Driving the World Forward]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/from-brooklyn-to-global-icon-mack-trucks-celebrates-125-years-of-driving-the-world-forward</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/from-brooklyn-to-global-icon-mack-trucks-celebrates-125-years-of-driving-the-world-forward"/>
+        <updated>2025-01-13T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“For 125 years, Mack Trucks has been more than just a manufacturer – we’ve been helping to build the American success story,” said Stephen Roy, president of Mack Trucks.]]></content>
+        <published>2025-01-13T00:00:00.000Z</published>
     </entry>
 </feed>
