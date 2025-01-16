@@ -643,3 +643,31 @@ export function isInsideSection(element) {
   const sections = document.querySelectorAll('.section');
   return Array.from(sections).some((section) => section.contains(element));
 }
+
+/**
+ * Validates if a string is a valid ISO 8601 date.
+ *
+ * @param {string} dateString - The date string to validate.
+ * @returns {boolean} - True if the string is a valid ISO 8601 date; otherwise, false.
+ */
+export const isValidISODateString = (dateString) => {
+  if (typeof dateString !== 'string') {
+    return false;
+  }
+
+  const parsedDate = new Date(dateString);
+  if (isNaN(parsedDate.getTime())) {
+    return false;
+  }
+
+  const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+  return iso8601Regex.test(dateString);
+};
+
+/**
+ * Formats a time unit by adding a leading zero for two-digit formatting.
+ *
+ * @param {number} value - The value to format.
+ * @returns {string} - The formatted value as a two-digit string.
+ */
+export const formatTimeUnit = (value) => String(value).padStart(2, '0');
