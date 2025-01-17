@@ -102,7 +102,10 @@ export default async function decorate(block) {
       const countdownDate = getCountdownDate(block);
 
       if (countdownDate) {
-        initializeCountdown(countdownDate, contentWrapper);
+        const countdownHTML = await initializeCountdown(countdownDate);
+        if (countdownHTML) {
+          contentWrapper.appendChild(countdownHTML);
+        }
       }
     } catch (error) {
       console.error('Error initializing countdown:', error);

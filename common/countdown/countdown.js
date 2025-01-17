@@ -1,18 +1,16 @@
 import { loadCSS } from '../../scripts/aem.js';
-import { isValidISODateString, formatTimeUnit } from '../../scripts/common.js';
+import { createElement, isValidISODateString, formatTimeUnit } from '../../scripts/common.js';
 
 /**
- * Inserts the HTML structure for the countdown timer into the specified container.
+ * Creates the HTML structure for the countdown timer.
  *
- * @param {HTMLElement} container - The container where the countdown timer will be rendered.
+ * @returns {HTMLElement} - The root element of the countdown timer.
  */
-const renderCountdownHTML = (container) => {
-  const countdownHTML = `
-    <div class="countdown">
-      <div class="countdown__time"></div>
-    </div>
-  `;
-  container.insertAdjacentHTML('beforeend', countdownHTML);
+const createCountdownHTML = () => {
+  const countdown = createElement('div', { classes: 'countdown' });
+  const countdownTime = createElement('div', { classes: 'countdown__time' });
+  countdown.appendChild(countdownTime);
+  return countdown;
 };
 
 /**
@@ -74,23 +72,32 @@ const startCountdown = (countdownElement, countdownDate) => {
 };
 
 /**
- * Initializes and starts a countdown timer. Renders the countdown timer in the specified container
- * and begins updating it in real-time. Automatically loads required CSS for styling.
+ * Creates and initializes a countdown timer. Generates the countdown timer HTML structure,
+ * starts the countdown logic, and returns the HTML element for appending to the DOM.
  *
- * @param {string} countdownDateString - The target date as a string in ISO 8601 format.
- * @param {HTMLElement} container - The container where the countdown timer will be displayed.
+ * @param {string} countdownDateString - The target date in ISO 8601 format (e.g., "2025-01-01T00:00:00Z").
+ * @returns {Promise<HTMLElement|null>} - A Promise that resolves to the countdown HTML element,
+ * or `null` if the date is invalid or an error occurs.
+ *
+ * @throws {Error} Logs an error if the provided date string is not valid or the CSS fails to load.
  */
-export const initializeCountdown = (countdownDateString, container) => {
+export const initializeCountdown = async (countdownDateString) => {
   if (!isValidISODateString(countdownDateString)) {
     console.error('Invalid ISO 8601 date string:', countdownDateString);
-    return;
+    return null;
   }
 
   const baseURL = window.location.origin;
-  loadCSS(`${baseURL}/common/countdown/countdown.css`);
 
-  const countdownDate = new Date(countdownDateString);
-  renderCountdownHTML(container);
-  const countdownElement = container.querySelector('.countdown__time');
-  startCountdown(countdownElement, countdownDate);
+  try {
+    await loadCSS(`${baseURL}/common/countdown/countdown.css`);
+    const countdownDate = new Date(countdownDateString);
+    const countdownHTML = createCountdownHTML();
+    const countdownElement = countdownHTML.querySelector('.countdown__time');
+    startCountdown(countdownElement, countdownDate);
+    return countdownHTML;
+  } catch (error) {
+    console.error('Failed to load countdown CSS:', error);
+    return null;
+  }
 };

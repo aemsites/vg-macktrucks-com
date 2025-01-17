@@ -96,7 +96,6 @@
   --fallback-ff-texts: "Inter", sans-serif;
   --fallback-ff-headlines: "Inter", sans-serif;
   --fallback-ff-accents: "Inter", sans-serif;
-  --fallback-ff-digital-display: "Inter", sans-serif;
 
   /* Headlines */
   --ff-headline-medium: "GT America Extended Medium", var(--fallback-ff-headlines);
@@ -113,7 +112,7 @@
   --ff-fontawesome: "fontawesome", "fontawesome Fallback";
 
   /* Digital Display TFB */
-  --ff-digital-display: "Digital Display TBF", var(--fallback-ff-digital-display);
+  --ff-digital-display: "Digital Display TBF", var(--fallback-ff-default);
 
   /* Font sizes */
 
