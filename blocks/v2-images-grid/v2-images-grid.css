@@ -125,6 +125,8 @@
   background: var(--c-primary-white);
   line-height: var(--body-2-line-height);
   font-size: var(--body-2-font-size);
+  font-weight: var(--body-2-font-weight);
+  letter-spacing: var(--body-2-letter-spacing);
 }
 
 .v2-images-grid__carousel-item picture {

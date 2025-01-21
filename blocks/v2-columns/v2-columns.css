@@ -74,6 +74,9 @@
 
 .v2-columns__column--with-text .v2-columns__body {
   font-size: var(--body-1-font-size);
+  font-weight: var(--body-1-font-weight);
+  line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing);
   margin-top: 0;
   margin-bottom: 0;
 }
@@ -171,9 +174,10 @@
   text-transform: uppercase;
   color: var(--c-tertiary-cool-gray);
   font-family: var(--ff-body-bold);
+  font-weight: var(--label-font-weight-small);
   font-size: var(--label-font-size-small);
   line-height: var(--label-line-height-small);
-  letter-spacing: 1.92px;
+  letter-spacing: var(--label-letter-spacing-small);
   margin: 0 0 24px;
 }
 

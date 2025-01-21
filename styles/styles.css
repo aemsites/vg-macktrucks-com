@@ -91,6 +91,27 @@
 
   /* Font family */
 
+  /*
+  **Inter renamed from Helvetica Neue LT Pro:
+  Inter 55 Regular: weight 400
+  Inter 65 Medium: weight 500
+  Inter 75 Bold: weight 700
+  Inter 85 ExtraBold: weight 800
+  Inter 56 Regular Italic
+  Inter 66 Medium Italic
+  Inter 76 Bold Italic
+
+  **New Inter naming:
+  Inter Medium: weight 500
+  Inter SemiBold: weight 600
+  Inter Bold: weight 700
+  */
+
+  /* Font Weights */
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
   /* Alternate fonts */
   --fallback-ff-default: "Inter", sans-serif;
   --fallback-ff-texts: "Inter", sans-serif;
@@ -103,7 +124,7 @@
   --ff-subheadings-medium: "Inter 65 Medium", var(--fallback-ff-texts);
 
   /* Body */
-  --ff-body: "Inter 55 Regular", var(--fallback-ff-texts);
+  --ff-body: "Inter 65 Medium", var(--fallback-ff-texts);
   --ff-body-bold: "Inter 75 Bold", var(--fallback-ff-texts);
   --ff-testimonial: "GT America Extended Regular", var(--fallback-ff-accents);
   --ff-accents: "GT America Mono Regular", var(--fallback-ff-accents);
@@ -116,24 +137,30 @@
   /* GT America, Extended Medium, 45px, 115%, -2% / 32px, 115%, -2% */
   --headline-1-font-size: 3.2rem; /* 32px */
   --headline-1-line-height: 115%;
-  --headline-1-letter-spacing: -2%;
+  --headline-1-letter-spacing: -0.02rem; /* -0.32px */
 
   /* GT America, Extended Medium, 32px, 115%, -2% / 28px, 115%, -2% */
   --headline-2-font-size: 2.8rem; /* 28px */
   --headline-2-line-height: 115%;
-  --headline-2-letter-spacing: -2%;
+  --headline-2-letter-spacing: -0.02rem; /* -0.32px */
 
-  /* Inter, 65 Medium, 32px, 115% / 28px, 115% */
+  /* Inter, Semi Bold, 28px, 115%, 0% / 31px, 118%, 0% */
   --headline-3-font-size: 2.8rem; /* 28px */
   --headline-3-line-height: 115%;
+  --headline-3-font-weight: var(--fw-semibold);
+  --headline-3-letter-spacing: 0;
 
-  /* Inter, 65 Medium, 24px, 140%  */
+  /* Inter, Semi Bold, 24px, 140%, 0.5%  */
   --headline-4-font-size: 2.4rem; /* 24px */
   --headline-4-line-height: 140%;
+  --headline-4-font-weight: var(--fw-semibold);
+  --headline-4-letter-spacing: 0.005rem; /* 0.08px */
 
-  /* Inter, 65 Medium, 18px, 140%  */
+  /* Inter, Semi Bold, 18px, 140%, 0%  */
   --headline-5-font-size: 1.8rem; /* 18px */
   --headline-5-line-height: 140%;
+  --headline-5-font-weight: var(--fw-semibold);
+  --headline-5-letter-spacing: 0;
 
   /* Wrapper for generic components */
   --wrapper-width: 1040px;
@@ -344,7 +371,7 @@ pre {
   padding: 5px 30px;
   text-align: center;
   font-style: normal;
-  font-weight: 600;
+  font-weight: var(--button-font-weight);
   cursor: pointer;
   color: var(--background-color);
   background-color: var(--link-color);
@@ -871,13 +898,13 @@ main .section.responsive-title h1 {
   /* GT America, Extended Medium, 32px, 115%, -2% / 28px, 115%, -2% */
   --headline-2-font-size: 1.75rem; /* 28px */
 
-  /* Inter, 65 Medium, 32px, 115% / 28px, 115% */
+  /* Inter, Semi Bold, 31px, 115%, 0% / 28px, 118%, 0% */
   --headline-3-font-size: 1.75rem; /* 28px */
 
-  /* Inter, 65 Medium, 24px, 140%  */
+  /* Inter, Semi Bold, 24px, 140%  */
   --headline-4-font-size: 1.5rem; /* 24px */
 
-  /* Inter, 65 Medium, 18px, 140%  */
+  /* Inter, Semi Bold, 18px, 140%, 0%  */
   --headline-5-font-size: 1.125rem; /* 18px */
 
   /* Body font sizes */
@@ -891,14 +918,22 @@ main .section.responsive-title h1 {
   /* stylelint-disable-next-line number-max-precision */
   --body-font-size-xxs: 0.8125rem; /* 13px */
 
-  /* Inter, 55 Regular / Inter, 75 Bold, 16px, 150%  */
+  /* Inter, Medium, 16px, 150%, -1.5% / Inter, Bold, 16px, 150%, 0.5%  */
   --body-1-font-size: 1rem; /* 16px */
   --body-1-line-height: 150%;
+  --body-1-font-weight: var(--fw-medium);
+  --body-1-letter-spacing: -0.015rem; /* -0.24px */
+  --body-1-font-weight-bold: var(--fw-bold);
+  --body-1-letter-spacing-bold: 0.005rem; /* 0.08px */
 
-  /* Inter, 55 Regular / Inter, 75 Bold, 13px, 160%  */
+  /* Inter, Medium, 13px, 160%, -3% / Inter, Bold, 13px, 160%, -0.5%  */
   /* stylelint-disable-next-line number-max-precision */
   --body-2-font-size: 0.8125rem; /* 13px */
   --body-2-line-height: 160%;
+  --body-2-letter-spacing: -0.03rem; /* -0.48px */
+  --body-2-font-weight: var(--fw-medium);
+  --body-2-letter-spacing-bold: -0.005rem; /* -0.08px */
+  --body-2-font-weight-bold: var(--fw-bold);
 
   /* GT America Mono, Regular, 18px, 120% */
   --accent-1-font-size: 1.125rem; /* 18px */
@@ -908,17 +943,17 @@ main .section.responsive-title h1 {
   --accent-2-font-size: 0.875rem; /* 14px */
   --accent-2-line-height: 120%;
 
-  /* Inter, 75 Bold, 14px, 16px */
-  --label-font-size: 0.875rem; /* 14px */
-  --label-line-height: 16px;
-
-  /* Inter, 75 Bold, 14px, 16px */
+  /* Inter, Bold, 12px, 130% 17% */
   --label-font-size-small: 0.75rem; /* 12px */
-  --label-line-height-small: 16px;
+  --label-line-height-small: 130%;
+  --label-letter-spacing-small: 0.17rem; /* 2.72px */
+  --label-font-weight-small: var(--fw-bold);
 
-  /* Inter, 55 Regular, 14px, 18px */
+  /* Inter, Medium, 14px, 130%, 8% */
   --button-font-size: 0.875rem; /* 14px */
-  --button-line-height: 18px;
+  --button-line-height: 130%;
+  --button-letter-spacing: 0.08rem; /* 1.28px */
+  --button-font-weight: var(--fw-medium);
 
   /* GT America, Extended Roman, 24px, 120%, -2% / 18px, 120%, -2% */
   --testimonial-font-size: 1.125rem; /* 18px */
@@ -962,7 +997,9 @@ main .section.responsive-title h1 {
 
 .redesign-v2 body {
   font-size: var(--body-1-font-size);
+  font-weight: var(--body-1-font-weight);
   line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing);
 }
 
 .redesign-v2 strong,
@@ -998,17 +1035,23 @@ main .section.responsive-title h1 {
 /* stylelint-disable-next-line no-descending-specificity */
 :where(.redesign-v2) h3, .h3 {
   font-size: var(--headline-3-font-size);
+  font-weight: var(--headline-3-font-weight);
   line-height: var(--headline-3-line-height);
+  letter-spacing: var(--headline-3-letter-spacing);
 }
 
 :where(.redesign-v2) h4, .h4 {
   font-size: var(--headline-4-font-size);
+  font-weight: var(--headline-4-font-weight);
   line-height: var(--headline-4-line-height);
+  letter-spacing: var(--headline-4-letter-spacing);
 }
 
 :where(.redesign-v2) h5, .h5 {
   font-size: var(--headline-5-font-size);
+  font-weight: var(--headline-5-font-weight);
   line-height: var(--headline-5-line-height);
+  letter-spacing: var(--headline-5-letter-spacing);
 }
 
 /* ICONS STYLES */
@@ -1048,7 +1091,7 @@ main .section.responsive-title h1 {
 /* stylelint-disable no-descending-specificity */
 .redesign-v2 a.button:any-link,
 .redesign-v2 button {
-  font-weight: normal;
+  font-weight: var(--button-font-weight);
 }
 /* stylelint-enable no-descending-specificity */
 
@@ -1061,10 +1104,10 @@ main .section.responsive-title h1 {
   display: inline-flex;
   font-family: var(--ff-subheadings-medium);
   font-size: var(--button-font-size);
-  font-weight: normal;
+  font-weight: var(--button-font-weight);
   gap: 10px;
   justify-content: center;
-  letter-spacing: 1.12px;
+  letter-spacing: var(--button-letter-spacing);
   line-height: var(--button-line-height);
   min-width: 128px;
   padding: 12px 20px 8px;
@@ -1393,8 +1436,9 @@ main .section.responsive-title h1 {
   display: inline-flex;
   font-family: var(--ff-subheadings-medium);
   font-size: var(--button-font-size);
+  font-weight: var(--button-font-weight);
   gap: 4px;
-  letter-spacing: 1.12px;
+  letter-spacing: var(--button-letter-spacing);
   line-height: var(--button-line-height);
   background: transparent;
 }
@@ -1474,7 +1518,8 @@ main .section.responsive-title h1 {
     /* stylelint-disable-next-line number-max-precision */
     --headline-1-font-size: 2.8125rem; /* 45px */
     --headline-2-font-size: 2rem; /* 32px */
-    --headline-3-font-size: 2rem; /* 32px */
+    --headline-3-font-size: 1.9375rem; /* 31px */
+    --headline-3-line-height: 118%;
     --testimonial-font-size: 1.5rem; /* 24px */
     --testimonial-letter-spacing: -0.03rem;
     --section-div-padding: 24px 0;

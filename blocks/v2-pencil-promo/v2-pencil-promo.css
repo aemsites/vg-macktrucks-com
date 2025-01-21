@@ -72,8 +72,8 @@
 
 .v2-pencil-promo__pencil-banner .v2-pencil-promo__content p {
   display: inline;
-  font: var(--headline-4-font-size)/117% var(--ff-subheadings-medium);
-  letter-spacing: .25px;
+  font: var(--headline-4-font-weight) var(--headline-4-font-size)/var(--headline-4-line-height) var(--ff-subheadings-medium);
+  letter-spacing: var(--headline-4-letter-spacing);
 }
 
 .v2-pencil-promo__pencil-banner .icon svg {
@@ -118,7 +118,8 @@
 
 .v2-pencil-promo__promo-banner .v2-pencil-promo__content > p {
   padding: 12px 92px 12px 16px;
-  font: var(--headline-5-font-size)/var(--headline-5-line-height) var(--ff-subheadings-medium);
+  font: var(--headline-5-font-weight) var(--headline-5-font-size)/var(--headline-5-line-height) var(--ff-subheadings-medium);
+  letter-spacing: var(--headline-5-letter-spacing);
   max-width: 433px;
   margin: 0;
   color: var(--text-color);
@@ -164,6 +165,9 @@
 
   .v2-pencil-promo__promo-banner .v2-pencil-promo__content > p {
     font-size: var(--headline-4-font-size);
+    font-weight: var(--headline-4-font-weight);
+    line-height: var(--headline-4-line-height);
+    letter-spacing: var(--headline-4-letter-spacing);
   }
 
   .v2-pencil-promo__promo-banner .v2-pencil-promo__content-wrapper {

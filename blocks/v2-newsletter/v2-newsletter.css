@@ -1,13 +1,18 @@
 /* Footer styles */
 .footer-newsletter .v2-newsletter__message {
   font-size: var(--body-2-font-size);
-  line-height: 18px;
+  font-weight: var(--body-2-font-weight);
+  line-height: var(--body-2-line-height);
+  letter-spacing: var(--body-2-letter-spacing);
 }
 
 /* Footer form */
 .v2-forms__validation-message {
   display: none;
   font-size: calc(var(--body-2-font-size) - 15%);
+  font-weight: var(--body-2-font-weight);
+  line-height: var(--body-2-line-height);
+  letter-spacing: var(--body-2-letter-spacing);
   color: var(--c-error);
 }
 
