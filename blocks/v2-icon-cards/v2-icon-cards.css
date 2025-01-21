@@ -99,7 +99,7 @@
 
 .v2-icon-cards--alt-font-size .v2-icon-cards__body {
   font-size: var(--body-1-font-size);
-  font-weight: var(--body-2-font-weight);
+  font-weight: var(--body-1-font-weight);
   line-height: var(--body-1-line-height);
   letter-spacing: var(--body-1-letter-spacing);
 }
