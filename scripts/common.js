@@ -2,7 +2,7 @@ import { loadCSS, getMetadata } from './aem.js';
 
 let placeholders = null;
 
-export const formatValues = (values) => {
+const formatValues = (values) => {
   const obj = {};
   if (values) {
     values.forEach(({ name, value }) => (obj[name] = value));
@@ -12,7 +12,7 @@ export const formatValues = (values) => {
 
 // The `key` key MUST exist in the object
 // The rest of the params will be key-value pairs of the main key
-export const formatValuesByKey = (values) =>
+const formatValuesByKey = (values) =>
   (values &&
     values.reduce((acc, { key, ...rest }) => {
       acc[key] = rest;
@@ -20,7 +20,7 @@ export const formatValuesByKey = (values) =>
     }, {})) ||
   {};
 
-export const getLanguagePath = () => {
+const getLanguagePath = () => {
   const { pathname } = new URL(window.location.href);
   const langCodeMatch = pathname.match('^(/[a-z]{2}(-[a-z]{2})?/).*');
   return langCodeMatch ? langCodeMatch[1] : '/';
@@ -46,21 +46,21 @@ async function getConstantValues() {
 const { searchConfig, cookieValues, magazineConfig, headerConfig, tools, truckConfiguratorUrls, newsFeedConfig, feeds } = await getConstantValues();
 
 // This data comes from the sharepoint 'constants.xlsx' file
-export const SEARCH_CONFIGS = formatValues(searchConfig?.data);
-export const COOKIE_CONFIGS = formatValues(cookieValues?.data);
-export const MAGAZINE_CONFIGS = formatValues(magazineConfig?.data);
-export const HEADER_CONFIGS = formatValues(headerConfig?.data);
-export const TOOLS_CONFIGS = formatValues(tools?.data);
-export const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
-export const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
-export const FEEDS = formatValuesByKey(feeds?.data);
+const SEARCH_CONFIGS = formatValues(searchConfig?.data);
+const COOKIE_CONFIGS = formatValues(cookieValues?.data);
+const MAGAZINE_CONFIGS = formatValues(magazineConfig?.data);
+const HEADER_CONFIGS = formatValues(headerConfig?.data);
+const TOOLS_CONFIGS = formatValues(tools?.data);
+const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
+const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
+const FEEDS = formatValuesByKey(feeds?.data);
 
-export async function getPlaceholders() {
+async function getPlaceholders() {
   const url = `${getLanguagePath()}placeholder.json`;
   placeholders = await fetch(url).then((resp) => resp.json());
 }
 
-export function getTextLabel(key) {
+function getTextLabel(key) {
   return placeholders.data.find((el) => el.Key === key)?.Text || key;
 }
 
@@ -69,7 +69,7 @@ export function getTextLabel(key) {
  * If the page is running in a iframe with srcdoc, the ancestor origin is returned.
  * @returns {String} The true origin
  */
-export function getOrigin() {
+function getOrigin() {
   return window.location.href === 'about:srcdoc' ? window.parent.location.origin : window.location.origin;
 }
 
@@ -79,7 +79,7 @@ export function getOrigin() {
  * the ancestor origin + the path query param is returned.
  * @returns {String} The href of the current page or the href of the block running in the library
  */
-export function getHref() {
+function getHref() {
   if (window.location.href !== 'about:srcdoc') {
     return window.location.href;
   }
@@ -96,7 +96,7 @@ export function getHref() {
  * @param {Object} [options.props={}] any other attributes to add to the element
  * @returns {HTMLElement} the element
  */
-export function createElement(tagName, options = {}) {
+function createElement(tagName, options = {}) {
   const { classes = [], props = {} } = options;
   const elem = document.createElement(tagName);
   const isString = typeof classes === 'string';
@@ -131,7 +131,7 @@ export function createElement(tagName, options = {}) {
  * Adds the favicon.
  * @param {string} href The favicon URL
  */
-export function addFavIcon(href) {
+function addFavIcon(href) {
   const link = createElement('link', { props: { rel: 'icon', type: 'image/svg+xml', href } });
   const existingLink = document.querySelector('head link[rel="icon"]');
   if (existingLink) {
@@ -146,7 +146,7 @@ const ICONS_CACHE = {};
  * Replace icons with inline SVG and prefix with codeBasePath.
  * @param {Element} [element] Element containing icons
  */
-export async function decorateIcons(element) {
+async function decorateIcons(element) {
   // Prepare the inline sprite
   let svgSprite = document.getElementById('franklin-svg-sprite');
   if (!svgSprite) {
@@ -215,7 +215,7 @@ export async function decorateIcons(element) {
   });
 }
 
-export async function loadTemplate(doc, templateName) {
+async function loadTemplate(doc, templateName) {
   try {
     await loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`);
     const decorationComplete = new Promise((resolve) => {
@@ -237,7 +237,7 @@ export async function loadTemplate(doc, templateName) {
   }
 }
 
-export const removeEmptyTags = (block) => {
+const removeEmptyTags = (block) => {
   block.querySelectorAll('*').forEach((x) => {
     const tagName = `</${x.tagName}>`;
 
@@ -262,7 +262,7 @@ export const removeEmptyTags = (block) => {
  * @param {boolean} [options.ignoreDataAlign=false] whether to ignore divs with data-align attribute
  * @returns {void}
  */
-export const unwrapDivs = (element, options = {}) => {
+const unwrapDivs = (element, options = {}) => {
   const stack = [element];
   const { ignoreDataAlign = false } = options;
 
@@ -293,7 +293,7 @@ export const unwrapDivs = (element, options = {}) => {
   }
 };
 
-export const variantsClassesToBEM = (blockClasses, expectedVariantsNames, blockName) => {
+const variantsClassesToBEM = (blockClasses, expectedVariantsNames, blockName) => {
   expectedVariantsNames.forEach((variant) => {
     if (blockClasses.contains(variant)) {
       blockClasses.remove(variant);
@@ -302,7 +302,7 @@ export const variantsClassesToBEM = (blockClasses, expectedVariantsNames, blockN
   });
 };
 
-export const slugify = (text) =>
+const slugify = (text) =>
   text
     .toString()
     .toLowerCase()
@@ -327,7 +327,7 @@ export const slugify = (text) =>
  * @param {Array} data - Array of strings that contain an object coming from sharepoint
  * @returns {Object} An parsed object with those values and keys
  */
-export const extractObjectFromArray = (data) => {
+const extractObjectFromArray = (data) => {
   if (!Array.isArray(data)) {
     return {};
   }
@@ -350,26 +350,26 @@ export const extractObjectFromArray = (data) => {
  * Check if one trust group is checked.
  * @param {String} groupName the one trust group like: C0002
  */
-export function checkOneTrustGroup(groupName, cookieCheck = false) {
+function checkOneTrustGroup(groupName, cookieCheck = false) {
   const oneTrustCookie = decodeURIComponent(document.cookie.split(';').find((cookie) => cookie.trim().startsWith('OptanonConsent=')));
   return cookieCheck || oneTrustCookie.includes(`${groupName}:1`);
 }
 
 const { PERFORMANCE_COOKIE = false, FUNCTIONAL_COOKIE = false, TARGETING_COOKIE = false, SOCIAL_COOKIE = false } = COOKIE_CONFIGS;
 
-export function isPerformanceAllowed() {
+function isPerformanceAllowed() {
   return checkOneTrustGroup(PERFORMANCE_COOKIE);
 }
 
-export function isFunctionalAllowed() {
+function isFunctionalAllowed() {
   return checkOneTrustGroup(FUNCTIONAL_COOKIE);
 }
 
-export function isTargetingAllowed() {
+function isTargetingAllowed() {
   return checkOneTrustGroup(TARGETING_COOKIE);
 }
 
-export function isSocialAllowed() {
+function isSocialAllowed() {
   return checkOneTrustGroup(SOCIAL_COOKIE);
 }
 
@@ -378,7 +378,7 @@ export function isSocialAllowed() {
  * @param {function} func callback function
  * @param {number} timeout time to debouce in ms, default 200
  */
-export function debounce(func, timeout = 200) {
+function debounce(func, timeout = 200) {
   let timer;
   return (...args) => {
     clearTimeout(timer);
@@ -394,7 +394,7 @@ export function debounce(func, timeout = 200) {
  * @param {string} route get the Json data from the route
  * @returns {Object} the json data object
  */
-export const getJsonFromUrl = async (route) => {
+const getJsonFromUrl = async (route) => {
   try {
     const response = await fetch(route);
     if (!response.ok) {
@@ -421,7 +421,7 @@ export const getJsonFromUrl = async (route) => {
  *                     is a trimmed, non-empty string that was separated by a comma in the
  *                     original input.
  */
-export const formatStringToArray = (inputString) => {
+const formatStringToArray = (inputString) => {
   if (typeof inputString !== 'string') {
     return [];
   }
@@ -439,12 +439,12 @@ export const formatStringToArray = (inputString) => {
 */
 let idValue = 0;
 
-export const generateId = (prefix = 'id') => {
+const generateId = (prefix = 'id') => {
   idValue += 1;
   return `${prefix}-${idValue}`;
 };
 
-export const adjustPretitle = (element) => {
+const adjustPretitle = (element) => {
   const headingSelector = 'h1, h2, h3, h4, h5, h6';
 
   [...element.querySelectorAll(headingSelector)].forEach((heading) => {
@@ -470,7 +470,7 @@ export const adjustPretitle = (element) => {
  * @param {HTMLElement} images - An array of picture elements
  * @returns {Array} Array of src strings
  */
-export function getImageURLs(pictures) {
+function getImageURLs(pictures) {
   return pictures.map((picture) => {
     const imgElement = picture.querySelector('img');
     return imgElement.getAttribute('src').split('?')[0];
@@ -485,7 +485,7 @@ export function getImageURLs(pictures) {
  * @param {string[]|string} imageClass - Class for the image
  * @returns {HTMLElement} The created picture element
  */
-export function createResponsivePicture(images, eager, alt, imageClass) {
+function createResponsivePicture(images, eager, alt, imageClass) {
   const picture = document.createElement('picture');
   let fallbackWidth = '';
   let fallbackSrc = '';
@@ -548,7 +548,7 @@ export function createResponsivePicture(images, eager, alt, imageClass) {
   return picture;
 }
 
-export const deepMerge = (originalTarget, source) => {
+const deepMerge = (originalTarget, source) => {
   let target = originalTarget;
   // Initialize target as an empty object if it's undefined or null
   if (typeof target !== 'object' || target === null) {
@@ -571,7 +571,7 @@ export const deepMerge = (originalTarget, source) => {
   return target;
 };
 
-export const isDevHost = () => {
+const isDevHost = () => {
   const devHosts = ['localhost', '127.0.0.1', 'aem.page', 'aem.live'];
   return devHosts.some((url) => window.location.host.includes(url));
 };
@@ -581,7 +581,7 @@ export const isDevHost = () => {
  * It defaults to 'en-us'
  * @returns {string} The locale string
  */
-export const getLocale = () => getMetadata('locale') || 'en-us';
+const getLocale = () => getMetadata('locale') || 'en-us';
 
 /**
  * Clear/removes all of the attributes of an element by reference
@@ -599,7 +599,7 @@ export const getLocale = () => getMetadata('locale') || 'en-us';
  * removeAllAttributes(element).classList.add('SOME-CLASS-NAME');
  *
  */
-export const clearElementAttributes = (element) => {
+const clearElementAttributes = (element) => {
   // Get all attributes of the element
   const attributes = Array.from(element.attributes);
 
@@ -615,7 +615,7 @@ export const clearElementAttributes = (element) => {
  * Get a HTML link element and adds the target=blank attribute if href is external
  * @param {HTMLElement} link - Anchor HTML element with an href attribute
  */
-export function addTargetBlankToExternalLink(link) {
+function addTargetBlankToExternalLink(link) {
   if (!link.href) {
     return;
   }
@@ -632,14 +632,98 @@ export function addTargetBlankToExternalLink(link) {
  * @param {string} str - lowercase string fe: 'mack trucks'.
  * @returns {string} The capitalized string fe: 'Mack Trucks'.
  */
-export const capitalizeWords = (str) => {
+const capitalizeWords = (str) => {
   return str
     .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 };
 
-export function isInsideSection(element) {
+function isInsideSection(element) {
   const sections = document.querySelectorAll('.section');
   return Array.from(sections).some((section) => section.contains(element));
 }
+
+/**
+ * Validates if a string is a valid ISO 8601 date.
+ *
+ * @param {string} dateString - The date string to validate.
+ * @returns {boolean} - True if the string is a valid ISO 8601 date; otherwise, false.
+ */
+const isValidISODateString = (dateString) => {
+  if (typeof dateString !== 'string') {
+    return false;
+  }
+
+  const parsedDate = new Date(dateString);
+  if (isNaN(parsedDate.getTime())) {
+    return false;
+  }
+
+  const iso8601Regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})?$/;
+  return iso8601Regex.test(dateString);
+};
+
+/**
+ * Formats a time unit by adding a leading zero for two-digit formatting.
+ *
+ * @param {number} value - The value to format.
+ * @returns {string} - The formatted value as a two-digit string.
+ */
+const formatTimeUnit = (value) => String(value).padStart(2, '0');
+
+export {
+  loadCSS,
+  getMetadata,
+  placeholders,
+  formatValues,
+  formatValuesByKey,
+  getLanguagePath,
+  getConstantValues,
+  SEARCH_CONFIGS,
+  COOKIE_CONFIGS,
+  MAGAZINE_CONFIGS,
+  HEADER_CONFIGS,
+  TOOLS_CONFIGS,
+  TRUCK_CONFIGURATOR_URLS,
+  NEWS_FEED_CONFIGS,
+  FEEDS,
+  getPlaceholders,
+  getTextLabel,
+  getOrigin,
+  getHref,
+  createElement,
+  addFavIcon,
+  decorateIcons,
+  loadTemplate,
+  removeEmptyTags,
+  unwrapDivs,
+  variantsClassesToBEM,
+  slugify,
+  extractObjectFromArray,
+  checkOneTrustGroup,
+  PERFORMANCE_COOKIE,
+  FUNCTIONAL_COOKIE,
+  TARGETING_COOKIE,
+  SOCIAL_COOKIE,
+  isPerformanceAllowed,
+  isFunctionalAllowed,
+  isTargetingAllowed,
+  isSocialAllowed,
+  debounce,
+  getJsonFromUrl,
+  formatStringToArray,
+  generateId,
+  adjustPretitle,
+  getImageURLs,
+  createResponsivePicture,
+  deepMerge,
+  isDevHost,
+  getLocale,
+  clearElementAttributes,
+  addTargetBlankToExternalLink,
+  capitalizeWords,
+  isInsideSection,
+  isValidISODateString,
+  formatTimeUnit,
+};

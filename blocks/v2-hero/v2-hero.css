@@ -133,6 +133,14 @@
   }
 }
 
+/* Countdown variant */
+.v2-hero--countdown .v2-hero__content-wrapper {
+  gap: 0;
+  justify-content: flex-start;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
 /* Half height variant */
 .v2-hero.v2-hero--half-height {
   max-width: var(--section-max-width);
@@ -204,6 +212,19 @@
 
   .v2-hero--half-height .button-container {
     margin: 0;
+  }
+}
+
+/* Countdown variant */
+.v2-hero--countdown .countdown__time {
+  max-width: 375px;
+}
+
+@media (min-width: 1200px) {
+  .v2-hero--countdown .countdown {
+    margin: 0 auto;
+    max-width: var(--wrapper-width);
+    width: 100%;
   }
 }
 
@@ -444,3 +465,13 @@
 /* PDP - electric model stats bar END */
 
 /* PDP - Hero section END */
+
+/* Countdown variant */
+.v2-hero--countdown .v2-hero__content .v2-hero__heading {
+  font-family: var(--ff-accents);
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 50px;
+  letter-spacing: 0.17em;
+  max-width: 375px;
+}

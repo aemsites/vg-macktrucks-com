@@ -111,6 +111,9 @@
   /* Fontawesome */
   --ff-fontawesome: "fontawesome", "fontawesome Fallback";
 
+  /* Digital Display TFB */
+  --ff-digital-display: "Digital Display TBF", var(--fallback-ff-default);
+
   /* Font sizes */
 
   /* GT America, Extended Medium, 45px, 115%, -2% / 32px, 115%, -2% */

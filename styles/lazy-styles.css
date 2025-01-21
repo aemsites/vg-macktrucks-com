@@ -52,6 +52,12 @@
   font-display: swap
 }
 
+@font-face {
+  font-family: 'Digital Display TBF';
+  src: url('../fonts/digital-display-tfb.ttf') format('truetype');
+  font-display: swap;
+}
+
 .fa {
   font: normal normal normal 14px/1 var(--ff-fontawesome);
   font-size: inherit;

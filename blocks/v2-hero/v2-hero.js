@@ -1,7 +1,8 @@
 import { getImageURLs, createResponsivePicture, variantsClassesToBEM, decorateIcons } from '../../scripts/common.js';
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
+import { initializeCountdown } from '../../common/countdown/countdown.js';
 
-const variantClasses = ['dark', 'light', 'half-height', 'magazine'];
+const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
 const blockName = 'v2-hero';
 
 const addLineBreaksToWords = (element) => {
@@ -11,12 +12,22 @@ const addLineBreaksToWords = (element) => {
     .join(' ');
 };
 
+const getCountdownDate = (block) => {
+  const section = block.closest('.section');
+  const countdownDate = section.dataset.countdownDate;
+  if (!countdownDate) {
+    console.error('Countdown date is not defined in the section dataset.');
+  }
+  return countdownDate;
+};
+
 export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const blockContainer = block.parentElement.parentElement;
   const isPdp = blockContainer.dataset.page === 'pdp';
   const isHalfHeight = block.classList.contains(`${blockName}--half-height`);
   const isMagazine = block.classList.contains(`${blockName}--magazine`);
+  const isCountdown = block.classList.contains(`${blockName}--countdown`);
 
   const images = [...block.querySelectorAll('p > picture')];
   const imageURLs = getImageURLs(images);
@@ -73,7 +84,7 @@ export default async function decorate(block) {
   const headings = [...content.querySelectorAll('h1, h2, h3, h4, h5, h6')];
   headings.forEach((h) => h.classList.add(`${blockName}__heading`));
 
-  if (!isPdp && !isMagazine) {
+  if (!isPdp && !isMagazine && !isCountdown) {
     const firstHeading = headings[0];
     firstHeading?.classList.add('with-marker');
   }
@@ -83,6 +94,21 @@ export default async function decorate(block) {
 
     if (heading) {
       addLineBreaksToWords(heading);
+    }
+  }
+
+  if (isCountdown) {
+    try {
+      const countdownDate = getCountdownDate(block);
+
+      if (countdownDate) {
+        const countdownHTML = await initializeCountdown(countdownDate);
+        if (countdownHTML) {
+          contentWrapper.appendChild(countdownHTML);
+        }
+      }
+    } catch (error) {
+      console.error('Error initializing countdown:', error);
     }
   }
 
