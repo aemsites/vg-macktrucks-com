@@ -79,14 +79,6 @@ let appliedSortingCriteria = 'PUBLISH_DATE_DESC'; // sorting criteria defaults t
 
 // Gets the data from the API and formats it
 const getData = async (articleSet = {}, offset = 0, sortingCriteria = appliedSortingCriteria) => {
-  // TODO REMOVE THIS ONCE SEARCH HAS FINISHED
-  if (sortingCriteria === 'ALPHABETICAL') {
-    sortingCriteria = 'PUBLISH_DATE_DESC';
-    console.log(sortingCriteria);
-    offset = 9;
-  }
-  // TODO remove until here
-
   const queryVariables = {
     limit: defaultAmountOfArticles,
     offset: offset,
@@ -271,7 +263,7 @@ const updateHtmlElmt = (block, selectedClass, newEl) => {
 };
 
 // Compares if 2 objects are the same
-function objectsAreTheSame(obj1, obj2) {
+const objectsAreTheSame = (obj1, obj2) => {
   // Check objects
   if (obj1 === obj2) {
     return true;
@@ -289,7 +281,7 @@ function objectsAreTheSame(obj1, obj2) {
     }
   }
   return true;
-}
+};
 
 // Update the article list with the global object "appliedFilters"
 const updateArticleList = async (block, offset = 0, sorting) => {
