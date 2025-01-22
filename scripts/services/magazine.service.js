@@ -68,7 +68,7 @@ const isImageLink = (link) => `${link}`.split('?')[0].match(/\.(jpeg|jpg|gif|png
  */
 const getDefaultImage = () => {
   const logoImageURL = '/magazine/categories/media_10b792212a4995e99d13ed3ea3f4a80574ae54979.png';
-  return logoImageURL;
+  return getOrigin() + logoImageURL;
 };
 
 /**
