@@ -363,10 +363,8 @@ const addEventListeners = (block) => {
   htmlElts.sortByButtons.forEach((btn) => {
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('active')) {
-        console.log('not enter');
         return;
       }
-      console.log(btn);
       // move slider
       htmlElts.sortSlider.classList.toggle('move-right');
 
