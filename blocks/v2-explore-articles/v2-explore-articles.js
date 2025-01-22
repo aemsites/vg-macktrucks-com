@@ -365,7 +365,9 @@ const addEventListeners = (block) => {
       if (btn.classList.contains('active')) {
         return;
       }
+
       // move slider
+      htmlElts.sortSlider.style.left = htmlElts.sortSlider.classList.contains('move-right') ? '4px' : 'calc(50% - 4px)';
       htmlElts.sortSlider.classList.toggle('move-right');
 
       htmlElts.sortByDate.classList.toggle('active');

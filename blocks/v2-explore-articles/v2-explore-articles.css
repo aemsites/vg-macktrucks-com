@@ -100,15 +100,11 @@
 .v2-explore-articles__sort-button .switch-slider {
   position: absolute;
   top: 4px;
+  left: 4px;
   height: 25px;
   width: 50%;
   background-color: var(--c-primary-gold);
   transition: left var(--duration-small) var(--easing-standard);
-}
-
-.v2-explore-articles__sort-button .switch-slider.move-right {
-  /* This moves the slider to the right of the container */
-  left: calc(50% - 4px);
 }
 
 .v2-explore-articles__filter-button {
