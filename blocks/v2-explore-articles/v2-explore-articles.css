@@ -251,7 +251,7 @@
 }
 
 .v2-explore-articles__filter-list label {
-  text-transform: capitalize;
+  /* text-transform: capitalize; */
   margin-left: 20px;
   font-size: var(--body-font-size-xs);
   letter-spacing: 1.12px;
@@ -478,7 +478,7 @@
   }
 
   .v2-explore-articles__selected-filter p {
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
     margin: 0;
   }
 
