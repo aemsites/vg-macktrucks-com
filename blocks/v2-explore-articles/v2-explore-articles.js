@@ -25,10 +25,13 @@ const LABELS = {
 const CLASSES = {
   headSection: `${blockName}__head-section`,
   filterButton: `${blockName}__filter-button`,
-  searchButton: `${blockName}__search-button`,
-  sortButton: `${blockName}__sort-button`,
+  searchContainer: `${blockName}__search-container`,
+  searchInput: `${blockName}__search-input`,
+  sortContainer: `${blockName}__sort-container`,
   sortByDate: `${blockName}__sort-by-date`,
   sortByTitle: `${blockName}__sort-by-title`,
+  switchContainer: `${blockName}__switch-container`,
+  switchSlider: `${blockName}__switch-slider`,
   filters: `${blockName}__filters`,
   filterList: `${blockName}__filter-list`,
   selectedFilters: `${blockName}__selected-filters`,
@@ -189,15 +192,15 @@ const buildShowMoreBtn = () => {
 const buildTemplate = (articles, facets, articlesAmount) => {
   const template = docRange.createContextualFragment(`
   <div class="${CLASSES.headSection}">
-    <div class="${CLASSES.searchButton}">
-      <input type="text" id="search" name="search" placeholder="${LABELS.SEARCH}">
+    <div class="${CLASSES.searchContainer}">
+      <input class="${CLASSES.searchInput}" type="text" id="search" name="search" placeholder="${LABELS.SEARCH}">
     </div>
-    <div class="${CLASSES.sortButton} switch">
-      <p class="switch-label">${LABELS.SORT_BY}:</p>
-      <div class="switch-buttons">
+    <div class="${CLASSES.sortContainer} switch">
+      <p>${LABELS.SORT_BY}:</p>
+      <div class="${CLASSES.switchContainer}">
         <button value="${sortingTypes.byPublishDate}" class="${CLASSES.sortByDate} active">${LABELS.SORT_MOST_RECENT}</button>
         <button value="${sortingTypes.alphabetical}"class="${CLASSES.sortByTitle}">${LABELS.SORT_ALPHABETICAL}</button>
-        <div class="switch-slider"></div>  
+        <div class="${CLASSES.switchSlider}"></div>  
       </div>
     </div>
   </div>
@@ -342,10 +345,10 @@ const handleToggleBtns = (filters, extra = 0) => {
 
 const addEventListeners = (block) => {
   const htmlElts = {
-    sortByButtons: block.querySelectorAll(`.${CLASSES.sortButton} button`),
+    sortContainer: block.querySelectorAll(`.${CLASSES.sortContainer} button`),
     sortByDate: block.querySelector(`.${CLASSES.sortByDate}`),
     sortByTitle: block.querySelector(`.${CLASSES.sortByTitle}`),
-    sortSlider: block.querySelector('.switch-slider'),
+    switchSlider: block.querySelector(`.${CLASSES.switchSlider}`),
     filterButton: block.querySelector(`.${CLASSES.filterButton}`),
     filterList: block.querySelector(`.${CLASSES.filterList}`),
     toggleFilters: block.querySelectorAll(`.${CLASSES.toggleFilters}`),
@@ -360,15 +363,14 @@ const addEventListeners = (block) => {
     showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
   };
 
-  htmlElts.sortByButtons.forEach((btn) => {
+  htmlElts.sortContainer.forEach((btn) => {
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('active')) {
         return;
       }
-
       // move slider
-      htmlElts.sortSlider.style.left = htmlElts.sortSlider.classList.contains('move-right') ? '4px' : 'calc(50% - 4px)';
-      htmlElts.sortSlider.classList.toggle('move-right');
+      htmlElts.switchSlider.style.left = htmlElts.switchSlider.classList.contains('move-right') ? '4px' : 'calc(50% - 4px)';
+      htmlElts.switchSlider.classList.toggle('move-right');
 
       htmlElts.sortByDate.classList.toggle('active');
       htmlElts.sortByTitle.classList.toggle('active');

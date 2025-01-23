@@ -19,8 +19,8 @@
   gap: 20px;
 }
 
-.v2-explore-articles__sort-button,
-.v2-explore-articles__search-button,
+.v2-explore-articles__sort-container,
+.v2-explore-articles__search-container,
 .v2-explore-articles__filter-button,
 .v2-explore-articles__extra-line {
   display: flex;
@@ -29,8 +29,8 @@
   padding: 0 16px;
 }
 
-.v2-explore-articles__sort-button,
-.v2-explore-articles__search-button,
+.v2-explore-articles__sort-container,
+.v2-explore-articles__search-container,
 .v2-explore-articles__extra-line {
   font-size: var(--body-font-size-xs);
   text-align: center;
@@ -47,12 +47,12 @@
   margin: 0;
 }
 
-.v2-explore-articles__search-button,
-.v2-explore-articles__sort-button {
+.v2-explore-articles__search-container,
+.v2-explore-articles__sort-container {
   padding: 0 16px;
 }
 
-.v2-explore-articles__search-button input {
+.v2-explore-articles__search-input {
   width: 100%;
   border: 1px solid var(--c-primary-black);
   background-image: url('/icons/search.svg');
@@ -61,20 +61,18 @@
   padding: 16px;
 }
 
-.v2-explore-articles__search-button input::placeholder {
+.v2-explore-articles__search-input::placeholder {
   color: var(--c-primary-black);
   opacity: 1;
 }
 
-.v2-explore-articles__sort-button {
+.v2-explore-articles__sort-container {
+  display: flex;
+  align-items: center;
   gap: 8px;
 }
 
-.v2-explore-articles__sort-button .switch-label {
-  padding: 4px 0 0;
-}
-
-.v2-explore-articles__sort-button .switch-buttons {
+.v2-explore-articles__switch-container {
   position: relative;
   display: flex;
   background-color: var(--background-color);
@@ -82,7 +80,7 @@
   padding: 4px;
 }
 
-.v2-explore-articles__sort-button button {
+.v2-explore-articles__sort-container button {
   color: var(--text-color);
   font-size: var(--body-font-size-xs);
   position: relative;
@@ -93,16 +91,12 @@
   margin: 0;
 }
 
-.v2-explore-articles__sort-button button:first-of-type {
-  margin-right: 4px;
-}
-
-.v2-explore-articles__sort-button .switch-slider {
+.v2-explore-articles__switch-slider {
   position: absolute;
   top: 4px;
   left: 4px;
   height: 25px;
-  width: 50%;
+  width: calc(50% - 4px);
   background-color: var(--c-primary-gold);
   transition: left var(--duration-small) var(--easing-standard);
 }
@@ -391,19 +385,11 @@
 }
 
 /* FOCUS STATES */
-.v2-explore-articles__sort-button a:focus-visible,
-.v2-explore-articles__sort-button:focus-visible,
-.v2-explore-articles__sort-button button:focus-visible {
+.v2-explore-articles__sort-container a:focus-visible,
+.v2-explore-articles__sort-container:focus-visible,
+.v2-explore-articles__sort-container button:focus-visible {
   outline: 3px solid var(--navigation-line-active-color);
   outline-offset: -3px;
-}
-
-.v2-explore-articles__search-button input:focus,
-.v2-explore-articles__search-button input:focus-visible,
-.v2-explore-articles__sort-button a:focus,
-.v2-explore-articles__sort-button:focus,
-.v2-explore-articles__sort-button .switch-buttons button:focus {
-  outline: 0;
 }
 
 @media (min-width: 744px) {
@@ -418,7 +404,7 @@
     margin: 0 auto;
   }
 
-  .v2-explore-articles__search-button input {
+  .v2-explore-articles__search-input {
     width: 370px;
   }
 
