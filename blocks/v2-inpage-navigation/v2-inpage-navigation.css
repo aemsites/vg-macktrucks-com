@@ -58,6 +58,8 @@
   font-family: var(--ff-body-bold);
   font-size: var(--body-2-font-size);
   line-height: var(--body-2-line-height);
+  font-weight: var(--body-2-font-weight-bold);
+  letter-spacing: var(--body-2-letter-spacing-bold);
   margin: 0;
   padding: 10px 20px;
   width: 100%;

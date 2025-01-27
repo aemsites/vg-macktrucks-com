@@ -34,8 +34,9 @@
 .v2-accordion-column__item-title {
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-4-font-size);
-  letter-spacing: var(--headline-1-letter-spacing);
-  line-height: var(--headline-1-line-height);
+  font-weight: var(--headline-4-font-weight);
+  line-height: var(--headline-4-line-height);
+  letter-spacing: var(--headline-4-letter-spacing);
   margin: 0;
 }
 

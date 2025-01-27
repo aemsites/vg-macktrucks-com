@@ -17,8 +17,10 @@
   display: grid;
   font-family: var(--ff-body);
   font-size: var(--body-1-font-size);
+  font-weight: var(--body-1-font-weight);
   gap: 16px;
   line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing);
   margin-top: 16px;
 }
 
@@ -41,8 +43,9 @@
   display: block;
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-5-font-size);
-  font-weight: normal;
+  font-weight: var(--headline-5-font-weight);
   line-height: var(--headline-5-line-height);
+  letter-spacing: var(--headline-5-letter-spacing);
 }
 
 .v2-specifications__list--subtitle {

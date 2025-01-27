@@ -130,8 +130,11 @@
   margin: 0;
   font-family: var(--ff-headline-medium);
   font-size: var(--headline-4-font-size);
-  line-height: 115%;
+  font-weight: var(--headline-4-font-weight);
+  line-height: var(--headline-4-line-height);
+  letter-spacing: var(--headline-4-letter-spacing);
   display: -webkit-box;
+  line-clamp: 3;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;

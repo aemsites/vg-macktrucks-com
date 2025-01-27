@@ -303,7 +303,7 @@
   font-family: var(--ff-accents);
   font-size: var(--body-2-font-size);
   text-transform: uppercase;
-  letter-spacing: .08rem;
+  letter-spacing: var(--body-2-letter-spacing);
 }
 
 [data-page='pdp'] .v2-hero__heading {
@@ -362,6 +362,9 @@
   background: transparent;
   font-family: var(--ff-body-bold);
   font-size: var(--body-1-font-size);
+  font-weight: var(--body-1-font-weight-bold);
+  line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing-bold);
 }
 
 [data-page='pdp'] .v2-hero__cta-wrapper {

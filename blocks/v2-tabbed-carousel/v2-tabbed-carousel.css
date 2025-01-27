@@ -59,7 +59,9 @@
 .v2-tabbed-carousel__figure figcaption p {
   font-family: var(--ff-body);
   font-size: var(--body-1-font-size);
+  font-weight: var(--body-1-font-weight);
   line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing);
   margin-bottom: 0;
   text-wrap: balance;
 }
@@ -125,8 +127,10 @@
   display: flex;
   font-family: var(--ff-body);
   font-size: var(--body-1-font-size);
+  font-weight: var(--body-1-font-weight);
   justify-content: center;
   line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing);
   margin: 0;
   min-width: 160px;
   padding: 20px 15px 10px;
@@ -173,7 +177,8 @@
 }
 
 .v2-tabbed-carousel__text {
-  font: var(--body-2-font-size)/var(--body-2-line-height) var(--ff-body);
+  font: var(--body-2-font-weight) var(--body-2-font-size)/var(--body-2-line-height) var(--ff-body);
+  letter-spacing: var(--body-2-letter-spacing);
 }
 
 @media (min-width: 1200px) {
@@ -211,7 +216,8 @@
 
   .v2-tabbed-carousel__text {
     font-size: var(--body-1-font-size);
-    letter-spacing: 0.16px;
+    font-weight: var(--body-1-font-weight);
+    letter-spacing: var(--body-1-letter-spacing);
     line-height: var(--body-1-line-height);
   }
 }

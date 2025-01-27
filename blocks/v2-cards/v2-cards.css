@@ -54,13 +54,17 @@
 .v2-cards__heading {
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-5-font-size);
+  font-weight: var(--headline-5-font-weight);
   line-height: var(--headline-5-line-height);
+  letter-spacing: var(--headline-5-letter-spacing);
   margin: 0 0 7px;
 }
 
 .v2-cards--large-heading .v2-cards__heading {
   font-size: var(--headline-4-font-size);
+  font-weight: var(--headline-4-font-weight);
   line-height: var(--headline-4-line-height);
+  letter-spacing: var(--headline-4-letter-spacing);
 }
 
 .v2-cards__text-wrapper p {
@@ -68,8 +72,9 @@
   font-family: var(--ff-body);
   font-size: var(--body-1-font-size);
   font-style: normal;
+  font-weight: var(--body-1-font-weight);
   line-height: var(--body-1-line-height);
-  letter-spacing: 0.16px;
+  letter-spacing: var(--body-1-letter-spacing);
 }
 
 .v2-cards__text-wrapper strong {
@@ -144,7 +149,9 @@
 
 .v2-cards.v2-cards--spaced .v2-cards__heading {
   font-size: var(--headline-4-font-size);
+  font-weight: var(--headline-4-font-weight);
   line-height: var(--headline-4-line-height);
+  letter-spacing: var(--headline-4-letter-spacing);
 }
 
 .v2-cards.v2-cards--spaced strong {

@@ -129,8 +129,9 @@
 .v2-truck-builder__item-title {
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-5-font-size);
-  letter-spacing: 0.036em;
-  line-height: var(--headline-1-line-height);
+  font-weight: var(--headline-5-font-weight);
+  letter-spacing: var(--headline-5-letter-spacing);
+  line-height: var(--headline-5-line-height);
   margin: 0;
   width: 100%;
   text-align: left;
