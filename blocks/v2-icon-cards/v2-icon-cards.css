@@ -80,14 +80,28 @@
   line-height: var(--body-2-line-height);
 }
 
+.v2-icon-cards__heading:not(.h2) {
+  letter-spacing: var(--body-2-letter-spacing-bold);
+  font-weight: var(--body-2-font-weight-bold);
+}
+
+.v2-icon-cards__body {
+  font-weight: var(--body-2-font-weight);
+  letter-spacing: var(--body-2-letter-spacing);
+}
+
 .v2-icon-cards--alt-font-size .v2-icon-cards__heading {
   font-size: var(--headline-5-font-size);
+  font-weight: var(--headline-5-font-weight);
   line-height: var(--headline-5-line-height);
+  letter-spacing: var(--headline-5-letter-spacing);
 }
 
 .v2-icon-cards--alt-font-size .v2-icon-cards__body {
   font-size: var(--body-1-font-size);
+  font-weight: var(--body-1-font-weight);
   line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing);
 }
 
 .v2-icon-cards:not(.v2-icon-cards--alt-font-size) .v2-icon-cards__heading:not(.h2) {
@@ -202,13 +216,10 @@
 
 /* stylelint-disable-next-line no-descending-specificity */
 .v2-icon-cards--4-cols .v2-icon-cards__heading {
-  font-size: var(--body-2-font-size);
-  line-height: var(--body-2-line-height);
   margin-bottom: 8px;
 }
 
 .v2-icon-cards--4-cols .v2-icon-cards__body {
-  font-size: var(--body-2-font-size);
   margin-bottom: 0;
 }
 

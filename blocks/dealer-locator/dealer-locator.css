@@ -2330,7 +2330,7 @@ main .section.dealer-locator-container>div {
   display: initial !important
 }
 
-#scrollToTop, .mobile-dealer, .mobile-electric-dealer, .mobile-uptime-dealer {
+.mobile-dealer, .mobile-electric-dealer, .mobile-uptime-dealer {
   display: none !important
 }
 

@@ -87,6 +87,7 @@
   /* Styles for nested accordion */
   .v2-accordion__content .v2-accordion__title {
     font-size: var(--headline-4-font-size);
+    font-weight: var(--headline-4-font-weight);
     letter-spacing: var(--headline-4-letter-spacing);
     line-height: var(--headline-4-line-height);
   }

@@ -200,7 +200,9 @@ ul.v2-truck-lineup__navigation {
   display: flex;
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-5-font-size);
+  font-weight: var(--headline-5-font-weight);
   line-height: var(--headline-5-line-height);
+  letter-spacing: var(--headline-5-letter-spacing);
   margin: 0 0 0 20px;
   padding: 14px 0;
   text-wrap: nowrap;
@@ -305,7 +307,9 @@ ul.v2-truck-lineup__navigation {
 @media screen and (min-width: 744px) {
   .v2-truck-lineup__navigation-item button {
     font-size: var(--headline-4-font-size);
+    font-weight: var(--headline-4-font-weight);
     line-height: var(--headline-4-line-height);
+    letter-spacing: var(--headline-4-letter-spacing);
   }
 
   .v2-truck-lineup__arrow-controls {

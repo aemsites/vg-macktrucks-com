@@ -20,18 +20,6 @@ const CLASSES = {
   legal: 'footer-legal',
 };
 
-function addScrollToTopButton(mainEl) {
-  const scrollToTopButton = document.createRange().createContextualFragment(`
-    <div class="scroll-to-top-container">
-      <a href="#" class="scroll-to-top" title="${getTextLabel('go to top')}">
-        <span class="icon icon-arrow-right" />
-      </a>
-    </div>
-  `);
-
-  mainEl.append(scrollToTopButton);
-}
-
 function findList(ele) {
   if (ele.classList.contains(CLASSES.truckList)) {
     return ele;
@@ -192,8 +180,6 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   block.append(newFooter);
-
-  addScrollToTopButton(block);
 
   await decorateIcons(block);
   await loadBlock(block);

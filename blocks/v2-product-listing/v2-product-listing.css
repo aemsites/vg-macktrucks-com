@@ -183,10 +183,14 @@
   flex-flow: row wrap;
   gap: var(--v2-product-listing-content-gap);
   font-size: var(--v2-product-listing-info-font-size);
+  line-height: var(--body-1-line-height);
+  letter-spacing: var(--body-1-letter-spacing);
 }
 
 .v2-product-listing__detail-list li strong {
   font-family: var(--ff-body-bold);
+  font-weight: var(--body-1-font-weight-bold);
+  letter-spacing: var(--body-1-letter-spacing-bold);
 }
 
 .v2-product-listing--with-dots .v2-product-listing__detail-list li {

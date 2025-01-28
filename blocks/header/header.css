@@ -714,8 +714,8 @@ a.header__link {
     border: 1px solid transparent;
     display: inline-flex;
     font-family: var(--ff-subheadings-medium);
-    font-size: 14px;
-    font-weight: normal;
+    font-size: var(--button-font-size);
+    font-weight: var(--button-font-weight);
     gap: 10px;
     justify-content: center;
     letter-spacing: 1.12px;
@@ -743,7 +743,7 @@ a.header__link {
 
     background-color: var(--button-secondary-gold-enabled);
     color: var(--c-primary-black);
-    font-size: 14px;
+    font-size: var(--button-font-size);
   }
 
   .header.block .button.button--primary:hover,
@@ -1031,9 +1031,9 @@ a.header__link {
   .header__main-link-wrapper--tabs-with-cards .header__category-item h3 a.header__link {
     font-family: var(--ff-subheadings-medium);
     font-size: var(--headline-4-font-size);
-    line-height: 130%;
-    letter-spacing: 0.48px;
-    font-weight: normal;
+    font-weight: var(--headline-4-font-weight);
+    line-height: var(--headline-4-line-height);
+    letter-spacing: var(--headline-4-letter-spacing);
   }
 
   /* stylelint-disable-next-line no-descending-specificity */

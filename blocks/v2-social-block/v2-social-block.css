@@ -9,6 +9,9 @@
 .v2-social-block__title {
   font-family: var(--ff-headline-medium);
   font-size: var(--headline-4-font-size);
+  font-weight: var(--headline-4-font-weight);
+  line-height: var(--headline-4-line-height);
+  letter-spacing: var(--headline-4-letter-spacing);
   margin: 0 0 32px;
   color: var(--social-text-color);
   text-align: center;
