@@ -47,7 +47,8 @@ const setupCountdownSection = async (block, wrapper) => {
       const countdown = await initializeCountdown(targetDate);
       const titleText = extractTitleText(block);
       const titleElement = createFormTitleElement(titleText);
-      const iframe = document.querySelector('.iframe');
+      const section = block.closest('.section');
+      const iframe = section.querySelector('.iframe');
 
       if (countdown) {
         wrapper.appendChild(countdown);
