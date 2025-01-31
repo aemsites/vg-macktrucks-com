@@ -4,7 +4,7 @@ import { initializeCountdown } from '../../common/countdown/countdown.js';
 
 const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
 const blockName = 'v2-hero';
-let isVideo;
+let hasVideo;
 
 const addLineBreaksToWords = (element) => {
   element.innerHTML = element.textContent
@@ -52,7 +52,10 @@ export default async function decorate(block) {
 
   if (links) {
     links.forEach((link) => {
-      isVideo = isVideoLink(link);
+      const isVideo = isVideoLink(link);
+      if (isVideo) {
+        hasVideo = true;
+      }
       processVideoLink(block, link);
     });
   }
@@ -83,7 +86,7 @@ export default async function decorate(block) {
 
   if (images.length !== 0) {
     block.prepend(newPicture);
-  } else if (!isVideo) {
+  } else if (!hasVideo) {
     block.classList.add(`${blockName}--no-image`);
   }
 
