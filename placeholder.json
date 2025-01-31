@@ -64,20 +64,20 @@
       "Text": "All Categories,All Trucks"
     },
     {
-      "Key": "Search",
-      "Text": "Search"
-    },
-    {
-      "Key": "Magazine filters placeholders",
-      "Text": "All Categories,All Topics,All Trucks"
+      "Key": "Search articles",
+      "Text": "Search articles"
     },
     {
       "Key": "Showing placeholder",
       "Text": "Showing $0 of $1 stories"
     },
     {
-      "Key": "Sort filter placeholders",
-      "Text": "Newest,Oldest,Alphabetical"
+      "Key": "Most Recent",
+      "Text": "Most Recent"
+    },
+    {
+      "Key": "Alphabetical",
+      "Text": "Alphabetical"
     },
     {
       "Key": "Filter articles",
