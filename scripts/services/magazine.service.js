@@ -14,7 +14,7 @@ export const fetchMagazineData = async ({
   sort = 'BEST_MATCH',
   tenant = TENANT,
   language = getLocale().split('-')[0].toUpperCase(),
-  category = 'magazine',
+  category = 'Magazine',
   facets = null,
   article,
 } = {}) => {
