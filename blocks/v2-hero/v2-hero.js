@@ -4,6 +4,7 @@ import { initializeCountdown } from '../../common/countdown/countdown.js';
 
 const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
 const blockName = 'v2-hero';
+let hasVideo;
 
 const addLineBreaksToWords = (element) => {
   element.innerHTML = element.textContent
@@ -21,6 +22,20 @@ const getCountdownDate = (block) => {
   return countdownDate;
 };
 
+const processVideoLink = (block, link) => {
+  const linkText = link.innerText.trim().toLowerCase();
+
+  if (linkText === 'background') {
+    createVideo(block, link.getAttribute('href'), `${blockName}__video`, {
+      muted: true,
+      autoplay: true,
+      loop: true,
+      playsinline: true,
+    });
+    link.remove();
+  }
+};
+
 export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const blockContainer = block.parentElement.parentElement;
@@ -33,16 +48,16 @@ export default async function decorate(block) {
   const imageURLs = getImageURLs(images);
   const imageData = imageURLs.map((src) => ({ src, breakpoints: [] }));
 
-  const link = block.querySelector('a');
-  const isVideo = link ? isVideoLink(link) : false;
-  if (isVideo) {
-    createVideo(block, link.getAttribute('href'), `${blockName}__video`, {
-      muted: true,
-      autoplay: true,
-      loop: true,
-      playsinline: true,
+  const links = block.querySelectorAll('a');
+
+  if (links) {
+    links.forEach((link) => {
+      const isVideo = isVideoLink(link);
+      if (isVideo) {
+        hasVideo = true;
+      }
+      processVideoLink(block, link);
     });
-    link.remove();
   }
 
   if (imageData.length === 1) {
@@ -71,7 +86,7 @@ export default async function decorate(block) {
 
   if (images.length !== 0) {
     block.prepend(newPicture);
-  } else if (!isVideo) {
+  } else if (!hasVideo) {
     block.classList.add(`${blockName}--no-image`);
   }
 
