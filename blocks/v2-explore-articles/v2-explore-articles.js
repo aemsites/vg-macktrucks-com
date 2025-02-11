@@ -6,11 +6,11 @@ const blockName = 'v2-explore-articles';
 
 const LABELS = {
   SHOW_MORE: getTextLabel('Show More'),
-  SEARCH: getTextLabel('Search'),
-  FILTERS_PLACEHOLDERS: getTextLabel('Magazine filters placeholders'),
+  SEARCH: getTextLabel('Search articles'),
   SHOWING_PLACEHOLDER: getTextLabel('Showing placeholder'),
   SORT_BY: getTextLabel('Sort by'),
-  SORT_PLACEHOLDERS: getTextLabel('Sort filter placeholders'),
+  SORT_MOST_RECENT: getTextLabel('Most Recent'),
+  SORT_ALPHABETICAL: getTextLabel('Alphabetical'),
   FILTERS_BUTTON: getTextLabel('Filter articles'),
   TOGGLE_FILTERS_MORE: getTextLabel('Show more'),
   TOGGLE_FILTERS_LESS: getTextLabel('Show less'),
@@ -25,6 +25,13 @@ const LABELS = {
 const CLASSES = {
   headSection: `${blockName}__head-section`,
   filterButton: `${blockName}__filter-button`,
+  searchContainer: `${blockName}__search-container`,
+  searchInput: `${blockName}__search-input`,
+  sortContainer: `${blockName}__sort-container`,
+  sortByDate: `${blockName}__sort-by-date`,
+  sortByTitle: `${blockName}__sort-by-title`,
+  switchContainer: `${blockName}__switch-container`,
+  switchSlider: `${blockName}__switch-slider`,
   filters: `${blockName}__filters`,
   filterList: `${blockName}__filter-list`,
   selectedFilters: `${blockName}__selected-filters`,
@@ -60,20 +67,26 @@ const CLASSES = {
 const docRange = document.createRange();
 const defaultAmountOfArticles = 9;
 const widthBreakpoint = 744;
+const sortingTypes = {
+  byPublishDate: 'PUBLISH_DATE_DESC',
+  alphabetical: 'ALPHABETICAL',
+};
+
 let totalArticleCount = 0;
 let offset = 0;
 let pageCounter = 0;
 let appliedFilters = {};
 let previousQueryFilters = {};
 let amountOfFacets = 10000; // high default value
+let appliedSortingCriteria = 'PUBLISH_DATE_DESC'; // sorting criteria defaults to: 'by date'
 
 // Gets the data from the API and formats it
-const getData = async (articleSet = {}, offset = 0) => {
+const getData = async (articleSet = {}, offset = 0, sortingCriteria = appliedSortingCriteria) => {
   const queryVariables = {
     limit: defaultAmountOfArticles,
     offset: offset,
     facets: ['ARTICLE', 'TOPIC', 'TRUCK'],
-    sort: 'PUBLISH_DATE_DESC',
+    sort: sortingCriteria,
     article: articleSet,
   };
 
@@ -179,12 +192,26 @@ const buildShowMoreBtn = () => {
 const buildTemplate = (articles, facets, articlesAmount) => {
   const template = docRange.createContextualFragment(`
   <div class="${CLASSES.headSection}">
+    <div class="${CLASSES.searchContainer}">
+      <input class="${CLASSES.searchInput}" type="text" id="search" name="search" placeholder="${LABELS.SEARCH}">
+    </div>
+    <div class="${CLASSES.sortContainer} switch">
+      <p>${LABELS.SORT_BY}:</p>
+      <div class="${CLASSES.switchContainer}">
+        <button value="${sortingTypes.byPublishDate}" class="${CLASSES.sortByDate} active">${LABELS.SORT_MOST_RECENT}</button>
+        <button value="${sortingTypes.alphabetical}"class="${CLASSES.sortByTitle}">${LABELS.SORT_ALPHABETICAL}</button>
+        <div class="${CLASSES.switchSlider}"></div>  
+      </div>
+    </div>
+  </div>
+  <div class="${CLASSES.headSection}">
     <div class="${CLASSES.filterButton}">
       <a class="standalone-link">
         <span class="icon icon-filter-settings"></span>
         ${LABELS.FILTERS_BUTTON}
       </a>
     </div>
+
     <div class="${CLASSES.extraLine}">
       ${buildFiltersExtraLine(articles.length, articlesAmount)}
     </div>
@@ -239,7 +266,7 @@ const updateHtmlElmt = (block, selectedClass, newEl) => {
 };
 
 // Compares if 2 objects are the same
-function objectsAreTheSame(obj1, obj2) {
+const objectsAreTheSame = (obj1, obj2) => {
   // Check objects
   if (obj1 === obj2) {
     return true;
@@ -257,15 +284,15 @@ function objectsAreTheSame(obj1, obj2) {
     }
   }
   return true;
-}
+};
 
 // Update the article list with the global object "appliedFilters"
-const updateArticleList = async (block, offset = 0) => {
-  if (objectsAreTheSame(previousQueryFilters, appliedFilters)) {
+const updateArticleList = async (block, offset = 0, sorting) => {
+  if (objectsAreTheSame(previousQueryFilters, appliedFilters) && sorting === undefined) {
     return;
   }
 
-  const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset);
+  const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset, sorting);
   // Store the last query to compare next time
   previousQueryFilters = JSON.parse(JSON.stringify(appliedFilters));
   totalArticleCount = count;
@@ -318,6 +345,10 @@ const handleToggleBtns = (filters, extra = 0) => {
 
 const addEventListeners = (block) => {
   const htmlElts = {
+    sortContainer: block.querySelectorAll(`.${CLASSES.sortContainer} button`),
+    sortByDate: block.querySelector(`.${CLASSES.sortByDate}`),
+    sortByTitle: block.querySelector(`.${CLASSES.sortByTitle}`),
+    switchSlider: block.querySelector(`.${CLASSES.switchSlider}`),
     filterButton: block.querySelector(`.${CLASSES.filterButton}`),
     filterList: block.querySelector(`.${CLASSES.filterList}`),
     toggleFilters: block.querySelectorAll(`.${CLASSES.toggleFilters}`),
@@ -331,6 +362,25 @@ const addEventListeners = (block) => {
     selectedFilters: block.querySelector(`.${CLASSES.selectedFilters}`),
     showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
   };
+
+  htmlElts.sortContainer.forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      if (btn.classList.contains('active')) {
+        return;
+      }
+      // move slider
+      htmlElts.switchSlider.style.left = htmlElts.switchSlider.classList.contains('move-right') ? '4px' : 'calc(50% - 4px)';
+      htmlElts.switchSlider.classList.toggle('move-right');
+
+      htmlElts.sortByDate.classList.toggle('active');
+      htmlElts.sortByTitle.classList.toggle('active');
+
+      // update sorting criteria
+      appliedSortingCriteria = btn.value;
+
+      updateArticleList(block, 0, btn.value);
+    });
+  });
 
   const mobileApplyBtn = htmlElts.mobileBtnsContainer.querySelector(`.${CLASSES.applyFiltersBtn}`);
   const allApplyBtns = [mobileApplyBtn, htmlElts.filterButton];

@@ -1,9 +1,10 @@
-import { getImageURLs, createResponsivePicture, variantsClassesToBEM, decorateIcons } from '../../scripts/common.js';
+import { getImageURLs, createResponsivePicture, variantsClassesToBEM, decorateIcons, createElement } from '../../scripts/common.js';
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 import { initializeCountdown } from '../../common/countdown/countdown.js';
 
 const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
 const blockName = 'v2-hero';
+let hasVideo;
 
 const addLineBreaksToWords = (element) => {
   element.innerHTML = element.textContent
@@ -21,6 +22,68 @@ const getCountdownDate = (block) => {
   return countdownDate;
 };
 
+const extractTitleText = (block) => {
+  const text = block?.querySelector(':scope > div:last-child p')?.textContent?.trim() || '';
+
+  if (!text) {
+    console.warn('Form title text is missing or empty.');
+  }
+
+  return text;
+};
+
+const createFormTitleElement = (text) => {
+  const container = createElement('div', { classes: `${blockName}__form-title-container` });
+  const title = createElement('h5', { classes: `${blockName}__form-title` });
+  title.textContent = text;
+  container.appendChild(title);
+  return container;
+};
+
+const setupCountdownSection = async (block, wrapper) => {
+  try {
+    const targetDate = getCountdownDate(block);
+
+    if (targetDate) {
+      const countdown = await initializeCountdown(targetDate);
+      const titleText = extractTitleText(block);
+      const titleElement = createFormTitleElement(titleText);
+      const section = block.closest('.section');
+      const iframe = section.querySelector('.iframe');
+
+      if (countdown) {
+        wrapper.appendChild(countdown);
+      }
+
+      if (titleElement) {
+        wrapper.appendChild(titleElement);
+      }
+
+      if (iframe) {
+        const iframeContainer = createElement('div', { classes: `${blockName}__iframe-container` });
+        iframeContainer.appendChild(iframe);
+        wrapper.appendChild(iframeContainer);
+      }
+    }
+  } catch (error) {
+    console.error('Error initializing countdown feature:', error);
+  }
+};
+
+const processVideoLink = (block, link) => {
+  const linkText = link.innerText.trim().toLowerCase();
+
+  if (linkText === 'background') {
+    createVideo(block, link.getAttribute('href'), `${blockName}__video`, {
+      muted: true,
+      autoplay: true,
+      loop: true,
+      playsinline: true,
+    });
+    link.remove();
+  }
+};
+
 export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const blockContainer = block.parentElement.parentElement;
@@ -33,16 +96,16 @@ export default async function decorate(block) {
   const imageURLs = getImageURLs(images);
   const imageData = imageURLs.map((src) => ({ src, breakpoints: [] }));
 
-  const link = block.querySelector('a');
-  const isVideo = link ? isVideoLink(link) : false;
-  if (isVideo) {
-    createVideo(block, link.getAttribute('href'), `${blockName}__video`, {
-      muted: true,
-      autoplay: true,
-      loop: true,
-      playsinline: true,
+  const links = block.querySelectorAll('a');
+
+  if (links) {
+    links.forEach((link) => {
+      const isVideo = isVideoLink(link);
+      if (isVideo) {
+        hasVideo = true;
+      }
+      processVideoLink(block, link);
     });
-    link.remove();
   }
 
   if (imageData.length === 1) {
@@ -71,7 +134,7 @@ export default async function decorate(block) {
 
   if (images.length !== 0) {
     block.prepend(newPicture);
-  } else if (!isVideo) {
+  } else if (!hasVideo) {
     block.classList.add(`${blockName}--no-image`);
   }
 
@@ -97,21 +160,6 @@ export default async function decorate(block) {
     }
   }
 
-  if (isCountdown) {
-    try {
-      const countdownDate = getCountdownDate(block);
-
-      if (countdownDate) {
-        const countdownHTML = await initializeCountdown(countdownDate);
-        if (countdownHTML) {
-          contentWrapper.appendChild(countdownHTML);
-        }
-      }
-    } catch (error) {
-      console.error('Error initializing countdown:', error);
-    }
-  }
-
   const button = content.querySelector('a');
   const allTexts = content.querySelectorAll('p');
 
@@ -128,6 +176,10 @@ export default async function decorate(block) {
     }
     b.parentElement.classList.add(`${blockName}__cta-wrapper`);
   });
+
+  if (isCountdown) {
+    setupCountdownSection(block, contentWrapper);
+  }
 
   block.parentElement.classList.add('full-width');
   decorateIcons(block);
