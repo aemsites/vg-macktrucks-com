@@ -1,0 +1,84 @@
+.section--with-background.v2-pardot-form-container img {
+  position: absolute;
+  z-index: -1;
+}
+
+.section.v2-pardot-form-container > .default-content-wrapper {
+  --heading-font-size: var(--headline-4-font-size);
+  --subheading-font-size: var(--body-font-size-s);
+}
+
+.v2-pardot-form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(100%, 600px);
+  margin: 0 auto;
+}
+
+.v2-pardot-form-container textarea,
+.v2-pardot-form-container input,
+.v2-pardot-form-container select {
+  background-color: var(--background-color);
+  border: 1px solid var(--c-secondary-graphite);
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  line-height: 10px;
+}
+
+.v2-pardot-form-container textarea {
+  height: 110px;
+  font-size: var(--body-font-size-s);
+}
+
+.v2-pardot-form-container textarea:hover,
+.v2-pardot-form-container input:hover,
+.v2-pardot-form-container select:hover {
+  outline: 2px solid var(--c-error);
+}
+
+.v2-pardot-form-container textarea:focus,
+.v2-pardot-form-container input:focus,
+.v2-pardot-form-container select:focus {
+  outline: 2px solid var(--c-error);
+  outline-offset: -4px;
+}
+
+.v2-pardot-form-container .form-custom-dropdown-wrapper {
+  position: relative;
+}
+
+.v2-pardot-form-container .field-wrapper {
+  line-height: var(--body-1-line-height);
+}
+
+.v2-pardot-form-container .v2-pardot-form .error,
+.v2-pardot-form-container .v2-pardot-form label {
+  font-size: var(--body-font-size-xs);
+  display: inline-block;
+  font-weight: 400;
+}
+
+.v2-pardot-form-container .field-wrapper[required] label::after {
+  content: ' *';
+  color: var(--c-error);
+}
+
+.v2-pardot-form-container .v2-pardot-form .error {
+  color: var(--c-error);
+}
+
+@media (min-width: 768px) {
+  .v2-pardot-form-container form {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px 16px;
+  }
+
+  .v2-pardot-form-container .field-wrapper {
+    width: 100%;
+  }
+}
