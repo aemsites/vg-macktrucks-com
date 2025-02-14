@@ -387,8 +387,9 @@ Select.prototype.updateMenuState = function updateMenuState(open, callFocus = tr
 export const addDropdownInteraction = (form, optionList) => {
   const selectEls = form.querySelectorAll(`.${componentName}`);
   selectEls?.forEach((el) => {
-    new Select(el, optionList);
+    // new Select(el, optionList);
   });
+  /// TODO: Remove this
 };
 
 const createOptionMarkup = (idx, option) => {
@@ -424,8 +425,16 @@ export const getCustomDropdown = async (options = {}) => {
   try {
     await loadCSS(dropdownCSS);
     const labelClass = label ? `${componentName}__label` : 'field-label';
-    return `
-      <div class="${componentName}${formName ? ` ${formName}__field-wrapper` : ''}">
+
+    const el = document.createElement('div');
+    el.classList.add(componentName);
+
+    if (formName) {
+      el.classList.add(` ${formName}__field-wrapper`);
+    }
+
+    const innerCode = document.createRange().createContextualFragment(`
+      <div>
         ${label ? `<label id="${labelClass} class="${labelClass}">${getTextLabel(label)}${mandatory ? '*' : ''}</label>` : ''}
         <div
           aria-controls="options"
@@ -436,7 +445,7 @@ export const getCustomDropdown = async (options = {}) => {
           class="${componentName}__button"
           role="${componentName}-button"
           tabindex="0"
-        >${placeholder || optionList[0]}</div>
+        >${placeholder}</div>
         <div
           aria-labelledby="${labelClass}"
           id="options"
@@ -451,10 +460,14 @@ export const getCustomDropdown = async (options = {}) => {
           autocomplete="off"
           ${mandatory ? 'required' : ''}>
           ${placeholder ? `<option value="" selected disabled>${placeholder}</option>` : ''}
-          ${createSelectHtml(optionList)}
         </select>
       </div>
-    `;
+    `);
+
+    el.appendChild(innerCode);
+    new Select(el, optionList);
+
+    return el;
   } catch (error) {
     console.error(`Failed to load CSS from ${dropdownCSS}:`, error);
     return '';

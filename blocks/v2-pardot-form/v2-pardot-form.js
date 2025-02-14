@@ -359,7 +359,7 @@ async function createCustomDropdown(fd) {
     mandatory: fd.Mandatory,
   };
   const customDropdown = await getCustomDropdown(configFd);
-  return document.createRange().createContextualFragment(customDropdown);
+  return customDropdown;
 }
 
 const getId = (function getId() {
@@ -496,13 +496,14 @@ async function createForm(formURL) {
   });
 
   if (customDropdowns.length > 0) {
-    customDropdowns.forEach(async (fd) => {
-      const customDropdownPlaceholder = form.querySelector(`.${tempDropdownClass}`);
+    customDropdowns.forEach(async (fd, index) => {
+      const customDropdownPlaceholder = form.querySelectorAll(`.${tempDropdownClass}`)[index];
       const placholderSelect = customDropdownPlaceholder.querySelector('select');
       const customDropdown = await createCustomDropdown(fd);
       const optionPlaceholder = fd.Placeholder || null;
       const optionList = fd.Options.split(',').map((o) => o.trim());
       customDropdownPlaceholder.classList.remove(tempDropdownClass);
+
       placholderSelect.replaceWith(customDropdown);
       if (optionPlaceholder) {
         optionList.unshift(optionPlaceholder);
