@@ -1,3 +1,7 @@
+.section--with-background.v2-pardot-form-container {
+  margin-bottom: 40px;
+}
+
 .section--with-background.v2-pardot-form-container img {
   position: absolute;
   z-index: -1;
