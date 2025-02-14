@@ -142,6 +142,7 @@ function addFavIcon(href) {
 }
 
 const ICONS_CACHE = {};
+
 /**
  * Replace icons with inline SVG and prefix with codeBasePath.
  * @param {Element} [element] Element containing icons
