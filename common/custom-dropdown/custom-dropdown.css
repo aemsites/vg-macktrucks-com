@@ -97,6 +97,16 @@
   cursor: pointer;
 }
 
+.custom-dropdown__button:hover {
+  outline: 2px solid var(--c-error);
+  cursor: pointer;
+}
+
+.custom-dropdown__button:focus {
+  outline: 2px solid var(--c-error);
+  outline-offset: -4px;
+}
+
 @media (min-width: 744px) {
   .custom-dropdown {
     margin-bottom: 0;
