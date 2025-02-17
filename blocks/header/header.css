@@ -916,18 +916,9 @@ a.header__link {
     text-underline-offset: 14px;
     text-decoration-thickness: 4px;
     padding: 0;
-    position: absolute;
     left: 50%;
     width: max-content;
     cursor: pointer;
-  }
-
-  .header__menu-open > .header__main-link-wrapper--tabs-with-cards > .header__accordion-content-wrapper .header__menu-content:first-child a {
-    transform: translateX(calc(-100% - (var(--menu-cards-gutter) / 2)));
-  }
-
-  .header__menu-open > .header__main-link-wrapper--tabs-with-cards > .header__accordion-content-wrapper .header__menu-content:last-child a {
-    transform: translateX(calc(var(--menu-cards-gutter) / 2));
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
