@@ -460,11 +460,17 @@ export const getCustomDropdown = async (options = {}) => {
           autocomplete="off"
           ${mandatory ? 'required' : ''}>
           ${placeholder ? `<option value="" selected disabled>${placeholder}</option>` : ''}
+          ${createSelectHtml(optionList)}
         </select>
       </div>
     `);
 
     el.appendChild(innerCode);
+
+    if (optionList.length > 0 && placeholder) {
+      optionList.unshift(placeholder);
+    }
+
     new Select(el, optionList);
 
     return el;

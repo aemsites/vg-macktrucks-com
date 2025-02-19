@@ -70,6 +70,9 @@ async function submissionFailure() {
   });
   errorDiv.innerHTML = errorMessage(getMessageText(false, true), getMessageText(false, false));
   const form = document.querySelector('form[data-submitting=true]');
+  if (!form) {
+    return;
+  }
   form.setAttribute('data-submitting', 'false');
   form.querySelector('button[type="submit"]').disabled = false;
   form.replaceWith(errorDiv);
@@ -459,6 +462,16 @@ function decorateValidation(form) {
   });
 }
 
+function cleanErrorMessages(form) {
+  const spanErrors = form.querySelectorAll('span.error');
+  spanErrors.forEach((span) => {
+    const parentEl = span.closest('.field-wrapper.invalid');
+    if (!parentEl) {
+      span.remove();
+    }
+  });
+}
+
 async function createForm(formURL) {
   const { pathname } = new URL(formURL);
   const data = await fetchForm(pathname);
@@ -517,6 +530,8 @@ async function createForm(formURL) {
     if (form.hasAttribute('novalidate')) {
       isValid = form.checkValidity();
     }
+    // after been submitted, the form needs to clean the error messages if the fields are valid
+    cleanErrorMessages(form);
     e.preventDefault();
     if (isValid) {
       e.submitter.setAttribute('disabled', '');
@@ -530,10 +545,17 @@ async function createForm(formURL) {
 
 function decorateTitles(block) {
   const previousSibling = block.parentElement.previousElementSibling;
+  if (!previousSibling) {
+    return;
+  }
   const title = previousSibling.querySelector('h3');
   const subtitle = previousSibling.querySelector('h5');
-  title.classList.add('h3');
-  subtitle.classList.add('h5');
+  if (title) {
+    title.classList.add('h3');
+  }
+  if (subtitle) {
+    subtitle.classList.add('h5');
+  }
 }
 
 export default async function decorate(block) {
@@ -548,5 +570,11 @@ export default async function decorate(block) {
       block.lastElementChild.remove();
     }
     formLink.replaceWith(form);
+
+    // in case the form has any kind of error, the form will be replaced with the error message
+    window.addEventListener('unhandledrejection', ({ reason, error }) => {
+      console.error('Unhandled rejection. Error submitting form:', { reason, error });
+      submissionFailure();
+    });
   }
 }
