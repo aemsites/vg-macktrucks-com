@@ -1,6 +1,6 @@
 import { loadScript, sampleRUM } from '../../scripts/aem.js';
 import { getTextLabel, createElement } from '../../scripts/common.js';
-import { getCustomDropdown, addDropdownInteraction } from '../../../common/custom-dropdown/custom-dropdown.js';
+import { getCustomDropdown } from '../../../common/custom-dropdown/custom-dropdown.js';
 
 const blockName = 'v2-custom-form';
 
@@ -483,13 +483,11 @@ async function createForm(formURL) {
     });
   }
   const form = createElement('form');
-  const tempDropdownClass = 'custom-dropdown-placeholder';
   const customDropdowns = [];
   data.forEach(async (fd) => {
     const el = renderField(fd);
 
     if (fd.Type === 'custom-dropdown') {
-      el.classList.add(tempDropdownClass);
       customDropdowns.push(fd);
     }
 
@@ -510,18 +508,10 @@ async function createForm(formURL) {
 
   if (customDropdowns.length > 0) {
     customDropdowns.forEach(async (fd, index) => {
-      const customDropdownPlaceholder = form.querySelectorAll(`.${tempDropdownClass}`)[index];
+      const customDropdownPlaceholder = form.querySelectorAll('.form-custom-dropdown-wrapper')[index];
       const placholderSelect = customDropdownPlaceholder.querySelector('select');
       const customDropdown = await createCustomDropdown(fd);
-      const optionPlaceholder = fd.Placeholder || null;
-      const optionList = fd.Options.split(',').map((o) => o.trim());
-      customDropdownPlaceholder.classList.remove(tempDropdownClass);
-
       placholderSelect.replaceWith(customDropdown);
-      if (optionPlaceholder) {
-        optionList.unshift(optionPlaceholder);
-      }
-      addDropdownInteraction(form, optionList);
     });
   }
   groupFieldsByFieldSet(form);

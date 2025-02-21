@@ -379,19 +379,6 @@ Select.prototype.updateMenuState = function updateMenuState(open, callFocus = tr
   callFocus && this.buttonEl.focus();
 };
 
-/**
- * Add dropdown interaction to mimic the option list of a select element using the custom dropdown component
- * @param {HTMLElement} form the form element that contains the dropdown
- * @param {string[]} optionList the list of items to display in the dropdown as options
- */
-export const addDropdownInteraction = (form, optionList) => {
-  const selectEls = form.querySelectorAll(`.${componentName}`);
-  selectEls?.forEach((el) => {
-    // new Select(el, optionList);
-  });
-  /// TODO: Remove this
-};
-
 const createOptionMarkup = (idx, option) => {
   return `
       <option
