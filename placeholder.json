@@ -322,6 +322,22 @@
     {
       "Key": "Magazine error text",
       "Text": "LET'S REFINE, OR TRY FILTERING BY DIFFERENT FILTER OPTION(S) INSTEAD."
+    },
+    {
+      "Key": "V2CustomForm:SuccessfulSubmissionTitle",
+      "Text": "THANK YOU!"
+    },
+    {
+      "Key": "V2CustomForm:SuccessfulSubmissionText",
+      "Text": "Your information has been submitted. Someone will be in touch with you shortly."
+    },
+    {
+      "Key": "V2CustomForm:ErrorSubmissionTitle",
+      "Text": "Error"
+    },
+    {
+      "Key": "V2CustomForm:ErrorSubmissionText",
+      "Text": "Information not sent. Please, try again later."
     }
   ],
   ":type": "sheet"
