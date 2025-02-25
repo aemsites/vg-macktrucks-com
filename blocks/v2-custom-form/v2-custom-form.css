@@ -1,0 +1,99 @@
+.section--with-background.v2-custom-form-container {
+  margin-bottom: 40px;
+}
+
+.section--with-background.v2-custom-form-container .default-content-wrapper {
+  background-color: unset;
+}
+
+.section--with-background.v2-custom-form-container img {
+  position: absolute;
+  z-index: -1;
+}
+
+.section.v2-custom-form-container > .default-content-wrapper {
+  --heading-font-size: var(--headline-4-font-size);
+  --subheading-font-size: var(--body-font-size-s);
+}
+
+.v2-custom-form-container form {
+  --fields-font-size: var(--body-font-size-xs);
+  --field-error-color: var(--c-error-2);
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(100%, 600px);
+  margin: 0 auto;
+}
+
+.v2-custom-form-container textarea,
+.v2-custom-form-container input,
+.v2-custom-form-container select {
+  background-color: var(--background-color);
+  border: 1px solid var(--c-secondary-graphite);
+  width: 100%;
+  max-width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  height: 40px;
+  line-height: 10px;
+  font-size: var(--fields-font-size);
+}
+
+.v2-custom-form-container textarea {
+  height: 110px;
+}
+
+.v2-custom-form-container textarea:focus-visible,
+.v2-custom-form-container input:focus-visible,
+.v2-custom-form-container select:focus-visible,
+.v2-custom-form-container textarea:hover,
+.v2-custom-form-container input:hover,
+.v2-custom-form-container select:hover {
+  outline: 2px solid var(--border-focus);
+}
+
+.v2-custom-form-container .form-custom-dropdown-wrapper {
+  position: relative;
+  font-size: var(--fields-font-size);
+}
+
+.v2-custom-form-container .field-wrapper {
+  line-height: var(--body-1-line-height);
+}
+
+.v2-custom-form-container .v2-custom-form .error,
+.v2-custom-form-container .v2-custom-form label {
+  font-size: var(--body-font-size-xs);
+  display: inline-block;
+  font-weight: 400;
+}
+
+.v2-custom-form-container .field-wrapper[required] label::after {
+  content: ' *';
+  color: var(--c-error-2);
+}
+
+.v2-custom-form-container .v2-custom-form .error {
+  color: var(--c-error-2);
+}
+
+@media (min-width: 768px) {
+  .v2-custom-form-container form {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 8px 16px;
+  }
+
+  .v2-custom-form-container .field-wrapper {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .section--with-background.v2-custom-form-container {
+    margin-bottom: 0;
+    padding: 40px 0 80px;
+  }
+}
