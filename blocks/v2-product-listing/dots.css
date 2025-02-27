@@ -1,0 +1,76 @@
+
+/* with dots variant */
+
+.v2-product-listing--with-dots .v2-product-listing__detail-list {
+    --v2-product-listing-content-gap: 12px;
+  
+    text-transform: capitalize;
+    flex-direction: column;
+  }
+  
+  .v2-product-listing--with-dots .v2-product-listing__detail-list li {
+    --v2-product-listing-info-font-size: var(--body-1-font-size);
+    --v2-product-listing-content-gap: 12px;
+  }
+  
+  .v2-product-listing:not(.v2-product-listing--with-dots) .v2-product-listing__segment-list li:last-child::after {
+    display: none;
+  }
+  
+  .v2-product-listing--with-dots .v2-product-listing__product-info {
+    padding: 24px 16px 64px;
+  }
+  
+  .v2-product-listing--with-dots .v2-product-listing__button-container {
+    margin-top: 12px; /* 12 + 12 = 24px to match design */
+  }
+  
+  .v2-product-listing--with-dots .v2-product-listing__button-container a.button {
+    flex: none;
+  }
+  
+  @media (min-width: 600px) {
+    .v2-product-listing--with-dots .v2-product-listing__product-image picture:first-child::before {
+      margin-left: -25%;
+      left: unset;
+    }
+  }
+  
+  @media (min-width: 744px) {
+    .v2-product-listing--with-dots .v2-product-listing__product {
+      --v2-product-listing-content-height: 400px;
+    }
+  
+    .v2-product-listing--with-dots .v2-product-listing__product-info h2 {
+      font-size: var(--headline-1-font-size);
+    }
+
+    .v2-product-listing--with-dots .v2-product-listing__product-info {
+      gap: 32px;
+      padding: 0 16px 0 32px;
+      justify-content: center;
+    }
+  
+    .v2-product-listing--with-dots .v2-product-listing__button-container {
+      margin-top: 0; /* using gap instead of margin to match design */
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .v2-product-listing--with-dots .v2-product-listing__product {
+      --v2-product-listing-content-width: 700px;
+    }
+  
+    .v2-product-listing--with-dots .v2-product-listing__product-image picture:first-child::before {
+      margin-left: unset;
+    }
+  
+    .v2-product-listing--with-dots .v2-product-listing__product-image--show-background picture:first-child::before,
+    .v2-product-listing--with-dots .v2-product-listing__product-image:hover picture:first-child::before {
+      background-color: var(--c-primary-white);
+    }
+  
+    .v2-product-listing--with-dots .v2-product-listing__product-info {
+      padding: 40px 88px;
+    }
+  }

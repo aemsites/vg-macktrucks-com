@@ -1,7 +1,7 @@
 import { createElement, createResponsivePicture, decorateIcons, getImageURLs, getTextLabel, variantsClassesToBEM } from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
-const variantClasses = ['with-filter', 'with-dots'];
+const variantClasses = ['with-filter', 'with-dots', 'with featured'];
 
 function getActiveFilterButton() {
   const AllFilterButtons = document.querySelectorAll(`.${blockName}__button-list .${blockName}__segment-button`);
@@ -110,6 +110,8 @@ function handFilterClick(e) {
   const clickedSegment = e.target.textContent.trim().toLowerCase();
   const selectedItem = document.querySelector(`.${blockName}__selected-item`);
   selectedItem.textContent = clickedSegment;
+  const dropdown = e.target.closest('.v2-product-listing__dropdown');
+  dropdown.dataset.selected = clickedSegment;
 
   products.forEach((product) => {
     const isAllProducts = clickedSegment === getTextLabel('All Products').trim().toLowerCase();
@@ -154,6 +156,7 @@ function buildFilter(allSegmentNames) {
 
   dropdownWrapper.append(selectedItemWrapper);
   dropdownWrapper.append(segmentNamesList);
+  dropdownWrapper.dataset.selected = allSegmentNames[0].toLowerCase();
 
   allSegmentNames.forEach((segment, index) => {
     const li = createElement('li');
