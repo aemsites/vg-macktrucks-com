@@ -7,10 +7,6 @@
   --section-padding-bottom: 40px;
 }
 
-.v2-icon-cards {
-  background: var(--card-background);
-}
-
 .v2-icon-cards--no-background.v2-icon-cards {
   --card-background: transparent;
   --card-text: var(--text-color);
@@ -27,6 +23,7 @@
 }
 
 .v2-icon-cards__row {
+  background: var(--card-background);
   flex-direction: column;
   display: flex;
   width: 100%;
@@ -275,5 +272,84 @@
   
   .v2-icon-cards--4-cols .v2-icon-cards__row {
     gap: 0;
+  }
+}
+
+.v2-icon-cards--slider .v2-icon-cards__row {
+  flex-wrap: nowrap;
+  gap: 0;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__rowr::-webkit-scrollbar {
+  display: none;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__column {
+  flex: 1 1 25%;
+  min-width: 25%;
+  scroll-snap-align: start;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-nav-arrows {
+  display: flex;
+  gap: 1px;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-nav-button {
+  /* TODO: Review background-color! Similar to: --c-primary-gold: #b3976b; */
+  background-color: #C4B097;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  cursor: pointer;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-nav-button .icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-nav-button--prev .icon svg {
+  transform: rotate(180deg);
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-nav-button:hover .icon svg {
+  transform: scale(1.3);
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-nav-button--prev:hover .icon svg {
+  transform: rotate(180deg) scale(1.3);
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-progress-wrapper {
+  background: rgb(255 255 255 / 25%);
+  width: 100%;
+  height: 4px;
+}
+
+.v2-icon-cards--slider .v2-icon-cards__slider-progress {
+  background: var(--c-accent-red);
+  width: 0;
+  height: 4px;
+}
+
+@keyframes slider-progress {
+  from {
+    width: 0%;
+  }
+
+  to {
+    width: 100%;
   }
 }
