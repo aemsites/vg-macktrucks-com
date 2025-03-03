@@ -309,8 +309,7 @@
 }
 
 .v2-icon-cards--slider .v2-icon-cards__slider-nav-button {
-  /* TODO: Review background-color! Similar to: --c-primary-gold: #b3976b; */
-  background-color: #C4B097;
+  background-color: var(--c-primary-gold);
   width: 32px;
   height: 32px;
   border: 0;

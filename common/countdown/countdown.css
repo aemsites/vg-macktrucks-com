@@ -4,5 +4,5 @@
   font-weight: 400;
   line-height: 115px;
   font-feature-settings: 'tnum';
-  color: #C4B097;
+  color: var(--c-primary-gold);
 }
