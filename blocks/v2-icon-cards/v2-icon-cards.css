@@ -276,12 +276,14 @@
 }
 
 .v2-icon-cards--slider .v2-icon-cards__row {
-  flex-wrap: nowrap;
   gap: 0;
   overflow-x: scroll;
   scroll-snap-type: x mandatory; 
   -ms-overflow-style: none;
   scrollbar-width: none;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-flow: row nowrap;
 }
 
 .v2-icon-cards--slider .v2-icon-cards__rowr::-webkit-scrollbar {
@@ -289,8 +291,8 @@
 }
 
 .v2-icon-cards--slider .v2-icon-cards__column {
-  flex: 1 1 25%;
-  min-width: 25%;
+  flex: 1 1 220px;
+  min-width: 220px;
   scroll-snap-align: start;
 }
 
@@ -342,6 +344,13 @@
   background: var(--c-accent-red);
   width: 0;
   height: 4px;
+}
+
+@media (min-width: 744px) {
+  .v2-icon-cards--slider .v2-icon-cards__column {
+    flex: 1 1 25%;
+    min-width: 25%;
+  }
 }
 
 @keyframes slider-progress {

@@ -1,7 +1,26 @@
-import { createElement, decorateIcons, getTextLabel, variantsClassesToBEM } from '../../scripts/common.js';
+import { createElement, decorateIcons, getTextLabel, variantsClassesToBEM, isMobileViewport } from '../../scripts/common.js';
 
 const blockName = 'v2-icon-cards';
 const variantClasses = ['no-background', 'alt-font-size', 'slider'];
+
+function numberCardsToNavigate(block) {
+  const isMobile = isMobileViewport();
+  if (isMobile) {
+    return 1;
+  }
+
+  if (block.classList.contains('slider-slide-2')) {
+    return 2;
+  }
+  if (block.classList.contains('slider-slide-3')) {
+    return 3;
+  }
+  if (block.classList.contains('slider-slide-4')) {
+    return 4;
+  }
+
+  return 1;
+}
 
 function mergeColumnsInOneRow(block) {
   const columns = [...block.querySelectorAll(':scope > div > div')];
@@ -15,13 +34,32 @@ function mergeColumnsInOneRow(block) {
   }
 }
 
-function setSliderProgressWidth(block) {
+function setSliderNavButtonEvents(block) {
+  const numberCardsToNavigatePerClick = numberCardsToNavigate(block);
+  const sliderNav = block.querySelector('.v2-icon-cards__slider-nav');
+  const sliderNavPrev = sliderNav.querySelector('.v2-icon-cards__slider-nav-button--prev');
+  const sliderNavNext = sliderNav.querySelector('.v2-icon-cards__slider-nav-button--next');
+  const scrollContainer = block.querySelector('.v2-icon-cards__row');
+  const numberItems = block.querySelectorAll('.v2-icon-cards__column')?.length;
+  const scrollContainerScrollWidth = scrollContainer.scrollWidth;
+  const itemWidth = scrollContainerScrollWidth / numberItems;
+
+  sliderNavPrev.addEventListener('click', () => {
+    scrollContainer.scrollLeft -= itemWidth * numberCardsToNavigatePerClick;
+  });
+
+  sliderNavNext.addEventListener('click', () => {
+    scrollContainer.scrollLeft += itemWidth * numberCardsToNavigatePerClick;
+  });
+}
+
+function initialiseSliderNav(block) {
   let intervalId = null;
   let progressBarInitialised = false;
   const progressBar = block.querySelector('.v2-icon-cards__slider-progress');
   const scrollContainer = block.querySelector('.v2-icon-cards__row');
 
-  const updateProgressBar = () => {
+  const setupNavAndProgressBar = () => {
     const blockClientWidth = block.clientWidth;
     const scrollContainerScrollWidth = scrollContainer.scrollWidth;
 
@@ -40,9 +78,10 @@ function setSliderProgressWidth(block) {
 
   // Set initial width
   const initialiseProgressBar = () => {
-    updateProgressBar();
+    setupNavAndProgressBar();
 
     if (progressBarInitialised) {
+      setSliderNavButtonEvents(block);
       clearInterval(intervalId);
     }
   };
@@ -50,22 +89,7 @@ function setSliderProgressWidth(block) {
   intervalId = setInterval(initialiseProgressBar, 100);
 
   // Update width on scroll
-  scrollContainer.addEventListener('scroll', updateProgressBar);
-}
-
-function setSliderNavButtonEvents() {
-  const sliderNav = document.querySelector('.v2-icon-cards__slider-nav');
-  const sliderNavPrev = sliderNav.querySelector('.v2-icon-cards__slider-nav-button--prev');
-  const sliderNavNext = sliderNav.querySelector('.v2-icon-cards__slider-nav-button--next');
-  const scrollContainer = document.querySelector('.v2-icon-cards__row');
-
-  sliderNavPrev.addEventListener('click', () => {
-    scrollContainer.scrollLeft -= scrollContainer.clientWidth;
-  });
-
-  sliderNavNext.addEventListener('click', () => {
-    scrollContainer.scrollLeft += scrollContainer.clientWidth;
-  });
+  scrollContainer.addEventListener('scroll', setupNavAndProgressBar);
 }
 
 function setupSlider(block) {
@@ -89,8 +113,7 @@ function setupSlider(block) {
   block.append(sliderNav);
   decorateIcons(block);
 
-  setSliderProgressWidth(block);
-  setSliderNavButtonEvents(block);
+  initialiseSliderNav(block);
 }
 
 export default async function decorate(block) {
