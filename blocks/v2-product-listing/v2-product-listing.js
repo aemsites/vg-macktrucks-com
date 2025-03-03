@@ -1,7 +1,7 @@
 import { createElement, createResponsivePicture, decorateIcons, getImageURLs, getTextLabel, variantsClassesToBEM } from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
-const variantClasses = ['with-filter', 'with-dots', 'with featured'];
+const variantClasses = ['with-filter', 'with-dots', 'with-featured'];
 
 function getActiveFilterButton() {
   const AllFilterButtons = document.querySelectorAll(`.${blockName}__button-list .${blockName}__segment-button`);
@@ -106,12 +106,14 @@ function buildSegments(segmentList, allSegmentNames) {
 }
 
 function handFilterClick(e) {
-  const products = document.querySelectorAll(`.${blockName}__product`);
+  const activeBlock = e.target.closest(`.${blockName}`);
+  const products = activeBlock.querySelectorAll(`.${blockName}__product`);
   const clickedSegment = e.target.textContent.trim().toLowerCase();
-  const selectedItem = document.querySelector(`.${blockName}__selected-item`);
+  const selectedItem = activeBlock.querySelector(`.${blockName}__selected-item`);
   selectedItem.textContent = clickedSegment;
-  const dropdown = e.target.closest('.v2-product-listing__dropdown');
-  dropdown.dataset.selected = clickedSegment;
+  const list = e.target.closest('.v2-product-listing');
+  list.dataset.selected = clickedSegment;
+  let internalCounter = 1;
 
   products.forEach((product) => {
     const isAllProducts = clickedSegment === getTextLabel('All Products').trim().toLowerCase();
@@ -119,29 +121,21 @@ function handFilterClick(e) {
     const isSelected = product.style.display === 'flex';
     product.style.display = isSelected ? 'flex' : 'none';
     product.classList.toggle('selected-product', isSelected);
-  });
+    delete product.dataset.align;
 
-  const allProductsRows = document.querySelectorAll(`.${blockName}__product`);
-
-  allProductsRows.forEach((product) => {
-    if (product.classList.contains('selected-product')) {
-      product.classList.remove('odd', 'even');
-
-      const selectedProducts = document.querySelectorAll('.selected-product');
-
-      selectedProducts.forEach((selectedProduct, i) => {
-        if (i % 2 === 0) {
-          selectedProduct.classList.remove('even-row');
-          selectedProduct.classList.add('odd-row');
-        } else {
-          selectedProduct.classList.remove('odd-row');
-          selectedProduct.classList.add('even-row');
-        }
-      });
-    } else if (!product.classList.contains('selected-product')) {
-      product.classList.remove('odd', 'even');
+    if (isSelected && !isAllProducts) {
+      product.dataset.align = internalCounter % 2 ? 'left' : 'right';
+      internalCounter++;
     }
   });
+
+  const selectedProducts = activeBlock.querySelectorAll('.selected-product');
+  if (selectedProducts.length === 1) {
+    selectedProducts[0].dataset.align = 'single-item';
+  }
+  if (selectedProducts.length % 2 !== 0) {
+    selectedProducts[selectedProducts.length - 1].dataset.align = 'last-item';
+  }
 }
 
 function buildFilter(allSegmentNames) {
@@ -156,7 +150,6 @@ function buildFilter(allSegmentNames) {
 
   dropdownWrapper.append(selectedItemWrapper);
   dropdownWrapper.append(segmentNamesList);
-  dropdownWrapper.dataset.selected = allSegmentNames[0].toLowerCase();
 
   allSegmentNames.forEach((segment, index) => {
     const li = createElement('li');
@@ -188,16 +181,32 @@ function handleListeners(dropdownWrapper) {
     }
   });
 }
-
 export default function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 
   const productElement = block.querySelectorAll(`.${blockName} > div`);
-  productElement.forEach((prodEle) => {
+  const hasFeaturedProduct = block.classList.contains(`${blockName}--with-featured`);
+  let isFirstTimeBuild = true;
+
+  productElement.forEach((prodEle, idx) => {
     prodEle.classList.add(`${blockName}__product`);
+    if (isFirstTimeBuild) {
+      prodEle.classList.add('selected-product');
+    }
+    if (hasFeaturedProduct && idx !== 0) {
+      prodEle.dataset.align = idx % 2 ? 'left' : 'right';
+    }
     buildProductImageDom(prodEle);
     buildProductInfoDom(prodEle);
   });
+  isFirstTimeBuild = false;
+
+  if (productElement.length === 1 && !hasFeaturedProduct) {
+    productElement[0].dataset.align = 'single-item';
+  }
+  if (productElement.length % 2 === 0) {
+    productElement[productElement.length - 1].dataset.align = 'last-item';
+  }
 
   block.parentElement.classList.add('full-width');
   // Add product name to product element class list
@@ -207,10 +216,10 @@ export default function decorate(block) {
     // Create menu buttons from product segments
     const segmentList = document.querySelectorAll(`.${blockName}__product > div > ul`);
     const allSegmentNames = [getTextLabel('All Products')];
+    block.dataset.selected = allSegmentNames[0].toLowerCase();
     buildSegments(segmentList, allSegmentNames);
     const dropdownWrapper = buildFilter(allSegmentNames);
     block.prepend(dropdownWrapper);
-
     handleListeners(dropdownWrapper);
     getActiveFilterButton();
   } else {
