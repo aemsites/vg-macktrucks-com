@@ -327,11 +327,11 @@
 }
 
 .v2-icon-cards--slider .v2-icon-cards__slider-nav-button:hover .icon svg {
-  transform: scale(1.3);
+  transform: scale(1.2);
 }
 
 .v2-icon-cards--slider .v2-icon-cards__slider-nav-button--prev:hover .icon svg {
-  transform: rotate(180deg) scale(1.3);
+  transform: rotate(180deg) scale(1.2);
 }
 
 .v2-icon-cards--slider .v2-icon-cards__slider-progress-wrapper {
