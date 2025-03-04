@@ -199,6 +199,7 @@
   display: flex;
   flex-direction: column;
   row-gap: 24px;
+  height: 100%;
 }
 
 .v2-hotspots .features .feature-title {
@@ -211,11 +212,6 @@
 
 .v2-hotspots .features img {
   display: block;
-}
-
-.v2-hotspots .features .feature-text {
-  max-height: 100px;
-  overflow-y: scroll;
 }
 
 .v2-hotspots .feature-text p {
