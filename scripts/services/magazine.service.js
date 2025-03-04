@@ -43,7 +43,7 @@ export const fetchMagazineData = async ({
       return allArticleData;
     }
 
-    if (!limit) {
+    if (!limit && limit !== 0) {
       variables.limit = rawData.data.edssearch.count;
       return fetchMagazineData(variables);
     }
