@@ -138,8 +138,8 @@ export default async function decorate(block) {
   if (hasExtraColumn) {
     block.classList.add(`${blockName}--4-cols`);
   }
-  if (hasExtraColumn && hasHeader) {
-    parentSection.querySelector('.default-content-wrapper').classList.add(`${blockName}--4-cols-header`);
+  if ((hasExtraColumn && hasHeader) || (isSliderEnabled && hasHeader)) {
+    parentSection.querySelector('.default-content-wrapper').classList.add(`${blockName}--short-header`);
   }
 
   columns.forEach((col, idx) => {

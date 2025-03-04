@@ -173,7 +173,7 @@
 }
 
 @media (min-width: 744px) {
-  .default-content-wrapper.v2-icon-cards--4-cols-header h2 {
+  .default-content-wrapper.v2-icon-cards--short-header h2 {
     max-width: calc(var(--wrapper-width) - 10px);
     padding-bottom: 0;
     margin: 0 auto;
@@ -185,7 +185,7 @@
     margin: 0 auto;
   }
 
-  .default-content-wrapper.v2-icon-cards--4-cols-header h2 {
+  .default-content-wrapper.v2-icon-cards--short-header h2 {
     max-width: calc(var(--wrapper-width) / 2);
     margin: unset;
   }
