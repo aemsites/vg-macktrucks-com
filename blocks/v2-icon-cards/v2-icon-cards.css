@@ -351,13 +351,3 @@
     min-width: 25%;
   }
 }
-
-@keyframes slider-progress {
-  from {
-    width: 0%;
-  }
-
-  to {
-    width: 100%;
-  }
-}
