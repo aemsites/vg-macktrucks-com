@@ -12,7 +12,7 @@ const getLastTextElmts = (block) => {
 export default async function decorate(block) {
   const blockParent = block.parentElement.parentElement;
 
-  const variantClasses = ['with-background-image', 'background-plane', 'icon-list', 'navigation-links', 'inset'];
+  const variantClasses = ['with-background-image', 'background-plane', 'icon-list', 'navigation-links', 'inset', 'headline'];
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 
   const isBackgroundImageVariant = block.classList.contains(`${blockName}--with-background-image`);
@@ -20,6 +20,7 @@ export default async function decorate(block) {
   const is3LinksVariant = block.classList.contains(`${blockName}--navigation-links`);
   const isListVariant = isIconListVariant || is3LinksVariant;
   const hasHeader = blockParent.classList.contains('header-with-mark') || blockParent.classList.contains('header-no-mark');
+  const isHeadlineVariant = block.classList.contains(`${blockName}--headline`);
 
   const rows = [...block.querySelectorAll(':scope > div')];
   const columns = [...block.querySelectorAll(':scope > div > div')];
@@ -86,10 +87,13 @@ export default async function decorate(block) {
 
       if (hasHeader) {
         const defaultContent = blockParent.querySelector('.default-content-wrapper');
-        const header = [...defaultContent.querySelectorAll('h1, h2, h3, h4, h5, h6')];
-        header[0].classList.add(`${blockName}__body-header`, !blockParent.classList.contains('header-no-mark') && 'with-marker');
-        bodyElmts[0].insertAdjacentElement('beforebegin', header[0]);
-        defaultContent.remove();
+
+        if (defaultContent) {
+          const header = [...defaultContent.querySelectorAll('h1, h2, h3, h4, h5, h6')];
+          header[0].classList.add(`${blockName}__body-header`, !blockParent.classList.contains('header-no-mark') && 'with-marker');
+          bodyElmts[0].insertAdjacentElement('beforebegin', header[0]);
+          defaultContent.remove();
+        }
       }
     } else {
       buttons.forEach((btn) => {
@@ -98,7 +102,12 @@ export default async function decorate(block) {
     }
 
     const headings = [...col.querySelectorAll('h1, h2, h3, h4, h5, h6')];
-    headings.forEach((heading) => heading.classList.add(`${blockName}__heading`, 'h2'));
+
+    if (isHeadlineVariant) {
+      headings.forEach((heading) => heading.classList.add(`${blockName}__heading`));
+    } else {
+      headings.forEach((heading) => heading.classList.add(`${blockName}__heading`, 'h2'));
+    }
 
     const prevEl = headings[0]?.previousElementSibling;
     const pretitleText = prevEl && !prevEl.classList.contains('icon') && prevEl.textContent;
