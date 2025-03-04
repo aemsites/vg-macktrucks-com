@@ -1,5 +1,5 @@
 import { loadScript, loadCSS, readBlockConfig } from '../../scripts/aem.js';
-import { TOOLS_CONFIGS } from '../../scripts/common.js';
+import { TOOLS_CONFIGS, isMobileViewport } from '../../scripts/common.js';
 import template from './shared/template.js';
 
 const { GOOGLE_API_KEY } = TOOLS_CONFIGS;
@@ -34,17 +34,6 @@ const getZipCode = () => {
 };
 
 /**
- * Checks if the current screen is mobile.
- *
- * @returns {boolean} true if it matched the media query
- */
-const checkIfIsMobile = () => {
-  const MQ = window.matchMedia('(max-width: 992px)');
-
-  return MQ.matches;
-};
-
-/**
  * Converts a string with values separated by commas into an array of strings.
  *
  * @param {string} amenitiesString - Amenities string to parse. Example:
@@ -75,7 +64,7 @@ const getBlockConfigs = (block) => {
 
 export default async function decorate(block) {
   const zipCode = getZipCode();
-  const isMobile = checkIfIsMobile();
+  const isMobile = isMobileViewport();
   const blockConfig = getBlockConfigs(block);
   const isExportMarket = blockConfig.version?.toLowerCase() === 'export-market';
 

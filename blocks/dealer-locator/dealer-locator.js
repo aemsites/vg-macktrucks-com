@@ -1,5 +1,5 @@
 import { loadScript } from '../../scripts/aem.js';
-import { TOOLS_CONFIGS } from '../../scripts/common.js';
+import { TOOLS_CONFIGS, isMobileViewport } from '../../scripts/common.js';
 
 const { GOOGLE_API_KEY } = TOOLS_CONFIGS;
 
@@ -10,8 +10,6 @@ function escapeHTML(input) {
 export default async function decorate(block) {
   const searchParams = new URLSearchParams(window.location.search);
   const hasZipLocation = searchParams.has('l');
-  const MQ = window.matchMedia('(max-width: 992px)');
-  const isMobile = MQ.matches;
   // add the zip code to the input search, if it is present
   const zipCode = hasZipLocation ? escapeHTML(searchParams.get('l')) : null;
   const datasource = block.textContent.trim();
@@ -83,7 +81,7 @@ export default async function decorate(block) {
     <div class="mobile-main-header">
         <div class="panel-header">
             <input type="text" id="location2"
-              ${zipCode && isMobile ? `value="${zipCode}"` : ''}
+              ${zipCode && isMobileViewport ? `value="${zipCode}"` : ''}
               placeholder="Enter City, State, or Zip Code"/>
             <div class="search-container">
                 <button type="button" id="search" onclick="$.fn.setAddress2();">
@@ -113,7 +111,7 @@ export default async function decorate(block) {
         <div class="row main-header">
             <div class="panel-header">
                 <input type="text" id="location"
-                  ${zipCode && !isMobile ? `value="${zipCode}"` : ''}
+                  ${zipCode && !isMobileViewport() ? `value="${zipCode}"` : ''}
                   placeholder="Enter City, State, or Zip Code"/>
                 <div class="search-container">
                     <button type="button" id="search" onclick="$.fn.setAddress();">

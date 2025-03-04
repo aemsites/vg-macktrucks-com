@@ -673,6 +673,17 @@ const isValidISODateString = (dateString) => {
  */
 const formatTimeUnit = (value) => String(value).padStart(2, '0');
 
+/**
+ * Checks if the current screen is mobile.
+ *
+ * @returns {boolean} true if it matched the media query
+ */
+const isMobileViewport = () => {
+  const MQ = window.matchMedia('(max-width: 992px)');
+
+  return MQ.matches;
+};
+
 export {
   loadCSS,
   getMetadata,
@@ -727,4 +738,5 @@ export {
   isInsideSection,
   isValidISODateString,
   formatTimeUnit,
+  isMobileViewport,
 };
