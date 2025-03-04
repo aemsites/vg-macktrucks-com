@@ -130,18 +130,8 @@
   text-transform: uppercase;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
-.v2-product-listing__detail-list li {
-  --v2-product-listing-info-font-size: 12px;
-
-  display: flex;
-  flex-flow: row wrap;
-  gap: var(--v2-product-listing-content-gap);
-  font-size: var(--v2-product-listing-info-font-size);
-  line-height: var(--body-1-line-height);
-  letter-spacing: var(--body-1-letter-spacing);
-  border-right: 1px solid var(--c-secondary-steel);
-  padding: 0 16px;
+.v2-product-listing__segment-list {
+  padding: 0;
 }
 
 .v2-product-listing__segment-list li {
@@ -150,20 +140,21 @@
   font-size: 0.75rem;
   line-height: 1.2;
   letter-spacing: 0.1em;
+  border-right: 1px solid var(--c-primary-black)
 }
 
-.v2-product-listing__segment-list li:first-child {
+.v2-product-listing__segment-list li:first-of-type {
   padding-left: 0;
+}
+
+.v2-product-listing__segment-list li:last-child {
+  border-right: none;
 }
 
 .v2-product-listing__detail-list {
   align-items: flex-start;
   padding-inline-start: 0;
   margin: 0;
-}
-
-.v2-product-listing__detail-list li:last-of-type {
-  border: none;
 }
 
 .v2-product-listing__detail-list li strong {
@@ -228,6 +219,20 @@
 
 .v2-product-listing[data-selected='all products'] .v2-product-listing__product:nth-child(2) img {
   aspect-ratio: 1 / 1;
+}
+
+/* WITH DOTS */
+.v2-product-listing--with-dots .v2-product-listing__product-image picture:first-child::before {
+  content: '';
+  height: 70%;
+  max-height: 275px;
+  aspect-ratio: 1;
+  position: absolute;
+  left: 30%;
+  z-index: 1;
+  background: var(--c-primary-gold);
+  mask: url('/media/dots.svg');
+  transition: background var(--duration-small) var(--easing-standard);
 }
 
 @media (min-width: 744px) {
@@ -463,5 +468,10 @@
     img {
     opacity: 1;
     z-index: 0;
+  }
+
+  .v2-product-listing--with-dots .v2-product-listing__product-image--show-background picture:first-child::before,
+  .v2-product-listing--with-dots .v2-product-listing__product-image:hover picture:first-child::before {
+    background-color: var(--c-primary-white);
   }
 }
