@@ -166,6 +166,7 @@
 .v2-product-listing__detail-list {
   gap: var(--v2-product-listing-content-gap);
   align-items: flex-start;
+  padding-left: 0;
 }
 
 .v2-product-listing--with-dots .v2-product-listing__detail-list {
