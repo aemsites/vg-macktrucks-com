@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktruckshistoricalmuseum.org/mack-news/</id>
     <title>Mack News</title>
-    <updated>2025-02-24T00:00:00.000Z</updated>
+    <updated>2025-03-03T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktruckshistoricalmuseum.org/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3150,5 +3150,29 @@
         <updated>2025-02-24T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“These enhanced connected vehicle capabilities demonstrate Mack’s ongoing commitment to providing insights and support that help our customers perform at their best,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
         <published>2025-02-24T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Advances Zero Tailpipe Emissions Solutions with Industry-Leading Mack® MD Electric Bucket Truck]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-advances-zero-tailpipe-emissions-solutions-with-industry-leading</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-advances-zero-tailpipe-emissions-solutions-with-industry-leading"/>
+        <updated>2025-02-26T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[The new offering pairs Mack's industry-leading electric Mack MD7 chassis with Terex's Optima HR55 aerial device, delivering more payload capacity and range for utility fleet operations.]]></content>
+        <published>2025-02-26T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Announces Product Lineup for Work Truck Week 2025]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-announces-product-lineup-for-work-truck-week-2025</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-announces-product-lineup-for-work-truck-week-2025"/>
+        <updated>2025-02-28T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[From the historic 1960 B-61T that represents Mack's legendary heritage, to today's advanced electric vehicles, the display showcases the company's 125-year evolution of durability and innovation.]]></content>
+        <published>2025-02-28T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks to Display Advanced Technology, Fuel Efficiency at TMC 2025]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-to-display-advanced-technology-fuel-efficiency-at-tmc-2025</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-to-display-advanced-technology-fuel-efficiency-at-tmc-2025"/>
+        <updated>2025-03-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[These enhancements to Mack's Over The Air (OTA) capabilities help fleet managers maximize vehicle performance while reducing administrative workload.]]></content>
+        <published>2025-03-03T00:00:00.000Z</published>
     </entry>
 </feed>
