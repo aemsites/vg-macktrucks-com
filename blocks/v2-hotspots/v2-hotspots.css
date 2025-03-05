@@ -199,7 +199,11 @@
   display: flex;
   flex-direction: column;
   row-gap: 24px;
-  height: 100%;
+}
+
+.v2-hotspots .features .feature-text {
+  max-height: 100px;
+  overflow-y: auto;
 }
 
 .v2-hotspots .features .feature-title {
@@ -271,6 +275,14 @@
 
   .v2-hotspots-container .hotspot .hotspot-icon-set {
     display: block;
+  }
+
+  .v2-hotspots .feature {
+    height: 100%;
+  }
+
+  .v2-hotspots .features .feature-text {
+    max-height: unset;
   }
 
   .v2-hotspots .hotspot-features {
