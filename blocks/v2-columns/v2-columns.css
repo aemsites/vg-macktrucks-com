@@ -201,14 +201,13 @@
 .v2-columns--headline .v2-columns__heading {
   position: relative;
   padding-top: 28px;
-  padding-bottom: 24px;
 }
 
 .v2-columns--headline .v2-columns__body {
   font-size: var(--body-font-size-s);
-  font-weight: 400;
   line-height: 24px;
-  letter-spacing: 0.16px;
+  letter-spacing: -0.24px;
+  color: #333;
 }
 
 .v2-columns--headline .v2-columns__heading::before {
@@ -317,6 +316,10 @@
   .v2-columns--headline .v2-columns__column--with-text:last-of-type {
     padding-top: 35px;
     padding-right: 0;
+  }
+
+  .v2-columns--headline .v2-columns__heading::before {
+    width: 58px;
   }
 
   .v2-columns.v2-columns--inset {
