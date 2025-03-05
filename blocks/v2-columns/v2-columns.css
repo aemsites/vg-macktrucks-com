@@ -204,20 +204,12 @@
 }
 
 .v2-columns--headline .v2-columns__body {
-  font-size: var(--body-font-size-s);
-  line-height: 24px;
-  letter-spacing: -0.24px;
   color: #333;
 }
 
-.v2-columns--headline .v2-columns__heading::before {
-  position: absolute;
-  display: block;
-  content: '';
-  height: 4px;
+.v2-columns--headline .v2-columns__heading.with-marker::before {
   width: 37px;
-  background-color: var(--c-accent-red);
-  top: 0;
+  top: -28px;
 }
 
 .v2-columns.v2-columns--inset {
@@ -318,7 +310,7 @@
     padding-right: 0;
   }
 
-  .v2-columns--headline .v2-columns__heading::before {
+  .v2-columns--headline .v2-columns__heading.with-marker::before {
     width: 58px;
   }
 

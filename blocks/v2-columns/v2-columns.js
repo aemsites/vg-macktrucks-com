@@ -104,7 +104,7 @@ export default async function decorate(block) {
     const headings = [...col.querySelectorAll('h1, h2, h3, h4, h5, h6')];
 
     if (isHeadlineVariant) {
-      headings.forEach((heading) => heading.classList.add(`${blockName}__heading`));
+      headings.forEach((heading) => heading.classList.add(`${blockName}__heading`, 'with-marker'));
     } else {
       headings.forEach((heading) => heading.classList.add(`${blockName}__heading`, 'h2'));
     }
