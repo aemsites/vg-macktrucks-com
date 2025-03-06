@@ -520,9 +520,12 @@
   aspect-ratio: initial;
 }
 
-
 .v2-product-listing__product.featured picture:first-child img {
   padding: 65px 45px;
+}
+
+.v2-product-listing--2-columns .v2-product-listing__product-image:hover picture:last-child img {
+  max-width: unset;
 }
 
 .v2-product-listing__product.featured .v2-product-listing__product-info {
@@ -576,6 +579,10 @@
 
   /* WITH FEATURED VARIANT */
   .v2-product-listing--2-columns.v2-product-listing--with-featured .v2-product-listing__dropdown {
+    margin-bottom: -48px;
+  }
+
+  .v2-product-listing--2-columns.v2-product-listing--with-featured .v2-product-listing__dropdown[data-selected='all products'] {
     margin-bottom: -64px;
   }
 
