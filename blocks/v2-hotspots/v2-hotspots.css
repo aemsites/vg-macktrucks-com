@@ -201,6 +201,11 @@
   row-gap: 24px;
 }
 
+.v2-hotspots .features .feature-text {
+  max-height: 100px;
+  overflow-y: auto;
+}
+
 .v2-hotspots .features .feature-title {
   font-size: var(--headline-3-font-size);
   font-weight: var(--headline-3-font-weight);
@@ -211,11 +216,6 @@
 
 .v2-hotspots .features img {
   display: block;
-}
-
-.v2-hotspots .features .feature-text {
-  max-height: 100px;
-  overflow-y: scroll;
 }
 
 .v2-hotspots .feature-text p {
@@ -275,6 +275,14 @@
 
   .v2-hotspots-container .hotspot .hotspot-icon-set {
     display: block;
+  }
+
+  .v2-hotspots .feature {
+    height: 100%;
+  }
+
+  .v2-hotspots .features .feature-text {
+    max-height: unset;
   }
 
   .v2-hotspots .hotspot-features {
