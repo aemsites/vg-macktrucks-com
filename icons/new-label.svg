@@ -1,0 +1,13 @@
+<svg width="48" height="32" xmlns="http://www.w3.org/2000/svg">
+  <rect width="48" height="32" fill="currentColor" />
+    <style>
+    .text {
+      font-family: "Inter", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.92px;
+      fill: white;
+    }
+  </style>
+  <text x="8" y="20" class="text">NEW</text>
+</svg>
