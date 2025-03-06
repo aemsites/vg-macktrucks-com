@@ -656,8 +656,7 @@
 }
 
 @media (max-width: 1200px) {
-  .v2-product-listing--with-featured .v2-product-listing__dropdown:not(.initial-state) + .v2-product-listing__product.featured picture:first-child img {
-    /* max-width: unset; */
+  .v2-product-listing--with-featured .v2-product-listing__dropdown:not(.initial-state) + .v2-product-listing__product picture:first-child img {
     height: 100%;
   }
 }
