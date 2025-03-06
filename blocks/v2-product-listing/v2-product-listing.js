@@ -121,6 +121,8 @@ function handFilterClick(e, firstSegment) {
   const isAllProducts = firstSegment === clickedSegment;
   activeBlock.dataset.selected = clickedSegment;
 
+  dropdown.classList[isAllProducts ? 'add' : 'remove']('initial-state');
+
   products.forEach((product, idx) => {
     product.style.display = product.classList.contains(clickedSegment) || isAllProducts ? 'flex' : 'none';
     const isSelected = product.style.display === 'flex';
@@ -242,6 +244,7 @@ export default function decorate(block) {
     const dropdownWrapper = buildFilter(allSegmentNames, firstSegment);
     block.prepend(dropdownWrapper);
     dropdownWrapper.dataset.selected = firstSegment;
+    dropdownWrapper.classList.add('initial-state');
 
     handleListeners(dropdownWrapper);
     getActiveFilterButton(block);
