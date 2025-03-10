@@ -528,6 +528,16 @@
   padding: 65px 45px;
 }
 
+.v2-product-listing--2-columns .v2-product-listing__product-image picture:last-child img {
+  width: 100%;
+  height: 100%;
+}
+
+.v2-product-listing--2-columns .v2-product-listing__product-image picture:first-child img {
+  height: 100%;
+  object-fit: cover;
+}
+
 .v2-product-listing--2-columns .v2-product-listing__product-image:hover picture:last-child img {
   max-width: unset;
 }
