@@ -204,11 +204,8 @@ function handleListeners(dropdownWrapper) {
 }
 
 const getRowClass = (idx, hasFeatured) => {
-  if (idx % 2) {
-    return hasFeatured ? 'odd' : 'even';
-  } else {
-    return hasFeatured ? 'even' : 'odd';
-  }
+  const newId = hasFeatured ? idx + 1 : idx;
+  return newId % 2 ? 'even' : 'odd';
 };
 
 export default function decorate(block) {
