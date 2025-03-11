@@ -1,10 +1,10 @@
 import { createElement, createResponsivePicture, decorateIcons, getImageURLs, getTextLabel, variantsClassesToBEM } from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
-const variantClasses = ['with-filter', 'with-dots'];
+const variantClasses = ['with-filter', 'with-dots', 'with-featured', '2-columns'];
 
-function getActiveFilterButton() {
-  const AllFilterButtons = document.querySelectorAll(`.${blockName}__button-list .${blockName}__segment-button`);
+function getActiveFilterButton(block) {
+  const AllFilterButtons = block.querySelectorAll(`.${blockName}__button-list .${blockName}__segment-button`);
   AllFilterButtons.forEach((filterButton) => {
     filterButton.addEventListener('click', (e) => {
       AllFilterButtons.forEach((button) => {
@@ -105,35 +105,52 @@ function buildSegments(segmentList, allSegmentNames) {
   });
 }
 
-function handFilterClick(e) {
-  const products = document.querySelectorAll(`.${blockName}__product`);
+function handFilterClick(e, firstSegment) {
+  const target = e.target;
+  const activeBlock = target.closest(`.${blockName}`);
+  const products = activeBlock.querySelectorAll(`.${blockName}__product`);
   const clickedSegment = e.target.textContent.trim().toLowerCase();
-  const selectedItem = document.querySelector(`.${blockName}__selected-item`);
+  const selectedItem = activeBlock.querySelector(`.${blockName}__selected-item`);
   selectedItem.textContent = clickedSegment;
 
-  products.forEach((product) => {
-    const isAllProducts = clickedSegment === getTextLabel('All Products').trim().toLowerCase();
-    product.style.display = product.classList.contains(clickedSegment) || isAllProducts ? 'flex' : 'none';
+  const dropdown = activeBlock.querySelector(`.${blockName}__dropdown`);
+  dropdown.dataset.selected = clickedSegment;
+
+  const hasFeatured = activeBlock.classList.contains(`${blockName}--with-featured`);
+
+  const isFirstSegmentActive = firstSegment === clickedSegment;
+  activeBlock.dataset.selected = clickedSegment;
+
+  dropdown.classList[isFirstSegmentActive ? 'add' : 'remove']('initial-state');
+
+  products.forEach((product, idx) => {
+    product.style.display = product.classList.contains(clickedSegment) || isFirstSegmentActive ? 'flex' : 'none';
     const isSelected = product.style.display === 'flex';
     product.style.display = isSelected ? 'flex' : 'none';
     product.classList.toggle('selected-product', isSelected);
+
+    if (idx === 0) {
+      product.classList[isFirstSegmentActive && hasFeatured ? 'add' : 'remove']('featured');
+    }
   });
 
-  const allProductsRows = document.querySelectorAll(`.${blockName}__product`);
+  const allProductsRows = activeBlock.querySelectorAll(`.${blockName}__product`);
 
   allProductsRows.forEach((product) => {
     if (product.classList.contains('selected-product')) {
       product.classList.remove('odd', 'even');
 
-      const selectedProducts = document.querySelectorAll('.selected-product');
-
+      const selectedProducts = activeBlock.querySelectorAll('.selected-product');
       selectedProducts.forEach((selectedProduct, i) => {
+        if (hasFeatured && isFirstSegmentActive) {
+          i++;
+        }
         if (i % 2 === 0) {
-          selectedProduct.classList.remove('even-row');
-          selectedProduct.classList.add('odd-row');
+          selectedProduct.classList.remove('even');
+          selectedProduct.classList.add('odd');
         } else {
-          selectedProduct.classList.remove('odd-row');
-          selectedProduct.classList.add('even-row');
+          selectedProduct.classList.remove('odd');
+          selectedProduct.classList.add('even');
         }
       });
     } else if (!product.classList.contains('selected-product')) {
@@ -142,7 +159,7 @@ function handFilterClick(e) {
   });
 }
 
-function buildFilter(allSegmentNames) {
+function buildFilter(allSegmentNames, firstSegment) {
   const dropdownWrapper = createElement('div', { classes: `${blockName}__dropdown` });
   const selectedItemWrapper = createElement('div', { classes: `${blockName}__selected-item-wrapper` });
   const selectedItem = createElement('div', { classes: `${blockName}__selected-item` });
@@ -169,7 +186,7 @@ function buildFilter(allSegmentNames) {
     segmentNamesList.appendChild(li);
     li.append(filterButton);
 
-    filterButton.addEventListener('click', handFilterClick);
+    filterButton.addEventListener('click', (e) => handFilterClick(e, firstSegment));
   });
 
   return dropdownWrapper;
@@ -186,32 +203,50 @@ function handleListeners(dropdownWrapper) {
   });
 }
 
+const getRowClass = (idx, hasFeatured) => {
+  const newId = hasFeatured ? idx + 1 : idx;
+  return newId % 2 ? 'even' : 'odd';
+};
+
 export default function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
+  const allSegmentNames = [getTextLabel('All Products')];
+  const firstSegment = allSegmentNames[0].trim().toLowerCase();
+  const hasFilters = block.classList.contains(`${blockName}--with-filter`);
+  const hasFeatured = block.classList.contains(`${blockName}--with-featured`);
 
   const productElement = block.querySelectorAll(`.${blockName} > div`);
-  productElement.forEach((prodEle) => {
+  productElement.forEach((prodEle, idx) => {
     prodEle.classList.add(`${blockName}__product`);
+    if (idx === 0) {
+      prodEle.classList.add(hasFeatured ? 'featured' : 'first-item');
+    }
+
+    const rowClass = getRowClass(idx, hasFeatured);
+    prodEle.classList.add(rowClass);
+
     buildProductImageDom(prodEle);
     buildProductInfoDom(prodEle);
   });
 
   block.parentElement.classList.add('full-width');
   // Add product name to product element class list
-  getProductName();
+  getProductName(block);
 
-  if (block.classList.contains(`${blockName}--with-filter`)) {
+  if (hasFilters) {
     // Create menu buttons from product segments
-    const segmentList = document.querySelectorAll(`.${blockName}__product > div > ul`);
-    const allSegmentNames = [getTextLabel('All Products')];
+    const segmentList = block.querySelectorAll(`.${blockName}__product > div > ul`);
+    block.dataset.selected = firstSegment;
     buildSegments(segmentList, allSegmentNames);
-    const dropdownWrapper = buildFilter(allSegmentNames);
+    const dropdownWrapper = buildFilter(allSegmentNames, firstSegment);
     block.prepend(dropdownWrapper);
+    dropdownWrapper.dataset.selected = firstSegment;
+    dropdownWrapper.classList.add('initial-state');
 
     handleListeners(dropdownWrapper);
-    getActiveFilterButton();
+    getActiveFilterButton(block);
   } else {
-    const detailList = document.querySelectorAll(`.${blockName}__product > div > ul`);
+    const detailList = block.querySelectorAll(`.${blockName}__product > div > ul`);
     detailList.forEach((ul) => {
       ul.classList.add(`${blockName}__detail-list`);
     });
@@ -220,8 +255,8 @@ export default function decorate(block) {
   decorateIcons(block);
 }
 
-function getProductName() {
-  const modelName = document.querySelectorAll(`.${blockName}__product > div + div > h3`);
+function getProductName(block) {
+  const modelName = block.querySelectorAll(`.${blockName}__product > div + div > h3`);
   modelName.forEach((model) => {
     const parentNodeElement = model.parentNode.parentNode;
     parentNodeElement.classList.add(model.id);
