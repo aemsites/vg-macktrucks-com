@@ -1,16 +1,135 @@
-import { createElement, variantsClassesToBEM } from '../../scripts/common.js';
+import { createElement, decorateIcons, getTextLabel, variantsClassesToBEM, isMobileViewport } from '../../scripts/common.js';
 
 const blockName = 'v2-icon-cards';
-const variantClasses = ['no-background', 'alt-font-size'];
+const variantClasses = ['no-background', 'alt-font-size', 'slider'];
 
-export default async function decorate(block) {
-  variantsClassesToBEM(block.classList, variantClasses, blockName);
-  const rows = [...block.querySelectorAll(':scope > div')];
+function numberCardsToNavigate(block) {
+  const isMobile = isMobileViewport();
+  if (isMobile) {
+    return 1;
+  }
+
+  if (block.classList.contains('slider-slide-2')) {
+    return 2;
+  }
+  if (block.classList.contains('slider-slide-3')) {
+    return 3;
+  }
+  if (block.classList.contains('slider-slide-4')) {
+    return 4;
+  }
+
+  return 1;
+}
+
+function mergeColumnsInOneRow(block) {
   const columns = [...block.querySelectorAll(':scope > div > div')];
+
+  if (columns.length > 5) {
+    const row = document.createElement('div');
+
+    row.append(...columns);
+    block.innerHTML = '';
+    block.append(row);
+  }
+}
+
+function setSliderNavButtonEvents(block) {
+  const numberCardsToNavigatePerClick = numberCardsToNavigate(block);
+  const sliderNav = block.querySelector('.v2-icon-cards__slider-nav');
+  const sliderNavPrev = sliderNav.querySelector('.v2-icon-cards__slider-nav-button--prev');
+  const sliderNavNext = sliderNav.querySelector('.v2-icon-cards__slider-nav-button--next');
+  const scrollContainer = block.querySelector('.v2-icon-cards__row');
+  const numberItems = block.querySelectorAll('.v2-icon-cards__column')?.length;
+  const scrollContainerScrollWidth = scrollContainer.scrollWidth;
+  const itemWidth = scrollContainerScrollWidth / numberItems;
+
+  sliderNavPrev.addEventListener('click', () => {
+    scrollContainer.scrollLeft -= itemWidth * numberCardsToNavigatePerClick;
+  });
+
+  sliderNavNext.addEventListener('click', () => {
+    scrollContainer.scrollLeft += itemWidth * numberCardsToNavigatePerClick;
+  });
+}
+
+function initialiseSliderNav(block) {
+  let intervalId = null;
+  let progressBarInitialised = false;
+  const progressBar = block.querySelector('.v2-icon-cards__slider-progress');
+  const scrollContainer = block.querySelector('.v2-icon-cards__row');
+
+  const setupNavAndProgressBar = () => {
+    const blockClientWidth = block.clientWidth;
+    const scrollContainerScrollWidth = scrollContainer.scrollWidth;
+
+    if (!blockClientWidth || !scrollContainerScrollWidth) {
+      return;
+    }
+    const visibleScrollPercentage = (blockClientWidth * 100) / scrollContainerScrollWidth;
+    const remainingScrollWidth = scrollContainerScrollWidth - blockClientWidth;
+    const scrollLeftPosition = scrollContainer.scrollLeft;
+    const remainingScrollPercentage = (scrollLeftPosition / remainingScrollWidth) * (100 - visibleScrollPercentage) || 0;
+
+    progressBar.style.width = `${remainingScrollPercentage + visibleScrollPercentage}%`;
+
+    progressBarInitialised = true;
+  };
+
+  // Set initial width
+  const initialiseProgressBar = () => {
+    setupNavAndProgressBar();
+
+    if (progressBarInitialised) {
+      setSliderNavButtonEvents(block);
+      clearInterval(intervalId);
+    }
+  };
+
+  intervalId = setInterval(initialiseProgressBar, 100);
+
+  // Update width on scroll
+  scrollContainer.addEventListener('scroll', setupNavAndProgressBar);
+}
+
+function setupSlider(block) {
+  mergeColumnsInOneRow(block);
+  const rows = [...block.querySelectorAll(':scope > div')];
 
   rows.forEach((row) => {
     row.classList.add(`${blockName}__row`);
   });
+
+  const sliderNav = document.createRange().createContextualFragment(`
+      <div class="${blockName}__slider-nav">
+        <div class="${blockName}__slider-nav-arrows">
+          <button class="${blockName}__slider-nav-button ${blockName}__slider-nav-button--prev" aria-label="${getTextLabel('Previous')}"><span class="icon icon-chevron-right"></span></button>
+          <button class="${blockName}__slider-nav-button ${blockName}__slider-nav-button--next" aria-label="${getTextLabel('Next')}"><span class="icon icon-chevron-right"></span></button>
+        </div>
+        <div class="${blockName}__slider-progress-wrapper"> <div class="${blockName}__slider-progress"></div></div>
+      </div>
+    `);
+
+  block.append(sliderNav);
+  decorateIcons(block);
+
+  initialiseSliderNav(block);
+}
+
+export default async function decorate(block) {
+  variantsClassesToBEM(block.classList, variantClasses, blockName);
+
+  const columns = [...block.querySelectorAll(':scope > div > div')];
+  const isSliderEnabled = block.classList.contains(`${blockName}--slider`);
+
+  if (isSliderEnabled) {
+    setupSlider(block);
+  } else {
+    const rows = [...block.querySelectorAll(':scope > div')];
+    rows.forEach((row) => {
+      row.classList.add(`${blockName}__row`);
+    });
+  }
 
   const parentSection = block.parentElement.parentElement;
   const hasHeader = parentSection.classList.contains('header-with-mark');
@@ -19,8 +138,8 @@ export default async function decorate(block) {
   if (hasExtraColumn) {
     block.classList.add(`${blockName}--4-cols`);
   }
-  if (hasExtraColumn && hasHeader) {
-    parentSection.querySelector('.default-content-wrapper').classList.add(`${blockName}--4-cols-header`);
+  if ((hasExtraColumn && hasHeader) || (isSliderEnabled && hasHeader)) {
+    parentSection.querySelector('.default-content-wrapper').classList.add(`${blockName}--short-header`);
   }
 
   columns.forEach((col, idx) => {

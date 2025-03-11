@@ -11,6 +11,7 @@ const desktopMQ = window.matchMedia('(min-width: 1200px)');
 const tabsVariants = {
   TAB_WITH_CARDS: 'tabs-with-cards',
   TAB: 'tabs',
+  FEATURED_CARD: 'featured-card',
 };
 
 const setTabIndexForLinks = (el, tabIndexValue) => {
@@ -308,6 +309,67 @@ const onAccordionItemClick = (el) => {
   }
 };
 
+const extractAndCloneFirstListItem = (list, isFeaturedCard) =>
+  isFeaturedCard && list.children.length ? list.firstElementChild?.cloneNode(true) : null;
+
+const extractFeaturedCardData = (item) => {
+  const pictures = item.querySelectorAll('picture');
+  const paragraphs = [...item.querySelectorAll('p')];
+
+  return {
+    mainImage: pictures[0] || '',
+    backgroundImage: pictures[1] || '',
+    title: item.querySelector('h3 a') || '',
+    subtitle: paragraphs[2]?.textContent.trim() || '',
+    text: paragraphs[3]?.textContent.trim() || '',
+    primaryButton: paragraphs[4]?.querySelector('a') || '',
+    secondaryButton: paragraphs[5]?.querySelector('a') || '',
+    primaryLink: paragraphs[6]?.querySelector('a') || '',
+    secondaryLink: paragraphs[7]?.querySelector('a') || '',
+  };
+};
+
+const generateFeaturedCardHtml = (data) => {
+  const { mainImage, backgroundImage, title, subtitle, text, primaryButton, secondaryButton, primaryLink, secondaryLink } = data;
+  const titleHref = title?.getAttribute('href')?.trim() || '';
+  const titleHtml = title?.outerHTML || '';
+  const mainImageHtml = mainImage?.outerHTML || '';
+  const backgroundImageHtml = backgroundImage?.outerHTML || '';
+
+  const buttonsHtml = [primaryButton, secondaryButton]
+    .filter(Boolean)
+    .map(
+      (btn, index) =>
+        `<a href="${btn.href?.trim()}" class="header__featured-card-button button ${index === 0 ? 'button--primary' : 'button--secondary'}">
+        ${btn.textContent}
+      </a>`,
+    )
+    .join('');
+
+  const linksHtml = [primaryLink, secondaryLink]
+    .filter(Boolean)
+    .map((link) => link.outerHTML)
+    .join('');
+
+  return `
+    <div class="${blockClass}__featured-card">
+      <div class="${blockClass}__featured-card-image">
+        <a class="${blockClass}__featured-card-image-link" href="${titleHref}">
+          ${mainImageHtml}
+          ${backgroundImageHtml}
+        </a>
+      </div>
+      <div class="${blockClass}__featured-card-content">
+        ${titleHtml ? `<h3 class="${blockClass}__featured-card-title">${titleHtml}</h3>` : ''}
+        ${subtitle ? `<h5 class="${blockClass}__featured-card-subtitle">${subtitle}</h5>` : ''}
+        ${text ? `<p class="${blockClass}__featured-card-text">${text}</p>` : ''}
+        ${buttonsHtml ? `<div class="${blockClass}__featured-card-buttons">${buttonsHtml}</div>` : ''}
+        ${linksHtml ? `<div class="${blockClass}__featured-card-links">${linksHtml}</div>` : ''}
+      </div>
+    </div>
+  `;
+};
+
 const buildMenuContent = (menuData, navEl) => {
   const menus = transformMenuData(menuData);
   const navLinks = [...navEl.querySelectorAll(`.${blockClass}__main-nav-link`)];
@@ -327,10 +389,16 @@ const buildMenuContent = (menuData, navEl) => {
       .forEach((cat) => {
         const title = cat.querySelector(':scope > a');
         const list = cat.querySelector(':scope > ul');
+        const accordionParentClassList = accordionContentWrapper.parentElement.classList;
         let extraClass = '';
+        const isFeaturedCard = cat.classList.contains(tabsVariants.FEATURED_CARD);
 
         title?.classList.add(`${blockClass}__link`, `${blockClass}__link-accordion`, `${blockClass}__menu-heading`);
         title?.removeAttribute('href');
+
+        if (isFeaturedCard) {
+          accordionParentClassList.add(tabsVariants.FEATURED_CARD);
+        }
 
         if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS) || cat.classList.contains(tabsVariants.TAB)) {
           title?.classList.add(`${blockClass}__tab-link`);
@@ -344,6 +412,17 @@ const buildMenuContent = (menuData, navEl) => {
           extraClass = `${blockClass}__main-link-wrapper--${tabsVariants.TAB}`;
         }
 
+        const firstListItem = extractAndCloneFirstListItem(list, isFeaturedCard);
+        let featureItemHtml = '';
+
+        if (firstListItem) {
+          const featuredItemData = extractFeaturedCardData(firstListItem);
+
+          if (featuredItemData) {
+            featureItemHtml = generateFeaturedCardHtml(featuredItemData);
+          }
+        }
+
         list.classList.add(`${blockClass}__category-items`);
         [...list.querySelectorAll('li')].forEach(rebuildCategoryItem);
         [...list.querySelectorAll('a')].forEach((el) => el.classList.add(`${blockClass}__link`));
@@ -353,27 +432,28 @@ const buildMenuContent = (menuData, navEl) => {
 
         if (!title) {
           menuContent = document.createRange().createContextualFragment(`
-          <div class="${blockClass}__menu-content">
-            ${list.outerHTML}
-          </div>
-        `);
-        } else {
-          menuContent = document.createRange().createContextualFragment(`
-        <div class="${blockClass}__menu-content">
-          ${title.outerHTML}
-          <div class="${blockClass}__category-content ${blockClass}__accordion-container">
-            <div class="${blockClass}__accordion-content-wrapper">
+            <div class="${blockClass}__menu-content">
               ${list.outerHTML}
             </div>
-          </div>
-        </div>
-      `);
+          `);
+        } else {
+          menuContent = document.createRange().createContextualFragment(`
+            <div class="${blockClass}__menu-content">
+              ${title.outerHTML}
+              <div class="${blockClass}__category-content ${blockClass}__accordion-container">
+                <div class="${blockClass}__accordion-content-wrapper">
+                  ${isFeaturedCard && featureItemHtml ? featureItemHtml : ''}
+                  ${list.outerHTML}
+                </div>
+              </div>
+            </div>
+          `);
         }
 
         menuContent.querySelector(`.${blockClass}__link-accordion`)?.addEventListener('click', onAccordionItemClick);
         accordionContentWrapper.append(menuContent);
         if (extraClass) {
-          accordionContentWrapper.parentElement.classList.add(extraClass);
+          accordionParentClassList.add(extraClass);
         }
       });
 
