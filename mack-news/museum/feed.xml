@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktruckshistoricalmuseum.org/mack-news/</id>
     <title>Mack News</title>
-    <updated>2025-03-03T00:00:00.000Z</updated>
+    <updated>2025-03-11T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktruckshistoricalmuseum.org/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3174,5 +3174,13 @@
         <updated>2025-03-03T00:00:00.000Z</updated>
         <content type="html"><![CDATA[These enhancements to Mack's Over The Air (OTA) capabilities help fleet managers maximize vehicle performance while reducing administrative workload.]]></content>
         <published>2025-03-03T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Introduces Allison Transmission into its Robust GuardDog® Connect Telematics Solution]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-introduces-allison-transmission-into-its-robust-guarddog-connect-telematics-solution</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-introduces-allison-transmission-into-its-robust-guarddog-connect-telematics-solution"/>
+        <updated>2025-03-11T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“Mack’s goal is and always has been to offer solutions to make Mack easy to do business with,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
+        <published>2025-03-11T00:00:00.000Z</published>
     </entry>
 </feed>
