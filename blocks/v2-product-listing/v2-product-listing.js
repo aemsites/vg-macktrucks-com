@@ -118,19 +118,19 @@ function handFilterClick(e, firstSegment) {
 
   const hasFeatured = activeBlock.classList.contains(`${blockName}--with-featured`);
 
-  const isAllProducts = firstSegment === clickedSegment;
+  const isFirstSegmentActive = firstSegment === clickedSegment;
   activeBlock.dataset.selected = clickedSegment;
 
-  dropdown.classList[isAllProducts ? 'add' : 'remove']('initial-state');
+  dropdown.classList[isFirstSegmentActive ? 'add' : 'remove']('initial-state');
 
   products.forEach((product, idx) => {
-    product.style.display = product.classList.contains(clickedSegment) || isAllProducts ? 'flex' : 'none';
+    product.style.display = product.classList.contains(clickedSegment) || isFirstSegmentActive ? 'flex' : 'none';
     const isSelected = product.style.display === 'flex';
     product.style.display = isSelected ? 'flex' : 'none';
     product.classList.toggle('selected-product', isSelected);
 
     if (idx === 0) {
-      product.classList[isAllProducts && hasFeatured ? 'add' : 'remove']('featured');
+      product.classList[isFirstSegmentActive && hasFeatured ? 'add' : 'remove']('featured');
     }
   });
 
@@ -142,7 +142,7 @@ function handFilterClick(e, firstSegment) {
 
       const selectedProducts = activeBlock.querySelectorAll('.selected-product');
       selectedProducts.forEach((selectedProduct, i) => {
-        if (hasFeatured && isAllProducts) {
+        if (hasFeatured && isFirstSegmentActive) {
           i++;
         }
         if (i % 2 === 0) {
