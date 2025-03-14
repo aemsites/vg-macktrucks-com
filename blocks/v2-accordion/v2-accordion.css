@@ -71,8 +71,7 @@
 }
 
 .v2-accordion__item .v2-accordion__item:last-child {
-  border-bottom: 0
-
+  border-bottom: 0;
 }
 
 /* END Styles for nested accordion */

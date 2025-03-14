@@ -17,7 +17,7 @@
   background: transparent;
   color: var(--text-color);
   text-transform: capitalize;
-  font: var(--body-font-size-xxs)/1.6 var(--ff-body-bold);
+  font: var(--body-font-size-xxs) / 1.6 var(--ff-body-bold);
   padding: 14px 8px 14px 24px;
   margin: 0;
   text-align: left;
@@ -145,7 +145,7 @@
 .v2-product-listing__segment-list li {
   padding: 0 16px;
   position: relative;
-  font-size: 0.750rem;
+  font-size: 0.75rem;
   line-height: 1.2;
   letter-spacing: 0.1em;
 }
@@ -155,7 +155,7 @@
 }
 
 .v2-product-listing__segment-list li::after {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   right: 0;
@@ -201,11 +201,11 @@
 }
 
 .v2-product-listing:not(.v2-product-listing--with-dots) .v2-product-listing__detail-list li:not(:last-child)::after {
-  content: "|";
+  content: '|';
 }
 
 .v2-product-listing--with-dots .v2-product-listing__product-image picture:first-child::before {
-  content: "";
+  content: '';
   height: 70%;
   max-height: 275px;
   aspect-ratio: 1;
@@ -213,7 +213,7 @@
   left: 0;
   z-index: 1;
   background: var(--c-primary-gold);
-  mask: url("/media/dots.svg");
+  mask: url('/media/dots.svg');
   transition: background var(--duration-small) var(--easing-standard);
 }
 
@@ -250,7 +250,7 @@
 
 .v2-product-listing__selected-item {
   text-transform: capitalize;
-  font: var(--body-font-size-xxs)/1.6 var(--ff-body-bold);
+  font: var(--body-font-size-xxs) / 1.6 var(--ff-body-bold);
 }
 
 .v2-product-listing__svg-wrapper {
@@ -370,7 +370,7 @@
 
   .v2-product-listing__segment-button::after {
     bottom: 0;
-    content: "";
+    content: '';
     display: block;
     height: 4px;
     position: absolute;
@@ -574,7 +574,7 @@
     background-color: unset;
     margin: 0 0 0 auto;
   }
-  
+
   .v2-product-listing--2-columns .v2-product-listing__product.even {
     background-color: unset;
     margin: 0 auto 0 0;
@@ -656,11 +656,11 @@
     max-width: calc(var(--available-space) * 0.65);
     margin-left: auto;
   }
-  
+
   .v2-product-listing__product.featured picture:last-child img {
     object-fit: cover;
   }
-  
+
   .v2-product-listing--2-columns .v2-product-listing__product.featured .v2-product-listing__product-info {
     max-width: calc(var(--available-space) * 0.35);
     width: unset;

@@ -1,37 +1,36 @@
-
 .features .row {
-    display: flex;
-    gap: 20px;
-    padding: 0 32px;
+  display: flex;
+  gap: 20px;
+  padding: 0 32px;
 }
 
 .features .row > .feature {
-    width: 100%;
-    padding-bottom: 100px
+  width: 100%;
+  padding-bottom: 100px;
 }
 
 .features .row img {
-    width: 100%;
-    object-fit: cover;
-    aspect-ratio: 100/60;
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 100/60;
 }
 
 .features .row h4.feature-title {
-    margin: 20px 0 0;
-    font: 14px/14px var(--ff-body-bold)
+  margin: 20px 0 0;
+  font: 14px/14px var(--ff-body-bold);
 }
 
 .features .row p {
-    max-width: 300px;
-    margin-top: 5px;
-    color: #999;
-    font-size: 16px;
-    line-height: 20px
+  max-width: 300px;
+  margin-top: 5px;
+  color: #999;
+  font-size: 16px;
+  line-height: 20px;
 }
 
 @media (max-width: 896px) {
-    .features .row {
-        display: block;
-        gap: unset;
-    }
+  .features .row {
+    display: block;
+    gap: unset;
+  }
 }

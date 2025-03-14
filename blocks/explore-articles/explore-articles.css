@@ -132,7 +132,7 @@
 .explore-articles-articles .article-content .article-subtitle {
   font-size: var(--body-font-size-xxs);
   width: 90%;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 5px 0 0;
@@ -175,7 +175,7 @@
     display: flex;
     column-gap: 5px;
   }
-  
+
   .explore-articles-section .explore-articles-content .category-field,
   .explore-articles-section .explore-articles-content .trucks-field {
     width: 100%;

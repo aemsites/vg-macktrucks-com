@@ -6,7 +6,7 @@
   --card-background: var(--c-primary-white);
 }
 
-.v2-feature-carousel__arrowcontrols, 
+.v2-feature-carousel__arrowcontrols,
 .v2-feature-carousel__list {
   list-style-type: none;
   padding: 0;
@@ -106,7 +106,7 @@
 }
 
 .v2-feature-carousel__title {
-  font: var(--headline-1-font-size)/var(--headline-1-line-height) var(--ff-headline-medium);
+  font: var(--headline-1-font-size) / var(--headline-1-line-height) var(--ff-headline-medium);
   letter-spacing: var(--headline-1-letter-spacing);
   margin: 0;
 }
@@ -119,7 +119,7 @@
 @media (min-width: 1200px) {
   .v2-feature-carousel {
     --v2-feature-carousel-content-gap: 24px;
-    --v2-feature-carousel-padding: calc((60% - 512px)/2); /* calculate padding based on parents width */
+    --v2-feature-carousel-padding: calc((60% - 512px) / 2); /* calculate padding based on parents width */
 
     display: flex;
     flex-direction: row-reverse;
@@ -128,7 +128,7 @@
   .v2-feature-carousel__image-wrapper {
     width: 60%;
   }
-  
+
   .v2-feature-carousel__list-container {
     padding: 0;
     width: var(--v2-feature-carousel-size);
@@ -146,14 +146,14 @@
     align-items: center;
     gap: 0;
   }
-  
+
   .v2-feature-carousel__list-item {
     padding-left: 56px;
     padding-right: 56px;
   }
 
   .v2-feature-carousel__list-wrapper {
-    left: calc((100% - var(--wrapper-width))/2);
+    left: calc((100% - var(--wrapper-width)) / 2);
     position: absolute;
     padding-top: var(--v2-feature-carousel-padding);
     padding-bottom: var(--v2-feature-carousel-padding);

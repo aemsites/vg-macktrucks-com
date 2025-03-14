@@ -42,7 +42,7 @@
 }
 
 .v2-hotspots-container .hotspot .hotspot-content .hotspot-header {
- color: var(--text-color);
+  color: var(--text-color);
 }
 
 .v2-hotspots-container .hotspot .hotspot-bg-img img {

@@ -73,7 +73,7 @@
 }
 
 .block.carousel .items .carousel-item::after {
-  content: "";
+  content: '';
   top: 0;
   left: 0;
   position: absolute;
@@ -121,7 +121,7 @@
   justify-content: center;
   position: absolute;
   inset: 0;
-  content: "\f10c";
+  content: '\f10c';
   font-family: var(--ff-fontawesome);
   font-size: 1.2rem;
   line-height: 1;
@@ -130,7 +130,7 @@
 }
 
 .block.carousel .mobile-controls .active button::after {
-  content: "\f192";
+  content: '\f192';
 }
 
 .block.carousel .desktop-controls,
@@ -177,7 +177,7 @@
     justify-content: center;
     position: absolute;
     inset: 0;
-    content: "\f104";
+    content: '\f104';
     font-family: var(--ff-fontawesome);
     line-height: 1;
     text-align: center;
@@ -188,7 +188,7 @@
   }
 
   .block.carousel .desktop-controls li:last-child button::after {
-    content: "\f105";
+    content: '\f105';
     margin: 0 0 0 5px;
   }
 
@@ -306,12 +306,12 @@
 }
 
 .block.carousel.two-columns .desktop-controls button::after {
-  content: "\f060";
+  content: '\f060';
   font-size: 25px;
 }
 
 .block.carousel.two-columns .desktop-controls li:last-child button::after {
-  content: "\f061";
+  content: '\f061';
 }
 
 @media screen and (min-width: 640px) {

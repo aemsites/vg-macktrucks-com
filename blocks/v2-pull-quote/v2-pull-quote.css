@@ -36,7 +36,7 @@
 @media (min-width: 744px) {
   .v2-pull-quote-wrapper {
     --quote-vertical-gap: 48px;
-  
+
     gap: var(--quote-vertical-gap);
     justify-content: space-between;
   }

@@ -217,11 +217,7 @@
 }
 
 .modal-content.modal-form .eloqua-form .elq-form input[type='checkbox'],
-.modal-content.modal-form
-  .eloqua-form
-  .single-checkbox-row
-  input
-  ~ label.checkbox-aligned.elq-item-label::before {
+.modal-content.modal-form .eloqua-form .single-checkbox-row input ~ label.checkbox-aligned.elq-item-label::before {
   background-color: transparent;
 }
 

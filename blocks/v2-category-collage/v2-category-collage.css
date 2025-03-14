@@ -100,22 +100,22 @@
     grid-template-columns: repeat(6, 1fr);
   }
 
-  .v2-category-collage__item-container:nth-child(6n+1) {
+  .v2-category-collage__item-container:nth-child(6n + 1) {
     grid-column: span 3;
     grid-row: span 2;
     aspect-ratio: 4 / 3;
   }
 
-  .v2-category-collage__item-container:nth-child(6n+2),
-  .v2-category-collage__item-container:nth-child(6n+3) {
+  .v2-category-collage__item-container:nth-child(6n + 2),
+  .v2-category-collage__item-container:nth-child(6n + 3) {
     grid-column: span 3;
     grid-row: span 1;
     aspect-ratio: 8 / 3;
   }
 
-  .v2-category-collage__item-container:nth-child(6n+4),
-  .v2-category-collage__item-container:nth-child(6n+5),
-  .v2-category-collage__item-container:nth-child(6n+6) {
+  .v2-category-collage__item-container:nth-child(6n + 4),
+  .v2-category-collage__item-container:nth-child(6n + 5),
+  .v2-category-collage__item-container:nth-child(6n + 6) {
     grid-column: span 2;
     aspect-ratio: 6 / 5;
   }

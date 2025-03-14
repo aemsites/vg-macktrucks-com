@@ -269,7 +269,7 @@
   .v2-icon-cards.v2-icon-cards--4-cols {
     padding: 0;
   }
-  
+
   .v2-icon-cards--4-cols .v2-icon-cards__row {
     gap: 0;
   }
@@ -278,7 +278,7 @@
 .v2-icon-cards--slider .v2-icon-cards__row {
   gap: 0;
   overflow-x: scroll;
-  scroll-snap-type: x mandatory; 
+  scroll-snap-type: x mandatory;
   -ms-overflow-style: none;
   scrollbar-width: none;
   justify-content: space-between;

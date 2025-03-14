@@ -106,7 +106,7 @@ main .section.specifications-container {
 }
 
 .specs-item .specs-link::after {
-  content: "\f0da";
+  content: '\f0da';
   font: 14px/16px var(--ff-fontawesome);
   padding-left: 4px;
 }
@@ -124,7 +124,7 @@ main .section.specifications-container {
 }
 
 .specs-item .link-and-list li::before {
-  content: "\2022";
+  content: '\2022';
   font: 14px/14px var(--ff-fontawesome);
   padding-right: 4px;
 }

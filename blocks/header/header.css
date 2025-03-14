@@ -84,7 +84,9 @@ a.header__link {
   align-items: center;
   gap: 4px;
   color: var(--header-color);
-  font-feature-settings: 'clig' off, 'liga' off;
+  font-feature-settings:
+    'clig' off,
+    'liga' off;
   font-family: var(--ff-body);
   font-size: 16px;
   line-height: 150%;
@@ -1185,22 +1187,22 @@ a.header__link {
     width: 100%;
     object-fit: cover;
   }
-  
+
   .header__featured-card-content {
     flex: 1;
     padding-top: 74px;
     padding-bottom: 74px;
   }
-  
+
   .header__featured-card-content > * {
     max-width: 451px;
   }
-  
+
   .header__featured-card-title {
     margin-top: 0;
     margin-bottom: 12px;
   }
-  
+
   .header__featured-card-subtitle {
     margin-top: 0;
     margin-bottom: 12px;
@@ -1209,7 +1211,7 @@ a.header__link {
     line-height: 14.4px;
     letter-spacing: 1.2px;
   }
-  
+
   .header__featured-card-text {
     margin-top: 0;
     margin-bottom: 16px;
@@ -1217,7 +1219,8 @@ a.header__link {
     letter-spacing: 0.16px;
   }
 
-  .header__featured-card .header__featured-card-content .header__featured-card-buttons .header__featured-card-button { /* High specificity needed to override the header button styles */
+  .header__featured-card .header__featured-card-content .header__featured-card-buttons .header__featured-card-button {
+    /* High specificity needed to override the header button styles */
     width: 160px;
     padding-top: 16.5px;
     padding-bottom: 13.5px;

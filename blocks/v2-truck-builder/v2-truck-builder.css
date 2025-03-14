@@ -51,7 +51,7 @@
 .v2-truck-builder__item,
 .v2-truck-builder__item .v2-truck-builder__item-title,
 .v2-truck-builder__item .v2-truck-builder__item-description {
-  transition: color var(--easing-standard) var(--duration-medium)!important;
+  transition: color var(--easing-standard) var(--duration-medium) !important;
 }
 
 .v2-truck-builder__item {

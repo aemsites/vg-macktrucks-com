@@ -94,8 +94,8 @@
   }
 
   /* stylelint-disable-next-line no-descending-specificity */
-  .v2-navigation-hub__card-nav-list li:nth-child(n+4),
-  .v2-navigation-hub__card-nav-list:has(> :nth-child(7)) li:nth-child(n+5) {
+  .v2-navigation-hub__card-nav-list li:nth-child(n + 4),
+  .v2-navigation-hub__card-nav-list:has(> :nth-child(7)) li:nth-child(n + 5) {
     grid-column: 2;
   }
 }

@@ -31,7 +31,7 @@
   gap: var(--testimonial-gap);
   background-color: var(--card-background);
   color: var(--text-color);
-  font: var(--body-2-font-weight) var(--body-2-font-size)/var(--body-2-line-height) var(--ff-body);
+  font: var(--body-2-font-weight) var(--body-2-font-size) / var(--body-2-line-height) var(--ff-body);
   letter-spacing: var(--body-2-letter-spacing);
 }
 
@@ -44,12 +44,12 @@
 
 .v2-testimonial__heading {
   color: var(--text-color);
-  font: var(--headline-2-font-size)/var(--headline-2-line-height) var(--ff-headline-medium);
+  font: var(--headline-2-font-size) / var(--headline-2-line-height) var(--ff-headline-medium);
   letter-spacing: -0.64px;
 }
 
 .v2-testimonial__blockquote {
-  font: var(--testimonial-font-size)/var(--testimonial-line-height) var(--ff-testimonial);
+  font: var(--testimonial-font-size) / var(--testimonial-line-height) var(--ff-testimonial);
   letter-spacing: var(--testimonial-letter-spacing);
   text-indent: 0;
 }
@@ -77,7 +77,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  font: var(--body-2-font-weight) var(--body-2-font-size)/var(--body-2-line-height) var(--ff-body);
+  font: var(--body-2-font-weight) var(--body-2-font-size) / var(--body-2-line-height) var(--ff-body);
   letter-spacing: var(--body-2-letter-spacing);
 }
 
@@ -102,7 +102,7 @@ a.v2-testimonial__video-link {
   background: transparent;
   color: var(--text-color);
   border: 0;
-  font: normal 400 var(--button-font-size)/var(--button-line-height) var(--ff-body);
+  font: normal 400 var(--button-font-size) / var(--button-line-height) var(--ff-body);
   letter-spacing: 1.12px;
 }
 

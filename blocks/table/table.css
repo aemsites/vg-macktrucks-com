@@ -129,7 +129,7 @@
   }
 
   .block.table.row-header td:first-child::after {
-    content: "\25B8";
+    content: '\25B8';
     position: absolute;
     top: 50%;
     right: 10px;
@@ -138,7 +138,7 @@
   }
 
   .block.table.row-header td.open:first-child::after {
-    content: "\25B8";
+    content: '\25B8';
     position: absolute;
     top: 50%;
     right: 10px;

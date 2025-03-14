@@ -144,9 +144,7 @@
 .v2-magazine-tabbed-carousel__navigation-item:not(.v2-magazine-tabbed-carousel__navigation-item--active):hover {
   --text-color: var(--c-primary-black);
 
-  transition:
-    color,
-    border-color;
+  transition: color, border-color;
   transition-duration: var(--duration-large);
   transition-timing-function: var(--easing-standard);
   cursor: pointer;

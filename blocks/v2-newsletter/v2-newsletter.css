@@ -24,7 +24,7 @@
 }
 
 /* Email input */
-.footer-newsletter .pardot-form input[type="email"] {
+.footer-newsletter .pardot-form input[type='email'] {
   background-color: var(--c-primary-white);
   border: none;
   color: var(--c-secondary-graphite);
@@ -36,19 +36,19 @@
   padding: 14px 48px 14px 14px;
 }
 
-.footer-newsletter .pardot-form input[type="email"]:focus {
+.footer-newsletter .pardot-form input[type='email']:focus {
   outline: 0;
 }
 
-.footer-newsletter .pardot-form input[type="email"]:focus-visible {
+.footer-newsletter .pardot-form input[type='email']:focus-visible {
   outline: 2px solid var(--button-secondary-gold-enabled);
 }
 
-.footer-newsletter .pardot-form input[type="email"]::placeholder {
+.footer-newsletter .pardot-form input[type='email']::placeholder {
   color: var(--c-secondary-graphite);
 }
 
-.footer-newsletter .pardot-form input[type="email"].invalid {
+.footer-newsletter .pardot-form input[type='email'].invalid {
   outline: 1px solid var(--c-invalid);
 }
 
@@ -60,7 +60,7 @@
   top: 0;
   width: 48px;
   height: 48px;
-  background: var(--button-secondary-gold-enabled) url("../../icons/arrow-right.svg") no-repeat center;
+  background: var(--button-secondary-gold-enabled) url('../../icons/arrow-right.svg') no-repeat center;
   background-size: 24px;
   border: none;
   margin: unset;

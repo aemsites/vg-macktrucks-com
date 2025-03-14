@@ -7,4 +7,6 @@ body {
   height: 100%;
 }
 
-helix-sidekick { display: none }
+helix-sidekick {
+  display: none;
+}

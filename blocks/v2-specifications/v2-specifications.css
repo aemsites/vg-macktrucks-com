@@ -99,7 +99,7 @@
 @media (min-width: 1200px) {
   .v2-specifications__list--with-text,
   .v2-specifications__list--with-downloads {
-    grid-template-columns:repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .v2-specifications__list--with-text {
