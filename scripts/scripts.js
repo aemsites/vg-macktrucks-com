@@ -776,6 +776,7 @@ function createTruckLineupSection(tabItems, classname) {
 }
 
 function buildTruckLineupBlock(main, classname) {
+  const truckName = 'data-truck-carousel';
   const tabItems = [];
   let nextElement;
 
@@ -788,13 +789,21 @@ function buildTruckLineupBlock(main, classname) {
 
     // save carousel position
     nextElement = mainChildren[i2 + 1];
-    const sectionMeta = section.dataset.truckCarousel;
-
-    const tabContent = createElement('div', { classes: `${classname}__content` });
-    tabContent.dataset.truckCarousel = sectionMeta;
-    if (section.dataset.truckCarouselIcon) {
-      tabContent.dataset.truckCarouselIcon = section.dataset.truckCarouselIcon;
+    const { truckCarousel, truckCarouselIcon, truckCarouselFeatured } = section.dataset;
+    const props = {
+      [truckName]: truckCarousel,
+    };
+    if (truckCarouselIcon) {
+      props[`${truckName}-icon`] = truckCarouselIcon;
     }
+    if (truckCarouselFeatured) {
+      props[`${truckName}-featured`] = truckCarouselFeatured;
+    }
+
+    const tabContent = createElement('div', {
+      classes: `${classname}__content`,
+      props,
+    });
 
     tabContent.innerHTML = section.innerHTML;
     const image = tabContent.querySelector('p > picture');

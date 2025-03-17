@@ -31,15 +31,11 @@ const setNavigationLine = (tabNavigation) => {
     totalWidth += listItem.getBoundingClientRect().width;
   });
 
+  let borderScale = totalWidth;
   if (totalWidth + 32 <= navWidth) {
-    if (navWidth === 1040 && viewportWidth >= 1200) {
-      tabNavigation.style.setProperty('--truck-lineup-border-scale', `${navWidth}`);
-    } else {
-      tabNavigation.style.setProperty('--truck-lineup-border-scale', `${navWidth - 32}`);
-    }
-  } else {
-    tabNavigation.style.setProperty('--truck-lineup-border-scale', `${totalWidth}`);
+    borderScale = navWidth === 1040 && viewportWidth >= 1200 ? navWidth : navWidth - 32;
   }
+  tabNavigation.style.setProperty('--truck-lineup-border-scale', `${borderScale}`);
 };
 
 function buildTabNavigation(tabItems, clickHandler) {
@@ -155,9 +151,20 @@ export default async function decorate(block) {
 
   descriptionContainer.parentNode.append(tabNavigation);
 
-  tabItems.forEach((tabItem) => {
+  const featuredItem = {
+    index: 0,
+    element: null,
+  };
+
+  tabItems.forEach((tabItem, idx) => {
     tabItem.classList.add(`${blockName}__desc-item`);
     const tabContent = tabItem.querySelector(tabContentClass);
+
+    if (tabContent.dataset.truckCarouselFeatured) {
+      featuredItem.index = idx;
+      featuredItem.element = tabItem;
+    }
+
     const headings = tabContent ? tabContent.querySelectorAll('h1, h2, h3, h4, h5, h6') : [];
     [...headings].forEach((heading) => heading.classList.add(`${blockName}__title`));
 
@@ -208,6 +215,13 @@ export default async function decorate(block) {
       setNavigationLine(tabNavigation);
     }, 100);
   });
+
+  // in case the block has a featured item, scroll to it
+
+  if (featuredItem.element) {
+    console.log('featuredItem', { featuredItem, imagesContainer });
+    setCarouselPosition(imagesContainer, featuredItem.index);
+  }
 
   decorateIcons(block);
 }
