@@ -217,10 +217,10 @@ export default async function decorate(block) {
   });
 
   // in case the block has a featured item, scroll to it
-
   if (featuredItem.element) {
-    console.log('featuredItem', { featuredItem, imagesContainer });
-    setCarouselPosition(imagesContainer, featuredItem.index);
+    setTimeout(() => {
+      setCarouselPosition(imagesContainer, featuredItem.index);
+    }, 500);
   }
 
   decorateIcons(block);
