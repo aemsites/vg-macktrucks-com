@@ -86,13 +86,7 @@ function decorate(block) {
 
   block.replaceWith(v2HeroBlock);
 
-  /* const main = document.querySelector('main'); */
-
-  /*   if (main) {
-    loadBlocks(main);
-  } else { */
   loadBlock(v2HeroBlock);
-  /* } */
 }
 
 export default decorate;
