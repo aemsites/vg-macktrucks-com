@@ -113,11 +113,24 @@ const updateActiveItem = (index) => {
 };
 
 const scrollObserverFunction = (elements, entry) => {
+  // in case the block has a featured item, scroll to it
+  const featuredItem = [...elements].find((el) => el.classList.contains('featured'));
+  const targetElement = featuredItem || entry.target;
+  let idx = 0;
+
   elements.forEach((el, index) => {
-    if (el === entry.target && entry.intersectionRatio >= 0.9) {
+    if (el === targetElement && entry.intersectionRatio >= 0.9) {
+      if (featuredItem) {
+        idx = index;
+      }
       updateActiveItem(index);
     }
   });
+
+  if (featuredItem) {
+    featuredItem.classList.remove('featured');
+    setCarouselPosition(targetElement.parentNode, idx);
+  }
 };
 
 const arrowFragment = document.createRange().createContextualFragment(`<li>
@@ -202,6 +215,10 @@ export default async function decorate(block) {
     }
   });
 
+  if (featuredItem.element) {
+    imagesContainer.children[featuredItem.index].classList.add('featured');
+  }
+
   // update the button indicator on scroll
   const elements = imagesContainer.querySelectorAll(':scope > *');
   listenScroll(imagesContainer, elements, scrollObserverFunction, 0.9);
@@ -215,13 +232,6 @@ export default async function decorate(block) {
       setNavigationLine(tabNavigation);
     }, 100);
   });
-
-  // in case the block has a featured item, scroll to it
-  if (featuredItem.element) {
-    setTimeout(() => {
-      setCarouselPosition(imagesContainer, featuredItem.index);
-    }, 500);
-  }
 
   decorateIcons(block);
 }
