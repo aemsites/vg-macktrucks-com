@@ -73,7 +73,8 @@ main .section.v2-truck-lineup-container {
   display: block;
   animation-duration: 1s;
   animation-delay: 0.5s;
-  animation-name: truck-entry;
+  
+  /* animation-name: truck-entry; */
   animation-timing-function: ease-in;
 }
 
