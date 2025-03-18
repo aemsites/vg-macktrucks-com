@@ -71,10 +71,6 @@ main .section.v2-truck-lineup-container {
 
 .v2-truck-lineup__image-item picture {
   display: block;
-  animation-duration: 1s;
-  animation-delay: 0.5s;
-  animation-name: truck-entry;
-  animation-timing-function: ease-in;
 }
 
 .v2-truck-lineup__image-item:first-child {
@@ -190,7 +186,6 @@ ul.v2-truck-lineup__navigation {
   transform-origin: left;
 }
 
-/* stylelint-disable-next-line no-descending-specificity */
 .v2-truck-lineup__navigation-item button {
   --color-icon: var(--text-subtle);
 
@@ -208,6 +203,17 @@ ul.v2-truck-lineup__navigation {
   text-wrap: nowrap;
   white-space: nowrap;
   transition: none;
+}
+
+.v2-truck-lineup__arrow-controls button {
+  background-color: var(--c-primary-white);
+  border: 1px solid var(--c-primary-black);
+  color: var(--text-color);
+  font-size: 0;
+  line-height: 0;
+  margin: 0;
+  padding: 16px;
+  position: relative;
 }
 
 .v2-truck-lineup__navigation-item.active button,
@@ -267,18 +273,6 @@ ul.v2-truck-lineup__navigation {
 .v2-truck-lineup__arrow-controls li:last-child {
   left: auto;
   right: 10%;
-}
-
-/* stylelint-disable-next-line no-descending-specificity */
-.v2-truck-lineup__arrow-controls button {
-  background-color: var(--c-primary-white);
-  border: 1px solid var(--c-primary-black);
-  color: var(--text-color);
-  font-size: 0;
-  line-height: 0;
-  margin: 0;
-  padding: 16px;
-  position: relative;
 }
 
 .v2-truck-lineup__arrow-controls button:hover {
