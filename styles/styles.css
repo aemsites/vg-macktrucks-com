@@ -431,6 +431,12 @@ html:not(.redesign-v2) button.button--secondary:focus {
   border-color: var(--button-secondary-gold-hover);
 }
 
+.button .icon svg {
+  height: 28px;
+  width: 28px;
+  display: flex;
+}
+
 ul.button-container {
   padding: 0;
   list-style: none;
@@ -1205,6 +1211,7 @@ main .section.responsive-title h1 {
 .redesign-v2 .button--primary:focus {
   background-color: var(--button-primary-bg-hover);
 }
+
 
 .redesign-v2 .button--primary:active {
   background-color: var(--button-primary-bg-active);

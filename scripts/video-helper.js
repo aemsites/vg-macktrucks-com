@@ -48,7 +48,10 @@ export function isAEMVideoUrl(url) {
 export function isVideoLink(link) {
   const linkString = link.getAttribute('href');
   return (
-    (linkString.includes('youtube.com/embed/') || videoURLRegex.test(linkString) || isLowResolutionVideoUrl(linkString)) &&
+    (linkString.includes('youtube.com/embed/') ||
+      linkString.includes('https://player.restream.io') ||
+      videoURLRegex.test(linkString) ||
+      isLowResolutionVideoUrl(linkString)) &&
     link.closest('.block.embed') === null
   );
 }
