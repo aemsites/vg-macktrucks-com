@@ -117,11 +117,23 @@ const updateActiveItem = (index) => {
 };
 
 const scrollObserverFunction = (elements, entry) => {
-  elements.forEach((el, index) => {
-    if (el === entry.target && entry.intersectionRatio >= 0.9) {
-      updateActiveItem(index);
-    }
-  });
+  const featuredElement = Array.from(elements).find((el) => el.classList.contains('featured'));
+
+  if (featuredElement) {
+    featuredElement.classList.remove('featured');
+    elements.forEach((el, index) => {
+      if (el === featuredElement && entry.intersectionRatio >= 0.9) {
+        updateActiveItem(index);
+      }
+    });
+    setCarouselPosition(featuredElement.parentNode, [...featuredElement.parentNode.children].indexOf(featuredElement));
+  } else {
+    elements.forEach((el, index) => {
+      if (el === entry.target && entry.intersectionRatio >= 0.9) {
+        updateActiveItem(index);
+      }
+    });
+  }
 };
 
 const arrowFragment = document.createRange().createContextualFragment(`<li>
@@ -194,6 +206,8 @@ export default async function decorate(block) {
       parentButtonContainer.appendChild(buttonContainer);
     }
   });
+  const children = imagesContainer.children;
+  children[4].classList.add('featured');
 
   // update the button indicator on scroll
   const elements = imagesContainer.querySelectorAll(':scope > *');
