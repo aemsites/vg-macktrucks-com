@@ -26,7 +26,7 @@ const createList = (articles) => `
           <a href="${linkUrl}">${pictureTag}</a>
         </div>
         ${idx === 0 && article.category ? `<a class="${blockName}-${firstOrRestClass}-category" href="${categoryUrl}">${article.category}</a>` : ''}
-        <a class="${blockName}-${firstOrRestClass}-title" href="">${article.title}</a>
+        <a class="${blockName}-${firstOrRestClass}-title" href="${linkUrl}">${article.title}</a>
         ${idx === 0 && article.subtitle ? `<p class="${blockName}-${firstOrRestClass}-subtitle">${article.subtitle}</p>` : ''}
         ${idx === 0 ? `<a class="${blockName}-${firstOrRestClass}-link" href="${linkUrl}">${readNowText}</a>` : ''}
       </li>`;
