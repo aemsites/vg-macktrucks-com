@@ -31,7 +31,6 @@
   src:
     url('../fonts/GT-America-Mono-Regular.woff2') format('woff2'),
     url('../fonts/GT-America-Mono-Regular.woff') format('woff');
-  letter-spacing: -4%;
   font-display: swap;
 }
 
@@ -40,7 +39,6 @@
   src:
     url('../fonts/GT-America-Mono-Medium.woff2') format('woff2'),
     url('../fonts/GT-America-Mono-Medium.woff') format('woff');
-  letter-spacing: -4%;
   font-display: swap;
 }
 
