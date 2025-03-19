@@ -161,29 +161,24 @@ export default async function decorate(block) {
 
   // Arrows
   createArrowControls(imagesContainer, `.${blockName}__image-item.active`, [`${blockName}__arrow-controls`], arrowFragment);
+  // move arrows to the end of the images container
+  imagesWrapper.append(imagesWrapper.querySelector(`.${blockName}__arrow-controls`));
 
   descriptionContainer.parentNode.append(tabNavigation);
 
-  const featuredItem = {
-    index: 0,
-    element: null,
-  };
-
-  tabItems.forEach((tabItem, idx) => {
+  tabItems.forEach((tabItem) => {
     tabItem.classList.add(`${blockName}__desc-item`);
     const tabContent = tabItem.querySelector(tabContentClass);
-
-    if (tabContent.dataset.truckCarouselFeatured) {
-      featuredItem.index = idx;
-      featuredItem.element = tabItem;
-    }
 
     const headings = tabContent ? tabContent.querySelectorAll('h1, h2, h3, h4, h5, h6') : [];
     [...headings].forEach((heading) => heading.classList.add(`${blockName}__title`));
 
     // create div for image and append inside image div container
     const picture = tabItem.querySelector('picture');
-    const imageItem = createElement('div', { classes: `${blockName}__image-item` });
+    const imageItem = createElement('div', {
+      classes: [`${blockName}__image-item`, ...(tabContent.dataset.truckCarouselFeatured ? ['featured'] : [])],
+    });
+
     imageItem.appendChild(picture);
     imagesContainer.appendChild(imageItem);
 
@@ -214,10 +209,6 @@ export default async function decorate(block) {
       parentButtonContainer.appendChild(buttonContainer);
     }
   });
-
-  if (featuredItem.element) {
-    imagesContainer.children[featuredItem.index].classList.add('featured');
-  }
 
   // update the button indicator on scroll
   const elements = imagesContainer.querySelectorAll(':scope > *');

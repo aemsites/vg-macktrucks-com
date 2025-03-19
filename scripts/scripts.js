@@ -776,7 +776,7 @@ function createTruckLineupSection(tabItems, classname) {
 }
 
 function buildTruckLineupBlock(main, classname) {
-  const truckName = 'data-truck-carousel';
+  const dataTruckCarousel = 'data-truck-carousel';
   const tabItems = [];
   let nextElement;
 
@@ -789,20 +789,16 @@ function buildTruckLineupBlock(main, classname) {
 
     // save carousel position
     nextElement = mainChildren[i2 + 1];
-    const { truckCarousel, truckCarouselIcon, truckCarouselFeatured } = section.dataset;
-    const props = {
-      [truckName]: truckCarousel,
-    };
-    if (truckCarouselIcon) {
-      props[`${truckName}-icon`] = truckCarouselIcon;
-    }
-    if (truckCarouselFeatured) {
-      props[`${truckName}-featured`] = truckCarouselFeatured;
-    }
 
+    // create the tab item and add the icon and/or featured data attributes if they exist
+    const { truckCarousel: truckName, truckCarouselIcon: truckIcon, truckCarouselFeatured: isFeatured } = section.dataset;
     const tabContent = createElement('div', {
       classes: `${classname}__content`,
-      props,
+      props: {
+        [`${dataTruckCarousel}`]: truckName,
+        ...(truckIcon && { [`${dataTruckCarousel}-icon`]: truckIcon }),
+        ...(isFeatured && { [`${dataTruckCarousel}-featured`]: isFeatured }),
+      },
     });
 
     tabContent.innerHTML = section.innerHTML;
