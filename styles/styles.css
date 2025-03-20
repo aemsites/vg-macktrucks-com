@@ -976,6 +976,12 @@ main .section.responsive-title h1 {
   --label-letter-spacing-small: 0.17rem; /* 2.72px */
   --label-font-weight-small: var(--fw-bold);
 
+  /* Inter, Bold, 9px, 130% 17% */
+  --label-font-size-x-small: 0.6rem; /* 9.6px */
+  --label-line-height-x-small: 130%;
+  --label-letter-spacing-x-small: 0.09rem; /* 1.44px */
+  --label-font-weight-x-small: var(--fw-bold);
+
   /* Inter, Medium, 14px, 130%, 8% */
   --button-font-size: 0.875rem; /* 14px */
   --button-line-height: 130%;
@@ -1725,3 +1731,17 @@ main .section.responsive-title h1 {
 }
 
 /* generic tooltip styles  ends here */
+
+/* Black label styling */
+.redesign-v2 .black-label {
+  background-color: var(--c-primary-black);
+  color: var(--c-primary-white);
+  font-family: var(--ff-body);
+  font-weight: var(--label-font-weight-small);
+  font-size: var(--label-font-size-small);
+  line-height: var(--label-line-height-small);
+  letter-spacing: var(--label-letter-spacing-small);
+  max-height: 32px;
+  padding: 8px;
+  margin-left: 12px;
+}

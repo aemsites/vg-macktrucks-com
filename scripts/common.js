@@ -216,6 +216,16 @@ async function decorateIcons(element) {
   });
 }
 
+/**
+ * Replace double squared brackets word with a <span> with black label styling
+ * @param {Element} [element] Element containing icons
+ */
+async function decorateBlackLabel(element) {
+  const regex = /\[\[(.*?)\]\]/gm;
+  const replacedText = element.innerHTML.replace(regex, '<span class="black-label">$1</span>');
+  element.innerHTML = replacedText;
+}
+
 async function loadTemplate(doc, templateName) {
   try {
     await loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`);
@@ -707,6 +717,7 @@ export {
   createElement,
   addFavIcon,
   decorateIcons,
+  decorateBlackLabel,
   loadTemplate,
   removeEmptyTags,
   unwrapDivs,
