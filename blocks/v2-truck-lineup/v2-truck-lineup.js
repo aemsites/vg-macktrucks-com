@@ -175,8 +175,11 @@ export default async function decorate(block) {
 
     // create div for image and append inside image div container
     const picture = tabItem.querySelector('picture');
+    // adds the featured class only to the first featured item even if there are more than one
+    const tabFeatured = tabContent.dataset.truckCarouselFeatured;
+    const hasImageFeatured = imagesContainer.querySelector('.featured');
     const imageItem = createElement('div', {
-      classes: [`${blockName}__image-item`, ...(tabContent.dataset.truckCarouselFeatured ? ['featured'] : [])],
+      classes: [`${blockName}__image-item`, ...(tabFeatured && !hasImageFeatured ? ['featured'] : [])],
     });
 
     imageItem.appendChild(picture);
