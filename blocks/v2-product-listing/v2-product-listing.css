@@ -103,8 +103,6 @@
 }
 
 .v2-product-listing__product-info h2 {
-  display: flex;
-  align-items: center;
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-1-font-size);
   margin: 0;

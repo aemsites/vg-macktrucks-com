@@ -1732,8 +1732,13 @@ main .section.responsive-title h1 {
 
 /* generic tooltip styles  ends here */
 
-/* Black label styling */
-.redesign-v2 .black-label {
+/* Black label styling starts here */
+.redesign-v2 .black-label-container {
+  position: relative;
+}
+
+.redesign-v2 .black-label-container .black-label {
+  position: absolute;
   background-color: var(--c-primary-black);
   color: var(--c-primary-white);
   font-family: var(--ff-body);
@@ -1745,3 +1750,5 @@ main .section.responsive-title h1 {
   padding: 8px;
   margin-left: 12px;
 }
+
+/* Black label styling ends here */

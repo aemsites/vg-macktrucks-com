@@ -1260,6 +1260,7 @@ a.header__link {
 /* Black label styling specific for sidebars mobile view */
 @media (max-width: 1200px) {
   .redesign-v2 .header .black-label {
+    left: 100%;
     font-family: var(--ff-body);
     font-size: var(--label-font-size-x-small);
     letter-spacing: var(--label-letter-spacing-x-small);

@@ -218,9 +218,9 @@ async function decorateIcons(element) {
 
 /**
  * Replace double squared brackets word with a <span> with black label styling
- * @param {Element} [element] Element containing icons
+ * @param {Element} [element] HTML element containing a word between [[square brackets]]
  */
-function decorateBlackLabel(htmlElement) {
+function decorateBlackLabel(element) {
   const regex = /\[\[(.*?)\]\]/g;
 
   function replaceText(node) {
@@ -229,13 +229,14 @@ function decorateBlackLabel(htmlElement) {
       if (replaced !== node.textContent) {
         const temp = document.createElement('div');
         temp.innerHTML = replaced;
+        node.parentElement.classList.add('black-label-container');
         node.replaceWith(...temp.childNodes);
       }
     } else {
       node.childNodes.forEach(replaceText);
     }
   }
-  replaceText(htmlElement);
+  replaceText(element);
 }
 
 async function loadTemplate(doc, templateName) {
