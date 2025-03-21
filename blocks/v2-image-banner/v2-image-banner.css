@@ -22,7 +22,7 @@
   background-attachment: fixed;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   .v2-image-banner {
     max-height: 360px;
   }

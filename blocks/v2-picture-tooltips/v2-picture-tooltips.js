@@ -1,4 +1,4 @@
-import { getTextLabel } from '../../scripts/common.js';
+import { getTextLabel, isMobileViewport } from '../../scripts/common.js';
 
 const BLOCK_NAME = 'v2-picture-tooltips';
 
@@ -115,7 +115,7 @@ function handleClickHotspot(event, block) {
   hotspotWrapper.classList.add('active');
   tooltip.classList.add('active');
 
-  if (block.getBoundingClientRect().top > 0) {
+  if (isMobileViewport() && block.getBoundingClientRect().top > 0) {
     block.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
