@@ -135,13 +135,23 @@
     bottom: 90px;
   }
 
-  .v2-picture-tooltips__hotspot-wrapper.active::after {
+  .v2-picture-tooltips__hotspot-wrapper.active .v2-picture-tooltips__tooltip::after {
     content: '';
     border-left: 2px solid var(--c-accent-red);
     position: absolute;
     left: calc(50% - 1px);
-    bottom: 24px;
-    height: 77px;
+    bottom: -66px;
+    height: 66px;
     z-index: 3;
+  }
+
+  .v2-picture-tooltips__hotspot-wrapper.active .v2-picture-tooltips__tooltip--bottom {
+    top: 90px;
+    bottom: auto;
+  }
+
+  .v2-picture-tooltips__hotspot-wrapper.active .v2-picture-tooltips__tooltip--bottom::after {
+    top: -68px;
+    bottom: auto;
   }
 }

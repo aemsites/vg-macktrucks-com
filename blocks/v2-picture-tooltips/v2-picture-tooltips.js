@@ -44,6 +44,12 @@ function getCoordsStyle(coords) {
   return `left: ${x}%; top: ${y}%`;
 }
 
+function getBottomStyleClass(coords) {
+  const [, y] = coords.split(':');
+
+  return y > 50 ? `${BLOCK_NAME}__tooltip--bottom` : '';
+}
+
 /**
  * Decorates a block element with hotspots and tooltips.
  *
@@ -72,7 +78,7 @@ function decorateBlockWithHotSpots(block, hotSpots) {
       `
         <div class="${BLOCK_NAME}__hotspot-wrapper ${index === 0 ? 'active' : ''}" data-coords="${hotSpot.coords}" style="${getCoordsStyle(hotSpot.coords)}">
           <button class="${BLOCK_NAME}__hotspot" aria-label="${getTextLabel('tooltip')}">${hotSpot.index + 1}</button>
-          <div class="${BLOCK_NAME}__tooltip">
+          <div class="${BLOCK_NAME}__tooltip ${getBottomStyleClass(hotSpot.coords)}">
             <div class="${BLOCK_NAME}__tooltip-content">
               ${hotSpot.textContent.map((el) => el.outerHTML).join('')}
             </div>
