@@ -220,10 +220,22 @@ async function decorateIcons(element) {
  * Replace double squared brackets word with a <span> with black label styling
  * @param {Element} [element] Element containing icons
  */
-async function decorateBlackLabel(element) {
-  const regex = /\[\[(.*?)\]\]/gm;
-  const replacedText = element.innerHTML.replace(regex, '<span class="black-label">$1</span>');
-  element.innerHTML = replacedText;
+function decorateBlackLabel(htmlElement) {
+  const regex = /\[\[(.*?)\]\]/g;
+
+  function replaceText(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const replaced = node.textContent.replace(regex, '<span class="black-label">$1</span>');
+      if (replaced !== node.textContent) {
+        const temp = document.createElement('div');
+        temp.innerHTML = replaced;
+        node.replaceWith(...temp.childNodes);
+      }
+    } else {
+      node.childNodes.forEach(replaceText);
+    }
+  }
+  replaceText(htmlElement);
 }
 
 async function loadTemplate(doc, templateName) {
