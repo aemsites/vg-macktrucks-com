@@ -717,7 +717,7 @@ body.disable-scroll main {
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   .video-icon-wrapper {
     width: 120px;
     height: 120px;
@@ -769,7 +769,7 @@ sup {
   vertical-align: top;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   main .section.magazine-listing-content {
     max-width: calc(960px + 16px + 16px);
     padding-top: 50px;
@@ -899,7 +899,7 @@ main .section.responsive-title h1 {
   font-size: var(--heading-2-mobile-size-l);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   main .section.responsive-title h1 {
     font-size: var(--heading-font-size-xxl);
   }

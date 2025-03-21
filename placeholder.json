@@ -338,6 +338,10 @@
     {
       "Key": "V2CustomForm:ErrorSubmissionText",
       "Text": "Information not sent. Please, try again later."
+    },
+    {
+      "Key": "tooltip",
+      "Text": "Show tooltip"
     }
   ],
   ":type": "sheet"

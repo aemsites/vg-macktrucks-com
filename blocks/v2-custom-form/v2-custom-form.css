@@ -79,7 +79,7 @@
   color: var(--c-error-2);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   .v2-custom-form-container form {
     display: flex;
     flex-flow: row wrap;

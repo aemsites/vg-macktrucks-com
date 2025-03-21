@@ -81,7 +81,7 @@ export default async function decorate(block) {
     <div class="mobile-main-header">
         <div class="panel-header">
             <input type="text" id="location2"
-              ${zipCode && isMobileViewport ? `value="${zipCode}"` : ''}
+              ${zipCode && isMobileViewport() ? `value="${zipCode}"` : ''}
               placeholder="Enter City, State, or Zip Code"/>
             <div class="search-container">
                 <button type="button" id="search" onclick="$.fn.setAddress2();">
