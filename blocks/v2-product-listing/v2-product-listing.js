@@ -1,4 +1,11 @@
-import { createElement, createResponsivePicture, decorateIcons, getImageURLs, getTextLabel, variantsClassesToBEM } from '../../scripts/common.js';
+import {
+  createElement,
+  createResponsivePicture,
+  decorateBlackLabel,
+  getImageURLs,
+  getTextLabel,
+  variantsClassesToBEM,
+} from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
 const variantClasses = ['with-filter', 'with-dots', 'with-featured', '2-columns'];
@@ -252,7 +259,7 @@ export default function decorate(block) {
     });
   }
 
-  decorateIcons(block);
+  decorateBlackLabel(block);
 }
 
 function getProductName(block) {
