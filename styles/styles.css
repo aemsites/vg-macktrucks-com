@@ -431,6 +431,12 @@ html:not(.redesign-v2) button.button--secondary:focus {
   border-color: var(--button-secondary-gold-hover);
 }
 
+.button .icon svg {
+  height: 28px;
+  width: 28px;
+  display: flex;
+}
+
 ul.button-container {
   padding: 0;
   list-style: none;
@@ -1334,10 +1340,9 @@ main .section.responsive-title h1 {
   bottom: 0;
   content: '';
   display: block;
-  height: 60%;
-  height: round(60%, 24px);
+  height: round(60%, 24px); /* stylelint-disable-line declaration-property-value-no-unknown */
   width: 40%;
-  width: round(40%, 24px);
+  width: round(40%, 24px); /* stylelint-disable-line declaration-property-value-no-unknown */
   position: absolute;
   right: 0;
   z-index: 1;
@@ -1532,9 +1537,9 @@ main .section.responsive-title h1 {
 @media (min-width: 744px) {
   .section--background-with-dots::after {
     height: 75%;
-    height: round(75%, 24px);
+    height: round(75%, 24px); /* stylelint-disable-line declaration-property-value-no-unknown */
     width: 55%;
-    width: round(55%, 24px);
+    width: round(55%, 24px); /* stylelint-disable-line declaration-property-value-no-unknown */
     background-position: top right;
   }
 
@@ -1553,8 +1558,6 @@ main .section.responsive-title h1 {
 
 @media (min-width: 1200px) {
   .redesign-v2 {
-    /* New design variables */
-    /* stylelint-disable-next-line number-max-precision */
     --headline-1-font-size: 2.8125rem; /* 45px */
     --headline-2-font-size: 2rem; /* 32px */
     --headline-3-font-size: 1.9375rem; /* 31px */

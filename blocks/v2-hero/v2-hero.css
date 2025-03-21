@@ -140,6 +140,10 @@
   padding-bottom: 50px;
 }
 
+.v2-hero--countdown p {
+  font-size: 18px;
+}
+
 /* Half height variant */
 .v2-hero.v2-hero--half-height {
   max-width: var(--section-max-width);
@@ -216,34 +220,15 @@
 
 /* Countdown variant */
 .v2-hero--countdown .countdown {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .v2-hero--countdown .countdown__time {
   max-width: 375px;
 }
 
-.v2-hero--countdown .v2-hero__form-title {
-  color: var(--c-primary-white);
-  font-weight: 500;
-  margin-top: 0;
-  margin-bottom: 20px;
-  max-width: 343px;
-}
-
 .v2-hero--countdown .v2-hero__iframe-container .iframe {
   max-width: 343px;
-}
-
-@media (min-width: 1200px) {
-  .v2-hero--countdown .countdown,
-  .v2-hero--countdown .v2-hero__form-title-container,
-  .v2-hero--countdown .v2-hero__iframe-container {
-    margin-left: auto;
-    margin-right: auto;
-    max-width: var(--wrapper-width);
-    width: 100%;
-  }
 }
 
 /* PDP - Hero section */

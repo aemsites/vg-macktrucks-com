@@ -367,7 +367,7 @@ main .hero.magazine-categories .hero-content-container,
 main .hero.magazine-categories .hero-content-wrapper,
 main .hero.magazine-categories img {
   height: 310px;
-  padding: 0 auto;
+  padding: 0;
 }
 
 main .hero.magazine-categories .hero-content-wrapper {

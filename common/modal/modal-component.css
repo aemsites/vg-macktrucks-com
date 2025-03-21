@@ -72,6 +72,10 @@
   border: 0;
 }
 
+.modal-content:has(.modal-video) {
+  max-height: 100% ;
+}
+
 .modal-before-banner {
   display: flex;
   justify-content: center;
