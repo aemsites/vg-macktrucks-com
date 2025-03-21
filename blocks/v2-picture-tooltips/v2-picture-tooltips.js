@@ -77,7 +77,7 @@ function decorateBlockWithHotSpots(block, hotSpots) {
       'beforeend',
       `
         <div class="${BLOCK_NAME}__hotspot-wrapper ${index === 0 ? 'active' : ''}" data-coords="${hotSpot.coords}" style="${getCoordsStyle(hotSpot.coords)}">
-          <button class="${BLOCK_NAME}__hotspot" aria-label="${getTextLabel('tooltip')}">${hotSpot.index + 1}</button>
+          <button class="${BLOCK_NAME}__hotspot" aria-label="${getTextLabel('tooltip')}">${hotSpot.index + 1}<span class="icon"></span></button>
           <div class="${BLOCK_NAME}__tooltip ${getBottomStyleClass(hotSpot.coords)}">
             <div class="${BLOCK_NAME}__tooltip-content">
               ${hotSpot.textContent.map((el) => el.outerHTML).join('')}
