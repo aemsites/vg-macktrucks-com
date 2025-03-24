@@ -204,6 +204,11 @@
     transform: rotate(45deg);
     transition: transform 0.3s ease-in-out;
   }
+
+  .v2-picture-tooltips__tooltip-content {
+    max-height: 80px;
+    overflow-y: auto;
+  }
 }
 
 @keyframes pulse {

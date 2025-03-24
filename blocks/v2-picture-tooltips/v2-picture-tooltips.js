@@ -122,7 +122,7 @@ function handleClickHotspot(event, block) {
   tooltip.classList.add('active');
 
   if (isMobileViewport() && block.getBoundingClientRect().top > 0) {
-    block.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    tooltip.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   // set focus to the tooltip
