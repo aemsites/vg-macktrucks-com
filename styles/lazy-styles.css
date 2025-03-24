@@ -241,7 +241,7 @@
   padding: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   .body-dealer-locator main .section {
     padding: 0;
     margin: 0;

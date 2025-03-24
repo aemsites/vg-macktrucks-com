@@ -110,7 +110,7 @@ a.v2-stories-carousel-link {
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   .v2-stories-carousel-content-wrapper {
     margin-left: 0;
   }

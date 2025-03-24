@@ -679,7 +679,7 @@ const formatTimeUnit = (value) => String(value).padStart(2, '0');
  * @returns {boolean} true if it matched the media query
  */
 const isMobileViewport = () => {
-  const MQ = window.matchMedia('(max-width: 992px)');
+  const MQ = window.matchMedia('(max-width: 744px)');
 
   return MQ.matches;
 };
