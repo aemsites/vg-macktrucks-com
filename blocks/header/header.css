@@ -1254,16 +1254,3 @@ a.header__link {
 .header__custom--black .header__logo-image-wrapper:has(.icon-bulldog)::after {
   filter: invert(1);
 }
-
-/* Black label styling specific for sidebars mobile view */
-@media (max-width: 1200px) {
-  .redesign-v2 .header .black-label {
-    left: 100%;
-    font-family: var(--ff-body);
-    font-size: var(--label-font-size-x-small);
-    letter-spacing: var(--label-letter-spacing-x-small);
-    max-height: 24px;
-    padding: 6px;
-    margin-left: 6px;
-  }
-}

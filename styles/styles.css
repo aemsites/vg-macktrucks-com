@@ -231,6 +231,18 @@
   --easing-entrance: cubic-bezier(0, 0, 0.4, 1);
   --easing-exit: cubic-bezier(0.2, 0, 1, 1);
   --easing-standard: cubic-bezier(0.2, 0, 0.1, 1);
+
+  /* Black Label props */
+  --black-label-bg: var(--c-primary-black);
+  --black-label-color: var(--c-primary-white);
+  --black-label-font-family: var(--ff-body);
+  --black-label-font-weight: var(--label-font-weight-small);
+  --black-label-font-size: var(--label-font-size-small);
+  --black-label-line-height: var(--label-line-height-small);
+  --black-label-letter-spacing: var(--label-letter-spacing-small);
+  --black-label-margin-left: 12px;
+  --black-label-max-height: 32px;
+  --black-label-padding: 8px;
 }
 
 @keyframes fade-in {
@@ -1739,16 +1751,38 @@ main .section.responsive-title h1 {
 
 .redesign-v2 .black-label-container .black-label {
   position: absolute;
-  background-color: var(--c-primary-black);
-  color: var(--c-primary-white);
-  font-family: var(--ff-body);
-  font-weight: var(--label-font-weight-small);
-  font-size: var(--label-font-size-small);
-  line-height: var(--label-line-height-small);
+  background-color: var(--black-label-bg);
+  color: var(--black-label-color);
+  font-family: var(--black-label-font-family);
+  font-weight: var(--black-label-font-weight);
+  font-size: var(--black-label-font-size);
+  line-height: var(--black-label-line-height);
   letter-spacing: var(--label-letter-spacing-small);
   max-height: 32px;
   padding: 8px;
-  margin-left: 12px;
+  margin-left: var(--black-label-margin-left);
+}
+
+/* Black label styling specific for the header sidebars mobile view */
+.redesign-v2 .header .black-label {
+  left: 100%;
+  font-size: var(--label-font-size-x-small);
+  letter-spacing: var(--label-letter-spacing-x-small);
+  max-height: 24px;
+  padding: 6px;
+  margin-left: 6px;
+}
+
+/* Revert mnobile to default: */
+@media (min-width: 1200px) {
+  .redesign-v2 .header .black-label {
+    left: auto;
+    font-size: var(--black-label-font-size);
+    letter-spacing: var(--label-letter-spacing-small);
+    margin-left: var(--black-label-margin-left);
+    max-height: var(--black-label-max-height);
+    padding: var(--black-label-padding);
+  }
 }
 
 /* Black label styling ends here */
