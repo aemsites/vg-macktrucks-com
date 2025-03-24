@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktruckshistoricalmuseum.org/mack-news/</id>
     <title>Mack News</title>
-    <updated>2025-03-20T00:00:00.000Z</updated>
+    <updated>2025-03-24T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktruckshistoricalmuseum.org/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3198,5 +3198,13 @@
         <updated>2025-03-20T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“The 23,000-pound rear axle expands the applications in the vocational market – with refuse and construction reaping the most benefits,” said Tim Wrinkle, Mack vice president of vocational and medium duty.]]></content>
         <published>2025-03-20T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Defense Reaches Milestone with 500th U.S. Army M917A3 Heavy Dump Truck]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-defense-reaches-milestone-with-500th-us-army-m917a3-heavy-dump-truck</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-defense-reaches-milestone-with-500th-us-army-m917a3-heavy-dump-truck"/>
+        <updated>2025-03-24T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[ALLENTOWN, PA (March 24, 2025) – Mack Defense celebrated the production of its 500th M917A3 Heavy Dump Truck (HDT) in Allentown, Pennsylvania.]]></content>
+        <published>2025-03-24T00:00:00.000Z</published>
     </entry>
 </feed>
