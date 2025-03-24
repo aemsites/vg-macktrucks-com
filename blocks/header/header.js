@@ -383,6 +383,31 @@ const buildMenuContent = (menuData, navEl) => {
     const navLink = navLinks.find((el) => el.textContent.trim() === tabName.textContent.trim());
     const accordionContentWrapper = navLink?.closest(`.${blockName}__main-nav-item`).querySelector(`.${blockName}__accordion-content-wrapper`);
 
+    // add the menu-footer links to the category item that share a class with the menu-footer
+    const menuFooter = categories.find((el) => el.classList.contains('menu-footer'));
+
+    if (menuFooter) {
+      [...menuFooter.querySelectorAll('a')].forEach((link, index) => {
+        const classes = index ? ['standalone-link'] : ['button', 'button--primary', 'button--small'];
+        link.classList.add(...classes);
+      });
+
+      navLink.parentElement.querySelector('.desktop-wrapper-footer').append(menuFooter);
+
+      if (menuFooter.classList.length > 1) {
+        const categoryItem = categories.find((el) => el.classList.contains(menuFooter.classList[1]));
+        const ulList = categoryItem.querySelector('ul');
+        const menuFooterLinks = menuFooter.querySelectorAll('a');
+        [...menuFooterLinks].forEach((link) => {
+          const li = createElement('li', { classes: [`${blockName}__category-item`, 'mobile-menu-footer'] });
+          const a = createElement('a', { classes: [`${blockName}__link`], props: { href: link.href } });
+          a.textContent = link.textContent;
+          li.append(a);
+          ulList.append(li);
+        });
+      }
+    }
+
     categories
       .filter((cat) => cat.classList.contains('menu'))
       .forEach((cat) => {
@@ -455,17 +480,6 @@ const buildMenuContent = (menuData, navEl) => {
           accordionParentClassList.add(extraClass);
         }
       });
-
-    const menuFooter = categories.find((el) => el.classList.contains('menu-footer'));
-
-    if (menuFooter) {
-      [...menuFooter.querySelectorAll('a')].forEach((link, index) => {
-        const classes = index ? ['standalone-link'] : ['button', 'button--primary', 'button--small'];
-        link.classList.add(...classes);
-      });
-
-      navLink.parentElement.querySelector('.desktop-wrapper-footer').append(menuFooter);
-    }
 
     navLink?.addEventListener('click', onAccordionItemClick);
   });
