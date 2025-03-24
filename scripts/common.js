@@ -216,6 +216,29 @@ async function decorateIcons(element) {
   });
 }
 
+/**
+ * Replace double squared brackets word with a <span> with black label styling
+ * @param {Element} [element] HTML element containing a word between [[square brackets]]
+ */
+function decorateBlackLabel(element) {
+  const regex = /\[\[(.*?)\]\]/g;
+
+  function replaceText(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const replaced = node.textContent.replace(regex, '<span class="black-label">$1</span>');
+      if (replaced !== node.textContent) {
+        const temp = document.createElement('div');
+        temp.innerHTML = replaced;
+        node.parentElement.classList.add('black-label-container');
+        node.replaceWith(...temp.childNodes);
+      }
+    } else {
+      node.childNodes.forEach(replaceText);
+    }
+  }
+  replaceText(element);
+}
+
 async function loadTemplate(doc, templateName) {
   try {
     await loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`);
@@ -707,6 +730,7 @@ export {
   createElement,
   addFavIcon,
   decorateIcons,
+  decorateBlackLabel,
   loadTemplate,
   removeEmptyTags,
   unwrapDivs,
