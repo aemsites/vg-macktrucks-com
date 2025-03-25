@@ -369,6 +369,37 @@ const generateFeaturedCardHtml = (data) => {
   `;
 };
 
+/**
+ * Injects the menu footer links into the menu that has the class 'inject-menu-footer'
+ * @param {Element[]} categories
+ * @param {Element} menuFooter
+ * @returns {void}
+ */
+const injectMenuFooter = (categories, menuFooter) => {
+  const categoryItems = categories.filter((el) => el.classList.contains('inject-menu-footer'));
+  const menuFooterLinks = menuFooter.querySelectorAll('a');
+  if (menuFooterLinks.length > 0) {
+    categoryItems.forEach((categoryItem) => {
+      const list = categoryItem.querySelector(':scope > ul');
+      if (list) {
+        [...menuFooterLinks].forEach((link) => {
+          const li = createElement('li', { classes: [`${blockName}__category-item`, 'mobile-menu-footer'] });
+          const a = createElement('a', { classes: [`${blockName}__link`], props: { href: link.href } });
+          a.textContent = link.textContent;
+          li.append(a);
+          list.append(li);
+        });
+      }
+    });
+  }
+};
+
+/**
+ * Builds the menu content for the Mega-menu
+ * @param {Element[]} menuData
+ * @param {Element} navEl
+ * @returns {void}
+ */
 const buildMenuContent = (menuData, navEl) => {
   const menus = transformMenuData(menuData);
   const navLinks = [...navEl.querySelectorAll(`.${blockName}__main-nav-link`)];
@@ -382,8 +413,7 @@ const buildMenuContent = (menuData, navEl) => {
     const categories = [...menuItemData.querySelectorAll(':scope > div')];
     const navLink = navLinks.find((el) => el.textContent.trim() === tabName.textContent.trim());
     const accordionContentWrapper = navLink?.closest(`.${blockName}__main-nav-item`).querySelector(`.${blockName}__accordion-content-wrapper`);
-
-    // add the menu-footer links to the category item that share a class with the menu-footer
+    // add the menu footer to the Mega-menu
     const menuFooter = categories.find((el) => el.classList.contains('menu-footer'));
 
     if (menuFooter) {
@@ -394,20 +424,7 @@ const buildMenuContent = (menuData, navEl) => {
 
       navLink.parentElement.querySelector('.desktop-wrapper-footer').append(menuFooter);
 
-      const categoryItems = categories.find((el) => el.classList.contains('inject-menu-footer'));
-      const menuFooterLinks = menuFooter.querySelectorAll('a');
-      if (categoryItems && menuFooterLinks.length > 0) {
-        const ulList = categoryItems.querySelector('ul');
-        if (ulList) {
-          [...menuFooterLinks].forEach((link) => {
-            const li = createElement('li', { classes: [`${blockName}__category-item`, 'mobile-menu-footer'] });
-            const a = createElement('a', { classes: [`${blockName}__link`], props: { href: link.href } });
-            a.textContent = link.textContent;
-            li.append(a);
-            ulList.append(li);
-          });
-        }
-      }
+      injectMenuFooter(categories, menuFooter);
     }
 
     categories
