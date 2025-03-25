@@ -394,17 +394,19 @@ const buildMenuContent = (menuData, navEl) => {
 
       navLink.parentElement.querySelector('.desktop-wrapper-footer').append(menuFooter);
 
-      if (menuFooter.classList.length > 1) {
-        const categoryItem = categories.find((el) => el.classList.contains(menuFooter.classList[1]));
-        const ulList = categoryItem.querySelector('ul');
-        const menuFooterLinks = menuFooter.querySelectorAll('a');
-        [...menuFooterLinks].forEach((link) => {
-          const li = createElement('li', { classes: [`${blockName}__category-item`, 'mobile-menu-footer'] });
-          const a = createElement('a', { classes: [`${blockName}__link`], props: { href: link.href } });
-          a.textContent = link.textContent;
-          li.append(a);
-          ulList.append(li);
-        });
+      const categoryItems = categories.find((el) => el.classList.contains('inject-menu-footer'));
+      const menuFooterLinks = menuFooter.querySelectorAll('a');
+      if (categoryItems && menuFooterLinks.length > 0) {
+        const ulList = categoryItems.querySelector('ul');
+        if (ulList) {
+          [...menuFooterLinks].forEach((link) => {
+            const li = createElement('li', { classes: [`${blockName}__category-item`, 'mobile-menu-footer'] });
+            const a = createElement('a', { classes: [`${blockName}__link`], props: { href: link.href } });
+            a.textContent = link.textContent;
+            li.append(a);
+            ulList.append(li);
+          });
+        }
       }
     }
 
