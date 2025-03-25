@@ -10,7 +10,7 @@ import { getTextLabel } from '../../scripts/common.js';
  */
 const engineData = new Map();
 
-const MQ = window.matchMedia('(min-width: 768px)');
+const MQ = window.matchMedia('(min-width: 744px)');
 const blockName = 'performance-specifications';
 // Selected engine doesn't have data available in the JSON file
 const NoDataEngineDetail = {

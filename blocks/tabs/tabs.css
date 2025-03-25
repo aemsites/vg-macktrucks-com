@@ -70,7 +70,7 @@
     flex-direction: initial;
   }
 
-  .tabs-tab-item.active :is(.tab-text-wrapper , .tab-picture-wrapper) {
+  .tabs-tab-item.active :is(.tab-text-wrapper, .tab-picture-wrapper) {
     order: unset;
   }
 }

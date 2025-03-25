@@ -1,4 +1,3 @@
-
 .download-container {
   padding: 0 !important;
 }
@@ -35,16 +34,14 @@
 .download-card .download-texts-text a,
 .download-card .download-texts-text,
 .download-card .download-texts-link {
-  color: var(--c-secondary-graphite);  
+  color: var(--c-secondary-graphite);
   font-size: var(--body-font-size-xs);
   font-family: var(--ff-body);
   line-height: 22px;
-  
 }
 
 .download-card .download-texts-link {
   font-weight: 700;
-  
 }
 
 .download-card .download-texts-text {
@@ -119,7 +116,7 @@
   padding-top: 20px;
 }
 
-.download-new-link:hover  {
+.download-new-link:hover {
   text-decoration: none;
 }
 
@@ -155,10 +152,10 @@
     flex-direction: column;
     align-items: center;
   }
-  
+
   .download-new-item {
     --item-height: 134px;
-  
+
     min-width: 960px;
     max-width: 960px;
   }
@@ -177,7 +174,7 @@
 
   .download-new-item:hover {
     background-color: var(--c-primary-gold);
-    transition: .35s;
+    transition: 0.35s;
   }
 
   .download-new-link:hover small,

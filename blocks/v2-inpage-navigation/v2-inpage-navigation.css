@@ -63,9 +63,10 @@
   margin: 0;
   padding: 10px 20px;
   width: 100%;
-  transition: background-color var(--duration-small) var(--easing-standard),
-  color var(--duration-small) var(--easing-standard),
-  border-color var(--duration-small) var(--easing-standard);
+  transition:
+    background-color var(--duration-small) var(--easing-standard),
+    color var(--duration-small) var(--easing-standard),
+    border-color var(--duration-small) var(--easing-standard);
 }
 
 /* stylelint-disable no-descending-specificity */
@@ -73,10 +74,8 @@
 .v2-inpage-navigation__item button:active,
 .v2-inpage-navigation__item button:focus,
 .v2-inpage-navigation__selected-item-wrapper:hover,
-.v2-inpage-navigation__selected-item-wrapper:active
-  .v2-inpage-navigation__selected-item-wrapper:focus,
-.v2-inpage-navigation__dropdown--open
-  .v2-inpage-navigation__selected-item-wrapper {
+.v2-inpage-navigation__selected-item-wrapper:active .v2-inpage-navigation__selected-item-wrapper:focus,
+.v2-inpage-navigation__dropdown--open .v2-inpage-navigation__selected-item-wrapper {
   background-color: #f1f1f1;
 }
 /* stylelint-enable no-descending-specificity */

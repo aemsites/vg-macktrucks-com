@@ -32,11 +32,11 @@
 }
 
 .v2-solutions h1 {
-  font: normal var(--headline-1-font-size)/1.15 var(--ff-headline-medium);
+  font: normal var(--headline-1-font-size) / 1.15 var(--ff-headline-medium);
 }
 
 .v2-solutions h1 + p {
-  font: normal var(--body-font-size-s)/1.5 var(--ff-body);
+  font: normal var(--body-font-size-s) / 1.5 var(--ff-body);
 }
 
 .v2-solutions .button-container {

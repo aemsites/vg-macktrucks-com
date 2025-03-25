@@ -173,11 +173,11 @@
 }
 
 .v2-tabbed-carousel__title {
-  font: var(--headline-2-font-size)/var(--headline-2-line-height) var(--ff-headline-medium);
+  font: var(--headline-2-font-size) / var(--headline-2-line-height) var(--ff-headline-medium);
 }
 
 .v2-tabbed-carousel__text {
-  font: var(--body-2-font-weight) var(--body-2-font-size)/var(--body-2-line-height) var(--ff-body);
+  font: var(--body-2-font-weight) var(--body-2-font-size) / var(--body-2-line-height) var(--ff-body);
   letter-spacing: var(--body-2-letter-spacing);
 }
 

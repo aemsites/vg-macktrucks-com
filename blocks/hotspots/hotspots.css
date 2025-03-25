@@ -475,7 +475,7 @@
 
 /* overlay a gray box over the non-active buttons */
 #hotspots-mobile-nav .featurenav-list .featurenav-list-item::before {
-  content: "";
+  content: '';
   position: absolute;
   z-index: 2;
   left: 0;

@@ -141,10 +141,10 @@
   padding: 40px 16px;
   /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
   grid-template-areas:
-    "logo"
-    "menu"
-    "newsletter"
-    "social";
+    'logo'
+    'menu'
+    'newsletter'
+    'social';
 }
 
 /* Logo */
@@ -336,8 +336,8 @@
     gap: 16px;
     /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
     grid-template-areas:
-      "logo menu newsletter"
-      "social menu newsletter";
+      'logo menu newsletter'
+      'social menu newsletter';
   }
 
   /* Logo */
@@ -363,8 +363,8 @@
 /* cutsom footer styles */
 .footer__custom .footer-menu {
   grid-template-areas:
-    "logo"
-    "social";
+    'logo'
+    'social';
 }
 
 @media (min-width: 1140px) {
@@ -372,7 +372,7 @@
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 1fr;
     /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
-    grid-template-areas: "logo social";
+    grid-template-areas: 'logo social';
   }
 
   .footer__custom .footer-menu__socialmedia {

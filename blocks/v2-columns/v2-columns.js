@@ -1,4 +1,4 @@
-import { createElement, variantsClassesToBEM } from '../../scripts/common.js';
+import { createElement, variantsClassesToBEM, decorateBlackLabel } from '../../scripts/common.js';
 
 const blockName = 'v2-columns';
 
@@ -118,4 +118,6 @@ export default async function decorate(block) {
       prevEl.replaceWith(pretitle);
     }
   });
+
+  decorateBlackLabel(block);
 }

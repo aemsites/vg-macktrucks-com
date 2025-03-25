@@ -52,7 +52,7 @@
   text-align: center;
 }
 
-.performance-specifications .category-tab [role="tab"] {
+.performance-specifications .category-tab [role='tab'] {
   background: 0 0;
   border: none;
   color: var(--text-subtle);
@@ -73,9 +73,9 @@
   position: relative;
 }
 
-.performance-specifications .category-tab [role="tab"]::after {
+.performance-specifications .category-tab [role='tab']::after {
   background: var(--navigation-line-default-color);
-  content: "";
+  content: '';
   height: var(--navigation-line-height);
   left: 0;
   position: absolute;
@@ -83,17 +83,17 @@
   width: 100%;
 }
 
-.performance-specifications .category-tab [role="tab"]:focus {
+.performance-specifications .category-tab [role='tab']:focus {
   outline: 0;
 }
 
-.performance-specifications .category-tab [role="tab"]:focus-visible {
+.performance-specifications .category-tab [role='tab']:focus-visible {
   outline: var(--navigation-line-active-color) auto 3px;
 }
 
-.performance-specifications .category-tab [role="tab"][aria-selected="true"],
-.performance-specifications .category-tab [role="tab"]:focus-visible,
-.performance-specifications .category-tab [role="tab"]:hover {
+.performance-specifications .category-tab [role='tab'][aria-selected='true'],
+.performance-specifications .category-tab [role='tab']:focus-visible,
+.performance-specifications .category-tab [role='tab']:hover {
   color: var(--c-primary-white);
 }
 
@@ -151,7 +151,7 @@
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
-.performance-specifications .engine-tablist [role="tab"] {
+.performance-specifications .engine-tablist [role='tab'] {
   background-color: var(--c-primary-white);
   font-size: var(--body-font-size-xs);
   color: var(--c-primary-black);
@@ -162,15 +162,15 @@
   border-style: none;
 }
 
-.performance-specifications .engine-tablist [role="tab"][aria-selected="true"] {
+.performance-specifications .engine-tablist [role='tab'][aria-selected='true'] {
   background-color: var(--gold-button-background);
 }
 
-.performance-specifications .engine-tablist [role="tab"][aria-selected="true"]:hover {
+.performance-specifications .engine-tablist [role='tab'][aria-selected='true']:hover {
   background-color: var(--button-secondary-gold-hover);
 }
 
-.performance-specifications .engine-tablist [role="tab"][aria-selected="false"]:hover {
+.performance-specifications .engine-tablist [role='tab'][aria-selected='false']:hover {
   background-color: var(--button-tertiary-white-hover);
 }
 

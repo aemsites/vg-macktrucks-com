@@ -66,9 +66,7 @@
   transition: transform var(--duration-small) var(--easing-standard);
 }
 
-.v2-accordion-column__item :is(
-  .v2-accordion-column__item-image,
-  .v2-accordion-column__item-description){
+.v2-accordion-column__item :is(.v2-accordion-column__item-image, .v2-accordion-column__item-description) {
   display: none;
 }
 
@@ -88,9 +86,7 @@
   flex-direction: column;
 }
 
-.v2-accordion-column__item.active :is(
-  .v2-accordion-column__item-image,
-  .v2-accordion-column__item-description) {
+.v2-accordion-column__item.active :is(.v2-accordion-column__item-image, .v2-accordion-column__item-description) {
   display: initial;
 }
 

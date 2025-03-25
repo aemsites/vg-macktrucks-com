@@ -30,7 +30,7 @@
 .recent-articles-first-item a {
   color: var(--c-primary-black);
 }
-  
+
 .recent-articles-first-item .recent-articles-first-category {
   position: relative;
   font-size: var(--body-font-size-xxs);
@@ -104,7 +104,7 @@
 }
 
 .recent-articles-rest-item .recent-articles-rest-title {
-  font-family: var(--ff-body-bold); 
+  font-family: var(--ff-body-bold);
   font-size: var(--heading-font-size-xs);
   color: var(--c-primary-black);
   font-weight: bolder;

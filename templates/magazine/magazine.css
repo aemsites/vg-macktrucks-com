@@ -1,6 +1,6 @@
 main .section {
-  padding: 0!important;
-} 
+  padding: 0 !important;
+}
 
 main .template.section.article-hero-container {
   position: relative;
@@ -164,6 +164,12 @@ main .template.section.article-hero-container {
 
   .template.article-template.article-texts-container {
     max-width: 1200px !important;
+    display: grid;
+    grid-template: 
+      'current recent'
+      'recommended recent' / 60% 35%;
+    column-gap: 50px;
+    margin: 0 auto;
   }
 
   .template.article-template.article-texts-container .current-article-container {
@@ -179,17 +185,6 @@ main .template.section.article-hero-container {
     grid-area: recent;
     display: contents;
     align-self: start;
-  }
-
-  .template.article-template.article-texts-container {
-    display: grid;
-    grid-template-columns: 60% 35%;
-    grid-template-rows: auto;
-    grid-template-areas: 
-      "current recent"
-      "recommended recent";
-    column-gap: 50px;
-    margin: 0 auto;
   }
 }
 

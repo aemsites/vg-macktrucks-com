@@ -92,9 +92,7 @@
   background: var(--navigation-line-active-color);
 }
 
-.v2-truck-features
-  .v2-truck-features__images-list
-  li.v2-truck-features__slide-image--active {
+.v2-truck-features .v2-truck-features__images-list li.v2-truck-features__slide-image--active {
   display: flex;
   justify-content: center;
   position: relative;
@@ -105,11 +103,7 @@
   display: block;
   height: 100%;
   position: absolute;
-  background: radial-gradient(
-    52.65% 52.65% at 50% 56%,
-    #fff0 31.16%,
-    var(--section-background) 89.49%
-  );
+  background: radial-gradient(52.65% 52.65% at 50% 56%, #fff0 31.16%, var(--section-background) 89.49%);
   width: 298px;
   max-width: 800px;
 }
@@ -195,13 +189,11 @@
     align-items: flex-end;
   }
 
-  .v2-truck-features.v2-truck-features--image-left
-    .v2-truck-features__images-list {
+  .v2-truck-features.v2-truck-features--image-left .v2-truck-features__images-list {
     left: 0;
     right: unset;
   }
 }
-
 
 @media (min-width: 744px) and (min-height: 800px) {
   .v2-truck-features__slide-image--active picture,

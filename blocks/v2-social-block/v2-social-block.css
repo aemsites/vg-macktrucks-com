@@ -30,8 +30,7 @@
   background-color: transparent;
   align-items: center;
   display: inline-flex;
-  font: var(--accent-2-font-size) / var(--accent-2-line-height)
-    var(--ff-accents);
+  font: var(--accent-2-font-size) / var(--accent-2-line-height) var(--ff-accents);
   letter-spacing: 0.4px;
   justify-content: center;
   max-width: 21.5em;

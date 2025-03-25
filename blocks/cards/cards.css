@@ -30,8 +30,8 @@
   grid-gap: 16px;
 }
 
-.cards.cta > ul, 
-.cards.dark > ul{
+.cards.cta > ul,
+.cards.dark > ul {
   grid-gap: 0;
 }
 
@@ -321,5 +321,4 @@
   .cards.dark:not(.two) > ul {
     grid-template-columns: repeat(3, 1fr);
   }
-
 }

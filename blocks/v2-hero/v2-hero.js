@@ -2,7 +2,7 @@ import { getImageURLs, createResponsivePicture, variantsClassesToBEM, decorateIc
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 import { initializeCountdown } from '../../common/countdown/countdown.js';
 
-const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
+export const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
 const blockName = 'v2-hero';
 let hasVideo;
 
@@ -22,41 +22,31 @@ const getCountdownDate = (block) => {
   return countdownDate;
 };
 
-const extractTitleText = (block) => {
-  const text = block?.querySelector(':scope > div:last-child p')?.textContent?.trim() || '';
-
-  if (!text) {
-    console.warn('Form title text is missing or empty.');
+const getFirstBlockHeader = (block) => {
+  const firstBlockHeader = block.querySelector(':scope h1, :scope h2, :scope h3');
+  if (!firstBlockHeader) {
+    console.warn('First block header is missing.');
   }
-
-  return text;
-};
-
-const createFormTitleElement = (text) => {
-  const container = createElement('div', { classes: `${blockName}__form-title-container` });
-  const title = createElement('h5', { classes: `${blockName}__form-title` });
-  title.textContent = text;
-  container.appendChild(title);
-  return container;
+  return firstBlockHeader;
 };
 
 const setupCountdownSection = async (block, wrapper) => {
   try {
     const targetDate = getCountdownDate(block);
+    const firstBlockHeader = getFirstBlockHeader(block);
 
     if (targetDate) {
       const countdown = await initializeCountdown(targetDate);
-      const titleText = extractTitleText(block);
-      const titleElement = createFormTitleElement(titleText);
       const section = block.closest('.section');
       const iframe = section.querySelector('.iframe');
 
       if (countdown) {
-        wrapper.appendChild(countdown);
-      }
-
-      if (titleElement) {
-        wrapper.appendChild(titleElement);
+        if (firstBlockHeader) {
+          // append the countdown after the first block header
+          firstBlockHeader.insertAdjacentElement('afterend', countdown);
+        } else {
+          wrapper.prepend(countdown);
+        }
       }
 
       if (iframe) {
@@ -178,7 +168,7 @@ export default async function decorate(block) {
   });
 
   if (isCountdown) {
-    setupCountdownSection(block, contentWrapper);
+    setupCountdownSection(block, content);
   }
 
   block.parentElement.classList.add('full-width');

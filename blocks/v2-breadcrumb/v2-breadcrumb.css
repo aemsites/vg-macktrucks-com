@@ -1,4 +1,4 @@
-.v2-breadcrumb-wrapper{
+.v2-breadcrumb-wrapper {
   background-color: var(--c-secondary-graphite);
 }
 
@@ -42,7 +42,7 @@
 .v2-breadcrumb__crumb:focus-visible {
   outline: 2px solid var(--border-focus);
   border-radius: 2px;
-  outline-offset: 2px
+  outline-offset: 2px;
 }
 
 .v2-breadcrumb__crumb--active {

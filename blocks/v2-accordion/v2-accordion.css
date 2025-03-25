@@ -71,8 +71,7 @@
 }
 
 .v2-accordion__item .v2-accordion__item:last-child {
-  border-bottom: 0
-
+  border-bottom: 0;
 }
 
 /* END Styles for nested accordion */
@@ -82,6 +81,10 @@
     font-size: var(--headline-2-font-size);
     letter-spacing: var(--headline-2-letter-spacing);
     line-height: var(--headline-2-line-height);
+  }
+
+  .v2-accordion .v2-accordion .v2-accordion__icon {
+    display: none;
   }
 
   /* Styles for nested accordion */

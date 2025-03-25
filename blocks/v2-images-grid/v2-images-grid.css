@@ -174,7 +174,7 @@
 .v2-images-grid__modal-arrow:focus-visible {
   outline: 2px solid var(--border-focus);
   border-radius: 2px;
-  outline-offset: 2px
+  outline-offset: 2px;
 }
 
 .v2-images-grid__modal-arrow svg {
@@ -207,14 +207,12 @@
   width: 100%;
 }
 
-.v2-images-grid__modal-arrows-wrapper
-  .v2-images-grid__modal-arrow:first-of-type {
+.v2-images-grid__modal-arrows-wrapper .v2-images-grid__modal-arrow:first-of-type {
   top: 50%;
   position: absolute;
 }
 
-.v2-images-grid__modal-arrows-wrapper
-  .v2-images-grid__modal-arrow:last-of-type {
+.v2-images-grid__modal-arrows-wrapper .v2-images-grid__modal-arrow:last-of-type {
   top: 50%;
   right: 0;
   position: absolute;
@@ -235,7 +233,7 @@
 .v2-images-grid__carousel-preview-item button:focus-visible {
   outline: 2px solid var(--border-focus);
   border-radius: 2px;
-  outline-offset: 2px
+  outline-offset: 2px;
 }
 
 .v2-images-grid__carousel-preview-item picture {
