@@ -31,7 +31,6 @@
   src:
     url('../fonts/GT-America-Mono-Regular.woff2') format('woff2'),
     url('../fonts/GT-America-Mono-Regular.woff') format('woff');
-  letter-spacing: -4%;
   font-display: swap;
 }
 
@@ -40,7 +39,6 @@
   src:
     url('../fonts/GT-America-Mono-Medium.woff2') format('woff2'),
     url('../fonts/GT-America-Mono-Medium.woff') format('woff');
-  letter-spacing: -4%;
   font-display: swap;
 }
 
@@ -243,7 +241,7 @@
   padding: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   .body-dealer-locator main .section {
     padding: 0;
     margin: 0;

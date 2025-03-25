@@ -83,6 +83,10 @@
     line-height: var(--headline-2-line-height);
   }
 
+  .v2-accordion .v2-accordion .v2-accordion__icon {
+    display: none;
+  }
+
   /* Styles for nested accordion */
   .v2-accordion__content .v2-accordion__title {
     font-size: var(--headline-4-font-size);

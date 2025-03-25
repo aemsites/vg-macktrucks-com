@@ -31,15 +31,11 @@ const setNavigationLine = (tabNavigation) => {
     totalWidth += listItem.getBoundingClientRect().width;
   });
 
+  let borderScale = totalWidth;
   if (totalWidth + 32 <= navWidth) {
-    if (navWidth === 1040 && viewportWidth >= 1200) {
-      tabNavigation.style.setProperty('--truck-lineup-border-scale', `${navWidth}`);
-    } else {
-      tabNavigation.style.setProperty('--truck-lineup-border-scale', `${navWidth - 32}`);
-    }
-  } else {
-    tabNavigation.style.setProperty('--truck-lineup-border-scale', `${totalWidth}`);
+    borderScale = navWidth === 1040 && viewportWidth >= 1200 ? navWidth : navWidth - 32;
   }
+  tabNavigation.style.setProperty('--truck-lineup-border-scale', `${borderScale}`);
 };
 
 function buildTabNavigation(tabItems, clickHandler) {
@@ -117,11 +113,24 @@ const updateActiveItem = (index) => {
 };
 
 const scrollObserverFunction = (elements, entry) => {
+  // in case the block has a featured item, scroll to it
+  const featuredItem = [...elements].find((el) => el.classList.contains('featured'));
+  const targetElement = featuredItem || entry.target;
+  let idx = 0;
+
   elements.forEach((el, index) => {
-    if (el === entry.target && entry.intersectionRatio >= 0.9) {
+    if (el === targetElement && entry.intersectionRatio >= 0.9) {
+      if (featuredItem) {
+        idx = index;
+      }
       updateActiveItem(index);
     }
   });
+
+  if (featuredItem) {
+    featuredItem.classList.remove('featured');
+    setCarouselPosition(targetElement.parentNode, idx);
+  }
 };
 
 const arrowFragment = document.createRange().createContextualFragment(`<li>
@@ -152,18 +161,27 @@ export default async function decorate(block) {
 
   // Arrows
   createArrowControls(imagesContainer, `.${blockName}__image-item.active`, [`${blockName}__arrow-controls`], arrowFragment);
+  // move arrows to the end of the images container
+  imagesWrapper.append(imagesWrapper.querySelector(`.${blockName}__arrow-controls`));
 
   descriptionContainer.parentNode.append(tabNavigation);
 
   tabItems.forEach((tabItem) => {
     tabItem.classList.add(`${blockName}__desc-item`);
     const tabContent = tabItem.querySelector(tabContentClass);
+
     const headings = tabContent ? tabContent.querySelectorAll('h1, h2, h3, h4, h5, h6') : [];
     [...headings].forEach((heading) => heading.classList.add(`${blockName}__title`));
 
     // create div for image and append inside image div container
     const picture = tabItem.querySelector('picture');
-    const imageItem = createElement('div', { classes: `${blockName}__image-item` });
+    // adds the featured class only to the first featured item even if there are more than one
+    const tabFeatured = tabContent.dataset.truckCarouselFeatured;
+    const hasImageFeatured = imagesContainer.querySelector('.featured');
+    const imageItem = createElement('div', {
+      classes: [`${blockName}__image-item`, ...(tabFeatured && !hasImageFeatured ? ['featured'] : [])],
+    });
+
     imageItem.appendChild(picture);
     imagesContainer.appendChild(imageItem);
 

@@ -1,4 +1,4 @@
-import { createElement, decorateIcons, generateId, getTextLabel, HEADER_CONFIGS, getLanguagePath } from '../../scripts/common.js';
+import { createElement, decorateIcons, decorateBlackLabel, generateId, getTextLabel, HEADER_CONFIGS, getLanguagePath } from '../../scripts/common.js';
 import { createOptimizedPicture, getMetadata } from '../../scripts/aem.js';
 import { getAllElWithChildren } from '../../scripts/scripts.js';
 
@@ -719,4 +719,5 @@ export default async function decorate(block) {
     swapActionsLinks(desktopMQ.matches);
   }
   decorateIcons(block);
+  decorateBlackLabel(block);
 }
