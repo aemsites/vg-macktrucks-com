@@ -5,7 +5,7 @@ import { getAllElWithChildren } from '../../scripts/scripts.js';
 // check if the header has to have a login and/or a search button
 const { SEARCH_DISABLED = '', LOGIN_DISABLED = '' } = HEADER_CONFIGS;
 
-const blockClass = 'header';
+const blockName = 'header';
 
 const desktopMQ = window.matchMedia('(min-width: 1200px)');
 const tabsVariants = {
@@ -24,9 +24,9 @@ const createLogo = (logoWrapper) => {
   const logoImage = logoWrapper.querySelector('span.icon');
   const logoLink = logoImage.parentElement.tagName === 'A' ? logoImage.parentElement : null;
 
-  logoImage.classList.add(`${blockClass}__logo-image`);
+  logoImage.classList.add(`${blockName}__logo-image`);
   logoImage.setAttribute('aria-hidden', 'true');
-  (logoLink || logoImage).classList.add(`${blockClass}__logo-image-wrapper`);
+  (logoLink || logoImage).classList.add(`${blockName}__logo-image-wrapper`);
 
   if (logoLink) {
     const logoLinkTextContainer = createElement('span', { classes: ['screenreader'] });
@@ -43,33 +43,33 @@ const createMainLinks = (mainLinksWrapper) => {
   const list = mainLinksWrapper.querySelector('ul');
   if (list) {
     list.setAttribute('id', 'header-main-nav');
-    list.classList.add(`${blockClass}__main-nav`);
+    list.classList.add(`${blockName}__main-nav`);
     list.querySelectorAll('li').forEach((listItem) => {
       const accordionContainer = document.createRange().createContextualFragment(`
-        <div class="${blockClass}__accordion-container ${blockClass}__main-link-wrapper">
-          <div class="${blockClass}__accordion-content-wrapper">
+        <div class="${blockName}__accordion-container ${blockName}__main-link-wrapper">
+          <div class="${blockName}__accordion-content-wrapper">
           </div>
           <div class="desktop-wrapper"></div>
           <div class="desktop-wrapper-footer"></div>
         </div>
       `);
 
-      listItem.classList.add(`${blockClass}__main-nav-item`);
+      listItem.classList.add(`${blockName}__main-nav-item`);
       listItem.append(accordionContainer);
 
       const mainNavLink = listItem.querySelector('a');
       mainNavLink.setAttribute('id', generateId('main-nav'));
     });
     list.querySelectorAll('li > a').forEach((link) => {
-      link.classList.add(`${blockClass}__main-nav-link`, `${blockClass}__link`, `${blockClass}__link-accordion`);
+      link.classList.add(`${blockName}__main-nav-link`, `${blockName}__link`, `${blockName}__link-accordion`);
     });
 
     const closeMenuLabel = getTextLabel('Close menu');
     const closeIcon = document.createRange().createContextualFragment(`
-      <li class="${blockClass}__action-item ${blockClass}__action-item--close-menu">
+      <li class="${blockName}__action-item ${blockName}__action-item--close-menu">
         <button
           aria-label="${closeMenuLabel}"
-          class="${blockClass}__close-menu"
+          class="${blockName}__close-menu"
           aria-expanded="false"
           aria-controls="header-main-nav, header-actions-list"
         >
@@ -89,19 +89,19 @@ const createActions = (actionsWrapper) => {
   const list = actionsWrapper.querySelector('ul');
 
   list.setAttribute('id', 'header-actions-list');
-  list.classList.add(`${blockClass}__actions-list`);
+  list.classList.add(`${blockName}__actions-list`);
   list.querySelectorAll('li').forEach((listItem) => {
-    listItem.classList.add(`${blockClass}__action-item`);
+    listItem.classList.add(`${blockName}__action-item`);
   });
   list.querySelectorAll('li > a').forEach((link) => {
-    link.classList.add(`${blockClass}__action-link`, `${blockClass}__link`);
+    link.classList.add(`${blockName}__action-link`, `${blockName}__link`);
 
     // wrapping text nodes into spans &
     // adding aria labels (because text labels are hidden on mobile)
     [...link.childNodes]
       .filter((node) => node.nodeType === Node.TEXT_NODE)
       .forEach((textNode) => {
-        const spanWrapper = createElement('span', { classes: [`${blockClass}__action-link-text`] });
+        const spanWrapper = createElement('span', { classes: [`${blockName}__action-link-text`] });
 
         textNode.replaceWith(spanWrapper);
         spanWrapper.append(textNode);
@@ -113,12 +113,12 @@ const createActions = (actionsWrapper) => {
 };
 
 const mobileActions = () => {
-  const mobileActionsEl = createElement('div', { classes: [`${blockClass}__mobile-actions`] });
+  const mobileActionsEl = createElement('div', { classes: [`${blockName}__mobile-actions`] });
   const searchLabel = getTextLabel('Search');
   const openMenuLabel = getTextLabel('Open menu');
   const searchResults = `${getLanguagePath()}search`;
 
-  const searchEl = `<a href="${searchResults}" aria-label="${searchLabel}" class="${blockClass}__search-button ${blockClass}__action-link ${blockClass}__link">
+  const searchEl = `<a href="${searchResults}" aria-label="${searchLabel}" class="${blockName}__search-button ${blockName}__action-link ${blockName}__link">
     <span class="icon icon-search" aria-hidden="true"></span>
   </a>`;
 
@@ -126,7 +126,7 @@ const mobileActions = () => {
     ${SEARCH_DISABLED?.toLowerCase() === 'true' ? '' : searchEl}
     <button
       aria-label="${openMenuLabel}"
-      class="${blockClass}__hamburger-menu ${blockClass}__action-link ${blockClass}__link"
+      class="${blockName}__hamburger-menu ${blockName}__action-link ${blockName}__link"
       aria-expanded="false"
       aria-controls="header-main-nav, header-actions-list"
     >
@@ -140,7 +140,7 @@ const mobileActions = () => {
 };
 
 const rebuildCategoryItem = (item) => {
-  item.classList.add(`${blockClass}__category-item`);
+  item.classList.add(`${blockName}__category-item`);
 
   [...item.childNodes].forEach((el) => {
     // unwrapping images & links inside paragraphs
@@ -150,7 +150,7 @@ const rebuildCategoryItem = (item) => {
 
     // second list of links should be rendered as buttons
     if (item.querySelector(':scope > ul:nth-of-type(2)') === el) {
-      el.classList.add(`${blockClass}__category-item-buttons`);
+      el.classList.add(`${blockName}__category-item-buttons`);
 
       [...el.querySelectorAll('a')].forEach((button, index) => {
         if (!index) {
@@ -165,7 +165,7 @@ const rebuildCategoryItem = (item) => {
   const firstLink = item.querySelector(':scope > a:first-of-type');
 
   if (firstLink?.previousElementSibling?.tagName === 'PICTURE') {
-    firstLink.classList.add(`${blockClass}__link--after-image`);
+    firstLink.classList.add(`${blockName}__link--after-image`);
   }
 };
 
@@ -232,7 +232,7 @@ const setTabActive = (tab) => {
   const targetId = tab.closest('[menu-accordion-id]').getAttribute('menu-accordion-id');
   const tabContent = document.querySelector(`#${targetId}`);
 
-  [...tabContent.parentElement.querySelectorAll(`.${blockClass}__accordion-container`)].forEach((item) => {
+  [...tabContent.parentElement.querySelectorAll(`.${blockName}__accordion-container`)].forEach((item) => {
     if (item !== tabContent) {
       item.setAttribute('data-active', 'false');
     }
@@ -241,13 +241,13 @@ const setTabActive = (tab) => {
   tabContent.setAttribute('data-active', 'true');
 
   // scroll to proper tab content for tabs with cards
-  if (tab.closest('.header__main-link-wrapper--tabs-with-cards')) {
+  if (tab.closest(`.${blockName}__main-link-wrapper--tabs-with-cards`)) {
     const tabContentId = tab.getAttribute('aria-controls');
     document.querySelector(`#${tabContentId}`).scrollIntoView({ behavior: 'smooth' });
   }
 
   // setting the aria-expanded for tabs and link's tab indexes
-  [...tab.closest('.header__accordion-content-wrapper').querySelectorAll('.header__tab-link')].forEach((tabLink) => {
+  [...tab.closest(`.${blockName}__accordion-content-wrapper`).querySelectorAll(`.${blockName}__tab-link`)].forEach((tabLink) => {
     const tId = tabLink.getAttribute('aria-controls');
     const tContent = document.querySelector(`#${tId}`);
 
@@ -259,15 +259,14 @@ const setTabActive = (tab) => {
 
 const onNavExpandChange = (isExpanded) => {
   // disabling scroll when menu is open
-  document.body.classList[isExpanded ? 'add' : 'remove']('disable-scroll');
-
-  document.querySelector('.header.block').classList[isExpanded ? 'add' : 'remove']('header--expanded');
+  document.body.classList.toggle('disable-scroll', isExpanded);
+  document.querySelector(`.${blockName}.block`).classList.toggle(`${blockName}--expanded`, isExpanded);
 };
 
 const onAccordionItemClick = (el) => {
   const elClassList = el.currentTarget.classList;
-  const isMainLink = elClassList.contains(`${blockClass}__main-nav-link`);
-  const isTabLink = elClassList.contains(`${blockClass}__tab-link`);
+  const isMainLink = elClassList.contains(`${blockName}__main-nav-link`);
+  const isTabLink = elClassList.contains(`${blockName}__tab-link`);
   const isDesktop = desktopMQ.matches;
 
   if (isDesktop && !isMainLink && !isTabLink) {
@@ -277,19 +276,19 @@ const onAccordionItemClick = (el) => {
   el.preventDefault();
 
   const menuEl = el.currentTarget.parentElement;
-  menuEl.classList.toggle(`${blockClass}__menu-open`);
-  const isExpanded = menuEl.classList.contains(`${blockClass}__menu-open`);
+  menuEl.classList.toggle(`${blockName}__menu-open`);
+  const isExpanded = menuEl.classList.contains(`${blockName}__menu-open`);
   el.currentTarget.setAttribute('aria-expanded', isExpanded);
 
   if (isDesktop && isMainLink) {
     // closing other open menus
-    if (isDesktop && menuEl.classList.contains(`${blockClass}__main-nav-item`)) {
-      const openMenus = document.querySelectorAll(`.${blockClass}__menu-open`);
+    if (isDesktop && menuEl.classList.contains(`${blockName}__main-nav-item`)) {
+      const openMenus = document.querySelectorAll(`.${blockName}__menu-open`);
 
       [...openMenus]
         .filter((menu) => menu !== menuEl)
         .forEach((menu) => {
-          menu.classList.remove(`${blockClass}__menu-open`);
+          menu.classList.remove(`${blockName}__menu-open`);
           menu.querySelector(':scope > a').setAttribute('aria-expanded', false);
           setTabIndexForLinks(menu, '-1');
         });
@@ -300,7 +299,7 @@ const onAccordionItemClick = (el) => {
     onNavExpandChange(isExpanded);
 
     // set first tab active
-    const firstTabLink = el.target.parentElement.querySelector('.header__main-link-wrapper a');
+    const firstTabLink = el.target.parentElement.querySelector(`.${blockName}__main-link-wrapper a`);
     setTabActive(firstTabLink);
   }
 
@@ -340,7 +339,7 @@ const generateFeaturedCardHtml = (data) => {
     .filter(Boolean)
     .map(
       (btn, index) =>
-        `<a href="${btn.href?.trim()}" class="header__featured-card-button button ${index === 0 ? 'button--primary' : 'button--secondary'}">
+        `<a href="${btn.href?.trim()}" class="${blockName}__featured-card-button button ${index === 0 ? 'button--primary' : 'button--secondary'}">
         ${btn.textContent}
       </a>`,
     )
@@ -352,27 +351,58 @@ const generateFeaturedCardHtml = (data) => {
     .join('');
 
   return `
-    <div class="${blockClass}__featured-card">
-      <div class="${blockClass}__featured-card-image">
-        <a class="${blockClass}__featured-card-image-link" href="${titleHref}">
+    <div class="${blockName}__featured-card">
+      <div class="${blockName}__featured-card-image">
+        <a class="${blockName}__featured-card-image-link" href="${titleHref}">
           ${mainImageHtml}
           ${backgroundImageHtml}
         </a>
       </div>
-      <div class="${blockClass}__featured-card-content">
-        ${titleHtml ? `<h3 class="${blockClass}__featured-card-title">${titleHtml}</h3>` : ''}
-        ${subtitle ? `<h5 class="${blockClass}__featured-card-subtitle">${subtitle}</h5>` : ''}
-        ${text ? `<p class="${blockClass}__featured-card-text">${text}</p>` : ''}
-        ${buttonsHtml ? `<div class="${blockClass}__featured-card-buttons">${buttonsHtml}</div>` : ''}
-        ${linksHtml ? `<div class="${blockClass}__featured-card-links">${linksHtml}</div>` : ''}
+      <div class="${blockName}__featured-card-content">
+        ${titleHtml ? `<h3 class="${blockName}__featured-card-title">${titleHtml}</h3>` : ''}
+        ${subtitle ? `<h5 class="${blockName}__featured-card-subtitle">${subtitle}</h5>` : ''}
+        ${text ? `<p class="${blockName}__featured-card-text">${text}</p>` : ''}
+        ${buttonsHtml ? `<div class="${blockName}__featured-card-buttons">${buttonsHtml}</div>` : ''}
+        ${linksHtml ? `<div class="${blockName}__featured-card-links">${linksHtml}</div>` : ''}
       </div>
     </div>
   `;
 };
 
+/**
+ * Injects the menu footer links into the menu that has the class 'inject-menu-footer'
+ * @param {Element[]} categories
+ * @param {Element} menuFooter
+ * @returns {void}
+ */
+const injectMenuFooter = (categories, menuFooter) => {
+  const categoryItems = categories.filter((el) => el.classList.contains('inject-menu-footer'));
+  const menuFooterLinks = menuFooter.querySelectorAll('a');
+  if (menuFooterLinks.length > 0) {
+    categoryItems.forEach((categoryItem) => {
+      const list = categoryItem.querySelector(':scope > ul');
+      if (list) {
+        [...menuFooterLinks].forEach((link) => {
+          const li = createElement('li', { classes: [`${blockName}__category-item`, 'mobile-menu-footer'] });
+          const a = createElement('a', { classes: [`${blockName}__link`], props: { href: link.href } });
+          a.textContent = link.textContent;
+          li.append(a);
+          list.append(li);
+        });
+      }
+    });
+  }
+};
+
+/**
+ * Builds the menu content for the Mega-menu
+ * @param {Element[]} menuData
+ * @param {Element} navEl
+ * @returns {void}
+ */
 const buildMenuContent = (menuData, navEl) => {
   const menus = transformMenuData(menuData);
-  const navLinks = [...navEl.querySelectorAll(`.${blockClass}__main-nav-link`)];
+  const navLinks = [...navEl.querySelectorAll(`.${blockName}__main-nav-link`)];
 
   [...menus.children].forEach((menuItemData) => {
     const tabName = menuItemData.querySelector(':scope > p > a');
@@ -382,7 +412,20 @@ const buildMenuContent = (menuData, navEl) => {
 
     const categories = [...menuItemData.querySelectorAll(':scope > div')];
     const navLink = navLinks.find((el) => el.textContent.trim() === tabName.textContent.trim());
-    const accordionContentWrapper = navLink?.closest(`.${blockClass}__main-nav-item`).querySelector(`.${blockClass}__accordion-content-wrapper`);
+    const accordionContentWrapper = navLink?.closest(`.${blockName}__main-nav-item`).querySelector(`.${blockName}__accordion-content-wrapper`);
+    // add the menu footer to the Mega-menu
+    const menuFooter = categories.find((el) => el.classList.contains('menu-footer'));
+
+    if (menuFooter) {
+      [...menuFooter.querySelectorAll('a')].forEach((link, index) => {
+        const classes = index ? ['standalone-link'] : ['button', 'button--primary', 'button--small'];
+        link.classList.add(...classes);
+      });
+
+      navLink.parentElement.querySelector('.desktop-wrapper-footer').append(menuFooter);
+
+      injectMenuFooter(categories, menuFooter);
+    }
 
     categories
       .filter((cat) => cat.classList.contains('menu'))
@@ -393,7 +436,7 @@ const buildMenuContent = (menuData, navEl) => {
         let extraClass = '';
         const isFeaturedCard = cat.classList.contains(tabsVariants.FEATURED_CARD);
 
-        title?.classList.add(`${blockClass}__link`, `${blockClass}__link-accordion`, `${blockClass}__menu-heading`);
+        title?.classList.add(`${blockName}__link`, `${blockName}__link-accordion`, `${blockName}__menu-heading`);
         title?.removeAttribute('href');
 
         if (isFeaturedCard) {
@@ -401,15 +444,15 @@ const buildMenuContent = (menuData, navEl) => {
         }
 
         if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS) || cat.classList.contains(tabsVariants.TAB)) {
-          title?.classList.add(`${blockClass}__tab-link`);
+          title?.classList.add(`${blockName}__tab-link`);
         }
 
         if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS)) {
-          extraClass = `${blockClass}__main-link-wrapper--${tabsVariants.TAB_WITH_CARDS}`;
+          extraClass = `${blockName}__main-link-wrapper--${tabsVariants.TAB_WITH_CARDS}`;
         }
 
         if (cat.classList.contains(tabsVariants.TAB)) {
-          extraClass = `${blockClass}__main-link-wrapper--${tabsVariants.TAB}`;
+          extraClass = `${blockName}__main-link-wrapper--${tabsVariants.TAB}`;
         }
 
         const firstListItem = extractAndCloneFirstListItem(list, isFeaturedCard);
@@ -423,25 +466,25 @@ const buildMenuContent = (menuData, navEl) => {
           }
         }
 
-        list.classList.add(`${blockClass}__category-items`);
+        list.classList.add(`${blockName}__category-items`);
         [...list.querySelectorAll('li')].forEach(rebuildCategoryItem);
-        [...list.querySelectorAll('a')].forEach((el) => el.classList.add(`${blockClass}__link`));
+        [...list.querySelectorAll('a')].forEach((el) => el.classList.add(`${blockName}__link`));
         [...list.querySelectorAll('li > a:not(.button):not(:only-child)')].forEach((el) => el.classList.add('standalone-link'));
 
         let menuContent;
 
         if (!title) {
           menuContent = document.createRange().createContextualFragment(`
-            <div class="${blockClass}__menu-content">
+            <div class="${blockName}__menu-content">
               ${list.outerHTML}
             </div>
           `);
         } else {
           menuContent = document.createRange().createContextualFragment(`
-            <div class="${blockClass}__menu-content">
+            <div class="${blockName}__menu-content">
               ${title.outerHTML}
-              <div class="${blockClass}__category-content ${blockClass}__accordion-container">
-                <div class="${blockClass}__accordion-content-wrapper">
+              <div class="${blockName}__category-content ${blockName}__accordion-container">
+                <div class="${blockName}__accordion-content-wrapper">
                   ${isFeaturedCard && featureItemHtml ? featureItemHtml : ''}
                   ${list.outerHTML}
                 </div>
@@ -450,23 +493,12 @@ const buildMenuContent = (menuData, navEl) => {
           `);
         }
 
-        menuContent.querySelector(`.${blockClass}__link-accordion`)?.addEventListener('click', onAccordionItemClick);
+        menuContent.querySelector(`.${blockName}__link-accordion`)?.addEventListener('click', onAccordionItemClick);
         accordionContentWrapper.append(menuContent);
         if (extraClass) {
           accordionParentClassList.add(extraClass);
         }
       });
-
-    const menuFooter = categories.find((el) => el.classList.contains('menu-footer'));
-
-    if (menuFooter) {
-      [...menuFooter.querySelectorAll('a')].forEach((link, index) => {
-        const classes = index ? ['standalone-link'] : ['button', 'button--primary', 'button--small'];
-        link.classList.add(...classes);
-      });
-
-      navLink.parentElement.querySelector('.desktop-wrapper-footer').append(menuFooter);
-    }
 
     navLink?.addEventListener('click', onAccordionItemClick);
   });
@@ -475,7 +507,7 @@ const buildMenuContent = (menuData, navEl) => {
 const decorateCTA = (wrapper) => {
   const anchorTags = wrapper.querySelectorAll('a');
   anchorTags.forEach((link) => {
-    link.classList.add(`${blockClass}__custom-button`, 'button', 'button--primary');
+    link.classList.add(`${blockName}__custom-button`, 'button', 'button--primary');
     wrapper.appendChild(link);
   });
   wrapper.firstElementChild.remove();
@@ -499,11 +531,11 @@ export default async function decorate(block) {
   const isMobileMenuDisabled = getMetadata('custom-header-mobile-menu').toLowerCase() === 'false';
   if (isCustomHeader) {
     navPath = `${langCodeMatch ? langCodeMatch[1] : ''}${isCustomHeader}`;
-    block.classList.add(`${blockClass}__custom`);
+    block.classList.add(`${blockName}__custom`);
 
     const customStyles = getMetadata('custom-header-style');
     if (customStyles) {
-      block.classList.add(`${blockClass}__custom--${customStyles}`);
+      block.classList.add(`${blockName}__custom--${customStyles}`);
     }
   }
 
@@ -522,37 +554,37 @@ export default async function decorate(block) {
   const content = document.createRange().createContextualFragment(await resp.text());
 
   const [logoContainer, navigationContainer, actionsContainer, ...menuContent] = content.children;
-  const nav = createElement('nav', { classes: [`${blockClass}__nav`] });
+  const nav = createElement('nav', { classes: [`${blockName}__nav`] });
   const navContent = document.createRange().createContextualFragment(`
-    <div class="${blockClass}__menu-overlay"></div>
+    <div class="${blockName}__menu-overlay"></div>
     ${createLogo(logoContainer).outerHTML}
     ${
       navigationContainer.children.length
-        ? `<div class="${blockClass}__main-links">
+        ? `<div class="${blockName}__main-links">
       ${createMainLinks(navigationContainer).outerHTML}
     </div>`
         : ''
     }
-    <div class="${blockClass}__actions">
+    <div class="${blockName}__actions">
       ${isMobileMenuDisabled ? '' : mobileActions().outerHTML}
       ${isMobileMenuDisabled ? decorateCTA(actionsContainer).outerHTML : createActions(actionsContainer).outerHTML}
     </div>
   `);
 
   const setAriaForMenu = (isMenuVisible) => {
-    nav.querySelectorAll(`.${blockClass}__close-menu, .${blockClass}__hamburger-menu`).forEach((control) => {
+    nav.querySelectorAll(`.${blockName}__close-menu, .${blockName}__hamburger-menu`).forEach((control) => {
       control.setAttribute('aria-expanded', isMenuVisible);
 
-      document.querySelectorAll('.header__main-nav-link').forEach((el) => {
+      document.querySelectorAll(`.${blockName}__main-nav-link`).forEach((el) => {
         el.setAttribute('tabindex', isMenuVisible ? '0' : '-1');
       });
 
-      document.querySelectorAll('.header__action-item').forEach((el) => {
+      document.querySelectorAll(`.${blockName}__action-item`).forEach((el) => {
         setTabIndexForLinks(el, isMenuVisible ? '0' : '-1');
       });
 
       if (isMenuVisible) {
-        document.querySelector('.header__close-menu')?.focus();
+        document.querySelector(`.${blockName}__close-menu`)?.focus();
       }
     });
     nav.querySelectorAll('#header-main-nav, #header-actions-list').forEach((item) => {
@@ -562,11 +594,11 @@ export default async function decorate(block) {
 
   const initAriaForAccordions = () => {
     const menuPrefix = 'menu-accordion';
-    const accordionContainers = block.querySelectorAll(`.${blockClass}__link-accordion ~ .${blockClass}__accordion-container`);
+    const accordionContainers = block.querySelectorAll(`.${blockName}__link-accordion ~ .${blockName}__accordion-container`);
 
     [...accordionContainers].forEach((container) => {
       const id = generateId(menuPrefix);
-      const accordionLink = container.parentElement.querySelector(`.${blockClass}__link-accordion`);
+      const accordionLink = container.parentElement.querySelector(`.${blockName}__link-accordion`);
 
       container.setAttribute('id', id);
       accordionLink.setAttribute('aria-controls', id);
@@ -576,11 +608,11 @@ export default async function decorate(block) {
   };
 
   const closeHamburgerMenu = () => {
-    block.classList.remove(`${blockClass}--hamburger-open`);
+    block.classList.remove(`${blockName}--hamburger-open`);
     onNavExpandChange(false);
 
-    block.querySelectorAll(`.${blockClass}__menu-open`).forEach((el) => {
-      el.classList.remove(`${blockClass}__menu-open`);
+    block.querySelectorAll(`.${blockName}__menu-open`).forEach((el) => {
+      el.classList.remove(`${blockName}__menu-open`);
       el.setAttribute('aria-expanded', 'false');
     });
 
@@ -589,19 +621,19 @@ export default async function decorate(block) {
 
   // add actions for search
   if (SEARCH_DISABLED.toLowerCase() === 'false') {
-    navContent.querySelector(`.${blockClass}__search-button`)?.addEventListener('click', () => {
+    navContent.querySelector(`.${blockName}__search-button`)?.addEventListener('click', () => {
       window.location.href = '/search';
     });
   }
 
   // add action for hamburger
-  navContent.querySelector(`.${blockClass}__hamburger-menu`)?.addEventListener('click', () => {
-    block.classList.add(`${blockClass}--hamburger-open`);
+  navContent.querySelector(`.${blockName}__hamburger-menu`)?.addEventListener('click', () => {
+    block.classList.add(`${blockName}--hamburger-open`);
     onNavExpandChange(true);
     setAriaForMenu(true);
   });
 
-  navContent.querySelectorAll(`.${blockClass}__menu-overlay, .${blockClass}__close-menu`).forEach((el) => {
+  navContent.querySelectorAll(`.${blockName}__menu-overlay, .${blockName}__close-menu`).forEach((el) => {
     el.addEventListener('click', closeHamburgerMenu);
   });
 
@@ -619,11 +651,11 @@ export default async function decorate(block) {
 
   // hiding nav when clicking outside the menu
   document.addEventListener('click', (event) => {
-    const isTargetOutsideMenu = !event.target.closest(`.${blockClass}__main-nav`) && !event.target.closest('.header__actions');
-    const openMenu = block.querySelector(`.${blockClass}__main-nav-item.${blockClass}__menu-open`);
+    const isTargetOutsideMenu = !event.target.closest(`.${blockName}__main-nav`) && !event.target.closest(`.${blockName}__actions`);
+    const openMenu = block.querySelector(`.${blockName}__main-nav-item.${blockName}__menu-open`);
 
     if (isTargetOutsideMenu && openMenu) {
-      openMenu.classList.remove(`${blockClass}__menu-open`);
+      openMenu.classList.remove(`${blockName}__menu-open`);
       openMenu.setAttribute('aria-expanded', false);
       onNavExpandChange(false);
     }
@@ -631,20 +663,20 @@ export default async function decorate(block) {
 
   const swapMenuMountPoint = (isDesktop) => {
     const selector = `
-      .header__main-link-wrapper--tabs-with-cards .header__category-content.header__accordion-container,
-      .header__main-link-wrapper--tabs .header__category-content.header__accordion-container
+      .${blockName}__main-link-wrapper--tabs-with-cards .${blockName}__category-content.${blockName}__accordion-container,
+      .${blockName}__main-link-wrapper--tabs .${blockName}__category-content.${blockName}__accordion-container
     `;
     const menus = [...document.querySelectorAll(selector)];
 
     if (isDesktop) {
       menus.forEach((item) => {
-        const desktopMountPoint = item.closest(`.${blockClass}__main-link-wrapper`).querySelector('.desktop-wrapper');
+        const desktopMountPoint = item.closest(`.${blockName}__main-link-wrapper`).querySelector('.desktop-wrapper');
 
         desktopMountPoint.append(item);
       });
     } else {
       menus.forEach((item) => {
-        const mobileMountPoints = [...item.closest(`.${blockClass}__main-link-wrapper`).querySelectorAll('.header__menu-content')];
+        const mobileMountPoints = [...item.closest(`.${blockName}__main-link-wrapper`).querySelectorAll(`.${blockName}__menu-content`)];
         const mountPoint = mobileMountPoints.find((el) => el.getAttribute('menu-accordion-id') === item.getAttribute('id'));
 
         mountPoint.append(item);
@@ -653,11 +685,11 @@ export default async function decorate(block) {
   };
 
   const swapActionsLinks = (isDesktop) => {
-    const actionsLinks = document.querySelector('#header-actions-list');
-    const actionsLinksDesktopMountPoint = document.querySelector('.header__actions');
-    const headerMainNav = document.querySelector('.header__main-links'); // mobile actions links mount point
+    const actionsLinks = document.querySelector(`#${blockName}-actions-list`);
+    const actionsLinksDesktopMountPoint = document.querySelector(`.${blockName}__actions`);
+    const headerMainNav = document.querySelector(`.${blockName}__main-links`); // mobile actions links mount point
     const buttonsWithoutIcons = getAllElWithChildren([...actionsLinks.querySelectorAll('a')], '.icon', true);
-    const loginLink = actionsLinks.querySelector('.header__action-item a[href*="login"]');
+    const loginLink = actionsLinks.querySelector(`.${blockName}__action-item a[href*="login"]`);
 
     if (loginLink && LOGIN_DISABLED.toLowerCase() === 'true') {
       loginLink.remove();
@@ -674,8 +706,8 @@ export default async function decorate(block) {
 
   const setupAriaAndTabIndexes = (isDesktop) => {
     if (!isDesktop) {
-      const mainLinksEl = document.querySelector('.header__main-links');
-      const actionsEl = document.querySelector('.header__actions-list');
+      const mainLinksEl = document.querySelector(`.${blockName}__main-links`);
+      const actionsEl = document.querySelector(`.${blockName}__actions-list`);
 
       setTabIndexForLinks(mainLinksEl, '-1');
       setTabIndexForLinks(actionsEl, '-1');
@@ -684,7 +716,7 @@ export default async function decorate(block) {
         el.setAttribute('aria-expanded', 'false');
       });
     } else {
-      const mainNav = document.querySelector('.header__main-nav');
+      const mainNav = document.querySelector(`.${blockName}__main-nav`);
 
       setTabIndexForLinks(mainNav);
     }

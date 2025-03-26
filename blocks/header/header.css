@@ -492,6 +492,10 @@ a.header__link {
     justify-content: center;
   }
 
+  .header__category-item.mobile-menu-footer {
+    display: none;
+  }
+
   .header__featured-card-title a {
     color: var(--c-primary-black);
   }
