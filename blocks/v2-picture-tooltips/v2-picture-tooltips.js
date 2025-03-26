@@ -60,7 +60,11 @@ function getBottomStyleClass(coords) {
  * @param {number} hotSpots[].index - The index of the hotspot, used for labeling.
  */
 function decorateBlockWithHotSpots(block, hotSpots) {
+  // Cell with the image:
   const firstBlockCol = block.querySelector(':scope > div > div');
+  // Cell with the html text content:
+  const secondBlockCol = block.querySelector(':scope > div > div:nth-child(2)');
+  const firstBlockRow = block.querySelector(':scope > div');
 
   if (!firstBlockCol) {
     return;
@@ -70,7 +74,13 @@ function decorateBlockWithHotSpots(block, hotSpots) {
 
   const hotspotsTooltip = document.createElement('ol');
   hotspotsTooltip.classList.add(`${BLOCK_NAME}__tooltips-wrapper`);
-  firstBlockCol.insertAdjacentElement('afterend', hotspotsTooltip);
+  firstBlockRow.insertAdjacentElement('afterend', hotspotsTooltip);
+  firstBlockRow.classList.add(`${BLOCK_NAME}__main-wrapper`);
+
+  if (secondBlockCol) {
+    secondBlockCol.classList.add(`${BLOCK_NAME}__text-wrapper`);
+    firstBlockRow.classList.add(`${BLOCK_NAME}__main-wrapper--two-columns`);
+  }
 
   hotSpots.forEach((hotSpot, index) => {
     firstBlockCol.insertAdjacentHTML(
@@ -142,6 +152,18 @@ function assignHotspotClickEvent(block) {
 }
 
 /**
+ * Adds specific CSS classes to all heading elements (h1, h2, h3, h4, h5, h6) within a given block.
+ *
+ * @param {HTMLElement} block - The container element within which to find and decorate heading elements.
+ * @returns {void}
+ */
+function decorateHeadings(block) {
+  const headings = [...block.querySelectorAll('h1, h2, h3, h4, h5, h6')];
+
+  headings.forEach((heading) => heading.classList.add(`${BLOCK_NAME}__heading`, 'with-marker'));
+}
+
+/**
  * Decorates a given block element by extracting hotspots, decorating the block with them,
  * and assigning click events to the hotspots.
  *
@@ -150,6 +172,7 @@ function assignHotspotClickEvent(block) {
 function decorate(block) {
   const hotSpots = extractHotSpotsFrom(block);
 
+  decorateHeadings(block);
   decorateBlockWithHotSpots(block, hotSpots);
 
   assignHotspotClickEvent(block);
