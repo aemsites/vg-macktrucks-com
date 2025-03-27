@@ -4,7 +4,6 @@ import fs from 'fs';
 
 /**
  * @typedef {Object} FeedConfig
- * @property {string} DOMAIN
  * @property {string} LANGUAGE
  * @property {string} SOURCE_ENDPOINT
  * @property {string} TARGET_FILE
