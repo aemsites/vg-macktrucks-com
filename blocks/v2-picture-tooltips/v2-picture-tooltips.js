@@ -158,6 +158,7 @@ function assignHotspotClickEvent(block) {
  * @returns {void}
  */
 function decorateHeadings(block) {
+  // TODO: Move this to common.js and find other usages of this 'with-marker' class
   const headings = [...block.querySelectorAll('h1, h2, h3, h4, h5, h6')];
 
   headings.forEach((heading) => heading.classList.add(`${BLOCK_NAME}__heading`, 'with-marker'));
