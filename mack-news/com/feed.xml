@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/news-and-stories/press-releases/</id>
     <title>Mack News</title>
-    <updated>2025-03-26T00:00:00.000Z</updated>
+    <updated>2025-03-31T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktrucks.com/news-and-stories/press-releases/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3214,5 +3214,13 @@
         <updated>2025-03-26T00:00:00.000Z</updated>
         <content type="html"><![CDATA[ALLENTOWN, PA (March 26, 2025) –A piece of trucking history has found a new home at the Mack Trucks Historical Museum, thanks to the dedication of eighth-generation farmer and restoration enthusiast Grayce Emmick.]]></content>
         <published>2025-03-26T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks 2026 Calendar Contest Now Open for Submissions]]></title>
+        <id>https://www.macktrucks.com/mack-news/2025/mack-trucks-2026-calendar-contest-now-open-for-submissions</id>
+        <link href="https://www.macktrucks.com/mack-news/2025/mack-trucks-2026-calendar-contest-now-open-for-submissions"/>
+        <updated>2025-03-31T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“We received a record 432,000 votes for the 2025 contest, which demonstrated the incredible passion of the Mack community,” said David Galbraith]]></content>
+        <published>2025-03-31T00:00:00.000Z</published>
     </entry>
 </feed>
