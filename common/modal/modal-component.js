@@ -100,7 +100,6 @@ const createModal = () => {
         new VideoComponent(videoId);
 
         videoOrIframe = createVideo(
-          null,
           newContent,
           'modal-video',
           {

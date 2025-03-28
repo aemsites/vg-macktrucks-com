@@ -1,6 +1,7 @@
 /* global fbq */
-import { loadScript } from './aem.js';
+import { loadScript, loadCSS } from './aem.js';
 import { isPerformanceAllowed, isSocialAllowed, isTargetingAllowed, extractObjectFromArray, COOKIE_CONFIGS, isDevHost } from './common.js';
+import { VIDEO_JS_SCRIPT, VIDEO_JS_CSS } from './video-helper.js';
 
 // COOKIE ACCEPTANCE AND IDs default to false in case no ID is present
 const {
@@ -163,4 +164,21 @@ async function loadLinkedInInsightTag() {
     b.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
     s.parentNode.insertBefore(b, s);
   })(window.lintrk);
+}
+
+async function loadVideoJs() {
+  await Promise.all([loadCSS(VIDEO_JS_CSS), loadScript(VIDEO_JS_SCRIPT)]);
+
+  const jsScript = document.querySelector(`head > script[src="${VIDEO_JS_SCRIPT}"]`);
+  const cssScript = document.querySelector(`head > link[href="${VIDEO_JS_CSS}"]`);
+
+  jsScript.dataset.loaded = true;
+  cssScript.dataset.loaded = true;
+  document.dispatchEvent(new Event('videojs-loaded'));
+}
+
+const hasVideo =
+  document.querySelector('.video-js') || document.querySelector('.text-link-with-video') || document.querySelector('.v2-video__big-play-button');
+if (hasVideo) {
+  loadVideoJs();
 }

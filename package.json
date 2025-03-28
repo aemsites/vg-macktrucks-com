@@ -40,7 +40,8 @@
     "lint": "npm run lint:js && npm run lint:css",
     "lint:fix": "npm run lint:js:fix && npm run lint:css:fix",
     "print-index": "AEM_PAGES_URL=https://main--macktrucks-com-do--volvogroup.aem.page/ aem up --print-index",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postupdate": "copyfiles -u 3 'node_modules/video.js/dist/video.min.js' 'node_modules/video.js/dist/video-js.min.css' scripts/videojs"
   },
   "repository": {
     "type": "git",
@@ -59,19 +60,21 @@
   "devDependencies": {
     "@babel/core": "7.26.0",
     "@babel/eslint-parser": "7.25.9",
+    "@esm-bundle/chai": "4.3.4-fix.0",
+    "@web/test-runner": "0.15.1",
+    "@web/test-runner-commands": "0.6.5",
     "chai": "4.3.7",
+    "copyfiles": "^2.4.1",
     "eslint": "9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^15.11.0",
-    "@esm-bundle/chai": "4.3.4-fix.0",
-    "@web/test-runner": "0.15.1",
-    "@web/test-runner-commands": "0.6.5",
     "husky": "^9.1.1",
     "lint-staged": "^15.2.11",
     "prettier": "^3.3.3",
     "sinon": "15.0.1",
     "stylelint": "16.16.0",
-    "stylelint-config-standard": "37.0.0"
+    "stylelint-config-standard": "37.0.0",
+    "video.js": "^8.22.0"
   }
 }

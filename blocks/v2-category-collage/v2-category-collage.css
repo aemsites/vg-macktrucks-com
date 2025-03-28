@@ -38,6 +38,16 @@
   object-position: center;
 }
 
+.v2-category-collage__item-media .video-js {
+  height: 100%;
+  width: 100%;
+}
+
+.v2-category-collage__item-media .video-js video {
+  object-fit: cover;
+  object-position: center;
+}
+
 .v2-category-collage__item-media:focus-visible {
   outline: 2px auto var(--border-focus);
   outline-offset: -2px;

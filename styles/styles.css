@@ -1255,9 +1255,13 @@ main .section.responsive-title h1 {
   border-color: var(--button-secondary-border-active);
 }
 
+.video-wrapper {
+  position: relative;
+}
+
 /* Play/pause buttons */
 .v2-video__playback-button {
-  --playback-button-size: 80px;
+  --playback-button-size: 64px;
 
   border: 0;
   color: var(--c-primary-black);
@@ -1269,6 +1273,7 @@ main .section.responsive-title h1 {
   top: 0;
   width: var(--playback-button-size);
   z-index: 1;
+  background-color: #C4B097;
 }
 
 .v2-video__playback-button:focus {

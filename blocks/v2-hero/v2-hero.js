@@ -64,12 +64,14 @@ const processVideoLink = (block, link) => {
   const linkText = link.innerText.trim().toLowerCase();
 
   if (linkText === 'background') {
-    createVideo(block, link.getAttribute('href'), `${blockName}__video`, {
+    const video = createVideo(link.getAttribute('href'), `${blockName}__video`, {
       muted: true,
       autoplay: true,
       loop: true,
       playsinline: true,
     });
+
+    block.prepend(video);
     link.remove();
   }
 };
@@ -128,7 +130,7 @@ export default async function decorate(block) {
     block.classList.add(`${blockName}--no-image`);
   }
 
-  const contentWrapper = block.querySelector(':scope > div');
+  const contentWrapper = block.querySelector(':scope > div:last-of-type');
   contentWrapper.classList.add(`${blockName}__content-wrapper`);
 
   const content = block.querySelector(':scope > div > div');

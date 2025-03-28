@@ -1,4 +1,4 @@
-import { createElement, clearElementAttributes, decorateIcons } from '../../scripts/common.js';
+import { createElement, clearElementAttributes, decorateIcons, removeEmptyTags } from '../../scripts/common.js';
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-category-collage';
@@ -31,21 +31,14 @@ const decorateImage = (itemLink, itemImage) => {
   itemImage.setAttribute('tabindex', 0);
 };
 
-const movePlayButton = (itemLink, item) => {
-  const playButton = itemLink.querySelector('.v2-video__playback-button');
-  if (playButton) {
-    item.prepend(playButton);
-  }
-};
-
-const decorateVideo = (itemLink, item) => {
+const decorateVideo = async (itemLink) => {
   const videoLink = itemLink.querySelector('a.text-link-with-video');
 
   if (!videoLink || !isVideoLink(videoLink)) {
     return;
   }
 
-  createVideo(itemLink, videoLink.getAttribute('href'), CLASSES.itemMedia, {
+  const video = await createVideo(videoLink.getAttribute('href'), CLASSES.itemMedia, {
     muted: true,
     autoplay: true,
     loop: true,
@@ -53,9 +46,8 @@ const decorateVideo = (itemLink, item) => {
     tabindex: 0,
   });
 
+  itemLink.prepend(video);
   videoLink.remove();
-
-  movePlayButton(itemLink, item);
 };
 
 const decorateMedia = (item, itemImage) => {
@@ -64,7 +56,7 @@ const decorateMedia = (item, itemImage) => {
   if (itemImage) {
     decorateImage(itemLink, itemImage);
   } else {
-    decorateVideo(itemLink, item);
+    decorateVideo(itemLink);
   }
 };
 
@@ -124,4 +116,5 @@ export default function decorate(block) {
 
   decorateCollageItems([...collageItemContainers]);
   decorateIcons(block);
+  removeEmptyTags(block, true);
 }
