@@ -1,4 +1,4 @@
-import { getTextLabel, isMobileViewport } from '../../scripts/common.js';
+import { createElement, getTextLabel, isMobileViewport } from '../../scripts/common.js';
 
 const BLOCK_NAME = 'v2-picture-tooltips';
 
@@ -65,12 +65,19 @@ function decorateBlockWithHotSpots(block, hotSpots) {
   // Cell with the html text content:
   const secondBlockCol = block.querySelector(':scope > div > div:nth-child(2)');
   const firstBlockRow = block.querySelector(':scope > div');
+  const pictureWrapper = createElement('div', { classes: `${BLOCK_NAME}__picture-wrapper` });
 
   if (!firstBlockCol) {
     return;
   }
 
-  firstBlockCol.classList.add(`${BLOCK_NAME}__picture-wrapper`);
+  firstBlockCol.classList.add(`${BLOCK_NAME}__picture-container`);
+  firstBlockCol.appendChild(pictureWrapper);
+
+  // Move all elements from the first block column to the picture wrapper
+  while (firstBlockCol.firstChild !== pictureWrapper) {
+    pictureWrapper.appendChild(firstBlockCol.firstChild);
+  }
 
   const hotspotsTooltip = document.createElement('ol');
   hotspotsTooltip.classList.add(`${BLOCK_NAME}__tooltips-wrapper`);
@@ -78,12 +85,12 @@ function decorateBlockWithHotSpots(block, hotSpots) {
   firstBlockRow.classList.add(`${BLOCK_NAME}__main-wrapper`);
 
   if (secondBlockCol) {
-    secondBlockCol.classList.add(`${BLOCK_NAME}__text-wrapper`);
+    secondBlockCol.classList.add(`${BLOCK_NAME}__text-container`);
     firstBlockRow.classList.add(`${BLOCK_NAME}__main-wrapper--two-columns`);
   }
 
   hotSpots.forEach((hotSpot, index) => {
-    firstBlockCol.insertAdjacentHTML(
+    pictureWrapper.insertAdjacentHTML(
       'beforeend',
       `
         <div class="${BLOCK_NAME}__hotspot-wrapper ${index === 0 ? 'active' : ''}" data-coords="${hotSpot.coords}" style="${getCoordsStyle(hotSpot.coords)}">

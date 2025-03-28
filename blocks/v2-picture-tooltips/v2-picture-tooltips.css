@@ -3,9 +3,12 @@
   flex-flow: column-reverse;
 }
 
+.v2-picture-tooltips__picture-container {
+  margin: 30px 0;
+}
+
 .v2-picture-tooltips__picture-wrapper {
   position: relative;
-  margin: 30px 0;
 }
 
 .v2-picture-tooltips__hotspot-wrapper {
@@ -125,15 +128,15 @@
     gap: 30px;
   }
 
-  .v2-picture-tooltips__picture-wrapper {
+  .v2-picture-tooltips__picture-container {
     margin: 0;
   }
 
-  .v2-picture-tooltips__main-wrapper--two-columns .v2-picture-tooltips__picture-wrapper {
+  .v2-picture-tooltips__main-wrapper--two-columns .v2-picture-tooltips__picture-container {
     width: 67%;
   }
 
-  .v2-picture-tooltips__text-wrapper {
+  .v2-picture-tooltips__text-container {
     width: 33%;
   }
 
