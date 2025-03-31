@@ -2,6 +2,8 @@ import { isSocialAllowed, createElement, deepMerge, getTextLabel, decorateIcons 
 
 export const VIDEO_JS_SCRIPT = '/scripts/videojs/video.min.js';
 export const VIDEO_JS_CSS = '/scripts/videojs/video-js.min.css';
+/* global logVideoEvent */
+/* global videojs */
 
 // videoURLRegex: verify if a given string follows a specific pattern indicating it is a video URL
 // videoIdRegex: extract the video ID from the URL
@@ -103,12 +105,10 @@ export async function setupPlayer(url, videoContainer, config, video) {
 
   await waitForVideoJs();
 
-  // eslint-disable-next-line no-undef
   if (!videojs) {
     throw new Error('Video.js is not loaded');
   }
 
-  // eslint-disable-next-line no-undef
   const player = videojs(videoElement, videojsConfig);
   player.src(url);
 
@@ -631,7 +631,6 @@ export const handleVideoMessage = (event, videoId, blockName = 'video') => {
   if (event.data.type === 'embedded-video-player-event') {
     const timeStamp = formatDebugTime(new Date());
 
-    // eslint-disable-next-line no-undef
     logVideoEvent(event.data.name, event.data.videoId, timeStamp, blockName);
 
     if (event.data.name === 'video-config' && event.data.videoId === videoId) {
