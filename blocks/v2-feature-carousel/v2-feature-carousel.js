@@ -1,4 +1,4 @@
-import { adjustPretitle, createElement, decorateIcons, getTextLabel, unwrapDivs } from '../../scripts/common.js';
+import { adjustPretitle, createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
 import { listenScroll, createArrowControls } from '../../scripts/carousel-helper.js';
 
 const blockName = 'v2-feature-carousel';
@@ -40,52 +40,77 @@ const arrowFragment = () =>
   </button>
 </li>`);
 
-export default async function decorate(block) {
-  const imageRow = block.firstElementChild;
-  imageRow.classList.add(`${blockName}__image-wrapper`);
-  unwrapDivs(imageRow);
+const createImageList = (pictures) => {
+  let images = '';
+  pictures.forEach((pic) => {
+    pic.classList.add(`${blockName}__image`);
+    images += pic.outerHTML;
+  });
+  return images;
+};
 
-  const carouselList = createElement('ul', { classes: `${blockName}__list` });
-
-  // select 2nd div of the block to attach the carousel list
-  const carouselContainer = imageRow.nextElementSibling;
-  carouselContainer.classList.add(`${blockName}__list-container`);
-
-  // select all div except first , as it contains image
-  const textElements = block.querySelectorAll('div:not(:first-child)');
-  textElements.forEach((textCol) => {
-    const buttons = [...textCol.querySelectorAll('.button-container a')];
+const createCardsList = (nodes) => {
+  let cardItems = '';
+  nodes.forEach((node) => {
+    const buttons = [...node.querySelectorAll('.button-container a')];
     buttons.forEach((btn) => {
       btn.classList.add('button--large');
     });
 
-    // creating li element for carousel
     const li = createElement('li', { classes: `${blockName}__list-item` });
-    li.innerHTML = textCol.innerHTML;
+    li.innerHTML = node.innerHTML;
 
     const headings = li.querySelectorAll('h1, h2, h3, h4');
     [...headings].forEach((heading) => heading.classList.add(`${blockName}__title`));
 
     adjustPretitle(li);
-    carouselList.append(li);
-    textCol.innerHTML = '';
+    cardItems += li.outerHTML;
+  });
+  return cardItems;
+};
+
+export default async function decorate(block) {
+  const pictureNodes = [];
+  const otherNodes = [];
+
+  block.querySelectorAll(':scope > div div').forEach((el) => {
+    if (el.querySelector('picture')) {
+      const picEl = el.querySelector('picture');
+      pictureNodes.push(picEl);
+    } else {
+      otherNodes.push(el);
+    }
   });
 
-  carouselContainer.append(carouselList);
+  const carousel = document.createRange().createContextualFragment(`
+    <div class='${blockName}__image-wrapper'>
+      ${createImageList(pictureNodes)}
+    </div>
+    <div class='${blockName}__list-wrapper'>
+      <div class='${blockName}__list-container'>
+        <ul class='${blockName}__list'>
+          ${createCardsList(otherNodes)}
+        </ul>
+      </div>
+    </div>
+  `);
 
-  const carouselRow = createElement('div', { classes: `${blockName}__list-wrapper` });
-  carouselRow.append(carouselContainer);
+  const carouselList = carousel.querySelector(`.${blockName}__list`);
+  const imageList = carousel.querySelector(`.${blockName}__image-wrapper`);
 
-  block.append(carouselRow);
-
-  if (textElements.length > 1) {
+  if (otherNodes.length > 1) {
     createArrowControls(carouselList, `.${blockName}__list-item.active`, [`${blockName}__arrowcontrols`], arrowFragment());
+    createArrowControls(imageList, `.${blockName}__image.active`, [`${blockName}__arrowcontrols`], arrowFragment());
     const elements = carouselList.querySelectorAll(`.${blockName}__list-item`);
     listenScroll(carouselList, elements, updateActiveClass, 0.75);
+    const images = imageList.querySelectorAll(`.${blockName}__image`);
+    listenScroll(imageList, images, updateActiveClass, 0.75);
   } else {
-    carouselContainer.classList.add(`${blockName}__list-container--single`);
+    carousel.querySelector(`.${blockName}__list-container`).classList.add(`${blockName}__list-container--single`);
   }
 
-  unwrapDivs(block, { ignoreDataAlign: true });
+  block.innerHTML = '';
+  block.append(carousel);
+
   decorateIcons(block);
 }
