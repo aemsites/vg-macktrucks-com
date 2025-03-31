@@ -230,6 +230,8 @@
 
 .v2-columns--video-launcher .v2-columns__body {
   margin-bottom: 32px;
+  font-weight: 400;
+  letter-spacing: 0.16px;
 }
 
 .v2-columns--video-launcher .button-container {
