@@ -1,4 +1,4 @@
-import { getTextLabel, isMobileViewport } from '../../scripts/common.js';
+import { createElement, getTextLabel, isMobileViewport } from '../../scripts/common.js';
 
 const BLOCK_NAME = 'v2-picture-tooltips';
 
@@ -60,20 +60,37 @@ function getBottomStyleClass(coords) {
  * @param {number} hotSpots[].index - The index of the hotspot, used for labeling.
  */
 function decorateBlockWithHotSpots(block, hotSpots) {
+  // Cell with the image:
   const firstBlockCol = block.querySelector(':scope > div > div');
+  // Cell with the html text content:
+  const secondBlockCol = block.querySelector(':scope > div > div:nth-child(2)');
+  const firstBlockRow = block.querySelector(':scope > div');
+  const pictureWrapper = createElement('div', { classes: `${BLOCK_NAME}__picture-wrapper` });
 
   if (!firstBlockCol) {
     return;
   }
 
-  firstBlockCol.classList.add(`${BLOCK_NAME}__picture-wrapper`);
+  firstBlockCol.classList.add(`${BLOCK_NAME}__picture-container`);
+  firstBlockCol.appendChild(pictureWrapper);
+
+  // Move all elements from the first block column to the picture wrapper
+  while (firstBlockCol.firstChild !== pictureWrapper) {
+    pictureWrapper.appendChild(firstBlockCol.firstChild);
+  }
 
   const hotspotsTooltip = document.createElement('ol');
   hotspotsTooltip.classList.add(`${BLOCK_NAME}__tooltips-wrapper`);
-  firstBlockCol.insertAdjacentElement('afterend', hotspotsTooltip);
+  firstBlockRow.insertAdjacentElement('afterend', hotspotsTooltip);
+  firstBlockRow.classList.add(`${BLOCK_NAME}__main-wrapper`);
+
+  if (secondBlockCol) {
+    secondBlockCol.classList.add(`${BLOCK_NAME}__text-container`);
+    firstBlockRow.classList.add(`${BLOCK_NAME}__main-wrapper--two-columns`);
+  }
 
   hotSpots.forEach((hotSpot, index) => {
-    firstBlockCol.insertAdjacentHTML(
+    pictureWrapper.insertAdjacentHTML(
       'beforeend',
       `
         <div class="${BLOCK_NAME}__hotspot-wrapper ${index === 0 ? 'active' : ''}" data-coords="${hotSpot.coords}" style="${getCoordsStyle(hotSpot.coords)}">
@@ -142,6 +159,19 @@ function assignHotspotClickEvent(block) {
 }
 
 /**
+ * Adds specific CSS classes to all heading elements (h1, h2, h3, h4, h5, h6) within a given block.
+ *
+ * @param {HTMLElement} block - The container element within which to find and decorate heading elements.
+ * @returns {void}
+ */
+function decorateHeadings(block) {
+  // TODO: Move this to common.js and find other usages of this 'with-marker' class
+  const headings = [...block.querySelectorAll('h1, h2, h3, h4, h5, h6')];
+
+  headings.forEach((heading) => heading.classList.add(`${BLOCK_NAME}__heading`, 'with-marker'));
+}
+
+/**
  * Decorates a given block element by extracting hotspots, decorating the block with them,
  * and assigning click events to the hotspots.
  *
@@ -150,6 +180,7 @@ function assignHotspotClickEvent(block) {
 function decorate(block) {
   const hotSpots = extractHotSpotsFrom(block);
 
+  decorateHeadings(block);
   decorateBlockWithHotSpots(block, hotSpots);
 
   assignHotspotClickEvent(block);
