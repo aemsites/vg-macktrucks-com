@@ -10,6 +10,8 @@
 }
 
 .custom-dropdown {
+  --border-focus: var(--c-primary-gold);
+
   display: block;
   position: relative;
   margin-bottom: 16px;
@@ -98,12 +100,12 @@
 }
 
 .custom-dropdown__button:hover {
-  outline: 2px solid var(--c-error);
+  outline: 2px solid var(--border-focus);
   cursor: pointer;
 }
 
 .custom-dropdown__button:focus {
-  outline: 2px solid var(--c-error);
+  outline: 2px solid var(--border-focus);
   outline-offset: -4px;
 }
 
