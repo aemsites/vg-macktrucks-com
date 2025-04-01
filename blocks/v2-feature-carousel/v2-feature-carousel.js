@@ -45,7 +45,7 @@ const updateImage = (el) => {
     activeImage.classList.add('active');
     const carousel = activeImage.parentElement;
 
-    setCarouselPosition(carousel, index - 1);
+    setCarouselPosition(carousel, index);
   }
 };
 
@@ -79,7 +79,7 @@ const createImageList = (pictures) => {
   let images = '';
   pictures.forEach((pic, idx) => {
     pic.classList.add(`${CLASSES.image}`);
-    pic.dataset.index = idx + 1;
+    pic.dataset.index = idx;
     images += pic.outerHTML;
   });
   return images;
@@ -95,7 +95,7 @@ const createCardsList = (nodes) => {
 
     const li = createElement('li', { classes: `${CLASSES.listItem}` });
     li.innerHTML = node.innerHTML;
-    li.dataset.index = idx + 1;
+    li.dataset.index = idx;
 
     const headings = li.querySelectorAll('h1, h2, h3, h4');
     [...headings].forEach((heading) => heading.classList.add(`${CLASSES.title}`));
