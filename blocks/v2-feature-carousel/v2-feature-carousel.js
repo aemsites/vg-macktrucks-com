@@ -17,6 +17,11 @@ const CLASSES = {
   arrowcontrols: `${blockName}__arrowcontrols`,
 };
 
+/**
+ * Updates the state of the arrows and disables the extremes when there are no more slides.
+ * @param {HTMLElement} el - The active slide element
+ * @param {number} index - The position of the slide in the carousel
+ */
 const updateArrows = (el, index) => {
   let arrowControl = el.parentElement.previousElementSibling.querySelector(`.${CLASSES.button}:disabled`);
 
@@ -35,6 +40,10 @@ const updateArrows = (el, index) => {
   }
 };
 
+/**
+ * Updates the state of the image according to the active slide.
+ * @param {HTMLElement} el - The active slide element
+ */
 const updateImage = (el) => {
   const activeBlock = el.closest('.block');
   const allImages = activeBlock.querySelectorAll(`.${CLASSES.image}`);
@@ -49,6 +58,11 @@ const updateImage = (el) => {
   }
 };
 
+/**
+ * Callback function that updates the slides. It also triggers the update of the arrows and images.
+ * @param {Array<HTMLElement>} elements - The slide elements of the carousel.
+ * @param {Object} entry - The observed data for the carousel item.
+ */
 const updateActiveClass = (elements, entry) => {
   elements.forEach((el, index) => {
     if (el === entry.target) {
@@ -61,6 +75,9 @@ const updateActiveClass = (elements, entry) => {
   });
 };
 
+/**
+ * The fragment containing the arrows that is used in the createArrowControls function.
+ */
 const arrowFragment = () =>
   document.createRange().createContextualFragment(`
     <li>
@@ -75,6 +92,12 @@ const arrowFragment = () =>
     </li>
   `);
 
+/**
+ * From all the <picture> elements array, a class and a data attribute are added and returned
+ * into a string containing all pictures.
+ * @param {Array<HTMLElement>} pictures - The <picture> elements.
+ * @returns {string} - The HTML string for the carousel images as one.
+ */
 const createImageList = (pictures) => {
   let images = '';
   pictures.forEach((pic, idx) => {
@@ -85,6 +108,12 @@ const createImageList = (pictures) => {
   return images;
 };
 
+/**
+ * From all the <div> elements array that contain the slides properties are added and returned
+ * as a string containing all <li> to insert into a <ul> element.
+ * @param {Array<HTMLElement>} nodes - The slide <div> elements of the carousel.
+ * @returns {string} - The HTML string for the carousel slides as one.
+ */
 const createCardsList = (nodes) => {
   let cardItems = '';
   nodes.forEach((node, idx) => {
