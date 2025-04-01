@@ -66,8 +66,12 @@
 }
 
 .modal-content .modal-cookie-message {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   text-align: center;
   padding: 0 32px;
+  min-height: 500px;
 }
 
 .modal-content .modal-cookie-message .button {
