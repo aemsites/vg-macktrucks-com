@@ -1164,6 +1164,7 @@ main .section.responsive-title h1 {
   align-items: center;
   border-radius: 2px;
   border: 1px solid transparent;
+  cursor: pointer;
   display: inline-flex;
   font-family: var(--ff-subheadings-medium);
   font-size: var(--button-font-size);
