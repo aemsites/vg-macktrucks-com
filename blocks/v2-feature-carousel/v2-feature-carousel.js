@@ -1,12 +1,27 @@
 import { adjustPretitle, createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
-import { listenScroll, createArrowControls } from '../../scripts/carousel-helper.js';
+import { listenScroll, createArrowControls, setCarouselPosition } from '../../scripts/carousel-helper.js';
 
 const blockName = 'v2-feature-carousel';
+
+const updateImage = (el) => {
+  const activeBlock = el.closest('.block');
+  const allImages = activeBlock.querySelectorAll(`.${blockName}__image`);
+
+  if (allImages.length > 1) {
+    const index = Number(el.dataset.index);
+    const activeImage = activeBlock.querySelector(`[data-index="${index}"]`);
+    activeImage.classList.add('active');
+    const carousel = activeImage.parentElement;
+
+    setCarouselPosition(carousel, index - 1);
+  }
+};
 
 const updateActiveClass = (elements, entry) => {
   elements.forEach((el, index) => {
     if (el === entry.target) {
       el.classList.add('active');
+      updateImage(el);
       let arrowControl = el.parentElement.previousElementSibling.querySelector(`.${blockName}__button:disabled`);
 
       if (arrowControl) {
@@ -42,8 +57,9 @@ const arrowFragment = () =>
 
 const createImageList = (pictures) => {
   let images = '';
-  pictures.forEach((pic) => {
+  pictures.forEach((pic, idx) => {
     pic.classList.add(`${blockName}__image`);
+    pic.dataset.index = idx + 1;
     images += pic.outerHTML;
   });
   return images;
@@ -51,7 +67,7 @@ const createImageList = (pictures) => {
 
 const createCardsList = (nodes) => {
   let cardItems = '';
-  nodes.forEach((node) => {
+  nodes.forEach((node, idx) => {
     const buttons = [...node.querySelectorAll('.button-container a')];
     buttons.forEach((btn) => {
       btn.classList.add('button--large');
@@ -59,6 +75,7 @@ const createCardsList = (nodes) => {
 
     const li = createElement('li', { classes: `${blockName}__list-item` });
     li.innerHTML = node.innerHTML;
+    li.dataset.index = idx + 1;
 
     const headings = li.querySelectorAll('h1, h2, h3, h4');
     [...headings].forEach((heading) => heading.classList.add(`${blockName}__title`));
@@ -96,17 +113,13 @@ export default async function decorate(block) {
   `);
 
   const carouselList = carousel.querySelector(`.${blockName}__list`);
-  const imageList = carousel.querySelector(`.${blockName}__image-wrapper`);
 
   if (otherNodes.length > 1) {
     createArrowControls(carouselList, `.${blockName}__list-item.active`, [`${blockName}__arrowcontrols`], arrowFragment());
-    createArrowControls(imageList, `.${blockName}__image.active`, [`${blockName}__arrowcontrols`], arrowFragment());
     const elements = carouselList.querySelectorAll(`.${blockName}__list-item`);
     listenScroll(carouselList, elements, updateActiveClass, 0.75);
-    const images = imageList.querySelectorAll(`.${blockName}__image`);
-    listenScroll(imageList, images, updateActiveClass, 0.75);
   } else {
-    carousel.querySelector(`.${blockName}__list-container`).classList.add(`${blockName}__list-container--single`);
+    carouselList.parentElement.classList.add(`${blockName}__list-container--single`);
   }
 
   block.innerHTML = '';
