@@ -144,6 +144,8 @@
   }
 
   .v2-feature-carousel__image-wrapper {
+    overflow: hidden;
+    scroll-snap-type: none;
     width: 60%;
   }
 
