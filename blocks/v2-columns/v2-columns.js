@@ -14,7 +14,6 @@ const insertVideo = (block, videoAnchor, picture) => {
   const img = picture?.querySelector('img');
   const posterUrl = img ? new URL(img.getAttribute('src'), window.location.href).href : undefined;
   const videoElement = createVideo(videoAnchor.getAttribute('href'), `${blockName}__video`, {
-    muted: true,
     loop: true,
     playsinline: true,
     controls: false,

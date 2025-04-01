@@ -218,6 +218,7 @@
 
 .v2-columns--video-launcher .v2-columns__column--with-text {
   gap: 0;
+  max-width: 528px;
 }
 
 .v2-columns--video-launcher .v2-columns__heading {
