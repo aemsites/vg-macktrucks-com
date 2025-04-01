@@ -243,6 +243,8 @@
   position: relative;
   aspect-ratio: 1;
   flex-grow: 1;
+  height: 100%;
+  width: 100%;
 }
 
 .v2-columns--video-launcher .v2-columns__video {
