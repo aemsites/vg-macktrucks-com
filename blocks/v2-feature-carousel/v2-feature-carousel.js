@@ -35,7 +35,7 @@ const updateArrows = (el, index) => {
   }
 };
 
-const updateOtherCarousel = (el) => {
+const updateImage = (el) => {
   const activeBlock = el.closest('.block');
   const allImages = activeBlock.querySelectorAll(`.${CLASSES.image}`);
 
@@ -53,8 +53,7 @@ const updateActiveClass = (elements, entry) => {
   elements.forEach((el, index) => {
     if (el === entry.target) {
       el.classList.add('active');
-
-      updateOtherCarousel(el);
+      updateImage(el);
       updateArrows(el, index);
     } else {
       el.classList.remove('active');

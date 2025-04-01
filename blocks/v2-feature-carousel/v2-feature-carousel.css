@@ -23,10 +23,10 @@
 .v2-feature-carousel__image-wrapper {
   display: flex;
   flex-direction: row;
-  overflow: scroll;
+  overflow: hidden;
   scroll-behavior: smooth;
   scroll-snap-align: start;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: none;
   scrollbar-width: none;
 }
 
@@ -144,8 +144,6 @@
   }
 
   .v2-feature-carousel__image-wrapper {
-    overflow: hidden;
-    scroll-snap-type: none;
     width: 60%;
   }
 
