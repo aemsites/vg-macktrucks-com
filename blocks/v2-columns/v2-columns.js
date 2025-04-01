@@ -10,13 +10,23 @@ const getLastTextElmts = (block) => {
   return linksTitle;
 };
 
+const retrieveVideoConfig = (block) => {
+  return {
+    autoplay: block.classList.contains('autoplay'),
+    muted: block.classList.contains('autoplay') || block.classList.contains('muted'),
+    loop: block.classList.contains('loop'),
+    controls: block.classList.contains('controls'),
+    disablePictureInPicture: block.classList.contains('disable-picture-in-picture'),
+  };
+};
+
 const insertVideo = (block, videoAnchor, picture) => {
   const img = picture?.querySelector('img');
   const posterUrl = img ? new URL(img.getAttribute('src'), window.location.href).href : undefined;
+  const videoConfig = retrieveVideoConfig(block);
   const videoElement = createVideo(videoAnchor.getAttribute('href'), `${blockName}__video`, {
-    loop: true,
-    playsinline: true,
-    controls: false,
+    ...videoConfig,
+    fill: true,
     language: document.documentElement.lang,
     poster: posterUrl,
   });
