@@ -1,5 +1,16 @@
 import { getImageURLs, createResponsivePicture, variantsClassesToBEM, createElement } from '../../scripts/common.js';
 
+function addDataAttributes(element, block) {
+  const dataName = element.querySelector('div:first-child > p');
+  const dataValue = element.querySelector('div:last-child > p');
+  const segment = dataName ? dataName.innerText.trim().toLowerCase() : '';
+  const segmentValue = dataValue ? dataValue.innerText.trim().toLowerCase() : '';
+  if (segment && segmentValue) {
+    block.dataset[segment] = segmentValue;
+  }
+  element.remove();
+}
+
 export default async function decorate(block) {
   const blockName = 'v2-pencil-promo';
   // variant pencil banner black is default
@@ -7,11 +18,23 @@ export default async function decorate(block) {
   const indexVariant = variantClasses.findIndex((variant) => block.classList.contains(variant));
   const currentVariant = (indexVariant >= 0 && variantClasses[indexVariant]) || variantClasses[0];
   const isPencil = currentVariant.includes('pencil');
+  const dataSegment = block.querySelector(':scope > div:nth-child(2)');
+  const isFirstTab = block.querySelector(':scope > div:nth-child(3)');
   variantsClassesToBEM(block.classList, variantClasses, blockName);
+
+  if (dataSegment) {
+    addDataAttributes(dataSegment, block);
+  }
+
+  if (isFirstTab) {
+    addDataAttributes(isFirstTab, block);
+  }
 
   block.classList.add(`${blockName}__${isPencil ? 'pencil' : 'promo'}-banner`);
   if (isPencil) {
-    block.parentElement.classList.add('full-width');
+    const parent = block.parentElement;
+    parent.classList.add('full-width');
+    parent.classList.toggle(`${blockName}--hidden`, !isFirstTab);
   } else {
     block.classList.add(`${blockName}__promo-banner--with-image`);
   }

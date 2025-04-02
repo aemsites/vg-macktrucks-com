@@ -1,3 +1,11 @@
+.v2-pencil-promo-container:has(.v2-pencil-promo__pencil-banner) {
+  gap: 0;
+}
+
+.v2-pencil-promo-wrapper.v2-pencil-promo--hidden {
+  display: none;
+}
+
 .redesign-v2 .section .v2-pencil-promo-wrapper:not(.full-width) {
   padding: 0 16px;
 }
