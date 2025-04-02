@@ -20,7 +20,25 @@
   background-color: var(--c-primary-black);
 }
 
-.v2-feature-carousel__image-wrapper picture img {
+.v2-feature-carousel__image-wrapper {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-align: start;
+  scroll-snap-type: none;
+  scrollbar-width: none;
+}
+
+.v2-feature-carousel__image-wrapper .v2-feature-carousel__image {
+  gap: var(--v2-feature-carousel-content-gap);
+  flex-direction: column;
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  justify-content: center;
+}
+
+.v2-feature-carousel__image-wrapper .v2-feature-carousel__image img {
   aspect-ratio: 1/1;
   display: block;
   object-fit: cover;
