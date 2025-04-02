@@ -74,8 +74,14 @@
   min-height: 500px;
 }
 
+.modal-content .modal-cookie-message__title {
+  font-family: var(--ff-headline-medium);
+  font-weight: 400;
+}
+
 .modal-content .modal-cookie-message .button {
   margin: 8px;
+  text-transform: uppercase;
 }
 
 .modal-content .modal-video {
@@ -297,6 +303,6 @@
   }
 
   .modal-content .modal-cookie-message {
-    padding: 0 248px;
+    padding: 0 220px;
   }
 }
