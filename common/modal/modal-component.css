@@ -19,6 +19,7 @@
   text-decoration: none;
   border: none;
   background: white;
+  cursor: pointer;
   top: 0;
   right: 0;
   margin: 0;
@@ -64,6 +65,25 @@
   position: relative;
 }
 
+.modal-content .modal-cookie-message {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 32px;
+  min-height: 500px;
+}
+
+.modal-content .modal-cookie-message__title {
+  font-family: var(--ff-headline-medium);
+  font-weight: 400;
+}
+
+.modal-content .modal-cookie-message .button {
+  margin: 8px;
+  text-transform: uppercase;
+}
+
 .modal-content .modal-video {
   width: 100%;
   height: auto;
@@ -74,6 +94,15 @@
 
 .modal-content:has(.modal-video) {
   max-height: 100% ;
+}
+
+.modal-video .video-js {
+  height: 100%;
+  width: 100%;
+}
+
+.modal-video .v2-video__playback-button {
+  display: none;
 }
 
 .modal-before-banner {
@@ -94,43 +123,9 @@
 }
 
 @media (min-width: 744px) {
-  :root:not(.redesign-v2) .modal-content {
-    max-width: 726px;
-  }
-
-  :root:not(.redesign-v2) .modal-background button.modal-close-button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: unset;
-  }
-
-  :root:not(.redesign-v2) .modal-background button.modal-close-button:hover,
-  :root:not(.redesign-v2) .modal-background button.modal-close-button:focus-visible {
-    --color-icon: var(--c-accent-copper);
-  }
-}
-
-@media (min-width: 992px) {
-  :root:not(.redesign-v2) .modal-content {
-    max-width: 930px;
-  }
-}
-
-@media (min-width: 1300px) {
-  :root:not(.redesign-v2) .modal-content {
-    max-width: 1170px;
-  }
-}
-
-@media (min-width: 744px) {
   .redesign-v2 .modal-content {
     max-width: 1040px;
     height: auto;
-  }
-
-  .redesign-v2 .modal-content .modal-video {
-    max-width: 1040px;
   }
 
   .redesign-v2 .modal-background button.modal-close-button {
@@ -149,6 +144,51 @@
     outline: 2px solid var(--border-focus);
     border-radius: 2px;
     outline-offset: 2px;
+  }
+
+  :root:not(.redesign-v2) .modal-content {
+    max-width: 726px;
+  }
+
+  :root:not(.redesign-v2) .modal-background button.modal-close-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: unset;
+  }
+
+  :root:not(.redesign-v2) .modal-background button.modal-close-button:hover,
+  :root:not(.redesign-v2) .modal-background button.modal-close-button:focus-visible {
+    --color-icon: var(--c-accent-copper);
+  }
+
+  .redesign-v2 .modal-content:has(.modal-cookie-message) {
+    padding: 0 32px;
+    margin-top: var(--modal-margin-top);
+  }
+
+  .redesign-v2 .modal-cookie-message {
+    width: calc(100% - 64px);
+  }
+
+  .modal-content .modal-cookie-message {
+    padding: 0 124px;
+  }
+
+  .redesign-v2 .modal-content .modal-video {
+    max-width: 1040px;
+  }
+}
+
+@media (min-width: 992px) {
+  :root:not(.redesign-v2) .modal-content {
+    max-width: 930px;
+  }
+}
+
+@media (min-width: 1300px) {
+  :root:not(.redesign-v2) .modal-content {
+    max-width: 1170px;
   }
 }
 
@@ -241,18 +281,28 @@
   background-image: url('../../media/subscribe-to-bulldog-background.webp');
 }
 
-.modal-content.modal-form.modal-black .eloqua-form input[type='submit'] {
-  background: #af9866;
-}
-
-.modal-content.modal-black {
-  min-height: 700px;
-  background-color: #090909;
-  background-image: url('../../media/share-your-thoughts-background.webp');
+.modal--black .modal-content {
+  background-color: var(--c-primary-black);
+  color: var(--c-primary-white);
 }
 
 @media (min-width: 1200px) {
   .modal-background {
     background-color: rgb(0 0 0 / 80%);
+  }
+
+  .redesign-v2 .modal-content:has(.modal-cookie-message) {
+    margin-right: auto;
+    margin-left: auto;
+    padding: 0;
+    max-width: var(--wrapper-width);
+  }
+
+  .redesign-v2 .modal-cookie-message {
+    width: 100%;
+  }
+
+  .modal-content .modal-cookie-message {
+    padding: 0 220px;
   }
 }

@@ -342,6 +342,22 @@
     {
       "Key": "tooltip",
       "Text": "Show tooltip"
+    },
+    {
+      "Key": "single video message title",
+      "Text": "Enable cookies to view the reveal?"
+    },
+    {
+      "Key": "single video message text",
+      "Text": "<p class='cookie-message__text'>Our media viewer uses social media cookies and/or similar technologies set by third-party services, as outlined in our <a href='/cookies/'>Cookie Notice</a>.</p><p class='cookie-message__text'>Use “Accept Cookies” to view the reveal and to agree to the storing of cookies on your device and to our use of cookies, or use “Reject Cookies” to decline to review the reveal.</p>"
+    },
+    {
+      "Key": "single video message button",
+      "Text": "Accept All Cookies"
+    },
+    {
+      "Key": "single video message button deny",
+      "Text": "Reject Cookies"
     }
   ],
   ":type": "sheet"
