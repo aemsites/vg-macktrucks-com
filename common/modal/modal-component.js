@@ -1,14 +1,18 @@
+/* global YT */
 import { loadCSS } from '../../scripts/aem.js';
 import {
   createIframe,
   createVideo,
   handleVideoMessage,
+  getYoutubeVideoId,
+  loadYouTubeIframeAPI,
   isAEMVideoUrl,
   isLowResolutionVideoUrl,
+  isYoutubeVideoUrl,
   VideoEventManager,
   AEM_ASSETS,
 } from '../../scripts/video-helper.js';
-import { createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
+import { createElement, decorateIcons, getTextLabel, isSocialAllowed } from '../../scripts/common.js';
 
 const { videoIdRegex } = AEM_ASSETS;
 const videoEventManager = new VideoEventManager();
@@ -27,6 +31,50 @@ class VideoComponent {
 }
 
 const HIDE_MODAL_CLASS = 'modal-hidden';
+
+async function addVideo(block, videoId) {
+  const cookieMsgContainer = block.querySelector('.modal-cookie-message');
+  if (cookieMsgContainer) {
+    cookieMsgContainer.remove();
+  }
+
+  const iframeSrc = `https://www.youtube.com/embed/${videoId}?color=white&amp;rel=0&amp;playsinline=1&amp;enablejsapi=1&amp;autoplay=1`;
+
+  const iframeYT = createIframe(iframeSrc, {
+    parentEl: block,
+    classes: 'modal-video',
+    props: { id: 'modal-youtube-iframe', allow: 'autoplay', allowfullscreen: 'true' },
+  });
+
+  block.append(...iframeYT.childNodes);
+
+  await loadYouTubeIframeAPI();
+
+  window.onYouTubeIframeAPIReady = function onYouTubeIframeAPIReadyInit() {
+    if (!YT) {
+      throw new Error('YouTube API not loaded');
+    }
+    new YT.Player('modal-youtube-iframe', {
+      events: {
+        onReady: onPlayerReady,
+        onError: onPlayerError,
+        onAutoplayBlocked: onPlayerAutoplayBlocked,
+      },
+    });
+  };
+}
+
+function onPlayerReady(event) {
+  event.target.playVideo();
+}
+
+function onPlayerError(event) {
+  console.warn(event.data);
+}
+
+function onPlayerAutoplayBlocked(event) {
+  console.warn(event.data);
+}
 
 const createModal = () => {
   const modalBackground = createElement('div', { classes: ['modal-background', HIDE_MODAL_CLASS] });
@@ -64,8 +112,11 @@ const createModal = () => {
   };
 
   async function showModal(newContent, { beforeBanner, beforeIframe, classes = [] } = {}) {
+    const shouldVideoSocialCheck = classes.includes('modal-video-social-cookie-check');
+
     await loadCSS(`${window.hlx.codeBasePath}/common/modal/modal-component.css`);
     modalBackground.style = '';
+    modalBackground.classList.add(...classes);
     window.addEventListener('keydown', keyDownAction);
 
     if (newContent && typeof newContent !== 'string') {
@@ -90,7 +141,7 @@ const createModal = () => {
           },
         });
         modalContent.append(videoOrIframe);
-      } else if (isAEMVideoUrl) {
+      } else if (isAEMVideoUrl(newContent)) {
         let videoId;
         const match = newContent.match(videoIdRegex);
         if (match) {
@@ -115,6 +166,47 @@ const createModal = () => {
           videoId,
         );
         modalContent.append(videoOrIframe);
+      } else if (isYoutubeVideoUrl(newContent) && shouldVideoSocialCheck) {
+        const videoId = getYoutubeVideoId(newContent);
+
+        if (!videoId) {
+          console.warn('V2 Video block: There is no video link. Please check the provided URL.');
+          return;
+        }
+        window.isSingleVideo = true;
+
+        if (isSocialAllowed()) {
+          addVideo(modalContent, videoId);
+        } else {
+          const cookieMsgContainer = createElement('div', {
+            classes: 'modal-cookie-message',
+          });
+          cookieMsgContainer.style.background = 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.80) 100%) center / cover no-repeat';
+
+          const cookieMessage = document.createRange().createContextualFragment(`
+            <h3 class="modal-cookie-message__title">${getTextLabel('single video message title')}</h3>
+            ${getTextLabel('single video message text')}
+            <div class="modal-cookie-message__button-container">
+              <button class="button primary button--large button--red">${getTextLabel('single video message button')}</button>
+              <button class="button secondary button--large">${getTextLabel('single video message button deny')}</button>
+            </div>
+          `);
+
+          cookieMsgContainer.append(cookieMessage);
+          modalContent.append(cookieMsgContainer);
+
+          modalContent.querySelector('.modal-cookie-message__button-container .primary')?.addEventListener('click', () => {
+            if (window.OneTrust) {
+              window.OneTrust.AllowAll();
+            }
+
+            addVideo(modalContent, videoId);
+          });
+
+          modalContent.querySelector('.modal-cookie-message__button-container .secondary')?.addEventListener('click', () => {
+            hideModal();
+          });
+        }
       } else {
         // otherwise load it as iframe
         videoOrIframe = createIframe(newContent, { parentEl: modalContent, classes: 'modal-video' });
@@ -134,7 +226,11 @@ const createModal = () => {
         videoOrIframe.parentElement.insertBefore(wrapper, videoOrIframe);
       }
 
-      videoOrIframe.parentElement.insertBefore(closeButton, videoOrIframe);
+      if (videoOrIframe) {
+        videoOrIframe.parentElement.insertBefore(closeButton, videoOrIframe);
+      } else {
+        modalContent.insertBefore(closeButton, modalContent.firstChild);
+      }
     }
 
     modalBackground.classList.remove(HIDE_MODAL_CLASS);

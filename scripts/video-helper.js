@@ -1,8 +1,8 @@
 import { isSocialAllowed, createElement, deepMerge, getTextLabel, decorateIcons } from './common.js';
+import { loadScript } from './aem.js';
 
 export const VIDEO_JS_SCRIPT = '/scripts/videojs/video.min.js';
 export const VIDEO_JS_CSS = '/scripts/videojs/video-js.min.css';
-/* global logVideoEvent */
 /* global videojs */
 
 // videoURLRegex: verify if a given string follows a specific pattern indicating it is a video URL
@@ -12,6 +12,9 @@ export const AEM_ASSETS = {
   videoURLRegex: /\/assets\/urn:aaid:aem:[\w-]+\/play/,
   videoIdRegex: /urn:aaid:aem:[0-9a-fA-F-]+/,
 };
+
+export const youtubeVideoRegex =
+  /^(?:(?:https?:)?\/\/)?(?:(?:(?:www|m(?:usic)?)\.)?youtu(?:\.be|be\.com)\/(?:shorts\/|live\/|v\/|e(?:mbed)?\/|watch(?:\/|\?(?:\S+=\S+&)*v=)|oembed\?url=https?%3A\/\/(?:www|m(?:usic)?)\.youtube\.com\/watch\?(?:\S+=\S+&)*v%3D|attribution_link\?(?:\S+=\S+&)*u=(?:\/|%2F)watch(?:\?|%3F)v(?:=|%3D))?|www\.youtube-nocookie\.com\/embed\/)([\w-]{11})[?&#]?\S*$/;
 
 const { aemCloudDomain, videoURLRegex } = AEM_ASSETS;
 
@@ -148,6 +151,16 @@ export function isAEMVideoUrl(url) {
   return videoURLRegex.test(url);
 }
 
+export function isYoutubeVideoUrl(url) {
+  return youtubeVideoRegex.test(url);
+}
+
+export function getYoutubeVideoId(url) {
+  const match = url.match(youtubeVideoRegex);
+
+  return match?.length >= 2 ? match[1] : '';
+}
+
 export function isVideoLink(link) {
   const linkString = link.getAttribute('href');
   return (
@@ -242,15 +255,15 @@ export function createLowResolutionBanner() {
   return banner;
 }
 
-export function showVideoModal(linkUrl) {
+export function showVideoModal(linkUrl, modalClasses) {
   import('../common/modal/modal-component.js').then((modal) => {
-    let beforeBanner = {};
+    let beforeBanner;
 
     if (isLowResolutionVideoUrl(linkUrl)) {
       beforeBanner = createLowResolutionBanner();
     }
 
-    modal.showModal(linkUrl, beforeBanner);
+    modal.showModal(linkUrl, { beforeBanner, classes: modalClasses });
   });
 }
 
@@ -260,7 +273,17 @@ export function addVideoShowHandler(link) {
   link.addEventListener('click', (event) => {
     event.preventDefault();
 
-    showVideoModal(link.getAttribute('href'));
+    const variantClasses = ['black'];
+    const modalClasses = [...event.target.closest('.section').classList].filter((el) => el.startsWith('modal-'));
+    variantClasses.forEach((variant) => {
+      const index = modalClasses.findIndex((el) => el === `modal-${variant}`);
+
+      if (index >= 0) {
+        modalClasses[index] = modalClasses[index].replace('modal-', 'modal--');
+      }
+    });
+
+    showVideoModal(link.getAttribute('href'), modalClasses);
   });
 }
 
@@ -311,14 +334,15 @@ export function wrapImageWithVideoLink(videoLink, image) {
   addPlayIcon(videoLink);
 }
 
-export function createIframe(url, { parentEl, classes = [] }) {
+export function createIframe(url, { parentEl, classes = [], props = {} }) {
   // iframe must be recreated every time otherwise the new history record would be created
   const iframe = createElement('iframe', {
     classes: Array.isArray(classes) ? classes : [classes],
     props: {
       frameborder: '0',
-      allowfullscreen: true,
+      allowfullscreen: 'allowfullscreen',
       src: url,
+      ...props,
     },
   });
 
@@ -609,6 +633,14 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
   }
 
   return container;
+};
+
+export function loadYouTubeIframeAPI() {
+  return loadScript('https://www.youtube.com/iframe_api');
+}
+
+const logVideoEvent = (eventName, videoId, timeStamp, blockName = 'video') => {
+  console.info(`[${blockName}] ${eventName} for ${videoId} at ${timeStamp}`);
 };
 
 const formatDebugTime = (date) => {
