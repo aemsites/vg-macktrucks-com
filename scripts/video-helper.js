@@ -334,14 +334,15 @@ export function wrapImageWithVideoLink(videoLink, image) {
   addPlayIcon(videoLink);
 }
 
-export function createIframe(url, { parentEl, classes = [] }) {
+export function createIframe(url, { parentEl, classes = [], props = {} }) {
   // iframe must be recreated every time otherwise the new history record would be created
   const iframe = createElement('iframe', {
     classes: Array.isArray(classes) ? classes : [classes],
     props: {
       frameborder: '0',
-      allowfullscreen: true,
+      allowfullscreen: 'allowfullscreen',
       src: url,
+      ...props,
     },
   });
 
