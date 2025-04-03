@@ -60,6 +60,9 @@ if (!window.location.pathname.includes('srcdoc') && !isDevHost()) {
 
     window.OneTrust.OnConsentChanged(() => {
       // reloading the page only when the active group has changed
+      if (window.isSingleVideo === true) {
+        return;
+      }
       if (!isSameGroups(currentOnetrustActiveGroups, window.OnetrustActiveGroups) && window.isSingleVideo !== 'true') {
         window.location.reload();
       }
