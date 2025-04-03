@@ -1274,7 +1274,7 @@ main .section.responsive-title h1 {
   top: 0;
   width: var(--playback-button-size);
   z-index: 1;
-  background-color: #C4B097;
+  background-color: var(--c-primary-gold);
 }
 
 .v2-video__playback-button:focus {
