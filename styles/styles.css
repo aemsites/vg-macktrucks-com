@@ -1042,6 +1042,9 @@ main .section.responsive-title h1 {
 
   /* Border color */
   --light-border: 1px solid #e1e1e1;
+  
+  /* Placeholder text color */
+  --c-placeholder-text: #757575;
 }
 
 .redesign-v2 body {
