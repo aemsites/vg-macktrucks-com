@@ -45,13 +45,73 @@
   height: 110px;
 }
 
+.v2-custom-form-container .form-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.v2-custom-form-container .v2-custom-form .error,
+.v2-custom-form-container .v2-custom-form label {
+  font-size: var(--body-font-size-xs);
+  display: inline-block;
+  font-weight: 400;
+}
+
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] {
+  width: auto;
+  opacity: 0;
+  position: absolute;
+}
+
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label:focus-visible {
+  outline: none;
+}
+
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label::before {
+  content: '';
+  background: #fff;
+  border: 2px solid #ddd;
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-right: 10px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 19px;
+}
+
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox']:checked + label::before {
+  content: '\2713';
+  background-color: var(--c-primary-white);
+  border: 1px solid #666;
+  color: var(--c-primary-black);
+}
+
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox']:checked + label {
+  color: var(--c-primary-black);
+}
+
+
+
 .v2-custom-form button.button:focus-visible,
 .v2-custom-form-container textarea:focus-visible,
 .v2-custom-form-container input:focus-visible,
 .v2-custom-form-container select:focus-visible,
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label:focus-visible::before,
 .v2-custom-form-container textarea:hover,
 .v2-custom-form-container input:hover,
-.v2-custom-form-container select:hover {
+.v2-custom-form-container select:hover,
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label:hover::before {
   --border-focus: var(--c-primary-gold);
 
   outline: 2px solid var(--border-focus);
@@ -64,13 +124,6 @@
 
 .v2-custom-form-container .field-wrapper {
   line-height: var(--body-1-line-height);
-}
-
-.v2-custom-form-container .v2-custom-form .error,
-.v2-custom-form-container .v2-custom-form label {
-  font-size: var(--body-font-size-xs);
-  display: inline-block;
-  font-weight: 400;
 }
 
 .v2-custom-form-container .field-wrapper[required] label::after {
