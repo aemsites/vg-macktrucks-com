@@ -87,7 +87,7 @@
   margin-right: 10px;
   text-align: center;
   font-size: 15px;
-  line-height: 24px;
+  line-height: 19px;
 }
 
 .v2-custom-form-container .form-checkbox-wrapper input[type='checkbox']:checked + label::before {

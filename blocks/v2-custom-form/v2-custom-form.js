@@ -285,27 +285,26 @@ const createSelect = withFieldWrapper((fd) => {
   return select;
 });
 
+function checkboxHandler(e) {
+  if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') {
+    return;
+  }
+  e.preventDefault();
+  const wrapper = e.currentTarget.closest('.field-wrapper');
+  const checkbox = wrapper.querySelector('input[type="checkbox"]');
+  checkbox.checked = !checkbox.checked;
+  checkbox.dispatchEvent(new Event('change'));
+}
+
 function createRadio(fd) {
   const wrapper = createFieldWrapper(fd);
   wrapper.insertAdjacentElement('afterbegin', createInput(fd));
   if (fd.Type === 'checkbox') {
     const checkboxLabel = wrapper.querySelector('input+label');
     wrapper.querySelector('input').setAttribute('tabindex', '-1');
-    checkboxLabel.addEventListener('click', (e) => {
-      e.preventDefault();
-      const checkbox = wrapper.querySelector('input[type="checkbox"]');
-      checkbox.checked = !checkbox.checked;
-      checkbox.dispatchEvent(new Event('change'));
-    });
     checkboxLabel.setAttribute('tabindex', '0');
-    checkboxLabel.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        const checkbox = wrapper.querySelector('input[type="checkbox"]');
-        checkbox.checked = !checkbox.checked;
-        checkbox.dispatchEvent(new Event('change'));
-      }
-    });
+    checkboxLabel.addEventListener('click', checkboxHandler);
+    checkboxLabel.addEventListener('keydown', checkboxHandler);
   }
   return wrapper;
 }
