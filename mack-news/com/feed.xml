@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/news-and-stories/press-releases/</id>
     <title>Mack News</title>
-    <updated>2025-03-31T00:00:00.000Z</updated>
+    <updated>2025-04-03T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktrucks.com/news-and-stories/press-releases/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3230,5 +3230,13 @@
         <updated>2025-03-31T00:00:00.000Z</updated>
         <content type="html"><![CDATA[For nearly a century, Mack Trucks has valued its relationship with Bruckner’s, whose commitment to customer service and industry expertise has made them an ideal partner]]></content>
         <published>2025-03-31T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Celebrates 125th Co-Anniversary with New York International Auto Show]]></title>
+        <id>https://www.macktrucks.com/mack-news/2025/mack-trucks-celebrates-125th-co-anniversary-with-new-york-international-auto-show</id>
+        <link href="https://www.macktrucks.com/mack-news/2025/mack-trucks-celebrates-125th-co-anniversary-with-new-york-international-auto-show"/>
+        <updated>2025-04-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“Mack’s 125-year legacy is legendary in the trucking industry, and Mack is so proud to be one of the first companies to exhibit in the New York Auto Show,” said, Jonathan Randall]]></content>
+        <published>2025-04-03T00:00:00.000Z</published>
     </entry>
 </feed>

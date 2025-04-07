@@ -1,4 +1,5 @@
 import { createElement, variantsClassesToBEM, decorateBlackLabel } from '../../scripts/common.js';
+import { createVideo, isVideoLink } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-columns';
 
@@ -9,10 +10,36 @@ const getLastTextElmts = (block) => {
   return linksTitle;
 };
 
+const retrieveVideoConfig = (block) => {
+  return {
+    autoplay: block.classList.contains('autoplay'),
+    muted: block.classList.contains('autoplay') || block.classList.contains('muted'),
+    loop: block.classList.contains('loop'),
+    controls: block.classList.contains('controls'),
+    disablePictureInPicture: block.classList.contains('disable-picture-in-picture'),
+  };
+};
+
+const insertVideo = (block, videoAnchor, picture) => {
+  const img = picture?.querySelector('img');
+  const posterUrl = img ? new URL(img.getAttribute('src'), window.location.href).href : undefined;
+  const videoConfig = retrieveVideoConfig(block);
+  const videoElement = createVideo(videoAnchor.getAttribute('href'), `${blockName}__video`, {
+    ...videoConfig,
+    fill: true,
+    language: document.documentElement.lang,
+    poster: posterUrl,
+  });
+  const videoColumn = block.querySelector(`.${blockName}__column:last-of-type`);
+  videoColumn.className = `${blockName}__video-column`;
+  videoColumn.innerHTML = '';
+  videoColumn.append(videoElement);
+};
+
 export default async function decorate(block) {
   const blockParent = block.parentElement.parentElement;
 
-  const variantClasses = ['with-background-image', 'background-plane', 'icon-list', 'navigation-links', 'inset', 'headline'];
+  const variantClasses = ['with-background-image', 'background-plane', 'icon-list', 'navigation-links', 'inset', 'headline', 'video-launcher'];
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 
   const isBackgroundImageVariant = block.classList.contains(`${blockName}--with-background-image`);
@@ -21,6 +48,7 @@ export default async function decorate(block) {
   const isListVariant = isIconListVariant || is3LinksVariant;
   const hasHeader = blockParent.classList.contains('header-with-mark') || blockParent.classList.contains('header-no-mark');
   const isHeadlineVariant = block.classList.contains(`${blockName}--headline`);
+  const isVideoLauncherVariant = block.classList.contains(`${blockName}--video-launcher`);
 
   const rows = [...block.querySelectorAll(':scope > div')];
   const columns = [...block.querySelectorAll(':scope > div > div')];
@@ -36,8 +64,10 @@ export default async function decorate(block) {
     const allTextElmts = col.querySelectorAll('p, ul, ol');
     const bodyElmts = [];
     const linkList = createElement('div', { classes: `${blockName}--links` });
+    const link = col.querySelector('a');
+    const videoAnchor = link && isVideoLink(link) ? link : null;
 
-    if (picture) {
+    if (picture && !isVideoLauncherVariant) {
       col.classList.add(`${blockName}__column--with-image`);
     } else {
       col.classList.add(`${blockName}__column--with-text`);
@@ -116,6 +146,10 @@ export default async function decorate(block) {
       const pretitle = createElement('span', { classes: 'pretitle' });
       pretitle.textContent = pretitleText;
       prevEl.replaceWith(pretitle);
+    }
+
+    if (isVideoLauncherVariant && videoAnchor) {
+      insertVideo(block, videoAnchor, picture);
     }
   });
 
