@@ -19,6 +19,7 @@
 }
 
 .custom-dropdown::placeholder {
+  color: var(--c-placeholder-text);
   font-size: var(--body-font-size-s);
 }
 
@@ -47,6 +48,10 @@
   margin-bottom: 10px;
   height: 40px;
   line-height: 18px;
+}
+
+.custom-dropdown__button.placeholder-state {
+  color: var(--c-placeholder-text);
 }
 
 .custom-dropdown__option-list {
