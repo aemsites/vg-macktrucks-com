@@ -504,7 +504,7 @@ export function getDynamicVideoHeight(video) {
       if (!playbackControls) {
         return;
       }
-      playbackControls.style.top = `${height.toString()}px`;
+      playbackControls.style.top = `${height}px`;
     }
   };
 
