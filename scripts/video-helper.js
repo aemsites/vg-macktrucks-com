@@ -493,7 +493,7 @@ export function getDynamicVideoHeight(video) {
       return;
     }
 
-    playbackControls.style.top = `${height.toString()}px`;
+    playbackControls.style.top = `${height}px`;
   });
 
   // Get the element's height on resize
