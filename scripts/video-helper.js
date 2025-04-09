@@ -493,8 +493,7 @@ export function getDynamicVideoHeight(video) {
       return;
     }
 
-    // eslint-disable-next-line prefer-template
-    playbackControls.style.top = height + 'px';
+    playbackControls.style.top = `${height.toString()}px`;
   });
 
   // Get the element's height on resize
@@ -505,7 +504,7 @@ export function getDynamicVideoHeight(video) {
       if (!playbackControls) {
         return;
       }
-      playbackControls.style.top = `${height}px`;
+      playbackControls.style.top = `${height.toString()}px`;
     }
   };
 
