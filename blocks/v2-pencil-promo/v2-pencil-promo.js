@@ -34,7 +34,7 @@ export default async function decorate(block) {
   if (isPencil) {
     const parent = block.parentElement;
     parent.classList.add('full-width');
-    parent.classList.toggle(`${blockName}--hidden`, !isFirstTab);
+    parent.classList.toggle(`${blockName}--hidden`, dataSegment && !isFirstTab);
   } else {
     block.classList.add(`${blockName}__promo-banner--with-image`);
   }
