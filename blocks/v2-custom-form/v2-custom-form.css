@@ -108,6 +108,8 @@
 .v2-custom-form-container input:focus-visible,
 .v2-custom-form-container select:focus-visible,
 .v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label:focus-visible::before,
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label:focus::before,
+.v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] + label:focus-within::before,
 .v2-custom-form-container textarea:hover,
 .v2-custom-form-container input:hover,
 .v2-custom-form-container select:hover,
