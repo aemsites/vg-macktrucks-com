@@ -1798,3 +1798,9 @@ main .section.responsive-title h1 {
 }
 
 /* Black label styling ends here */
+
+.modal-background.modal-hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}

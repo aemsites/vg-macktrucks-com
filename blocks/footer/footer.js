@@ -68,7 +68,10 @@ async function setupNewsletterForm(footerBlock, footerMenuEl) {
     submitButton.ariaLabel = `${PLACEHOLDERS.subscribe}`;
   }
 
-  newsletterEl.prepend(newsletterCol);
+  if (newsletterCol) {
+    newsletterEl.prepend(newsletterCol);
+  }
+
   addClassToTitle(newsletterEl, `${CLASSES.newsletter}__title`);
 
   return newsletterEl;

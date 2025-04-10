@@ -22,6 +22,11 @@ const setTabIndexForLinks = (el, tabIndexValue) => {
 
 const createLogo = (logoWrapper) => {
   const logoImage = logoWrapper.querySelector('span.icon');
+
+  if (!logoImage) {
+    return createElement('div');
+  }
+
   const logoLink = logoImage.parentElement.tagName === 'A' ? logoImage.parentElement : null;
 
   logoImage.classList.add(`${blockName}__logo-image`);
@@ -87,6 +92,10 @@ const createMainLinks = (mainLinksWrapper) => {
 
 const createActions = (actionsWrapper) => {
   const list = actionsWrapper.querySelector('ul');
+
+  if (!list) {
+    return createElement('div');
+  }
 
   list.setAttribute('id', 'header-actions-list');
   list.classList.add(`${blockName}__actions-list`);
@@ -685,21 +694,21 @@ export default async function decorate(block) {
   };
 
   const swapActionsLinks = (isDesktop) => {
-    const actionsLinks = document.querySelector(`#${blockName}-actions-list`);
+    const actionsLinksList = document.querySelector(`#${blockName}-actions-list`) || createElement('div');
     const actionsLinksDesktopMountPoint = document.querySelector(`.${blockName}__actions`);
     const headerMainNav = document.querySelector(`.${blockName}__main-links`); // mobile actions links mount point
-    const buttonsWithoutIcons = getAllElWithChildren([...actionsLinks.querySelectorAll('a')], '.icon', true);
-    const loginLink = actionsLinks.querySelector(`.${blockName}__action-item a[href*="login"]`);
+    const buttonsWithoutIcons = getAllElWithChildren([...actionsLinksList.querySelectorAll('a')], '.icon', true);
+    const loginLink = actionsLinksList.querySelector(`.${blockName}__action-item a[href*="login"]`);
 
     if (loginLink && LOGIN_DISABLED.toLowerCase() === 'true') {
       loginLink.remove();
     }
 
     if (isDesktop) {
-      actionsLinksDesktopMountPoint.append(actionsLinks);
+      actionsLinksDesktopMountPoint.append(actionsLinksList);
       buttonsWithoutIcons.forEach((el) => el.classList.add('button', 'button--primary'));
     } else {
-      headerMainNav.append(actionsLinks);
+      headerMainNav.append(actionsLinksList);
       buttonsWithoutIcons.forEach((el) => el.classList.remove('button', 'button--primary'));
     }
   };
