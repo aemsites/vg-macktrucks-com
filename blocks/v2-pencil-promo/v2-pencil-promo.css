@@ -1,9 +1,17 @@
+.v2-pencil-promo-wrapper.v2-pencil-promo--hidden {
+  display: none;
+}
+
 .redesign-v2 .section .v2-pencil-promo-wrapper:not(.full-width) {
   padding: 0 16px;
 }
 
 .v2-pencil-promo {
   --text-color: var(--c-primary-white);
+}
+
+.v2-pencil-promo[data-segment] {
+  margin-bottom: calc(var(--section-gap) * -1);
 }
 
 /* Generic block styles */
