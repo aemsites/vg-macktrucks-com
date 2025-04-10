@@ -727,7 +727,9 @@ export default async function decorate(block) {
     } else {
       const mainNav = document.querySelector(`.${blockName}__main-nav`);
 
-      setTabIndexForLinks(mainNav);
+      if (mainNav) {
+        setTabIndexForLinks(mainNav);
+      }
     }
   };
 
