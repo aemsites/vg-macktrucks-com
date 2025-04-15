@@ -632,6 +632,8 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
 
   const videoUrl = getDeviceSpecificVideoUrl(src);
 
+  console.log('setup player');
+
   async function initializePlayerWithControls() {
     await setupPlayer(videoUrl, container, videoParams, null, checkVideoCookie);
 
