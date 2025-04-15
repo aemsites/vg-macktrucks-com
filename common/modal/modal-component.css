@@ -101,10 +101,6 @@
   width: 100%;
 }
 
-.modal-video .v2-video__playback-button {
-  display: none;
-}
-
 .modal-before-banner {
   display: flex;
   justify-content: center;
