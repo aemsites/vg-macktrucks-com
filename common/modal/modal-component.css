@@ -24,8 +24,8 @@
   right: 0;
   margin: 0;
   padding: 0;
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   position: fixed;
   display: flex;
   align-items: center;
@@ -173,6 +173,10 @@
 
   .redesign-v2 .modal-content .modal-video {
     max-width: 1040px;
+  }
+
+  .modal-content .v2-video__playback-button {
+    top: 64px;
   }
 }
 
