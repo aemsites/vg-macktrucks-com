@@ -79,6 +79,10 @@
   width: 100%;
 }
 
+.v2-images-grid:not(.v2-images-grid--with-captions) .v2-images-grid__overlay {
+  display: none;
+}
+
 .v2-images-grid__btn {
   position: absolute;
   bottom: 6px;
