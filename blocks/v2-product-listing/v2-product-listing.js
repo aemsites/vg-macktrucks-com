@@ -8,7 +8,7 @@ import {
 } from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
-const variantClasses = ['with-filter', 'with-dots', 'with-featured', '2-columns'];
+const variantClasses = ['with-filter', 'with-dots', 'with-featured', '2-columns', 'pencil-promo'];
 
 function getActiveFilterButton(block) {
   const AllFilterButtons = block.querySelectorAll(`.${blockName}__button-list .${blockName}__segment-button`);
@@ -113,10 +113,10 @@ function buildSegments(segmentList, allSegmentNames) {
 }
 
 function handFilterClick(e, firstSegment) {
-  const target = e.target;
+  const { target } = e;
   const activeBlock = target.closest(`.${blockName}`);
   const products = activeBlock.querySelectorAll(`.${blockName}__product`);
-  const clickedSegment = e.target.textContent.trim().toLowerCase();
+  const clickedSegment = target.textContent.trim().toLowerCase();
   const selectedItem = activeBlock.querySelector(`.${blockName}__selected-item`);
   selectedItem.textContent = clickedSegment;
 
@@ -128,7 +128,7 @@ function handFilterClick(e, firstSegment) {
   const isFirstSegmentActive = firstSegment === clickedSegment;
   activeBlock.dataset.selected = clickedSegment;
 
-  dropdown.classList[isFirstSegmentActive ? 'add' : 'remove']('initial-state');
+  dropdown.classList.toggle('initial-state', isFirstSegmentActive);
 
   products.forEach((product, idx) => {
     product.style.display = product.classList.contains(clickedSegment) || isFirstSegmentActive ? 'flex' : 'none';
@@ -137,7 +137,7 @@ function handFilterClick(e, firstSegment) {
     product.classList.toggle('selected-product', isSelected);
 
     if (idx === 0) {
-      product.classList[isFirstSegmentActive && hasFeatured ? 'add' : 'remove']('featured');
+      product.classList.toggle('featured', isFirstSegmentActive && hasFeatured);
     }
   });
 
@@ -163,6 +163,17 @@ function handFilterClick(e, firstSegment) {
     } else if (!product.classList.contains('selected-product')) {
       product.classList.remove('odd', 'even');
     }
+  });
+
+  // show/hide pencil promo text blocks depending on the clicked segment if pencil promo variant is present
+  if (!activeBlock.classList.contains(`${blockName}--pencil-promo`)) {
+    return;
+  }
+  const allPencilPromo = activeBlock.closest('.section').querySelectorAll('[data-segment]');
+  allPencilPromo.forEach((promo) => {
+    const promoSegment = promo.dataset.segment.trim().toLowerCase();
+    const isClickedSegment = promoSegment === clickedSegment;
+    promo.parentElement.classList.toggle('v2-pencil-promo--hidden', !isClickedSegment);
   });
 }
 
@@ -199,9 +210,9 @@ function buildFilter(allSegmentNames, firstSegment) {
   return dropdownWrapper;
 }
 
-function handleListeners(dropdownWrapper) {
+function handleListeners(dropdownWrapper, block) {
   // Listener to toggle the dropdown (open / close)
-  document.addEventListener('click', (e) => {
+  block.addEventListener('click', (e) => {
     if (e.target.closest(`.${blockName}__selected-item-wrapper`)) {
       dropdownWrapper.classList.toggle(`${blockName}__dropdown--open`);
     } else {
@@ -250,7 +261,7 @@ export default function decorate(block) {
     dropdownWrapper.dataset.selected = firstSegment;
     dropdownWrapper.classList.add('initial-state');
 
-    handleListeners(dropdownWrapper);
+    handleListeners(dropdownWrapper, block);
     getActiveFilterButton(block);
   } else {
     const detailList = block.querySelectorAll(`.${blockName}__product > div > ul`);
