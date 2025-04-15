@@ -98,7 +98,6 @@ export async function setupPlayer(url, videoContainer, config, video) {
   };
 
   if (config.autoplay) {
-    videojsConfig.loop = true;
     videojsConfig.autoplay = true;
   }
 
