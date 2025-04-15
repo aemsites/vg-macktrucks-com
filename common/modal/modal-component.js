@@ -154,7 +154,7 @@ const createModal = () => {
           newContent,
           'modal-video',
           {
-            autoplay: 'any',
+            autoplay: 'true',
             disablePictureInPicture: true,
             loop: false,
             muted: false,
