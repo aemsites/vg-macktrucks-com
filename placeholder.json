@@ -358,6 +358,18 @@
     {
       "Key": "single video message button deny",
       "Text": "Reject Cookies"
+    },
+    {
+      "Key": "Image info open",
+      "Text": "Show more information about this image"
+    },
+    {
+      "Key": "Image info dialog",
+      "Text": "Additional image information"
+    },
+    {
+      "Key": "Image info close",
+      "Text": "Close image information panel"
     }
   ],
   ":type": "sheet"
