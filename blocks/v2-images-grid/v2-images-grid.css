@@ -355,10 +355,6 @@
     max-width: 1040px;
   }
 
-  .v2-images-grid--with-captions .v2-images-grid__figcaption {
-    display: block;
-  }
-
   .v2-images-grid:not(.v2-images-grid--with-captions) .v2-images-grid__figcaption {
     display: block;
     text-align: center;
@@ -371,10 +367,6 @@
     text-transform: uppercase;
     font: 12px/16px var(--ff-body-bold);
     letter-spacing: 1.92px;
-  }
-
-  .v2-images-grid__overlay {
-    display: none;
   }
 }
 
@@ -395,7 +387,11 @@
     display: flex;
   }
 
-  .v2-images-grid__caption-panel {
-    right: unset;
+  .v2-images-grid__overlay {
+    display: none;
+  }
+
+  .v2-images-grid--with-captions .v2-images-grid__figcaption {
+    display: block;
   }
 }
