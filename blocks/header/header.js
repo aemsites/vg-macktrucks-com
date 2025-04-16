@@ -15,9 +15,28 @@ const tabsVariants = {
 };
 
 const setTabIndexForLinks = (el, tabIndexValue) => {
-  [...el.querySelectorAll('a, button')].forEach((link) => {
-    link.setAttribute('tabindex', tabIndexValue);
-  });
+  try {
+    if (!el) {
+      throw new Error('No element provided to setTabIndexForLinks.');
+    }
+
+    const links = el.querySelectorAll('a, button');
+
+    if (!links.length) {
+      console.warn('No links or buttons found in the provided element:', el);
+      return;
+    }
+
+    links.forEach((link) => {
+      if (link && typeof link.setAttribute === 'function') {
+        link.setAttribute('tabindex', tabIndexValue);
+      } else {
+        console.warn('Skipped an invalid link element:', link);
+      }
+    });
+  } catch (error) {
+    console.error('setTabIndexForLinks encountered an error:', error, '\nElement passed in:', el);
+  }
 };
 
 const createLogo = (logoWrapper) => {
