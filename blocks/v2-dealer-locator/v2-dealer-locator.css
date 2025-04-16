@@ -860,7 +860,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .mobile-main-header .slider-container[data-active="mi"] .slider-rectangle {
-  right: 4px;
+  left: 50%;
 }
 
 .mobile-main-header .slider-container[data-active="km"] .slider-rectangle {
@@ -2756,6 +2756,7 @@ footer {
     height: 28px;
     width: calc(50% - 4px);
     background-color: var(--c-primary-gold);
+    transition: left var(--duration-small) var(--easing-standard);
   }
 
   .v2-dealer-locator .sidebar .slider-container button:hover {
@@ -2763,7 +2764,7 @@ footer {
   }
 
   .v2-dealer-locator .sidebar .slider-container[data-active="mi"] .slider-rectangle {
-    right: 4px;
+    left: 50%;
   }
 
   .v2-dealer-locator .sidebar .slider-container[data-active="km"] .slider-rectangle {
