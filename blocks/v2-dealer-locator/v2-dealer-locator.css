@@ -798,6 +798,75 @@ main .section.v2-dealer-locator-container > div {
   display: none;
 }
 
+.v2-dealer-locator .nearby-pins article.teaser .teaser-top .heading div.distance {
+  margin-top: 0;
+}
+
+.v2-dealer-locator .sidebar-content .distance {
+  position: relative;
+  min-width: 25%;
+}
+
+.v2-dealer-locator .sidebar-content article.teaser .heading p.distance-text {
+  position: absolute;
+  display: none;
+  right: 0;
+}
+
+.v2-dealer-locator .sidebar-content article.teaser .heading p.distance-text.active {
+  display: block;
+}
+
+.v2-dealer-locator .mobile-main-header .slider-wrapper {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  background: var(--c-primary-white);
+  padding: 6px 0;
+}
+
+.v2-dealer-locator .mobile-main-header .slider-container {
+  position: relative;
+  height: 28px;
+  display: flex;
+  background-color: var(--background-color);
+  border: 1px solid var(--c-primary-black);
+  margin: 3px 0 0 auto;
+  padding: 4px;
+}
+
+.v2-dealer-locator .mobile-main-header .slider-container button {
+  color: var(--text-color);
+  font-size: var(--body-font-size-xs);
+  position: relative;
+  background-color: transparent;
+  border: none;
+  z-index: 1;
+  padding: 4px 10px;
+  margin: 0;
+}
+
+.v2-dealer-locator .mobile-main-header .slider-container button:hover {
+  cursor: pointer;
+}
+
+.v2-dealer-locator .mobile-main-header .slider-rectangle {
+  position: absolute;
+  top: 4px;
+  height: 28px;
+  width: calc(50% - 4px);
+  background-color: var(--c-primary-gold);
+  transition: left var(--duration-small) var(--easing-standard);
+}
+
+.mobile-main-header .slider-container[data-active="mi"] .slider-rectangle {
+  right: 4px;
+}
+
+.mobile-main-header .slider-container[data-active="km"] .slider-rectangle {
+  left: 4px;
+}
+
 @media (max-width: 992px) {
   .v2-dealer-locator .dealer,
   .v2-dealer-locator .electric-dealer,
@@ -808,7 +877,6 @@ main .section.v2-dealer-locator-container > div {
 
   .v2-dealer-locator .mobile-main-header {
     display: block;
-    border: 1px solid;
     height: 39px;
   }
 
@@ -829,14 +897,15 @@ main .section.v2-dealer-locator-container > div {
     position: relative;
     display: block;
     background: #fff;
-    border-radius: 4px;
     box-sizing: border-box;
+    border: 1px solid;
     width: 100%;
-    height: 39px;
+    height: 100%;
     border-bottom: 1px solid transparent;
     padding: 5px 20px;
     transition-property: background, box-shadow;
     transition-duration: 0.3s;
+    margin-bottom: 1px
   }
 
   .v2-dealer-locator .mobile-main-header .panel-header.add-directions {
@@ -1732,7 +1801,7 @@ main .section.v2-dealer-locator-container > div {
   margin: 0 !important;
   padding: 0 !important;
   outline: 0;
-  min-width: 250px;
+  min-width: 224px;
   height: 24px !important;
   line-height: 24px;
   vertical-align: top;
@@ -2652,4 +2721,52 @@ footer {
 .tooltip.bottom-right .tooltip-arrow {
   left: 5px;
   margin-top: -5px;
+}
+
+@media (min-width: 992px) {
+  .v2-dealer-locator .sidebar .main-header {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .v2-dealer-locator .sidebar .main-header .slider-container {
+    position: relative;
+    height: 28px;
+    display: flex;
+    background-color: var(--background-color);
+    border: 1px solid var(--c-primary-black);
+    margin: 3px 0 0 11px;
+    padding: 4px;
+  }
+  
+  .v2-dealer-locator .sidebar .slider-container button {
+    color: var(--text-color);
+    font-size: var(--body-font-size-xs);
+    position: relative;
+    background-color: transparent;
+    border: none;
+    z-index: 1;
+    padding: 3px 10px 4px;
+    margin: 0;
+  }
+  
+  .v2-dealer-locator .sidebar .slider-container .slider-rectangle {
+    position: absolute;
+    top: 4px;
+    height: 28px;
+    width: calc(50% - 4px);
+    background-color: var(--c-primary-gold);
+  }
+
+  .v2-dealer-locator .sidebar .slider-container button:hover {
+    cursor: pointer;
+  }
+
+  .v2-dealer-locator .sidebar .slider-container[data-active="mi"] .slider-rectangle {
+    right: 4px;
+  }
+
+  .v2-dealer-locator .sidebar .slider-container[data-active="km"] .slider-rectangle {
+    left: 4px;
+  }
 }
