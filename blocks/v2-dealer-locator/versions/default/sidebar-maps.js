@@ -85,6 +85,11 @@ var uptimeClicked = false;
 $electricDealer = false;
 $hoverText = $('#hoverText').val();
 
+$locale = window.locatorConfig.locale;
+$units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 0.62137 }];
+$activeUnit = $units[($locale === 'en-BS' || $locale === 'en-US') ? 0 : 1].name;
+var $sliders = $('.slider-container');
+
 // Google callback letting us know maps is ready to be used
 (function () {
   initMap = function () {
@@ -240,6 +245,15 @@ $hoverText = $('#hoverText').val();
           //$.fn.willDealerBeOpen();
         }
     );
+
+    // Set inital slider position based on active locale unit
+    [...$sliders].forEach(slider => {
+      $activeButton = slider.querySelector(`[data-unit=${$activeUnit}]`)
+      $activeButton.classList.add('active')
+      slider.dataset.active = $activeUnit
+    });
+
+
 
     if ($isAsist) {
       $('#filter-options').css('display', 'none');
@@ -1228,7 +1242,7 @@ $.fn.switchSidebarPane = async function (id, e) {
 
   } else {
     $('.main-directions').css('display', 'none');
-    $('.main-header').css('display', 'block');
+    $('.main-header').css('display', 'flex');
     $.fn.clearDirections();
     $map.setZoom(8);
   }
@@ -1643,13 +1657,27 @@ $.fn.tmpPins = function (tmpPinList) {
 
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
-    templateClone.find('.distance').text(pin.distance.toFixed(2) + ' mi');
     templateClone.find('.city').text(pin.MAIN_CITY_NM + ', ' + pin.MAIN_STATE_PROV_CD + ' ' + pin.MAIN_POSTAL_CD);
     templateClone.find('.direction a').attr('data-id', pin.IDENTIFIER_VALUE);
     templateClone.find('.direction a').text('Direction');
     templateClone.find('.website a').text('Dealer Site');
     templateClone.find('.phone').text($.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
 
+    const distanceInMiles = pin.distance.toFixed(2);
+    const distanceInKms = (distanceInMiles * $units[0].factor).toFixed(2);
+
+    const isActive = (unit) => unit === $activeUnit ? 'active' : '';
+   
+    const distances = `
+      <p class='distance-text ${isActive($units[0].name)}'>
+        ${distanceInMiles + ' ' + $units[0].name}
+      </p>
+      <p class='distance-text ${isActive($units[1].name)}'>
+        ${distanceInKms + ' ' + $units[1].name}
+      </p>
+    `;
+
+    templateClone.find('.distance').html(distances);
 
     if (!pin.MAIN_ADDRESS_LINE_1_TXT) {
       templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_2_TXT);
@@ -2160,7 +2188,11 @@ $.fn.selectNearbyPins = function () {
 
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
+
+
     templateClone.find('.distance').text(pin.distance.toFixed(2) + ' mi');
+    
+    
     templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_1_TXT);
     templateClone.find('.city').text(pin.MAIN_CITY_NM + ', ' + pin.MAIN_STATE_PROV_CD + ' ' + pin.MAIN_POSTAL_CD);
     templateClone.find('.phone').text($.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
@@ -3303,6 +3335,30 @@ $(document).on('click', '#print', function (eventObject) {
 
   setTimeout(function () { newWin.close(); }, 10);
 
+});
+
+// toggle distance units
+const updateSlider = (e) => {
+  e.preventDefault
+  const target = e.target;
+  if (target.classList.contains('active')) {
+    return
+  }
+  const parent = target.parentElement;
+  parent.querySelectorAll('button').forEach(btn => {
+    btn.classList.toggle('active')
+  });
+  parent.dataset.active = target.dataset.unit
+
+  const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text')
+  distanceTags.forEach((el) => {
+    el.classList.toggle('active')
+  });
+
+}
+
+[...$sliders].forEach(slideBtn => {
+  slideBtn.addEventListener("click", (e) => updateSlider(e))
 });
 
 $.fn.initGoogleMaps();//entry point to dealer locator

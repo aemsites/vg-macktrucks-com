@@ -102,9 +102,15 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
               <div class="geo-container">
                   <button type="button" id="search" onclick="$.fn.setLocation();"><img
                           src="/blocks/v2-dealer-locator/images/location.svg"/></button>
+                </div>
               </div>
-
-          </div>
+              <div class="slider-wrapper">
+                <div class="slider-container">
+                    <button data-unit="km" value="value-kilometers" class="slider-btn">km</button>
+                    <button data-unit="mi" value="value-miles" class="slider-btn">mi</button>
+                    <div class="slider-rectangle"></div>  
+                </div>
+              </div>
       </div>
       <div id="map"></div>
       <div class="map-geo-container">
@@ -134,7 +140,12 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
                               src="/blocks/v2-dealer-locator/images/location.svg"/></button>
                   </div>
 
-              </div>
+                  </div>
+                  <div class="slider-container">
+                      <button data-unit="km" value="value-kilometers" class="slider-btn">km</button>
+                      <button data-unit="mi" value="value-miles" class="slider-btn">mi</button>
+                      <div class="slider-rectangle"></div>  
+                  </div>
           </div>
           <div class="row legend-header">
 

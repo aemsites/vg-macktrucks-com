@@ -1,5 +1,5 @@
 import { loadScript, loadCSS, readBlockConfig } from '../../scripts/aem.js';
-import { TOOLS_CONFIGS, isMobileViewport } from '../../scripts/common.js';
+import { TOOLS_CONFIGS, getLocale, isMobileViewport } from '../../scripts/common.js';
 import template from './shared/template.js';
 
 const { GOOGLE_API_KEY } = TOOLS_CONFIGS;
@@ -85,6 +85,7 @@ export default async function decorate(block) {
       country: blockConfig.country,
       amenities: blockConfig.amenities,
       coords: blockConfig.coords,
+      locale: getLocale(),
     };
 
     const sharedTemplate = template({ zipCode, isMobile, isExportMarket });
