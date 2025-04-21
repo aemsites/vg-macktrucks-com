@@ -108,7 +108,7 @@ var isLocationOFF = false;
 $locale = window.locatorConfig.locale;
 $units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 0.62137 }];
 $activeUnit = $units[($locale === 'en-BS' || $locale === 'en-US') ? 0 : 1].name;
-var $sliders = $('.slider-container');
+var $distanceToggles = $('.toggle-container');
 
 // Google callback letting us know maps is ready to be used
 (function () {
@@ -272,10 +272,9 @@ var $sliders = $('.slider-container');
 
 
     // Set inital slider position based on active locale unit
-    [...$sliders].forEach(slider => {
-      $activeButton = slider.querySelector(`[data-unit=${$activeUnit}]`)
-      $activeButton.classList.add('active')
-      slider.dataset.active = $activeUnit
+    [...$distanceToggles].forEach(toggle => {
+      $activeButton = toggle.querySelector('.toggle-button')
+      $activeButton.dataset.active = $activeUnit
     });
 
     if ($isAsist) {
@@ -1462,7 +1461,6 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.teaser-top').attr('data-id', pin.IDENTIFIER_VALUE);
     templateClone.find('.more').attr('data-id', pin.IDENTIFIER_VALUE);
 
-
     var isOpen = $.fn.isOpen(pin);
     var isOpenHtml = "";
     if (isOpen.open && !isOpen.closeSoon) {
@@ -1967,7 +1965,6 @@ $.fn.selectNearbyPins = function () {
 
     templateClone.find('.panel-container').parent().attr('data-id', pin.IDENTIFIER_VALUE);
 
-
     var isOpen = $.fn.isOpen(pin);
     var isOpenHtml = "";
     if (isOpen.open && !isOpen.closeSoon) {
@@ -1977,7 +1974,6 @@ $.fn.selectNearbyPins = function () {
     } else {
       isOpenHtml = "Closed";
     }
-
 
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
@@ -3123,25 +3119,17 @@ $(document).on('click', '#print', function (eventObject) {
 // toggle distance units
 const updateSlider = (e) => {
   e.preventDefault
-  const target = e.target;
-  if (target.classList.contains('active')) {
-    return
-  }
-  const parent = target.parentElement;
-  parent.querySelectorAll('button').forEach(btn => {
-    btn.classList.toggle('active')
-  });
-  parent.dataset.active = target.dataset.unit
+  const activeUnit = e.target.dataset.active;
+  e.target.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
 
   const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text')
   distanceTags.forEach((el) => {
     el.classList.toggle('active')
   });
-
 }
 
-[...$sliders].forEach(slideBtn => {
-  slideBtn.addEventListener("click", (e) => updateSlider(e))
+[...$distanceToggles].forEach(toggleBtn => {
+  toggleBtn.addEventListener("click", (e) => updateSlider(e))
 });
 
 $.fn.initGoogleMaps();//entry point to dealer locator

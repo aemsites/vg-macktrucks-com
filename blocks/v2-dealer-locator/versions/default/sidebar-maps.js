@@ -88,7 +88,7 @@ $hoverText = $('#hoverText').val();
 $locale = window.locatorConfig.locale;
 $units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 0.62137 }];
 $activeUnit = $units[($locale === 'en-BS' || $locale === 'en-US') ? 0 : 1].name;
-var $sliders = $('.slider-container');
+var $distanceToggles = $('.toggle-container');
 
 // Google callback letting us know maps is ready to be used
 (function () {
@@ -247,13 +247,10 @@ var $sliders = $('.slider-container');
     );
 
     // Set inital slider position based on active locale unit
-    [...$sliders].forEach(slider => {
-      $activeButton = slider.querySelector(`[data-unit=${$activeUnit}]`)
-      $activeButton.classList.add('active')
-      slider.dataset.active = $activeUnit
+    [...$distanceToggles].forEach(toggle => {
+      $activeButton = toggle.querySelector('.toggle-button')
+      activeButton.dataset.active = $activeUnit
     });
-
-
 
     if ($isAsist) {
       $('#filter-options').css('display', 'none');
@@ -2176,7 +2173,6 @@ $.fn.selectNearbyPins = function () {
 
     templateClone.find('.panel-container').parent().attr('data-id', pin.IDENTIFIER_VALUE);
 
-
     var openHours = $.fn.getOpenHours(pin);
     var isOpenHtml = "";
     if (openHours.open === '' && openHours.close === '') {
@@ -2185,14 +2181,9 @@ $.fn.selectNearbyPins = function () {
       isOpenHtml = `${openHours.open.toLowerCase()} - ${openHours.close.toLowerCase()}`;
     }
 
-
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
-
-
     templateClone.find('.distance').text(pin.distance.toFixed(2) + ' mi');
-    
-    
     templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_1_TXT);
     templateClone.find('.city').text(pin.MAIN_CITY_NM + ', ' + pin.MAIN_STATE_PROV_CD + ' ' + pin.MAIN_POSTAL_CD);
     templateClone.find('.phone').text($.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
@@ -2234,8 +2225,6 @@ $.fn.selectNearbyPins = function () {
         marker.setIcon(pinIcon);
 
         marker['pinIndex'] = pinIndex;
-
-
 
         templateClone.find('#marker').attr('src', pinIcon);
         templateClone.find('#marker').css('width', '31px');
@@ -2350,8 +2339,6 @@ $.fn.selectNearbyPins = function () {
   } else {
     $('.panel-footer').html('Showing ' + $nearbyPins.length + ' locations');
   }
-
-
 };
 
 $.fn.getDistanceInKm = function ($b) {
@@ -2378,9 +2365,7 @@ $.fn.deg2rad = function ($deg) {
 
 // Fires when a client types a location manually
 $.fn.setAddress2 = function () {
-
   address2 = $('#location2').val();
-
 
   if (!address2) {
     return null;
@@ -2410,7 +2395,6 @@ $.fn.setAddress2 = function () {
         position.lng()
       ];
 
-
       if (!$me) {
         $pin = {
           url: $meIcon,
@@ -2438,9 +2422,7 @@ $.fn.setAddress2 = function () {
 
       }
 
-
       $me.setPosition({ lat: parseFloat(pos.lat), lng: parseFloat(pos.lng) });
-
 
       if (!$radius) {
 
@@ -2467,8 +2449,6 @@ $.fn.setAddress2 = function () {
 
         // Set default sidebar pane
         $.fn.switchSidebarPane('sidebar-pins');
-
-
 
       } else {
         $radius.setCenter({ lat: parseFloat(pos.lat), lng: parseFloat(pos.lng) });
@@ -2518,7 +2498,6 @@ $.fn.setAddress = function () {
         position.lng()
       ];
 
-
       if (!$me) {
         $pin = {
           url: $meIcon,
@@ -2575,8 +2554,6 @@ $.fn.setAddress = function () {
 
         // Set default sidebar pane
         $.fn.switchSidebarPane('sidebar-pins');
-
-
 
       } else {
         $radius.setCenter({ lat: parseFloat(pos.lat), lng: parseFloat(pos.lng) });
@@ -2638,8 +2615,6 @@ $.fn.setLocation = function () {
 
         // Set default sidebar pane
         $.fn.switchSidebarPane('sidebar-pins');
-
-
 
       } else {
 
@@ -3340,25 +3315,17 @@ $(document).on('click', '#print', function (eventObject) {
 // toggle distance units
 const updateSlider = (e) => {
   e.preventDefault
-  const target = e.target;
-  if (target.classList.contains('active')) {
-    return
-  }
-  const parent = target.parentElement;
-  parent.querySelectorAll('button').forEach(btn => {
-    btn.classList.toggle('active')
-  });
-  parent.dataset.active = target.dataset.unit
+  const activeUnit = e.target.dataset.active;
+  e.target.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
 
   const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text')
   distanceTags.forEach((el) => {
     el.classList.toggle('active')
   });
-
 }
 
-[...$sliders].forEach(slideBtn => {
-  slideBtn.addEventListener("click", (e) => updateSlider(e))
+[...$distanceToggles].forEach(toggleBtn => {
+  toggleBtn.addEventListener("click", (e) => updateSlider(e))
 });
 
 $.fn.initGoogleMaps();//entry point to dealer locator
