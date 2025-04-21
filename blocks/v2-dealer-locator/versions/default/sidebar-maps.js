@@ -249,7 +249,7 @@ var $distanceToggles = $('.toggle-container');
     // Set inital slider position based on active locale unit
     [...$distanceToggles].forEach(toggle => {
       $activeButton = toggle.querySelector('.toggle-button');
-      activeButton.dataset.active = $activeUnit;
+      $activeButton.dataset.active = $activeUnit;
     });
 
     if ($isAsist) {
