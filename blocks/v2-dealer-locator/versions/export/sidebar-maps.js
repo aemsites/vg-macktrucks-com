@@ -3117,11 +3117,10 @@ $(document).on('click', '#print', function (eventObject) {
 });
 
 // toggle distance units
-const updateSlider = (e) => {
+const updateToggle = (e) => {
   e.preventDefault
   const activeUnit = e.target.dataset.active;
   e.target.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
-
   const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text')
   distanceTags.forEach((el) => {
     el.classList.toggle('active')
@@ -3129,7 +3128,7 @@ const updateSlider = (e) => {
 }
 
 [...$distanceToggles].forEach(toggleBtn => {
-  toggleBtn.addEventListener("click", (e) => updateSlider(e))
+  toggleBtn.addEventListener("click", (e) => updateToggle(e))
 });
 
 $.fn.initGoogleMaps();//entry point to dealer locator
