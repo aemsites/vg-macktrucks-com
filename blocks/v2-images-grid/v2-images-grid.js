@@ -146,6 +146,49 @@ const showImagesGridModal = async (modalContent) => {
   await showModal(modalContent, { classes: ['modal-content--bottom'] });
 };
 
+const buildOverlayFragment = (captionText) => {
+  return document.createRange().createContextualFragment(`
+    <button class="${blockName}__btn ${blockName}__info-btn" aria-label="${getTextLabel('Image info open')}" aria-haspopup="dialog" aria-expanded="false">
+      <span class="icon icon-info" aria-hidden="true">Info</span>
+    </button>
+    <div class="${blockName}__caption-panel" hidden role="dialog" aria-label="${getTextLabel('Image info dialog')}">
+      <p class="${blockName}__caption-text">${captionText}</p>
+    </div>
+    <button class="${blockName}__btn ${blockName}__close-btn" hidden aria-label="${getTextLabel('Image info close')}">
+      <span class="icon icon-close" aria-hidden="true">Close</span>
+    </button>
+  `);
+};
+
+const attachOverlayEvents = (container) => {
+  const infoBtn = container.querySelector(`.${blockName}__info-btn`);
+  const captionPanel = container.querySelector(`.${blockName}__caption-panel`);
+  const closeBtn = container.querySelector(`.${blockName}__close-btn`);
+
+  infoBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    captionPanel.removeAttribute('hidden');
+    closeBtn.removeAttribute('hidden');
+    infoBtn.setAttribute('aria-expanded', 'true');
+    infoBtn.style.display = 'none';
+  });
+
+  closeBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    captionPanel.setAttribute('hidden', 'true');
+    closeBtn.setAttribute('hidden', 'true');
+    infoBtn.setAttribute('aria-expanded', 'false');
+    infoBtn.style.display = 'block';
+  });
+};
+
+const createCaptionOverlay = (captionText) => {
+  const overlay = createElement('div', { classes: `${blockName}__overlay` });
+  overlay.append(buildOverlayFragment(captionText));
+  attachOverlayEvents(overlay);
+  return overlay;
+};
+
 export default function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const isCaptionsVariant = block.classList.contains(`${blockName}--with-captions`);
@@ -174,6 +217,7 @@ export default function decorate(block) {
     if (idx < 4) {
       const captionEle = getAllElWithChildren(li.querySelectorAll('p'), 'picture', true)[0];
       let picture = li.querySelector('picture');
+      let overlay;
 
       if (picture) {
         const img = picture.lastElementChild;
@@ -186,10 +230,11 @@ export default function decorate(block) {
         const figCaption = createElement('figcaption', { classes: `${blockName}__figcaption` });
         figCaption.textContent = captionEle?.textContent;
         picture.append(figCaption);
+        overlay = createCaptionOverlay(captionEle?.textContent);
       }
 
       li.innerHTML = '';
-      li.append(picture);
+      li.append(picture, overlay);
 
       if (!isCaptionsVariant) {
         li.addEventListener('click', async () => {
@@ -221,6 +266,6 @@ export default function decorate(block) {
     block.append(button);
   }
 
-  // remove empty tags
+  decorateIcons(block);
   removeEmptyTags(block);
 }
