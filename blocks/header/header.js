@@ -197,11 +197,11 @@ const rebuildCategoryItem = (item) => {
   }
 };
 
-const optimiseImage = (picture, isFeaturedCardPicture) => {
+const optimiseImage = (picture, shouldUseLargeSources) => {
   const img = picture.querySelector('img');
   const isInsideFeaturedCard = picture.closest('.featured-card');
   const sources =
-    isFeaturedCardPicture && isInsideFeaturedCard
+    shouldUseLargeSources && isInsideFeaturedCard
       ? [
           { media: '(min-width: 1200px) and (min-resolution: 2x)', width: '1368' },
           { media: '(min-width: 1200px)', width: '684' },
