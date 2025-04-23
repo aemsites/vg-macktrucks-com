@@ -197,11 +197,11 @@ const rebuildCategoryItem = (item) => {
   }
 };
 
-const optimiseImage = (picture, isFirstPicture) => {
+const optimiseImage = (picture, isFeaturedCardPicture) => {
   const img = picture.querySelector('img');
   const isInsideFeaturedCard = picture.closest('.featured-card');
   const sources =
-    isFirstPicture && isInsideFeaturedCard
+    isFeaturedCardPicture && isInsideFeaturedCard
       ? [
           { media: '(min-width: 1200px) and (min-resolution: 2x)', width: '1368' },
           { media: '(min-width: 1200px)', width: '684' },
@@ -252,7 +252,7 @@ const transformMenuData = (data) => {
     });
 
     [...menuData.querySelectorAll('picture')].forEach((picture, i) => {
-      optimiseImage(picture, i === 0);
+      optimiseImage(picture, i < 2);
     });
   });
 
