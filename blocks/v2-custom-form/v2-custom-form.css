@@ -51,9 +51,9 @@
   margin-bottom: 10px;
 }
 
-.v2-custom-form-container textarea::placeholder,
 .v2-custom-form-container .v2-custom-form .error,
 .v2-custom-form-container .v2-custom-form label,
+.v2-custom-form-container textarea::placeholder,
 .v2-custom-form-container input::placeholder {
   display: inline-block;
   font-family: var(--ff-body);
