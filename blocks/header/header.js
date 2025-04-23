@@ -197,13 +197,20 @@ const rebuildCategoryItem = (item) => {
   }
 };
 
-const optimiseImage = (picture) => {
+const optimiseImage = (picture, isFirstPicture) => {
   const img = picture.querySelector('img');
-  const newPicture = createOptimizedPicture(img.src, img.alt, false, [
-    { media: '(min-width: 1200px) and (min-resolution: 2x)', width: '568' },
-    { media: '(min-width: 1200px)', width: '284' },
-  ]);
-
+  const isInsideFeaturedCard = picture.closest('.featured-card');
+  const sources =
+    isFirstPicture && isInsideFeaturedCard
+      ? [
+          { media: '(min-width: 1200px) and (min-resolution: 2x)', width: '1368' },
+          { media: '(min-width: 1200px)', width: '684' },
+        ]
+      : [
+          { media: '(min-width: 1200px) and (min-resolution: 2x)', width: '580' },
+          { media: '(min-width: 1200px)', width: '290' },
+        ];
+  const newPicture = createOptimizedPicture(img.src, img.alt, false, sources);
   picture.replaceWith(newPicture);
 };
 
@@ -244,7 +251,9 @@ const transformMenuData = (data) => {
       }
     });
 
-    [...menuData.querySelectorAll('picture')].forEach(optimiseImage);
+    [...menuData.querySelectorAll('picture')].forEach((picture, i) => {
+      optimiseImage(picture, i === 0);
+    });
   });
 
   const results = document.createRange().createContextualFragment(`
