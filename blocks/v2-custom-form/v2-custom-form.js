@@ -241,7 +241,7 @@ function createSubmit(fd) {
 function createInput(fd) {
   const input = createElement('input', {
     props: {
-      // if is email with a pattern, the pattern collides with the browser validation
+      // If the field is an email with a custom pattern, use 'text' to avoid conflicts with browser validation.
       type: fd.Type === 'email' && fd.Pattern ? 'text' : fd.Type,
     },
   });
