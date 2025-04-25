@@ -3,7 +3,7 @@ import { fetchMagazineData, formatArticlesArray, formatFacetsArray } from '../..
 
 const blockName = 'explore-articles';
 
-const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
+const queryVariables = { limit: 100, facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
 const allMagazineData = await fetchMagazineData(queryVariables);
 const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
