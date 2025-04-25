@@ -1009,7 +1009,7 @@ main .section.responsive-title h1 {
   /* GT America, Extended Roman, 24px, 120%, -2% / 18px, 120%, -2% */
   --testimonial-font-size: 1.125rem; /* 18px */
   --testimonial-line-height: 120%;
-  --testimonial-letter-spacing: -0.0225rem;
+  --testimonial-letter-spacing: -0.0225rem; /* -0.48px */
 
   /* GT America Compressed, 48px, 90% */
   --heading-compressed-font-size: 3rem; /* 18px */
@@ -1017,6 +1017,10 @@ main .section.responsive-title h1 {
 
   /* In page navigation */
   --inpage-navigation-height: 0;
+
+  /* Forms text styling */
+  --form-letter-spacing: 0.07rem; /* 1.12px */
+  --form-line-height: 130%; /* 18px */
 
   /* Buttons */
   --button-primary-color: var(--c-primary-black);
