@@ -40,6 +40,7 @@
 }
 
 .custom-dropdown__button {
+  color: var(--c-primary-black);
   background-color: var(--background-color);
   border: 1px solid var(--c-secondary-graphite);
   width: 100%;
@@ -73,6 +74,8 @@
 }
 
 .custom-dropdown__option {
+  color: var(--c-primary-black);
+  line-height: 16px;
   padding: 10px 16px;
 }
 
