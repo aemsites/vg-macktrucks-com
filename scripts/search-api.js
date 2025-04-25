@@ -1,12 +1,10 @@
-import { isDevHost, SEARCH_CONFIGS } from './common.js';
+import { SEARCH_CONFIGS } from './common.js';
 
 export const { TENANT, SEARCH_URL_DEV, SEARCH_URL_PROD } = SEARCH_CONFIGS;
-const isProd = !isDevHost();
-const SEARCH_LINK = isProd ? SEARCH_URL_DEV : SEARCH_URL_PROD;
 
 export async function fetchData(queryObj) {
   try {
-    const response = await fetch(SEARCH_LINK, {
+    const response = await fetch(SEARCH_URL_PROD, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
