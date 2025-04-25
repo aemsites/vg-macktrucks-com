@@ -3,7 +3,7 @@ import { fetchMagazineData, formatArticlesArray, formatFacetsArray } from '../..
 
 const blockName = 'explore-articles';
 
-const queryVariables = { limit: 100, facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
+const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'PUBLISH_DATE_DESC' };
 const allMagazineData = await fetchMagazineData(queryVariables);
 const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
@@ -32,6 +32,9 @@ const getOptions = (list, placeholder) => {
   list.forEach((el) => {
     const option = createElement('option', { props: { value: el } });
     option.innerText = capitalizeWords(el);
+    if (el == 0) {
+      return;
+    }
     if (el.length !== 0) {
       options.push(option);
     }
