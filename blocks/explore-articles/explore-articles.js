@@ -32,9 +32,6 @@ const getOptions = (list, placeholder) => {
   list.forEach((el) => {
     const option = createElement('option', { props: { value: el } });
     option.innerText = capitalizeWords(el);
-    if (el == 0) {
-      return;
-    }
     if (el.length !== 0) {
       options.push(option);
     }
