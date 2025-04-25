@@ -35,7 +35,6 @@
   width: 100%;
   max-width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
   height: 40px;
   line-height: 10px;
   font-size: var(--fields-font-size);
@@ -53,10 +52,19 @@
 }
 
 .v2-custom-form-container .v2-custom-form .error,
-.v2-custom-form-container .v2-custom-form label {
-  font-size: var(--body-font-size-xs);
+.v2-custom-form-container .v2-custom-form label,
+.v2-custom-form-container textarea::placeholder,
+.v2-custom-form-container input::placeholder {
   display: inline-block;
-  font-weight: 400;
+  font-family: var(--ff-body);
+  font-size: var(--body-font-size-xs);
+  font-weight: 500;
+  letter-spacing: var(--form-letter-spacing);
+  line-height: var(--form-line-height);
+}
+
+.v2-custom-form-container .v2-custom-form label {
+  padding-bottom: 5px;
 }
 
 .v2-custom-form-container .form-checkbox-wrapper input[type='checkbox'] {
@@ -100,8 +108,6 @@
 .v2-custom-form-container .form-checkbox-wrapper input[type='checkbox']:checked + label {
   color: var(--c-primary-black);
 }
-
-
 
 .v2-custom-form button.button:focus-visible,
 .v2-custom-form-container textarea:focus-visible,
@@ -153,5 +159,18 @@
   .section--with-background.v2-custom-form-container {
     margin-bottom: 0;
     padding: 40px 0 80px;
+  }
+
+  .v2-custom-form--double-column form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px 50px;
+    max-width: 840px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .v2-custom-form-container :is(.form-textarea-wrapper, .form-submit-wrapper) {
+    grid-column: 1 / -1;
   }
 }

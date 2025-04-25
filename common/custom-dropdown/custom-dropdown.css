@@ -48,7 +48,6 @@
   padding: 10px;
   margin-bottom: 10px;
   height: 40px;
-  line-height: 18px;
 }
 
 .custom-dropdown__button.placeholder-state {
@@ -78,6 +77,13 @@
   color: var(--c-primary-black);
   line-height: 16px;
   padding: 10px 16px;
+}
+
+.custom-dropdown__button,
+.custom-dropdown__option {
+  font-weight: 500;
+  letter-spacing: var(--form-letter-spacing);
+  line-height: var(--form-line-height);
 }
 
 .custom-dropdown__option.option-current {
