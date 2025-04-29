@@ -49,6 +49,16 @@ async function getCustomMessage(url) {
   return '';
 }
 
+function addHeaderWithMark(wrapper) {
+  const hasHeaderWithMark = wrapper.closest('.header-with-mark');
+  if (hasHeaderWithMark) {
+    const title = wrapper.querySelector('h1, h2, h3, h4, h5, h6');
+    if (title) {
+      title.classList.add('with-marker');
+    }
+  }
+}
+
 async function submissionSuccess() {
   sampleRUM('form:submit');
   const successDiv = createElement('div', {
@@ -57,12 +67,16 @@ async function submissionSuccess() {
   successDiv.innerHTML = successMessage(getMessageText(true, true), getMessageText(true, false));
   const form = document.querySelector('form[data-submitting=true]');
   const hasCustomMessage = form.dataset.customMessage;
+  const hasHeaderWithMark = form.closest('.header-with-mark');
 
   if (hasCustomMessage) {
     successDiv.innerHTML = await getCustomMessage(hasCustomMessage);
   }
   form.setAttribute('data-submitting', 'false');
   form.replaceWith(successDiv);
+  if (hasHeaderWithMark) {
+    addHeaderWithMark(successDiv);
+  }
 }
 
 async function submissionFailure() {
@@ -71,12 +85,16 @@ async function submissionFailure() {
   });
   errorDiv.innerHTML = errorMessage(getMessageText(false, true), getMessageText(false, false));
   const form = document.querySelector('form[data-submitting=true]');
+  const headerWithMark = form.closest('.header-with-mark');
   if (!form) {
     return;
   }
   form.setAttribute('data-submitting', 'false');
   form.querySelector('button[type="submit"]').disabled = false;
   form.replaceWith(errorDiv);
+  if (headerWithMark) {
+    addHeaderWithMark(errorDiv);
+  }
 }
 
 // callback
@@ -551,6 +569,11 @@ async function createForm(formURL) {
     cleanErrorMessages(form);
     e.preventDefault();
     if (isValid) {
+      const block = form.closest(`.${blockName}`);
+      const formTitle = block.querySelector(`.${blockName}__title`);
+      if (formTitle) {
+        formTitle.remove();
+      }
       e.submitter.setAttribute('disabled', '');
       form.dataset.action = e.submitter.formAction || SUBMIT_ACTION || pathname.split('.json')[0];
       handleSubmit(form);
@@ -575,10 +598,24 @@ function decorateTitles(block) {
   }
 }
 
+function addTitleText(titleText, block) {
+  const headerWithMark = block.closest('.header-with-mark');
+  const defaultContentWrapper = headerWithMark?.querySelector('.default-content-wrapper');
+  const titleTextContent = createElement('div', {
+    classes: [`${blockName}__title`],
+  });
+  titleTextContent.innerHTML = titleText.innerHTML;
+  block.append(titleTextContent);
+  if (headerWithMark && !defaultContentWrapper) {
+    addHeaderWithMark(titleTextContent);
+  }
+}
+
 export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const formLink = block.querySelector('a[href$=".json"]');
   const thankYouPage = [...block.querySelectorAll('a')].filter((a) => a.href.includes('thank-you'));
+  const formTitleContainer = block.querySelector(':scope > div:first-child > div');
 
   if (formLink) {
     decorateTitles(block);
@@ -589,6 +626,10 @@ export default async function decorate(block) {
     }
     // clean the content block before appending the form
     block.innerText = '';
+    // add again the content text after the block clean
+    if (formTitleContainer) {
+      addTitleText(formTitleContainer, block);
+    }
     block.append(form);
 
     // in case the form has any kind of error, the form will be replaced with the error message
