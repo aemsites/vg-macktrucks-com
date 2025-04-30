@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "aem up",
     "dev:ca": "AEM_PAGES_URL=https://main--macktrucks-ca--volvogroup.aem.page/ aem up",
+    "dev:co-nz": "AEM_PAGES_URL=https://main--macktrucks-co-nz--volvogroup.aem.page/ aem up",
     "dev:com-ar": "AEM_PAGES_URL=https://main--macktrucks-com-ar--volvogroup.aem.page/ aem up",
     "dev:com-au": "AEM_PAGES_URL=https://main--macktrucks-com-au--volvogroup.aem.page/ aem up",
     "dev:com-bo": "AEM_PAGES_URL=https://main--macktrucks-com-bo--volvogroup.aem.page/ aem up",

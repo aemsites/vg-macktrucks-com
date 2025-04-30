@@ -8,7 +8,7 @@ import { fetchData, magazineSearchQuery, TENANT } from '../search-api.js';
  * @returns {Promise<Array>} - A promise that resolves to an array of articles and facets.
  */
 export const fetchMagazineData = async ({
-  limit,
+  limit = 100,
   offset = 0,
   q = 'Mack',
   sort = 'BEST_MATCH',
@@ -24,7 +24,7 @@ export const fetchMagazineData = async ({
     language,
     q,
     category,
-    limit: limit ?? null,
+    limit,
     offset,
     facets,
     sort,
@@ -41,11 +41,6 @@ export const fetchMagazineData = async ({
 
     if (!querySuccess) {
       return allArticleData;
-    }
-
-    if (!limit && limit !== 0) {
-      variables.limit = rawData.data.edssearch.count;
-      return fetchMagazineData(variables);
     }
 
     allArticleData = rawData.data.edssearch;
