@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktruckshistoricalmuseum.org/mack-news/</id>
     <title>Mack News</title>
-    <updated>2025-04-10T00:00:00.000Z</updated>
+    <updated>2025-04-29T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktruckshistoricalmuseum.org/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3262,5 +3262,37 @@
         <updated>2025-04-10T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“Congratulations to Tri-State Truck Center in Memphis and the entire Tri-State team for being the Mack Trucks North American Dealer of the Year,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
         <published>2025-04-10T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Publicly Debuts the All-New Mack Pioneer™ Model at ACT Expo 2025]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-publicly-debuts-the-all-new-mack-pioneer-model-at-act-expo-2025</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-publicly-debuts-the-all-new-mack-pioneer-model-at-act-expo-2025"/>
+        <updated>2025-04-22T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“The Mack Pioneer represents a transformative leap forward in commercial vehicle development, setting a new benchmark for what drivers and fleets should expect from their equipment,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
+        <published>2025-04-22T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Showcases Diverse Product Portfolio at WasteExpo 2025]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-showcases-diverse-product-portfolio-at-wasteexpo-2025</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-showcases-diverse-product-portfolio-at-wasteexpo-2025"/>
+        <updated>2025-04-29T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[The Mack MD6 Electric, a Class 6 model with a Gross Vehicle Weight Rating (GVWR) of 25,995 pounds, is exempt from the 12 percent Federal Excise Tax (FET).]]></content>
+        <published>2025-04-29T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks to Offer a Battery-Electric Version of its Newest Highway Truck, the Mack Pioneer™]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-to-offer-a-battery-electric-version-of-its-newest-highway-truck-the-mack-pioneer</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-to-offer-a-battery-electric-version-of-its-newest-highway-truck-the-mack-pioneer"/>
+        <updated>2025-04-29T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“Mack is proud that we not only introduced the Mack Pioneer, our most fuel-efficient and aerodynamic highway truck, but just three weeks later we are now also announcing that we will produce a Mack Pioneer battery-electric vehicle (BEV),” said Jonathan Randall, president, Mack Trucks North America.]]></content>
+        <published>2025-04-29T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Announces Two New Mack® MP®13 Engine Variants that it Expects will be Fully Compliant with CARB 2024 Omnibus Requirements]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-announces-two-new-mack-mp13-engine-variants-that-it-expects-will-be-fully-compliant-with-carb-2024-omnibus-requirements</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-announces-two-new-mack-mp13-engine-variants-that-it-expects-will-be-fully-compliant-with-carb-2024-omnibus-requirements"/>
+        <updated>2025-04-29T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“Mack will have a 13-liter engine that will be CARB 2024 Omnibus-compliant once certified, allowing Mack customers in California to have a fuel-efficient and more sustainable diesel engine to meet all of their highway application needs,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
+        <published>2025-04-29T00:00:00.000Z</published>
     </entry>
 </feed>
