@@ -618,7 +618,7 @@ export default async function decorate(block) {
   const formLink = block.querySelector('a[href$=".json"]');
   const thankYouPage = [...block.querySelectorAll('a')].filter((a) => a.href.includes('thank-you'));
   const formTitleContainer = block.querySelector(':scope > div:first-child > div');
-  const hasFormLink = formLink && formTitleContainer.contains(formLink);
+  const isFormLinkInsideTitleContainer = formLink && formTitleContainer.contains(formLink);
 
   if (formLink) {
     decorateTitles(block);
@@ -629,8 +629,7 @@ export default async function decorate(block) {
     }
     // clean the content block before appending the form
     block.innerText = '';
-    // add again the content text after the block clean only if the 1st child is not the config form link
-    if (formTitleContainer && !hasFormLink) {
+    if (formTitleContainer && !isFormLinkInsideTitleContainer) {
       addTitleText(formTitleContainer, block);
     }
     block.append(form);
