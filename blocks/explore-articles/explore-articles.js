@@ -3,8 +3,9 @@ import { fetchMagazineData, formatArticlesArray, formatFacetsArray } from '../..
 
 const blockName = 'explore-articles';
 
-const queryVariables = { facets: ['ARTICLE', 'TRUCK'], sort: 'LAST_MODIFIED_DESC' };
+const queryVariables = { limit: 100, facets: ['ARTICLE', 'TRUCK'], sort: 'PUBLISH_DATE_DESC' };
 const allMagazineData = await fetchMagazineData(queryVariables);
+const articleCount = allMagazineData?.count || 0;
 const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
 
@@ -13,6 +14,22 @@ const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter pla
 
 let counter = 1;
 const artsPerChunk = 4;
+
+if (articleCount > allArticles.length) {
+  let offset = allArticles.length;
+  while (offset < articleCount) {
+    const newQueryVariables = { ...queryVariables, offset };
+    const newMagazineData = await fetchMagazineData(newQueryVariables);
+    const newItems = formatArticlesArray(newMagazineData?.items || []);
+    allArticles.push(...newItems);
+    offset += newItems.length;
+
+    // Exit loop if no more items are fetched or if the next offset exceeds the article count
+    if (newItems.length === 0 || offset >= articleCount) {
+      break;
+    }
+  }
+}
 
 const divideArray = (mainArray, perChunk) => {
   const dividedArrays = mainArray.reduce((resultArray, item, index) => {

@@ -105,6 +105,11 @@ $hoverText = $('#hoverText').val();
 $country = window.locatorConfig.country;
 var isLocationOFF = false;
 
+$locale = window.locatorConfig.locale;
+$units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 0.62137 }];
+$activeUnit = $units[($locale === 'en-BS' || $locale === 'en-US') ? 0 : 1].name;
+var $distanceToggles = $('.toggle-container');
+
 // Google callback letting us know maps is ready to be used
 (function () {
   initMap = function () {
@@ -264,6 +269,12 @@ var isLocationOFF = false;
         }
       }
     );
+
+    // Set inital slider position based on active locale unit
+    [...$distanceToggles].forEach(toggle => {
+      $activeButton = toggle.querySelector('.toggle-button');
+      $activeButton.dataset.active = $activeUnit;
+    });
 
     if ($isAsist) {
       $('#filter-options').css('display', 'none');
@@ -1121,7 +1132,7 @@ $.fn.switchSidebarPane = function (id, e) {
 
   } else {
     $('.main-directions').css('display', 'none');
-    $('.main-header').css('display', 'block');
+    $('.main-header').css('display', 'flex');
     $.fn.clearDirections();
     $map.setZoom(8);
   }
@@ -1449,7 +1460,6 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.teaser-top').attr('data-id', pin.IDENTIFIER_VALUE);
     templateClone.find('.more').attr('data-id', pin.IDENTIFIER_VALUE);
 
-
     var isOpen = $.fn.isOpen(pin);
     var isOpenHtml = "";
     if (isOpen.open && !isOpen.closeSoon) {
@@ -1462,7 +1472,6 @@ $.fn.tmpPins = function (tmpPinList) {
 
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
-    templateClone.find('.distance').text(pin.distance.toFixed(2) + ' mi');
     templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_1_TXT);
     templateClone.find('.city').text(pin.MAIN_CITY_NM + ', ' + pin.MAIN_STATE_PROV_CD + ' ' + pin.MAIN_POSTAL_CD);
     templateClone.find('.phone').text($.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
@@ -1474,6 +1483,22 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.call a').attr("href", $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
     templateClone.find('.call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + "Call" + '</a>');
     templateClone.find('.direction a').attr('data-id', pin.IDENTIFIER_VALUE);
+
+    const distanceInMiles = pin.distance.toFixed(2);
+    const distanceInKms = (distanceInMiles * $units[0].factor).toFixed(2);
+
+    const isActive = (unit) => unit === $activeUnit ? 'active' : '';
+   
+    const distances = `
+      <p class='distance-text ${isActive($units[0].name)}'>
+        ${distanceInMiles + ' ' + $units[0].name}
+      </p>
+      <p class='distance-text ${isActive($units[1].name)}'>
+        ${distanceInKms + ' ' + $units[1].name}
+      </p>
+    `;
+
+    templateClone.find('.distance').html(distances);
 
     if (!pin.MAIN_ADDRESS_LINE_1_TXT) {
       templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_2_TXT);
@@ -1939,7 +1964,6 @@ $.fn.selectNearbyPins = function () {
 
     templateClone.find('.panel-container').parent().attr('data-id', pin.IDENTIFIER_VALUE);
 
-
     var isOpen = $.fn.isOpen(pin);
     var isOpenHtml = "";
     if (isOpen.open && !isOpen.closeSoon) {
@@ -1949,7 +1973,6 @@ $.fn.selectNearbyPins = function () {
     } else {
       isOpenHtml = "Closed";
     }
-
 
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
@@ -3090,6 +3113,21 @@ $(document).on('click', '#print', function (eventObject) {
 
   setTimeout(function () { newWin.close(); }, 10);
 
+});
+
+// toggle distance units
+const updateToggle = (e) => {
+  e.preventDefault;
+  const activeUnit = e.target.dataset.active;
+  e.target.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
+  const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text');
+  distanceTags.forEach((el) => {
+    el.classList.toggle('active');
+  });
+}
+
+[...$distanceToggles].forEach(toggleBtn => {
+  toggleBtn.addEventListener("click", (e) => updateToggle(e));
 });
 
 $.fn.initGoogleMaps();//entry point to dealer locator
