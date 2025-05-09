@@ -317,7 +317,7 @@ function checkboxHandler(e) {
   checkbox.dispatchEvent(new Event('change'));
 }
 
-function createRadio(fd) {
+function createCheckbox(fd) {
   const wrapper = createFieldWrapper(fd);
   wrapper.insertAdjacentElement('afterbegin', createInput(fd));
   if (fd.Type === 'checkbox') {
@@ -327,6 +327,81 @@ function createRadio(fd) {
     checkboxLabel.addEventListener('click', checkboxHandler);
     checkboxLabel.addEventListener('keydown', checkboxHandler);
   }
+  return wrapper;
+}
+
+function createRadio(fd) {
+  const wrapper = createElement('fieldset', {
+    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper'],
+    props: {
+      name: fd.Name,
+    },
+  });
+
+  if (fd.Mandatory?.toLowerCase() === 'true') {
+    wrapper.setAttribute('required', 'required');
+  }
+
+  if (fd.Name) {
+    wrapper.classList.add(`form-${kebabName(fd.Name)}`);
+  }
+
+  const legend = createElement('legend', {
+    classes: [`form-${fd.Type}-legend`],
+  });
+  legend.textContent = fd.Label || fd.Name;
+  wrapper.append(legend);
+
+  if (!fd.Options) {
+    console.warn(`Missing "Options" for radio field: ${fd.Name}`);
+    const errorMsg = createElement('div', {
+      classes: 'field-error',
+      content: 'No options configured for this radio field.',
+    });
+    wrapper.append(errorMsg);
+    return wrapper;
+  }
+
+  const options = fd.Options.split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+  if (options.length === 0) {
+    console.warn(`No valid options parsed for radio field: ${fd.Name}`);
+    return wrapper;
+  }
+
+  options.forEach((option, index) => {
+    const radioId = `${fd.Id}-${index}`;
+    const radioWrapper = createElement('div', {
+      classes: ['form-radio-option'],
+    });
+
+    const input = createElement('input', {
+      classes: [`form-${fd.Type}-input`],
+      props: {
+        type: 'radio',
+        id: radioId,
+        name: fd.Name,
+        value: option,
+        required: fd.Mandatory?.toLowerCase() === 'true',
+      },
+    });
+
+    const label = createElement('label', {
+      classes: [`form-${fd.Type}-label`],
+      props: { for: radioId },
+    });
+    label.textContent = option;
+
+    radioWrapper.append(input, label);
+    wrapper.append(radioWrapper);
+  });
+
+  if (fd.Description) {
+    wrapper.append(createHelpText(fd));
+  }
+
   return wrapper;
 }
 
@@ -420,7 +495,7 @@ const getId = (function getId() {
 
 const fieldRenderers = {
   radio: createRadio,
-  checkbox: createRadio,
+  checkbox: createCheckbox,
   textarea: createTextArea,
   select: createSelect,
   button: createButton,
@@ -543,7 +618,9 @@ async function createForm(formURL) {
       formField.setAttribute('required', 'required');
     }
     if (formField) {
-      formField.id = fd.Id;
+      if (!formField.id) {
+        formField.id = fd.Id;
+      }
       formField.name = fd.Name;
       formField.value = fd.Value;
       if (fd.Description) {
