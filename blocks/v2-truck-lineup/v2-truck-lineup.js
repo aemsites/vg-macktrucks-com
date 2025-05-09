@@ -220,6 +220,10 @@ export default async function decorate(block) {
   // Update text position + navigation line when page is resized
   window.addEventListener('resize', () => {
     const activeItem = imagesContainer.querySelector(`.${blockName}__image-item.active`);
+    if (!activeItem || !activeItem.parentNode) {
+      return;
+    }
+
     const index = [...activeItem.parentNode.children].indexOf(activeItem);
     updateActiveItem(index);
     setTimeout(() => {
