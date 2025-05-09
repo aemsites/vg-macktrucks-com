@@ -573,6 +573,13 @@ async function createForm(formURL) {
     // after been submitted, the form needs to clean the error messages if the fields are valid
     cleanErrorMessages(form);
     e.preventDefault();
+
+    const honeypot = form.querySelector('input[name="form_extra_field"]');
+    if (honeypot && honeypot.value) {
+      console.warn('Form submission blocked: honeypot field was filled (possible bot).');
+      return;
+    }
+
     if (isValid) {
       const block = form.closest(`.${blockName}`);
       const formTitle = block.querySelector(`.${blockName}__title`);
