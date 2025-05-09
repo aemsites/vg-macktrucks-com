@@ -743,17 +743,22 @@ export default async function decorate(block) {
 
   const setupAriaAndTabIndexes = (isDesktop) => {
     if (!isDesktop) {
-      const mainLinksEl = document.querySelector(`.${blockName}__main-links`);
-      const actionsEl = document.querySelector(`.${blockName}__actions-list`);
+      const mainLinksEl = block.querySelector(`.${blockName}__main-links`);
+      const actionsEl = block.querySelector(`.${blockName}__actions-list`);
 
-      setTabIndexForLinks(mainLinksEl, '-1');
-      setTabIndexForLinks(actionsEl, '-1');
+      if (mainLinksEl) {
+        setTabIndexForLinks(mainLinksEl, '-1');
+      }
+
+      if (actionsEl) {
+        setTabIndexForLinks(actionsEl, '-1');
+      }
 
       [...mainLinksEl.querySelectorAll('[aria-expanded="true"]')].forEach((el) => {
         el.setAttribute('aria-expanded', 'false');
       });
     } else {
-      const mainNav = document.querySelector(`.${blockName}__main-nav`);
+      const mainNav = block.querySelector(`.${blockName}__main-nav`);
 
       if (mainNav) {
         setTabIndexForLinks(mainNav);
