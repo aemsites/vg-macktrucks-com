@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/news-and-stories/press-releases/</id>
     <title>Mack News</title>
-    <updated>2025-05-07T00:00:00.000Z</updated>
+    <updated>2025-05-12T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktrucks.com/news-and-stories/press-releases/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3302,5 +3302,13 @@
         <updated>2025-05-07T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“This expanded powertrain option gives our customers more flexibility to optimize their trucks specifically for lighter duty waste applications,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
         <published>2025-05-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Announces Load Finder, a Digital Solution to Turn Empty Miles into Revenue]]></title>
+        <id>https://www.macktrucks.com/mack-news/2025/mack-trucks-announces-load-finder-a-digital-solution-to-turn-empty-miles-into-revenue</id>
+        <link href="https://www.macktrucks.com/mack-news/2025/mack-trucks-announces-load-finder-a-digital-solution-to-turn-empty-miles-into-revenue"/>
+        <updated>2025-05-12T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“We’re very excited to be the first in the industry to offer an innovative digital solution to help Mack customers and virtually all fleets, whether they operate a Mack truck or not, solve real-world problems and the ability to improve uptime,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
+        <published>2025-05-12T00:00:00.000Z</published>
     </entry>
 </feed>
