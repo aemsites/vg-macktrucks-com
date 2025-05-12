@@ -2591,6 +2591,8 @@ $.fn.setLocation = function () {
       if ($map) {
         $map.setCenter(pos);
         $map.setZoom(8);
+      } else {
+        console.log('%cmap not set', 'color: red;');
       }
 
 
