@@ -143,6 +143,10 @@
   color: var(--c-error-2);
 }
 
+.v2-custom-form-container .hidden {
+  display: none;
+}
+
 @media (min-width: 744px) {
   .v2-custom-form-container form {
     display: flex;

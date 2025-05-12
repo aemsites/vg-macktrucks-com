@@ -400,6 +400,11 @@ async function createCustomDropdown(fd) {
     name: fd.Name,
     mandatory: fd.Mandatory,
   };
+
+  if (fd.onChangeCallback) {
+    configFd.onChangeCallback = (value) => fd.onChangeCallback({ value, name: fd.Name });
+  }
+
   const customDropdown = await getCustomDropdown(configFd);
   const select = customDropdown.querySelector('select');
   // since dropdown is async, it replaces a temporary select
@@ -474,6 +479,11 @@ async function fetchForm(pathname) {
 }
 
 function showError(evnt) {
+  const isHidden = !!evnt.currentTarget.closest('.hidden');
+  if (isHidden) {
+    return;
+  }
+
   let field = evnt.target;
   const fieldWrapper = field.closest('.field-wrapper');
   fieldWrapper.classList.add('invalid');
@@ -519,6 +529,25 @@ function cleanErrorMessages(form) {
   });
 }
 
+function toggleNovalidateOnInput(element, novalidate = true) {
+  const inputField = element.querySelector('input,select,textarea');
+  if (inputField) {
+    if (novalidate) {
+      element.classList.add('hidden');
+      inputField.setAttribute('novalidate', '');
+      inputField.setAttribute('aria-invalid', 'false');
+      inputField.classList.remove('invalid');
+      inputField.disabled = true;
+    } else {
+      element.classList.remove('hidden');
+      inputField.removeAttribute('novalidate');
+      inputField.setAttribute('aria-invalid', 'true');
+      inputField.classList.add('invalid');
+      inputField.disabled = false;
+    }
+  }
+}
+
 async function createForm(formURL) {
   const { pathname } = new URL(formURL);
   const data = await fetchForm(pathname);
@@ -531,6 +560,7 @@ async function createForm(formURL) {
   }
   const form = createElement('form');
   const customDropdowns = [];
+  const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
     const el = renderField(fd);
 
@@ -550,17 +580,54 @@ async function createForm(formURL) {
         formField.setAttribute('aria-describedby', `${fd.Id}-description`);
       }
     }
+    if (fd.Dependency) {
+      // If it has a dependency, we need to hide it by default
+      // toggleNovalidateOnInput(el, true);
+      dependencies.push({
+        element: el,
+        dependency: fd.Dependency,
+
+        name: (fd.Dependency && fd.Dependency.split(':')[0]) || '',
+        value: (fd.Dependency && fd.Dependency.split(':')[1]) || '',
+      });
+    }
     form.append(el);
   });
 
   if (customDropdowns.length > 0) {
     customDropdowns.forEach(async (fd, index) => {
+      const hasDependency = dependencies.find((d) => d.name === fd.Name);
+
+      if (hasDependency) {
+        fd.onChangeCallback = (selected) => {
+          const { name, value } = selected;
+          dependencies.forEach((d) => {
+            if (d.name === name) {
+              toggleNovalidateOnInput(d.element, d.value !== value);
+            }
+          });
+        };
+      }
+
       const customDropdownPlaceholder = form.querySelectorAll('.form-custom-dropdown-wrapper')[index];
       const placholderSelect = customDropdownPlaceholder.querySelector('select');
       const customDropdown = await createCustomDropdown(fd);
       placholderSelect.replaceWith(customDropdown);
+
+      if (hasDependency) {
+        const { value } = hasDependency;
+
+        setTimeout(() => {
+          dependencies.forEach((d) => {
+            if (d.name === hasDependency.name) {
+              toggleNovalidateOnInput(d.element, d.value !== value);
+            }
+          });
+        }, 0);
+      }
     });
   }
+
   groupFieldsByFieldSet(form);
   form.addEventListener('submit', (e) => {
     let isValid = true;
