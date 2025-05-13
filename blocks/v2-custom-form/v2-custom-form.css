@@ -111,7 +111,6 @@
   height: 40px;
   border-radius: 50%;
   background-color: rgb(179 151 107 / 50%);
-  z-index: -1;
 }
 
 .form-checkbox-wrapper input[type='checkbox'] + label:hover .form-checkbox-circle {
