@@ -69,6 +69,7 @@
 
 .open .custom-dropdown__option-list {
   display: block;
+  z-index: 2;
 }
 
 .custom-dropdown__option {
