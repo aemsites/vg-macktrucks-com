@@ -36,8 +36,12 @@
   max-width: 100%;
   padding: 10px;
   height: 40px;
-  line-height: 10px;
   font-size: var(--fields-font-size);
+}
+
+.v2-custom-form-container input,
+.v2-custom-form-container select {
+  line-height: 10px;
 }
 
 .v2-custom-form-container textarea {
