@@ -137,7 +137,7 @@
   content: '';
   position: absolute;
   left: 6.5px;
-  top: 3.5px;
+  top: 3px;
   width: 5px;
   height: 10px;
   border: solid var(--c-primary-white);
