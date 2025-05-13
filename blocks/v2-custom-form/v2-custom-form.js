@@ -206,7 +206,10 @@ function createHelpText(fd) {
 }
 
 function kebabName(name) {
-  return name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  return name
+    .replace(/\s+/g, '-')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 }
 
 function createFieldWrapper(fd, tagName = 'div') {
@@ -570,6 +573,13 @@ async function createForm(formURL) {
     // after been submitted, the form needs to clean the error messages if the fields are valid
     cleanErrorMessages(form);
     e.preventDefault();
+
+    const honeypot = form.querySelector('input[name="form_extra_field"]');
+    if (honeypot && honeypot.value) {
+      console.warn('Form submission blocked: honeypot field was filled (possible bot).');
+      return;
+    }
+
     if (isValid) {
       const block = form.closest(`.${blockName}`);
       const formTitle = block.querySelector(`.${blockName}__title`);
@@ -613,6 +623,22 @@ function addTitleText(titleText, block) {
   }
 }
 
+function createHoneypotField() {
+  const fragment = document.createRange().createContextualFragment(`
+    <div class="field-wrapper visually-hidden" aria-hidden="true">
+      <label for="form_extra_field">Comments</label>
+      <input
+        type="text"
+        id="form_extra_field"
+        name="form_extra_field"
+        tabindex="-1"
+        autocomplete="off"
+      >
+    </div>
+  `);
+  return fragment.firstElementChild;
+}
+
 export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const formLink = block.querySelector('a[href$=".json"]');
@@ -627,6 +653,7 @@ export default async function decorate(block) {
       form.dataset.customMessage = `${thankYouPage[0].href}.plain.html`;
       block.lastElementChild.remove();
     }
+    form.append(createHoneypotField());
     // clean the content block before appending the form
     block.innerText = '';
     if (formTitleContainer && !isFormLinkInsideTitleContainer) {
