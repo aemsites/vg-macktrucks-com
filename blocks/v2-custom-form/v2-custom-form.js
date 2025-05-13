@@ -319,23 +319,44 @@ function checkboxHandler(e) {
 
 function createCheckbox(fd) {
   const wrapper = createFieldWrapper(fd);
-  wrapper.insertAdjacentElement('afterbegin', createInput(fd));
-  if (fd.Type === 'checkbox') {
-    const checkboxLabel = wrapper.querySelector('input+label');
-    wrapper.querySelector('input').setAttribute('tabindex', '-1');
-    checkboxLabel.setAttribute('tabindex', '0');
-    checkboxLabel.addEventListener('click', checkboxHandler);
-    checkboxLabel.addEventListener('keydown', checkboxHandler);
-  }
+  const input = createInput(fd);
+  const label = wrapper.querySelector('label');
+  input.setAttribute('id', fd.Id);
+  input.setAttribute('name', fd.Name);
+  input.setAttribute('tabindex', '-1');
+  const circle = createElement('span', { classes: ['form-checkbox-circle'] });
+  label.textContent = '';
+  label.append(circle, document.createTextNode(fd.Label));
+  label.setAttribute('for', fd.Id);
+  label.setAttribute('tabindex', '0');
+  label.addEventListener('click', checkboxHandler);
+  label.addEventListener('keydown', checkboxHandler);
+  wrapper.insertBefore(input, label);
   return wrapper;
 }
 
 function createRadio(fd) {
+  const wrapper = createRadioWrapper(fd);
+
+  const options = getRadioOptions(fd);
+  if (!options || options.length === 0) {
+    return wrapper;
+  }
+
+  options.forEach((option, index) => {
+    const radioOption = createRadioOption(option, index, fd);
+    wrapper.append(radioOption);
+  });
+
+  appendHelpText(wrapper, fd);
+
+  return wrapper;
+}
+
+function createRadioWrapper(fd) {
   const wrapper = createElement('fieldset', {
     classes: [`form-${fd.Type}-wrapper`, 'field-wrapper'],
-    props: {
-      name: fd.Name,
-    },
+    props: { name: fd.Name },
   });
 
   if (fd.Mandatory?.toLowerCase() === 'true') {
@@ -352,14 +373,13 @@ function createRadio(fd) {
   legend.textContent = fd.Label || fd.Name;
   wrapper.append(legend);
 
+  return wrapper;
+}
+
+function getRadioOptions(fd) {
   if (!fd.Options) {
     console.warn(`Missing "Options" for radio field: ${fd.Name}`);
-    const errorMsg = createElement('div', {
-      classes: 'field-error',
-      content: 'No options configured for this radio field.',
-    });
-    wrapper.append(errorMsg);
-    return wrapper;
+    return null;
   }
 
   const options = fd.Options.split(',')
@@ -368,41 +388,46 @@ function createRadio(fd) {
 
   if (options.length === 0) {
     console.warn(`No valid options parsed for radio field: ${fd.Name}`);
-    return wrapper;
   }
 
-  options.forEach((option, index) => {
-    const radioId = `${fd.Id}-${index}`;
-    const radioWrapper = createElement('div', {
-      classes: ['form-radio-option'],
-    });
+  return options;
+}
 
-    const input = createElement('input', {
-      classes: [`form-${fd.Type}-input`],
-      props: {
-        type: 'radio',
-        id: radioId,
-        name: fd.Name,
-        value: option,
-        required: fd.Mandatory?.toLowerCase() === 'true',
-      },
-    });
-
-    const label = createElement('label', {
-      classes: [`form-${fd.Type}-label`],
-      props: { for: radioId },
-    });
-    label.textContent = option;
-
-    radioWrapper.append(input, label);
-    wrapper.append(radioWrapper);
+function createRadioOption(option, index, fd) {
+  const radioId = `${fd.Id}-${index}`;
+  const radioWrapper = createElement('div', {
+    classes: ['form-radio-option'],
   });
 
+  const input = createElement('input', {
+    classes: [`form-${fd.Type}-input`],
+    props: {
+      type: 'radio',
+      id: radioId,
+      name: fd.Name,
+      value: option,
+      required: fd.Mandatory?.toLowerCase() === 'true',
+    },
+  });
+
+  const label = createElement('label', {
+    classes: [`form-${fd.Type}-label`],
+    props: { for: radioId },
+  });
+
+  const visualCircle = createElement('span', {
+    classes: ['form-radio-circle'],
+  });
+
+  label.append(visualCircle, document.createTextNode(option));
+  radioWrapper.append(input, label);
+  return radioWrapper;
+}
+
+function appendHelpText(wrapper, fd) {
   if (fd.Description) {
     wrapper.append(createHelpText(fd));
   }
-
-  return wrapper;
 }
 
 const createOutput = withFieldWrapper((fd) => {
