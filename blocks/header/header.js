@@ -266,7 +266,20 @@ const transformMenuData = (data) => {
 };
 
 const setTabActive = (tab) => {
-  const targetId = tab.closest('[menu-accordion-id]').getAttribute('menu-accordion-id');
+  if (!tab) {
+    console.warn('No tab element provided to setTabActive.', { tab });
+    return;
+  }
+  const accordionIdElement = tab.closest('[menu-accordion-id]');
+  if (!accordionIdElement) {
+    console.warn('No accordion Id Element found for the provided tab.', { tab });
+    return;
+  }
+  const targetId = accordionIdElement.getAttribute('menu-accordion-id');
+  if (!targetId) {
+    console.warn('No targetId found for the provided tab.', { tab });
+    return;
+  }
   const tabContent = document.querySelector(`#${targetId}`);
 
   [...tabContent.parentElement.querySelectorAll(`.${blockName}__accordion-container`)].forEach((item) => {
@@ -278,13 +291,18 @@ const setTabActive = (tab) => {
   tabContent.setAttribute('data-active', 'true');
 
   // scroll to proper tab content for tabs with cards
-  if (tab.closest(`.${blockName}__main-link-wrapper--tabs-with-cards`)) {
+  const tabsWithCards = tab.closest(`.${blockName}__main-link-wrapper--tabs-with-cards`);
+  if (tabsWithCards) {
     const tabContentId = tab.getAttribute('aria-controls');
     document.querySelector(`#${tabContentId}`).scrollIntoView({ behavior: 'smooth' });
+  } else {
+    console.warn('No %ctabs with cards %cfound for the provided tab.', 'color:red', 'color:default', { tab });
   }
 
   // setting the aria-expanded for tabs and link's tab indexes
-  [...tab.closest(`.${blockName}__accordion-content-wrapper`).querySelectorAll(`.${blockName}__tab-link`)].forEach((tabLink) => {
+  const accordionContentWrapper = tab.closest(`.${blockName}__accordion-content-wrapper`);
+  const tabLinks = accordionContentWrapper ? [...accordionContentWrapper.querySelectorAll(`.${blockName}__tab-link`)] : [];
+  tabLinks.forEach((tabLink) => {
     const tId = tabLink.getAttribute('aria-controls');
     const tContent = document.querySelector(`#${tId}`);
 
@@ -317,9 +335,15 @@ const onAccordionItemClick = (el) => {
   const isExpanded = menuEl.classList.contains(`${blockName}__menu-open`);
   el.currentTarget.setAttribute('aria-expanded', isExpanded);
 
-  if (isDesktop && isMainLink) {
+  if (!isDesktop) {
+    return;
+  }
+
+  console.warn('if is not a desktop viewport, the menu will not be opened');
+
+  if (isMainLink) {
     // closing other open menus
-    if (isDesktop && menuEl.classList.contains(`${blockName}__main-nav-item`)) {
+    if (menuEl.classList.contains(`${blockName}__main-nav-item`)) {
       const openMenus = document.querySelectorAll(`.${blockName}__menu-open`);
 
       [...openMenus]
@@ -340,7 +364,7 @@ const onAccordionItemClick = (el) => {
     setTabActive(firstTabLink);
   }
 
-  if (isDesktop && isTabLink) {
+  if (isTabLink) {
     setTabActive(el.currentTarget);
   }
 };

@@ -161,8 +161,21 @@ export default async function decorate(block) {
 
   // Arrows
   createArrowControls(imagesContainer, `.${blockName}__image-item.active`, [`${blockName}__arrow-controls`], arrowFragment);
-  // move arrows to the end of the images container
-  imagesWrapper.append(imagesWrapper.querySelector(`.${blockName}__arrow-controls`));
+  let arrowControls = imagesContainer.querySelector(`.${blockName}__arrow-controls`);
+
+  if (!arrowControls && imagesContainer.parentElement) {
+    // arrowControls = imagesContainer.parentElement.querySelector(`.${blockName}__arrow-controls`);
+    const arrowControlsContainer = imagesContainer.parentElement?.querySelector(`.${blockName}__arrow-controls`);
+    if (arrowControlsContainer) {
+      arrowControls = arrowControlsContainer;
+    }
+  }
+  if (arrowControls) {
+    // move arrows to the end of the images container
+    imagesWrapper.append(arrowControls);
+  } else {
+    console.warn('%cArrow controls not found. %cplease refresh the page', 'color:red', 'color:default', { arrowControls, imagesContainer });
+  }
 
   descriptionContainer.parentNode.append(tabNavigation);
 
