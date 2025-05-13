@@ -318,20 +318,44 @@ function checkboxHandler(e) {
 }
 
 function createCheckbox(fd) {
-  const wrapper = createFieldWrapper(fd);
-  const input = createInput(fd);
-  const label = wrapper.querySelector('label');
-  input.setAttribute('id', fd.Id);
-  input.setAttribute('name', fd.Name);
-  input.setAttribute('tabindex', '-1');
-  const circle = createElement('span', { classes: ['form-checkbox-circle'] });
-  label.textContent = '';
-  label.append(circle, document.createTextNode(fd.Label));
-  label.setAttribute('for', fd.Id);
-  label.setAttribute('tabindex', '0');
+  const wrapper = createElement('div', {
+    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper', `form-${kebabName(fd.Name)}`],
+    props: {
+      id: fd.Id,
+      name: fd.Name,
+    },
+  });
+
+  if (fd.Mandatory?.toLowerCase() === 'true') {
+    wrapper.setAttribute('required', 'required');
+  }
+
+  const input = createElement('input', {
+    props: {
+      type: 'checkbox',
+      id: fd.Id,
+      name: fd.Name,
+      value: fd.Value || 'on',
+      tabindex: '-1',
+      ...(fd.Mandatory?.toLowerCase() === 'true' ? { required: true } : {}),
+    },
+  });
+
+  const label = createElement('label', {
+    props: {
+      for: fd.Id,
+      tabindex: '0',
+    },
+  });
+
+  const circle = createElement('span', {
+    classes: ['form-checkbox-circle'],
+  });
+
+  label.append(circle, document.createTextNode(fd.Label || fd.Name));
   label.addEventListener('click', checkboxHandler);
   label.addEventListener('keydown', checkboxHandler);
-  wrapper.insertBefore(input, label);
+  wrapper.append(input, label);
   return wrapper;
 }
 
