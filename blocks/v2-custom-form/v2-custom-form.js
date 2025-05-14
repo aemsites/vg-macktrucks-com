@@ -320,17 +320,141 @@ function checkboxHandler(e) {
   checkbox.dispatchEvent(new Event('change'));
 }
 
-function createRadio(fd) {
-  const wrapper = createFieldWrapper(fd);
-  wrapper.insertAdjacentElement('afterbegin', createInput(fd));
-  if (fd.Type === 'checkbox') {
-    const checkboxLabel = wrapper.querySelector('input+label');
-    wrapper.querySelector('input').setAttribute('tabindex', '-1');
-    checkboxLabel.setAttribute('tabindex', '0');
-    checkboxLabel.addEventListener('click', checkboxHandler);
-    checkboxLabel.addEventListener('keydown', checkboxHandler);
+function createCheckbox(fd) {
+  const wrapper = createElement('div', {
+    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper', `form-${kebabName(fd.Name)}`],
+    props: {
+      id: fd.Id,
+      name: fd.Name,
+    },
+  });
+
+  if (fd.Mandatory?.toLowerCase() === 'true') {
+    wrapper.setAttribute('required', 'required');
   }
+
+  const input = createElement('input', {
+    props: {
+      type: 'checkbox',
+      id: fd.Id,
+      name: fd.Name,
+      value: fd.Value || 'on',
+      tabindex: '-1',
+      ...(fd.Mandatory?.toLowerCase() === 'true' ? { required: true } : {}),
+    },
+  });
+
+  const label = createElement('label', {
+    props: {
+      for: fd.Id,
+      tabindex: '0',
+    },
+  });
+
+  const circle = createElement('span', {
+    classes: ['form-checkbox-circle'],
+  });
+
+  label.append(circle, document.createTextNode(fd.Label || fd.Name));
+  label.addEventListener('click', checkboxHandler);
+  label.addEventListener('keydown', checkboxHandler);
+  wrapper.append(input, label);
   return wrapper;
+}
+
+function createRadio(fd) {
+  const wrapper = createRadioWrapper(fd);
+
+  const options = getRadioOptions(fd);
+  if (!options || options.length === 0) {
+    return wrapper;
+  }
+
+  options.forEach((option, index) => {
+    const radioOption = createRadioOption(option, index, fd);
+    wrapper.append(radioOption);
+  });
+
+  appendHelpText(wrapper, fd);
+
+  return wrapper;
+}
+
+function createRadioWrapper(fd) {
+  const wrapper = createElement('fieldset', {
+    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper'],
+    props: { name: fd.Name },
+  });
+
+  if (fd.Mandatory?.toLowerCase() === 'true') {
+    wrapper.setAttribute('required', 'required');
+  }
+
+  if (fd.Name) {
+    wrapper.classList.add(`form-${kebabName(fd.Name)}`);
+  }
+
+  const legend = createElement('legend', {
+    classes: [`form-${fd.Type}-legend`],
+  });
+  legend.textContent = fd.Label || fd.Name;
+  wrapper.append(legend);
+
+  return wrapper;
+}
+
+function getRadioOptions(fd) {
+  if (!fd.Options) {
+    console.warn(`Missing "Options" for radio field: ${fd.Name}`);
+    return null;
+  }
+
+  const options = fd.Options.split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+  if (options.length === 0) {
+    console.warn(`No valid options parsed for radio field: ${fd.Name}`);
+  }
+
+  return options;
+}
+
+function createRadioOption(option, index, fd) {
+  const radioId = `${fd.Id}-${index}`;
+  const radioWrapper = createElement('div', {
+    classes: ['form-radio-option'],
+  });
+
+  const input = createElement('input', {
+    classes: [`form-${fd.Type}-input`],
+    props: {
+      type: 'radio',
+      id: radioId,
+      name: fd.Name,
+      value: option,
+      required: fd.Mandatory?.toLowerCase() === 'true',
+    },
+  });
+
+  const label = createElement('label', {
+    classes: [`form-${fd.Type}-label`],
+    props: { for: radioId },
+  });
+
+  const visualCircle = createElement('span', {
+    classes: ['form-radio-circle'],
+  });
+
+  label.append(visualCircle, document.createTextNode(option));
+  radioWrapper.append(input, label);
+  return radioWrapper;
+}
+
+function appendHelpText(wrapper, fd) {
+  if (fd.Description) {
+    wrapper.append(createHelpText(fd));
+  }
 }
 
 const createOutput = withFieldWrapper((fd) => {
@@ -428,7 +552,7 @@ const getId = (function getId() {
 
 const fieldRenderers = {
   radio: createRadio,
-  checkbox: createRadio,
+  checkbox: createCheckbox,
   textarea: createTextArea,
   select: createSelect,
   button: createButton,
@@ -576,7 +700,9 @@ async function createForm(formURL) {
       formField.setAttribute('required', 'required');
     }
     if (formField) {
-      formField.id = fd.Id;
+      if (!formField.id) {
+        formField.id = fd.Id;
+      }
       formField.name = fd.Name;
       formField.value = fd.Value;
       if (fd.Description) {
