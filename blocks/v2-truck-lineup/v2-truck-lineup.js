@@ -5,7 +5,7 @@ const blockName = 'v2-truck-lineup';
 const tabContentClass = `.${blockName}__content`;
 
 function stripEmptyTags(main, child) {
-  if (child !== main && child.innerHTML.trim() === '') {
+  if (child && child !== main && child.innerHTML.trim() === '') {
     const parent = child.parentNode;
     child.remove();
     stripEmptyTags(main, parent);
@@ -115,7 +115,10 @@ const updateActiveItem = (index) => {
 const scrollObserverFunction = (elements, entry) => {
   // in case the block has a featured item, scroll to it
   const featuredItem = [...elements].find((el) => el.classList.contains('featured'));
-  const targetElement = featuredItem || entry.target;
+  const targetElement = featuredItem || entry.target || null;
+  if (!targetElement) {
+    return;
+  }
   let idx = 0;
 
   elements.forEach((el, index) => {
@@ -146,14 +149,13 @@ const arrowFragment = document.createRange().createContextualFragment(`<li>
 
 export default async function decorate(block) {
   const descriptionContainer = block.querySelector(':scope > div');
-  descriptionContainer.classList.add(`${blockName}__description-container`);
-
   const tabItems = block.querySelectorAll(':scope > div > div');
 
   const imagesWrapper = createElement('div', { classes: `${blockName}__slider-wrapper` });
   const imagesContainer = createElement('div', { classes: `${blockName}__images-container` });
-  descriptionContainer.parentNode.prepend(imagesWrapper);
   imagesWrapper.appendChild(imagesContainer);
+  descriptionContainer.classList.add(`${blockName}__description-container`);
+  block.prepend(imagesWrapper);
 
   const tabNavigation = buildTabNavigation(tabItems, (index) => {
     setCarouselPosition(imagesContainer, index);
@@ -177,7 +179,7 @@ export default async function decorate(block) {
     console.warn('%cArrow controls not found. %cplease refresh the page', 'color:red', 'color:default', { arrowControls, imagesContainer });
   }
 
-  descriptionContainer.parentNode.append(tabNavigation);
+  block.append(tabNavigation);
 
   tabItems.forEach((tabItem) => {
     tabItem.classList.add(`${blockName}__desc-item`);
@@ -209,7 +211,7 @@ export default async function decorate(block) {
     // Wrap text in container
     const textContainer = createElement('div', { classes: `${blockName}__text` });
     const text = tabContent.querySelector('.default-content-wrapper')?.querySelectorAll(':scope > *:not(.button-container)');
-    if (text) {
+    if (text.length) {
       const parentTextContainer = text[0].parentNode;
       textContainer.append(...text);
       parentTextContainer.appendChild(textContainer);
@@ -233,7 +235,7 @@ export default async function decorate(block) {
   // Update text position + navigation line when page is resized
   window.addEventListener('resize', () => {
     const activeItem = imagesContainer.querySelector(`.${blockName}__image-item.active`);
-    if (!activeItem || !activeItem.parentNode) {
+    if (!activeItem || !activeItem?.parentNode) {
       return;
     }
 
