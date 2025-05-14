@@ -166,7 +166,6 @@ export default async function decorate(block) {
   let arrowControls = imagesContainer.querySelector(`.${blockName}__arrow-controls`);
 
   if (!arrowControls && imagesContainer.parentElement) {
-    // arrowControls = imagesContainer.parentElement.querySelector(`.${blockName}__arrow-controls`);
     const arrowControlsContainer = imagesContainer.parentElement?.querySelector(`.${blockName}__arrow-controls`);
     if (arrowControlsContainer) {
       arrowControls = arrowControlsContainer;
