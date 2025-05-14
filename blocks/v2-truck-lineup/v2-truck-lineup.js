@@ -115,7 +115,7 @@ const updateActiveItem = (index) => {
 const scrollObserverFunction = (elements, entry) => {
   // in case the block has a featured item, scroll to it
   const featuredItem = [...elements].find((el) => el.classList.contains('featured'));
-  const targetElement = featuredItem || entry.target || null;
+  const targetElement = featuredItem || entry.target;
   if (!targetElement) {
     return;
   }
