@@ -23,7 +23,7 @@ const NoDataEngineDetail = {
   ],
   model: 'No Data',
   performanceData: {
-    'Standard Torque': {
+    Torque: {
       800: 0,
       900: 0,
       1000: 0,
@@ -63,10 +63,29 @@ const centerCategoryTab = (tabList, itemTab) => {
 };
 
 /**
+ * @param {Object} performanceData
+ */
+let conversionFactor = 1;
+
+const equalizeData = (data) => {
+  const { Torque, Power } = data;
+  const maxTQ = Math.max(...Object.values(Torque));
+  const maxHP = Math.max(...Object.values(Power));
+
+  conversionFactor = Number((maxTQ / maxHP).toFixed());
+  Object.keys(Power).forEach((key) => {
+    Power[key] = Number((Power[key] * conversionFactor).toFixed());
+  });
+};
+
+/**
  * @param chartContainer {HTMLElement}
  * @param performanceData {Array<Array<string>>}
  */
 const updateChart = async (chartContainer, performanceData) => {
+  // Normalize torque data so that lines align on top
+  equalizeData(performanceData);
+
   if (!window.echarts) {
     // delay by 3 seconds to ensure a good lighthouse score
 
@@ -91,20 +110,25 @@ const updateChart = async (chartContainer, performanceData) => {
 
   const getEchartsSeries = (sweetSpotStart, sweetSpotEnd) => {
     const metrics = Object.keys(performanceData);
-
-    const series = metrics.map((title) => {
+    const series = metrics.map((title, idx) => {
       const metricValues = Object.entries(performanceData[title]).map(([rpm, value]) => [Number(rpm), Number(value)]);
 
       return {
         type: 'line',
         name: title.toUpperCase(),
+        yAxisIndex: idx,
         symbolSize: 12,
-        smooth: true,
+        itemStyle: {
+          borderWidth: 1,
+          borderType: 'solid',
+          borderColor: '#1D1D1D',
+        },
+        smooth: false,
         data: metricValues,
       };
     });
 
-    // add mark area to first series
+    // Grey area rectangle
     series[0] = {
       ...series[0],
       markArea: {
@@ -129,7 +153,6 @@ const updateChart = async (chartContainer, performanceData) => {
       itemHeight: 25,
       itemGap: MQ.matches ? 50 : 10,
       textStyle: {
-        letterSpacing: 1.5,
         fontSize: 15,
         lineHeight: 16,
         fontWeight: 700,
@@ -147,6 +170,7 @@ const updateChart = async (chartContainer, performanceData) => {
       left: '50',
       right: '5',
       top: '80',
+      containLabel: true,
     },
     textStyle: {
       color: '#ffffff',
@@ -198,21 +222,52 @@ const updateChart = async (chartContainer, performanceData) => {
           return value;
         },
       },
-    },
-    yAxis: {
-      type: 'value',
-      axisLabel: {
-        formatter(value) {
-          // remove thousands separator
-          return value;
-        },
-      },
-      splitLine: {
-        lineStyle: {
-          color: '#8e8e8e',
-        },
+      axisLine: {
+        show: false,
       },
     },
+    yAxis: [
+      {
+        // torque values
+        type: 'value',
+        position: 'left',
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter(value) {
+            // do not display the cero on the bottom
+            return value === 0 ? '' : value;
+          },
+        },
+        splitLine: {
+          show: false,
+        },
+      },
+      {
+        // horsepower values
+        type: 'value',
+        position: 'right',
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter(value) {
+            // return orginal value and round it to a 50 unit value
+            return value === 0 ? '' : Math.round(value / conversionFactor / 50) * 50;
+          },
+        },
+        splitLine: {
+          show: false,
+        },
+      },
+    ],
     animation: true,
     animationDuration: 400,
   };
@@ -257,6 +312,7 @@ const renderEngineSpecs = (engineDetails) => {
           class: 'button button--primary download-specs',
           href: downloadSpecs ? specsLink.toString() : '#',
           target: '_blank',
+          style: `display: ${downloadSpecs ? 'block' : 'none'};`,
         },
         getTextLabel('Download Specs'),
       ),
@@ -283,7 +339,7 @@ const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
   const categoryDetails = div({ class: 'category-detail' });
   categoryDetails.innerHTML = `
     <h3>${categoryData.nameHTML}</h3>
-    <p class="category-description">${categoryData.descriptionHTML}</p>
+    ${categoryData.descriptionHTML ? `<p class="category-description">${categoryData.descriptionHTML}</p>` : ''}
     <div class="engine-navigation">
       <p class="engine-ratings">Engine Ratings</p>
       <div class="engine-tablist" role="tablist" aria-label="Engine Ratings"> </div>
