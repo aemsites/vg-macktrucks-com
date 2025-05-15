@@ -82,9 +82,11 @@ const equalizeData = (data) => {
  * @param chartContainer {HTMLElement}
  * @param performanceData {Array<Array<string>>}
  */
-const updateChart = async (chartContainer, performanceData) => {
-  // Normalize torque data so that lines align on top
-  equalizeData(performanceData);
+const updateChart = async (chartContainer, performanceData, isDataEquilized) => {
+  if (!isDataEquilized) {
+    // On first pass, normalize power data so that lines align on top
+    equalizeData(performanceData);
+  }
 
   if (!window.echarts) {
     // delay by 3 seconds to ensure a good lighthouse score
@@ -332,7 +334,7 @@ const refreshDetailView = (block) => {
   // update chart
   const chartContainer = block.querySelector('.performance-chart');
   // noinspection JSIgnoredPromiseFromCall
-  updateChart(chartContainer, engineDetails.performanceData);
+  updateChart(chartContainer, engineDetails.performanceData, true);
 };
 
 const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
@@ -581,5 +583,5 @@ export default async function decorate(block) {
 
   const chartContainer = block.querySelector('.performance-chart');
   // noinspection JSIgnoredPromiseFromCall,ES6MissingAwait
-  updateChart(chartContainer, engineDetails.performanceData);
+  updateChart(chartContainer, engineDetails.performanceData, false);
 }
