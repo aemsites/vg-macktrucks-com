@@ -511,7 +511,9 @@ async function loadEager(doc) {
     await getPlaceholders();
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   } else {
-    document.documentElement.lang = 'en';
+    const meta_i18n = doc.querySelector('meta[name="i18n"]');
+    const meta_locale = doc.querySelector('meta[name="locale"]');
+    document.documentElement.lang = (meta_i18n && meta_i18n.content) || (meta_locale && meta_locale.content.toLowerCase()) || 'en';
     await getPlaceholders();
   }
 }

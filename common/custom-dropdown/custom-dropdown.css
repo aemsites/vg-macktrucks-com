@@ -14,7 +14,6 @@
 
   display: block;
   position: relative;
-  margin-bottom: 16px;
   font-size: 14px;
 }
 
@@ -46,7 +45,6 @@
   width: 100%;
   max-width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
   height: 40px;
 }
 
@@ -67,10 +65,19 @@
     0 3px 8px 0 var(--color-bg-shadow, var(--color-bg-shadow));
   z-index: 1;
   padding: 4px 0;
+
+  /* 
+    This is a workaround for the issue with the dropdown being too long
+    this value can be adjusted 
+  */
+  max-height: 250px;
+  overflow-y: scroll;
+
 }
 
 .open .custom-dropdown__option-list {
   display: block;
+  z-index: 2;
 }
 
 .custom-dropdown__option {
