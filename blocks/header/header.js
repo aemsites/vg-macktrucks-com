@@ -339,8 +339,6 @@ const onAccordionItemClick = (el) => {
     return;
   }
 
-  console.warn('if is not a desktop viewport, the menu will not be opened');
-
   if (isMainLink) {
     // closing other open menus
     if (menuEl.classList.contains(`${blockName}__main-nav-item`)) {
