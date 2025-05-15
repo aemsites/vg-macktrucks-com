@@ -2662,7 +2662,7 @@ $.fn.setLocation = function () {
     }, function () {
 
       //this.setMap(null);
-      console.log('getCurrentPosition [error function triggered]: %cError with navigator. Geolocation could be disabled', 'color: red;');
+      console.warn('getCurrentPosition [error function triggered]: %cError with navigator. Geolocation could be disabled', 'color: red;');
       $.fn.handleLocationError(true);
 
     });
