@@ -172,8 +172,8 @@ const updateChart = async (chartContainer, engineDetails) => {
 
     grid: {
       //  reduce space around the chart
-      left: '50',
-      right: '5',
+      left: MQ.matches ? '50' : '0',
+      right: MQ.matches ? '5' : '0',
       top: '80',
       containLabel: true,
     },
