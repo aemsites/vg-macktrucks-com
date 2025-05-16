@@ -63,7 +63,7 @@ const centerTab = (tabList, itemTab) => {
 };
 
 /**
- * @param {Object} performanceData
+ * @param {Object} data
  */
 let conversionFactor = 1;
 
