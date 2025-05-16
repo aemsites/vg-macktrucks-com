@@ -68,24 +68,26 @@ const centerCategoryTab = (tabList, itemTab) => {
 let conversionFactor = 1;
 
 const equalizeData = (data) => {
-  const { Torque, Power } = data;
+  const { Torque, Power } = data.performanceData;
   const maxTQ = Math.max(...Object.values(Torque));
   const maxHP = Math.max(...Object.values(Power));
 
-  conversionFactor = Number((maxTQ / maxHP).toFixed());
+  conversionFactor = Number((maxTQ / maxHP).toFixed(2));
   Object.keys(Power).forEach((key) => {
-    Power[key] = Number((Power[key] * conversionFactor).toFixed());
+    Power[key] = Number(Power[key] * conversionFactor);
   });
+  data.equalized = true;
 };
 
 /**
  * @param chartContainer {HTMLElement}
  * @param performanceData {Array<Array<string>>}
  */
-const updateChart = async (chartContainer, performanceData, isDataEquilized) => {
-  if (isDataEquilized) {
-    // On first pass, normalize power data so that lines align on top
-    equalizeData(performanceData);
+const updateChart = async (chartContainer, engineDetails) => {
+  const performanceData = engineDetails.performanceData;
+  // On first pass, normalize power data so that lines align on top
+  if (!engineDetails.equalized) {
+    equalizeData(engineDetails);
   }
 
   if (!window.echarts) {
@@ -335,7 +337,7 @@ const refreshDetailView = (block) => {
   // update chart
   const chartContainer = block.querySelector('.performance-chart');
   // noinspection JSIgnoredPromiseFromCall
-  updateChart(chartContainer, engineDetails.performanceData, true);
+  updateChart(chartContainer, engineDetails);
 };
 
 const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
@@ -584,5 +586,5 @@ export default async function decorate(block) {
 
   const chartContainer = block.querySelector('.performance-chart');
   // noinspection JSIgnoredPromiseFromCall,ES6MissingAwait
-  updateChart(chartContainer, engineDetails.performanceData, true);
+  updateChart(chartContainer, engineDetails);
 }
