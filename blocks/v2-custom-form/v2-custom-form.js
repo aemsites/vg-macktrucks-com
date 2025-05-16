@@ -118,7 +118,7 @@ function generateUnique() {
 function constructPayload(form) {
   const payload = { __id__: generateUnique() };
   [...form.elements].forEach((fe) => {
-    if (fe.name) {
+    if (fe.name && !fe.classList.contains('ignore-on-form-submit')) {
       if (fe.type === 'radio' && fe.checked) {
         payload[fe.name] = fe.value;
       } else if (fe.type === 'checkbox' && fe.checked) {
@@ -662,11 +662,13 @@ function toggleNovalidateOnInput(element, novalidate = true) {
     if (novalidate) {
       element.classList.add('hidden');
       inputField.setAttribute('novalidate', '');
+      inputField.classList.add('ignore-on-form-submit');
       inputField.setAttribute('aria-invalid', 'false');
       inputField.classList.remove('invalid');
       inputField.disabled = true;
     } else {
       element.classList.remove('hidden');
+      inputField.classList.remove('ignore-on-form-submit');
       inputField.removeAttribute('novalidate');
       inputField.setAttribute('aria-invalid', 'true');
       inputField.classList.add('invalid');
