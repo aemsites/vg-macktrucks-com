@@ -53,7 +53,7 @@ const moveNavigationLine = (navigationLine, activeTab, tabNavigation) => {
   });
 };
 
-const centerCategoryTab = (tabList, itemTab) => {
+const centerTab = (tabList, itemTab) => {
   const { clientWidth: itemWidth, offsetLeft } = itemTab;
   const scrollPosition = offsetLeft - (tabList.clientWidth - itemWidth) / 2;
   tabList.scrollTo({
@@ -370,6 +370,8 @@ const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
       tabList.querySelectorAll('[aria-selected="true"]').forEach((tab) => tab.setAttribute('aria-selected', false));
       engineButton.setAttribute('aria-selected', true);
 
+      centerTab(tabList, engineButton);
+
       refreshDetailView(block);
     });
     tabList.append(engineButton);
@@ -399,7 +401,7 @@ const tabListClickHandler = ({ ...params }) => {
 
     moveNavigationLine(activeLine, buttonTab, tabList);
     if (!MQ.matches) {
-      centerCategoryTab(tabList, buttonTab.parentElement);
+      centerTab(tabList, buttonTab.parentElement);
     }
 
     block.querySelector('.category-detail').replaceWith(renderCategoryDetail(block, engineData.get(block)[buttonTab.dataset.categoryId]));
