@@ -2588,13 +2588,17 @@ $.fn.setLocation = function () {
         position.coords.longitude
       ];
 
-      $map.setCenter(pos);
-      $map.setZoom(8);
+      if ($map) {
+        $map.setCenter(pos);
+        $map.setZoom(8);
+      } else {
+        console.error('%cmap %cnot set', 'color: red;', 'color: default;', { $map });
+      }
 
 
       if (!$radius) {
 
-        if (!$isAsist) {
+        if ($map && !$isAsist) {
           $radius = new google.maps.Circle({
             strokeColor: '#2c6ba4',
             strokeOpacity: 0.5,
@@ -2658,7 +2662,7 @@ $.fn.setLocation = function () {
     }, function () {
 
       //this.setMap(null);
-      console.log('error with navigator');
+      console.warn('getCurrentPosition [error function triggered]: %cError with navigator. Geolocation could be disabled', 'color: red;');
       $.fn.handleLocationError(true);
 
     });

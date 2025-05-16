@@ -49,6 +49,10 @@ async function getCustomMessage(url) {
   return '';
 }
 
+function throwFormNotFound(form) {
+  console.error('Form with data-submitting=true not found', { form });
+}
+
 function addHeaderWithMark(wrapper) {
   const hasHeaderWithMark = wrapper.closest('.header-with-mark');
   if (hasHeaderWithMark) {
@@ -66,8 +70,12 @@ async function submissionSuccess() {
   });
   successDiv.innerHTML = successMessage(getMessageText(true, true), getMessageText(true, false));
   const form = document.querySelector('form[data-submitting=true]');
+  if (!form) {
+    throwFormNotFound(form);
+    return;
+  }
   const hasCustomMessage = form.dataset.customMessage;
-  const hasHeaderWithMark = form.closest('.header-with-mark');
+  const hasHeaderWithMark = form?.closest('.header-with-mark');
 
   if (hasCustomMessage) {
     successDiv.innerHTML = await getCustomMessage(hasCustomMessage);
@@ -85,10 +93,11 @@ async function submissionFailure() {
   });
   errorDiv.innerHTML = errorMessage(getMessageText(false, true), getMessageText(false, false));
   const form = document.querySelector('form[data-submitting=true]');
-  const headerWithMark = form.closest('.header-with-mark');
   if (!form) {
+    throwFormNotFound(form);
     return;
   }
+  const headerWithMark = form?.closest('.header-with-mark');
   form.setAttribute('data-submitting', 'false');
   form.querySelector('button[type="submit"]').disabled = false;
   form.replaceWith(errorDiv);

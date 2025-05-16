@@ -24,7 +24,10 @@ export default async function decorate(block) {
   block.appendChild(accordionBlockWrapper);
 
   // Hx tag used for the titles of the accordion
-  const titleMeta = block.closest('.section').dataset.header || 3;
+  const titleMeta = block.closest('.section').dataset.header;
+  if (!titleMeta) {
+    return;
+  }
 
   const headerTag = titleMeta.charAt(titleMeta.length - 1);
   const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].slice(headerTag);
@@ -97,7 +100,9 @@ export default async function decorate(block) {
 
     item.classList.add(...classes);
 
-    accordionContent.appendChild(item);
+    if (accordionContent) {
+      accordionContent.appendChild(item);
+    }
   });
 
   // close last accordion content
