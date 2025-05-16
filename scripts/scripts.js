@@ -32,7 +32,7 @@ import {
   isInsideSection,
 } from './common.js';
 
-import { isVideoLink, addVideoShowHandler } from './video-helper.js';
+import { isVideoLink, addVideoShowHandler, hasVideoOnPage, loadVideoJs } from './video-helper.js';
 import { validateCountries } from './validate-countries.js';
 
 const disableHeader = getMetadata('disable-header').toLowerCase() === 'true';
@@ -563,10 +563,18 @@ export function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+/**
+ * Main page initialization logic.
+ * Loads eager/lazy resources and conditionally loads video support.
+ */
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
+
+  if (hasVideoOnPage()) {
+    await loadVideoJs();
+  }
 }
 
 loadPage();
