@@ -83,7 +83,7 @@ const equalizeData = (data) => {
  * @param performanceData {Array<Array<string>>}
  */
 const updateChart = async (chartContainer, performanceData, isDataEquilized) => {
-  if (!isDataEquilized) {
+  if (isDataEquilized) {
     // On first pass, normalize power data so that lines align on top
     equalizeData(performanceData);
   }
@@ -154,6 +154,7 @@ const updateChart = async (chartContainer, performanceData, isDataEquilized) => 
       right: MQ.matches ? '0' : 'auto',
       itemHeight: 25,
       itemGap: MQ.matches ? 50 : 10,
+      selectedMode: false,
       textStyle: {
         fontSize: 15,
         lineHeight: 16,
@@ -583,5 +584,5 @@ export default async function decorate(block) {
 
   const chartContainer = block.querySelector('.performance-chart');
   // noinspection JSIgnoredPromiseFromCall,ES6MissingAwait
-  updateChart(chartContainer, engineDetails.performanceData, false);
+  updateChart(chartContainer, engineDetails.performanceData, true);
 }
