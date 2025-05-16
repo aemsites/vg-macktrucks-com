@@ -100,7 +100,9 @@ export default async function decorate(block) {
 
     item.classList.add(...classes);
 
-    accordionContent.appendChild(item);
+    if (accordionContent) {
+      accordionContent.appendChild(item);
+    }
   });
 
   // close last accordion content
