@@ -120,6 +120,7 @@
   gap: var(--category-detail-gap);
 }
 
+.performance-specifications .category-detail h3 p,
 .performance-specifications .category-detail h3 {
   margin: 0;
 }
@@ -148,6 +149,10 @@
 .performance-specifications .engine-tablist {
   display: flex;
   gap: 1em;
+  overflow: scroll hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
@@ -160,6 +165,7 @@
   line-height: 18px;
   margin: 0;
   border-style: none;
+  min-width: 80px;
 }
 
 .performance-specifications .engine-tablist [role='tab'][aria-selected='true'] {
@@ -229,6 +235,10 @@
     --specs-grid-template-columns: 1fr 3fr;
     --category-tablist-margin: 0 0 24px;
     --key-specs-margin: 0 0 2.5em;
+  }
+
+  .performance-specifications .details-panel dl {
+    margin-top: 80px;
   }
 }
 
