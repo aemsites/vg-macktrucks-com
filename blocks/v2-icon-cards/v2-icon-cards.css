@@ -227,7 +227,6 @@
 
 .v2-icon-cards__column--extra-col .v2-icon-cards__body {
   padding-bottom: 8px;
-  border-bottom: 1px solid var(--c-accent-copper);
   margin-bottom: 16px;
 }
 
@@ -284,9 +283,10 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-flow: row nowrap;
+  margin-block: 40px;
 }
 
-.v2-icon-cards--slider .v2-icon-cards__rowr::-webkit-scrollbar {
+.v2-icon-cards--slider .v2-icon-cards__row::-webkit-scrollbar {
   display: none;
 }
 
