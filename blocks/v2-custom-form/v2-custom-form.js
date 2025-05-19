@@ -5,6 +5,10 @@ import { getCustomDropdown } from '../../../common/custom-dropdown/custom-dropdo
 const blockName = 'v2-custom-form';
 const variantClasses = ['double-column'];
 
+const CLASSES = {
+  IGNORE_ON_FORM_SUBMIT: 'ignore-on-form-submit',
+};
+
 const successMessage = (successTitle, successText) => `<h3 class='${blockName}__title ${blockName}__title--success'>${successTitle}</h3>
 <p class='${blockName}__text ${blockName}__text--success'>${successText}</p>
 `;
@@ -127,7 +131,7 @@ function generateUnique() {
 function constructPayload(form) {
   const payload = { __id__: generateUnique() };
   [...form.elements].forEach((fe) => {
-    if (fe.name) {
+    if (fe.name && !fe.classList.contains(CLASSES.IGNORE_ON_FORM_SUBMIT)) {
       if (fe.type === 'radio' && fe.checked) {
         payload[fe.name] = fe.value;
       } else if (fe.type === 'checkbox' && fe.checked) {
@@ -671,11 +675,13 @@ function toggleNovalidateOnInput(element, novalidate = true) {
     if (novalidate) {
       element.classList.add('hidden');
       inputField.setAttribute('novalidate', '');
+      inputField.classList.add(CLASSES.IGNORE_ON_FORM_SUBMIT);
       inputField.setAttribute('aria-invalid', 'false');
       inputField.classList.remove('invalid');
       inputField.disabled = true;
     } else {
       element.classList.remove('hidden');
+      inputField.classList.remove(CLASSES.IGNORE_ON_FORM_SUBMIT);
       inputField.removeAttribute('novalidate');
       inputField.setAttribute('aria-invalid', 'true');
       inputField.classList.add('invalid');
