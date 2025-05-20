@@ -905,7 +905,7 @@ if (getMetadata('truck-configurator-page')) {
   }
 }
 
-/* Checks for all <em> tags that contain only 1 character and deletes the space after it */
+/* Checks for all <em> tags that contain only 1 character and deletes the space after it. */
 const allItalics = [...document.querySelectorAll('em')];
 allItalics.forEach((emTag) => {
   const tagLength = emTag.textContent.length;
