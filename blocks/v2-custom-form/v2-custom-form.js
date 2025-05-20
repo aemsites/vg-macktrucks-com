@@ -5,6 +5,10 @@ import { getCustomDropdown } from '../../../common/custom-dropdown/custom-dropdo
 const blockName = 'v2-custom-form';
 const variantClasses = ['double-column'];
 
+const CLASSES = {
+  IGNORE_ON_FORM_SUBMIT: 'ignore-on-form-submit',
+};
+
 const successMessage = (successTitle, successText) => `<h3 class='${blockName}__title ${blockName}__title--success'>${successTitle}</h3>
 <p class='${blockName}__text ${blockName}__text--success'>${successText}</p>
 `;
@@ -49,6 +53,10 @@ async function getCustomMessage(url) {
   return '';
 }
 
+function throwFormNotFound(form) {
+  console.error('Form with data-submitting=true not found', { form });
+}
+
 function addHeaderWithMark(wrapper) {
   const hasHeaderWithMark = wrapper.closest('.header-with-mark');
   if (hasHeaderWithMark) {
@@ -66,8 +74,12 @@ async function submissionSuccess() {
   });
   successDiv.innerHTML = successMessage(getMessageText(true, true), getMessageText(true, false));
   const form = document.querySelector('form[data-submitting=true]');
+  if (!form) {
+    throwFormNotFound(form);
+    return;
+  }
   const hasCustomMessage = form.dataset.customMessage;
-  const hasHeaderWithMark = form.closest('.header-with-mark');
+  const hasHeaderWithMark = form?.closest('.header-with-mark');
 
   if (hasCustomMessage) {
     successDiv.innerHTML = await getCustomMessage(hasCustomMessage);
@@ -85,10 +97,11 @@ async function submissionFailure() {
   });
   errorDiv.innerHTML = errorMessage(getMessageText(false, true), getMessageText(false, false));
   const form = document.querySelector('form[data-submitting=true]');
-  const headerWithMark = form.closest('.header-with-mark');
   if (!form) {
+    throwFormNotFound(form);
     return;
   }
+  const headerWithMark = form?.closest('.header-with-mark');
   form.setAttribute('data-submitting', 'false');
   form.querySelector('button[type="submit"]').disabled = false;
   form.replaceWith(errorDiv);
@@ -118,7 +131,7 @@ function generateUnique() {
 function constructPayload(form) {
   const payload = { __id__: generateUnique() };
   [...form.elements].forEach((fe) => {
-    if (fe.name) {
+    if (fe.name && !fe.classList.contains(CLASSES.IGNORE_ON_FORM_SUBMIT)) {
       if (fe.type === 'radio' && fe.checked) {
         payload[fe.name] = fe.value;
       } else if (fe.type === 'checkbox' && fe.checked) {
@@ -206,7 +219,10 @@ function createHelpText(fd) {
 }
 
 function kebabName(name) {
-  return name.replace(/([a-z0-9])([A-Z])/g, '$1-$2').toLowerCase();
+  return name
+    .replace(/\s+/g, '-')
+    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+    .toLowerCase();
 }
 
 function createFieldWrapper(fd, tagName = 'div') {
@@ -317,17 +333,141 @@ function checkboxHandler(e) {
   checkbox.dispatchEvent(new Event('change'));
 }
 
-function createRadio(fd) {
-  const wrapper = createFieldWrapper(fd);
-  wrapper.insertAdjacentElement('afterbegin', createInput(fd));
-  if (fd.Type === 'checkbox') {
-    const checkboxLabel = wrapper.querySelector('input+label');
-    wrapper.querySelector('input').setAttribute('tabindex', '-1');
-    checkboxLabel.setAttribute('tabindex', '0');
-    checkboxLabel.addEventListener('click', checkboxHandler);
-    checkboxLabel.addEventListener('keydown', checkboxHandler);
+function createCheckbox(fd) {
+  const wrapper = createElement('div', {
+    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper', `form-${kebabName(fd.Name)}`],
+    props: {
+      id: fd.Id,
+      name: fd.Name,
+    },
+  });
+
+  if (fd.Mandatory?.toLowerCase() === 'true') {
+    wrapper.setAttribute('required', 'required');
   }
+
+  const input = createElement('input', {
+    props: {
+      type: 'checkbox',
+      id: fd.Id,
+      name: fd.Name,
+      value: fd.Value || 'on',
+      tabindex: '-1',
+      ...(fd.Mandatory?.toLowerCase() === 'true' ? { required: true } : {}),
+    },
+  });
+
+  const label = createElement('label', {
+    props: {
+      for: fd.Id,
+      tabindex: '0',
+    },
+  });
+
+  const circle = createElement('span', {
+    classes: ['form-checkbox-circle'],
+  });
+
+  label.append(circle, document.createTextNode(fd.Label || fd.Name));
+  label.addEventListener('click', checkboxHandler);
+  label.addEventListener('keydown', checkboxHandler);
+  wrapper.append(input, label);
   return wrapper;
+}
+
+function createRadio(fd) {
+  const wrapper = createRadioWrapper(fd);
+
+  const options = getRadioOptions(fd);
+  if (!options || options.length === 0) {
+    return wrapper;
+  }
+
+  options.forEach((option, index) => {
+    const radioOption = createRadioOption(option, index, fd);
+    wrapper.append(radioOption);
+  });
+
+  appendHelpText(wrapper, fd);
+
+  return wrapper;
+}
+
+function createRadioWrapper(fd) {
+  const wrapper = createElement('fieldset', {
+    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper'],
+    props: { name: fd.Name },
+  });
+
+  if (fd.Mandatory?.toLowerCase() === 'true') {
+    wrapper.setAttribute('required', 'required');
+  }
+
+  if (fd.Name) {
+    wrapper.classList.add(`form-${kebabName(fd.Name)}`);
+  }
+
+  const legend = createElement('legend', {
+    classes: [`form-${fd.Type}-legend`],
+  });
+  legend.textContent = fd.Label || fd.Name;
+  wrapper.append(legend);
+
+  return wrapper;
+}
+
+function getRadioOptions(fd) {
+  if (!fd.Options) {
+    console.warn(`Missing "Options" for radio field: ${fd.Name}`);
+    return null;
+  }
+
+  const options = fd.Options.split(',')
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+  if (options.length === 0) {
+    console.warn(`No valid options parsed for radio field: ${fd.Name}`);
+  }
+
+  return options;
+}
+
+function createRadioOption(option, index, fd) {
+  const radioId = `${fd.Id}-${index}`;
+  const radioWrapper = createElement('div', {
+    classes: ['form-radio-option'],
+  });
+
+  const input = createElement('input', {
+    classes: [`form-${fd.Type}-input`],
+    props: {
+      type: 'radio',
+      id: radioId,
+      name: fd.Name,
+      value: option,
+      required: fd.Mandatory?.toLowerCase() === 'true',
+    },
+  });
+
+  const label = createElement('label', {
+    classes: [`form-${fd.Type}-label`],
+    props: { for: radioId },
+  });
+
+  const visualCircle = createElement('span', {
+    classes: ['form-radio-circle'],
+  });
+
+  label.append(visualCircle, document.createTextNode(option));
+  radioWrapper.append(input, label);
+  return radioWrapper;
+}
+
+function appendHelpText(wrapper, fd) {
+  if (fd.Description) {
+    wrapper.append(createHelpText(fd));
+  }
 }
 
 const createOutput = withFieldWrapper((fd) => {
@@ -400,6 +540,11 @@ async function createCustomDropdown(fd) {
     name: fd.Name,
     mandatory: fd.Mandatory,
   };
+
+  if (fd.onChangeCallback) {
+    configFd.onChangeCallback = (value) => fd.onChangeCallback({ value, name: fd.Name });
+  }
+
   const customDropdown = await getCustomDropdown(configFd);
   const select = customDropdown.querySelector('select');
   // since dropdown is async, it replaces a temporary select
@@ -420,7 +565,7 @@ const getId = (function getId() {
 
 const fieldRenderers = {
   radio: createRadio,
-  checkbox: createRadio,
+  checkbox: createCheckbox,
   textarea: createTextArea,
   select: createSelect,
   button: createButton,
@@ -474,6 +619,11 @@ async function fetchForm(pathname) {
 }
 
 function showError(evnt) {
+  const isHidden = !!evnt.currentTarget.closest('.hidden');
+  if (isHidden) {
+    return;
+  }
+
   let field = evnt.target;
   const fieldWrapper = field.closest('.field-wrapper');
   fieldWrapper.classList.add('invalid');
@@ -519,6 +669,27 @@ function cleanErrorMessages(form) {
   });
 }
 
+function toggleNovalidateOnInput(element, novalidate = true) {
+  const inputField = element.querySelector('input,select,textarea');
+  if (inputField) {
+    if (novalidate) {
+      element.classList.add('hidden');
+      inputField.setAttribute('novalidate', '');
+      inputField.classList.add(CLASSES.IGNORE_ON_FORM_SUBMIT);
+      inputField.setAttribute('aria-invalid', 'false');
+      inputField.classList.remove('invalid');
+      inputField.disabled = true;
+    } else {
+      element.classList.remove('hidden');
+      inputField.classList.remove(CLASSES.IGNORE_ON_FORM_SUBMIT);
+      inputField.removeAttribute('novalidate');
+      inputField.setAttribute('aria-invalid', 'true');
+      inputField.classList.add('invalid');
+      inputField.disabled = false;
+    }
+  }
+}
+
 async function createForm(formURL) {
   const { pathname } = new URL(formURL);
   const data = await fetchForm(pathname);
@@ -531,6 +702,7 @@ async function createForm(formURL) {
   }
   const form = createElement('form');
   const customDropdowns = [];
+  const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
     const el = renderField(fd);
 
@@ -543,24 +715,63 @@ async function createForm(formURL) {
       formField.setAttribute('required', 'required');
     }
     if (formField) {
-      formField.id = fd.Id;
+      if (!formField.id) {
+        formField.id = fd.Id;
+      }
       formField.name = fd.Name;
       formField.value = fd.Value;
       if (fd.Description) {
         formField.setAttribute('aria-describedby', `${fd.Id}-description`);
       }
     }
+    if (fd.Dependency) {
+      // If it has a dependency, we need to hide it by default
+      // toggleNovalidateOnInput(el, true);
+      dependencies.push({
+        element: el,
+        dependency: fd.Dependency,
+
+        name: (fd.Dependency && fd.Dependency.split(':')[0]) || '',
+        value: (fd.Dependency && fd.Dependency.split(':')[1]) || '',
+      });
+    }
     form.append(el);
   });
 
   if (customDropdowns.length > 0) {
     customDropdowns.forEach(async (fd, index) => {
+      const hasDependency = dependencies.find((d) => d.name === fd.Name);
+
+      if (hasDependency) {
+        fd.onChangeCallback = (selected) => {
+          const { name, value } = selected;
+          dependencies.forEach((d) => {
+            if (d.name === name) {
+              toggleNovalidateOnInput(d.element, d.value !== value);
+            }
+          });
+        };
+      }
+
       const customDropdownPlaceholder = form.querySelectorAll('.form-custom-dropdown-wrapper')[index];
       const placholderSelect = customDropdownPlaceholder.querySelector('select');
       const customDropdown = await createCustomDropdown(fd);
       placholderSelect.replaceWith(customDropdown);
+
+      if (hasDependency) {
+        const { value } = hasDependency;
+
+        setTimeout(() => {
+          dependencies.forEach((d) => {
+            if (d.name === hasDependency.name) {
+              toggleNovalidateOnInput(d.element, d.value !== value);
+            }
+          });
+        }, 0);
+      }
     });
   }
+
   groupFieldsByFieldSet(form);
   form.addEventListener('submit', (e) => {
     let isValid = true;
@@ -570,6 +781,13 @@ async function createForm(formURL) {
     // after been submitted, the form needs to clean the error messages if the fields are valid
     cleanErrorMessages(form);
     e.preventDefault();
+
+    const honeypot = form.querySelector('input[name="form_extra_field"]');
+    if (honeypot && honeypot.value) {
+      console.warn('Form submission blocked: honeypot field was filled (possible bot).');
+      return;
+    }
+
     if (isValid) {
       const block = form.closest(`.${blockName}`);
       const formTitle = block.querySelector(`.${blockName}__title`);
@@ -613,6 +831,22 @@ function addTitleText(titleText, block) {
   }
 }
 
+function createHoneypotField() {
+  const fragment = document.createRange().createContextualFragment(`
+    <div class="field-wrapper visually-hidden" aria-hidden="true">
+      <label for="form_extra_field">Comments</label>
+      <input
+        type="text"
+        id="form_extra_field"
+        name="form_extra_field"
+        tabindex="-1"
+        autocomplete="off"
+      >
+    </div>
+  `);
+  return fragment.firstElementChild;
+}
+
 export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const formLink = block.querySelector('a[href$=".json"]');
@@ -627,6 +861,7 @@ export default async function decorate(block) {
       form.dataset.customMessage = `${thankYouPage[0].href}.plain.html`;
       block.lastElementChild.remove();
     }
+    form.append(createHoneypotField());
     // clean the content block before appending the form
     block.innerText = '';
     if (formTitleContainer && !isFormLinkInsideTitleContainer) {

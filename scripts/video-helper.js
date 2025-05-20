@@ -1,5 +1,5 @@
 import { isSocialAllowed, createElement, deepMerge, getTextLabel, decorateIcons } from './common.js';
-import { loadScript } from './aem.js';
+import { loadScript, loadCSS } from './aem.js';
 
 export const VIDEO_JS_SCRIPT = '/scripts/videojs/video.min.js';
 export const VIDEO_JS_CSS = '/scripts/videojs/video-js.min.css';
@@ -364,6 +364,7 @@ export function setPlaybackControls(container) {
   });
   const pauseIcon = createElement('span', { classes: ['icon', 'icon-pause-video'] });
   const playIcon = createElement('span', { classes: ['icon', 'icon-play-video'] });
+
   playbackButton.append(pauseIcon, playIcon);
 
   playPauseButton.append(...playbackButton.children);
@@ -693,6 +694,34 @@ export const handleVideoMessage = (event, videoId, blockName = 'video') => {
     // }
   }
 };
+
+/**
+ * Checks if the current page contains any known video-related elements.
+ * @returns {boolean} True if a video block is found.
+ */
+export function hasVideoOnPage() {
+  return !!(
+    document.querySelector('.video-js') ||
+    document.querySelector('.text-link-with-video') ||
+    document.querySelector('.v2-video__big-play-button')
+  );
+}
+
+/**
+ * Dynamically loads Video.js script and CSS and dispatches an event once loaded.
+ * @returns {Promise<void>}
+ */
+export async function loadVideoJs() {
+  await Promise.all([loadCSS(VIDEO_JS_CSS), loadScript(VIDEO_JS_SCRIPT)]);
+
+  const jsScript = document.querySelector(`head > script[src="${VIDEO_JS_SCRIPT}"]`);
+  const cssScript = document.querySelector(`head > link[href="${VIDEO_JS_CSS}"]`);
+
+  jsScript.dataset.loaded = true;
+  cssScript.dataset.loaded = true;
+
+  document.dispatchEvent(new Event('videojs-loaded'));
+}
 
 class VideoEventManager {
   constructor() {

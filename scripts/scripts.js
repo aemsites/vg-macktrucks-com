@@ -32,7 +32,7 @@ import {
   isInsideSection,
 } from './common.js';
 
-import { isVideoLink, addVideoShowHandler } from './video-helper.js';
+import { isVideoLink, addVideoShowHandler, hasVideoOnPage, loadVideoJs } from './video-helper.js';
 import { validateCountries } from './validate-countries.js';
 
 const disableHeader = getMetadata('disable-header').toLowerCase() === 'true';
@@ -511,7 +511,9 @@ async function loadEager(doc) {
     await getPlaceholders();
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   } else {
-    document.documentElement.lang = 'en';
+    const meta_i18n = doc.querySelector('meta[name="i18n"]');
+    const meta_locale = doc.querySelector('meta[name="locale"]');
+    document.documentElement.lang = (meta_i18n && meta_i18n.content) || (meta_locale && meta_locale.content.toLowerCase()) || 'en';
     await getPlaceholders();
   }
 }
@@ -561,10 +563,18 @@ export function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
+/**
+ * Main page initialization logic.
+ * Loads eager/lazy resources and conditionally loads video support.
+ */
 async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
+
+  if (hasVideoOnPage()) {
+    await loadVideoJs();
+  }
 }
 
 loadPage();
@@ -895,7 +905,7 @@ if (getMetadata('truck-configurator-page')) {
   }
 }
 
-/* Checks for all <em> tags that contain only 1 character and deletes the space after it */
+/* Checks for all <em> tags that contain only 1 character and deletes the space after it. */
 const allItalics = [...document.querySelectorAll('em')];
 allItalics.forEach((emTag) => {
   const tagLength = emTag.textContent.length;
