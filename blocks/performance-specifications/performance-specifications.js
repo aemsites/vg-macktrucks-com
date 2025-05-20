@@ -165,8 +165,8 @@ const updateChart = async (chartContainer, engineDetails) => {
       itemGap: MQ.matches ? 50 : 10,
       selectedMode: false,
       textStyle: {
-        fontSize: 15,
-        lineHeight: 16,
+        fontSize: 12,
+        lineHeight: 15,
         fontWeight: 700,
         color: '#ffffff',
       },

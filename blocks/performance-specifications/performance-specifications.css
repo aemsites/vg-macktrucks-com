@@ -127,6 +127,13 @@
   display: none;
 }
 
+.performance-specifications .category-tablist .category-tab p {
+  margin: 0;
+  font-weight: 700;
+  line-height: var(--body-1-line-height);
+  letter-spacing: 0.032px;
+}
+
 .performance-specifications .category-detail .category-description {
   font-size: var(--body-font-size-s);
   max-width: 600px;
