@@ -364,6 +364,7 @@ export function setPlaybackControls(container) {
   });
   const pauseIcon = createElement('span', { classes: ['icon', 'icon-pause-video'] });
   const playIcon = createElement('span', { classes: ['icon', 'icon-play-video'] });
+
   playbackButton.append(pauseIcon, playIcon);
 
   playPauseButton.append(...playbackButton.children);
