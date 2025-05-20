@@ -40,6 +40,7 @@
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   position: relative;
+  padding: 0;
 }
 
 .performance-specifications .category-tablist::-webkit-scrollbar {
@@ -123,6 +124,7 @@
 .performance-specifications .category-detail h3 p,
 .performance-specifications .category-detail h3 {
   margin: 0;
+  display: none;
 }
 
 .performance-specifications .category-detail .category-description {
@@ -134,6 +136,9 @@
 .performance-specifications .engine-ratings {
   font-family: var(--ff-body-bold);
   font-size: var(--body-font-size-xxs);
+  letter-spacing: var(--label-letter-spacing-small);
+  line-height: var(--label-line-height-small);
+  width: 140px;
   text-transform: uppercase;
   margin: 0;
 }
@@ -142,8 +147,8 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  align-items: flex-end;
-  gap: 1em;
+  align-items: flex-start;
+  gap: 1.5em;
 }
 
 .performance-specifications .engine-tablist {
@@ -159,9 +164,11 @@
 .performance-specifications .engine-tablist [role='tab'] {
   background-color: var(--c-primary-white);
   font-size: var(--body-font-size-xs);
+  letter-spacing: var(--button-letter-spacing-small);
   color: var(--c-primary-black);
   border-radius: 2px;
-  padding: 0.4em 0.7em 0.2em;
+  padding: 0.4em 1.45em 0.2em;
+  height: 32px;
   line-height: 18px;
   margin: 0;
   border-style: none;

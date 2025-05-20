@@ -2,6 +2,12 @@ import { a, button, div, domEl, p, ul, li } from '../../scripts/scripts.js';
 import { loadScript } from '../../scripts/aem.js';
 import { getTextLabel } from '../../scripts/common.js';
 
+const TEXTS = {
+  btnText: getTextLabel('Download Specs'),
+  engineRatings: 'POWER / TORQUE RATING',
+  bottomChartLabel: 'RPM',
+};
+
 /**
  * as multiple blocks might be on the same page, the data is accessed using they block node as the
  * key.
@@ -132,13 +138,14 @@ const updateChart = async (chartContainer, engineDetails) => {
       };
     });
 
-    // Grey area rectangle
+    // Grey area rectangle - TODO, make this configurable
     series[0] = {
       ...series[0],
       markArea: {
         silent: true,
         itemStyle: {
-          color: 'rgb(96 96 96 / 50%)',
+          // color: 'rgb(96 96 96 / 50%)',
+          color: 'transparent',
         },
         data: [[{ xAxis: sweetSpotStart }, { xAxis: sweetSpotEnd }]],
       },
@@ -186,7 +193,7 @@ const updateChart = async (chartContainer, engineDetails) => {
       type: 'value',
 
       // label center bellow chart
-      name: 'RPM',
+      name: TEXTS.bottomChartLabel,
       nameGap: 40,
       nameLocation: 'center',
       nameTextStyle: {
@@ -216,7 +223,6 @@ const updateChart = async (chartContainer, engineDetails) => {
         show: false,
         splitNumber: 3,
       },
-      // unfortunately we can not control which label values are shown
       axisLabel: {
         show: true,
         interval: 0,
@@ -245,7 +251,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         axisLabel: {
           formatter(value) {
             // do not display the cero on the bottom
-            return value === 0 ? '' : value;
+            return value;
           },
         },
         splitLine: {
@@ -265,7 +271,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         axisLabel: {
           formatter(value) {
             // return orginal value and round it to a 50 unit value
-            return value === 0 ? '' : Math.round(value / conversionFactor / 50) * 50;
+            return Math.round(value / conversionFactor / 50) * 50;
           },
         },
         splitLine: {
@@ -319,7 +325,7 @@ const renderEngineSpecs = (engineDetails) => {
           target: '_blank',
           style: `display: ${downloadSpecs ? 'block' : 'none'};`,
         },
-        getTextLabel('Download Specs'),
+        TEXTS.btnText,
       ),
     ),
   );
@@ -346,8 +352,8 @@ const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
     <h3>${categoryData.nameHTML}</h3>
     ${categoryData.descriptionHTML ? `<p class="category-description">${categoryData.descriptionHTML}</p>` : ''}
     <div class="engine-navigation">
-      <p class="engine-ratings">Engine Ratings</p>
-      <div class="engine-tablist" role="tablist" aria-label="Engine Ratings"> </div>
+      <p class="engine-ratings">${TEXTS.engineRatings}</p>
+      <div class="engine-tablist" role="tablist" aria-label="${TEXTS.engineRatings}"> </div>
     </div>`;
 
   const tabList = categoryDetails.querySelector('.engine-tablist');
