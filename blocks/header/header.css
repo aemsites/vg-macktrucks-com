@@ -764,7 +764,7 @@ a.header__link {
 
   .header.block a.button.button--small {
     min-width: 96px;
-    padding: 8px 20px 4px;
+    padding: 6px 20px;
   }
 
   .header.block .button.button--primary {
@@ -1244,6 +1244,10 @@ a.header__link {
     margin-bottom: 32px;
   }
 
+  .header__featured-card-group .header__featured-card-buttons {
+    margin-bottom: 24px;
+  }
+
   .header__featured-card:hover {
     .header__featured-card-buttons,
     .header__featured-card-links {
@@ -1275,11 +1279,16 @@ a.header__link {
     letter-spacing: 1.2px;
   }
 
+  /* High specificity needed to override the header button styles */
   .header__featured-card .header__featured-card-content .header__featured-card-buttons .header__featured-card-button {
-    /* High specificity needed to override the header button styles */
     width: 160px;
     padding-top: 16.5px;
     padding-bottom: 13.5px;
+  }
+
+  .header__featured-card-group .header__featured-card .header__featured-card-buttons .header__featured-card-button {
+    padding: 6px 20px;
+    width: auto;
   }
 }
 
