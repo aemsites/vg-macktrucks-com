@@ -501,12 +501,38 @@
 
 @media (min-width: 990px) {
   [data-page='pdp'] .v2-hero--with-engine-stats {
+    --stats-height: 160px;
+
     display: flex;
-    flex-direction: row;
+    flex-direction: row-reverse;
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats picture {
+    flex: 0 0 40%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content-wrapper {
+    flex: 0 0 60%;
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start; 
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__heading  {
+    flex: 0 0 100%;
+    min-height: calc(40vw - var(--stats-height));
+    justify-content: left;
   }
 
   [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content ul {
     display: block;
+    flex: 0 0 calc(100% / 3);
+    min-height: var(--stats-height);
   }
 }
 
