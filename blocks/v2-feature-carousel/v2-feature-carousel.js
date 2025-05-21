@@ -1,12 +1,13 @@
 import { adjustPretitle, createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
 import { listenScroll, createArrowControls, setCarouselPosition } from '../../scripts/carousel-helper.js';
+import { createVideo, isVideoLink } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-feature-carousel';
 const CLASSES = {
   button: `${blockName}__button`,
   buttonPrev: `${blockName}__button-prev`,
   buttonNext: `${blockName}__button-next`,
-  imageWrapper: `${blockName}__image-wrapper`,
+  backgroundWrapper: `${blockName}__background-wrapper`,
   image: `${blockName}__image`,
   listWrapper: `${blockName}__list-wrapper`,
   listContainer: `${blockName}__list-container`,
@@ -135,27 +136,51 @@ const createCardsList = (nodes) => {
   return cardItems;
 };
 
+function buildBlockBackground(block) {
+  const firstLink = block.querySelector(':scope > div div a');
+
+  if (isVideoLink(firstLink)) {
+    const videoLink = firstLink.getAttribute('href');
+    console.log('videoLink: ', videoLink);
+    return createVideo(
+      videoLink,
+      `${blockName}__video`,
+      {
+        autoplay: true,
+        fill: true,
+      },
+      { usePosterAutoDetection: true },
+    );
+  } else {
+    const pictureNodes = [];
+
+    block.querySelectorAll(':scope > div div').forEach((el) => {
+      if (el.querySelector('picture')) {
+        const picEl = el.querySelector('picture');
+        pictureNodes.push(picEl);
+      }
+    });
+
+    return createImageList(pictureNodes);
+  }
+}
+
 export default async function decorate(block) {
-  const pictureNodes = [];
-  const otherNodes = [];
+  const listNodes = [];
+  const blockBackground = buildBlockBackground(block);
 
   block.querySelectorAll(':scope > div div').forEach((el) => {
-    if (el.querySelector('picture')) {
-      const picEl = el.querySelector('picture');
-      pictureNodes.push(picEl);
-    } else {
-      otherNodes.push(el);
+    if (!el.querySelector('picture') && !(el.children.length === 1 && el.querySelector('a') && isVideoLink(el.querySelector('a')))) {
+      listNodes.push(el);
     }
   });
 
   const carousel = document.createRange().createContextualFragment(`
-    <div class='${CLASSES.imageWrapper}'>
-      ${createImageList(pictureNodes)}
-    </div>
+    <div class='${CLASSES.backgroundWrapper}'></div>
     <div class='${CLASSES.listWrapper}'>
       <div class='${CLASSES.listContainer}'>
         <ul class='${CLASSES.list}'>
-          ${createCardsList(otherNodes)}
+          ${createCardsList(listNodes)}
         </ul>
       </div>
     </div>
@@ -163,7 +188,7 @@ export default async function decorate(block) {
 
   const carouselList = carousel.querySelector(`.${CLASSES.list}`);
 
-  if (otherNodes.length > 1) {
+  if (listNodes.length > 1) {
     createArrowControls(carouselList, `.${CLASSES.listItem}.active`, [`${CLASSES.arrowcontrols}`], arrowFragment());
     const elements = carouselList.querySelectorAll(`.${CLASSES.listItem}`);
     listenScroll(carouselList, elements, updateActiveClass, 0.75);
@@ -173,6 +198,8 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   block.append(carousel);
+
+  block.querySelector(`.${CLASSES.backgroundWrapper}`).appendChild(blockBackground);
 
   decorateIcons(block);
 }
