@@ -502,6 +502,7 @@
 @media (min-width: 990px) {
   [data-page='pdp'] .v2-hero--with-engine-stats {
     --stats-height: 160px;
+    --spacing-left: calc(calc(100vw - var(--wrapper-width)) / 2);
 
     display: flex;
     flex-direction: row-reverse;
@@ -509,8 +510,10 @@
 
   [data-page='pdp'] .v2-hero--with-engine-stats picture {
     flex: 0 0 40%;
-    align-items: center;
-    justify-content: center;
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats picture::after {
+    display: none;
   }
 
   [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content-wrapper {
@@ -520,19 +523,55 @@
   [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content {
     display: flex;
     flex-wrap: wrap;
-    align-content: flex-start; 
+    align-content: flex-start;
   }
 
-  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__heading  {
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__heading {
     flex: 0 0 100%;
     min-height: calc(40vw - var(--stats-height));
     justify-content: left;
+    padding-left: 24px;
+    font-size: calc(var(--body-font-size-xxl) * 2);
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content::after {
+    order: 4;
   }
 
   [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content ul {
+    order: 3;
     display: block;
     flex: 0 0 calc(100% / 3);
     min-height: var(--stats-height);
+    max-width: 185px;
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content ul:first-of-type {
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 1200px) {
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content::before {
+    margin-left: -50px;
+    content: '';
+    order: 2;
+    background-color: var(--c-tertiary-dark-gray);
+    width: var(--spacing-left);
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__heading {
+    padding-left: var(--spacing-left);
+  }
+}
+
+@media (min-width: 1440px) {
+  [data-page='pdp'] .v2-hero--with-engine-stats picture {
+    max-height: 576px;
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__heading {
+    min-height: calc(576px - var(--stats-height));
   }
 }
 
