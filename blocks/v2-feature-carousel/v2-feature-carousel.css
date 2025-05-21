@@ -39,7 +39,8 @@
   justify-content: center;
 }
 
-.v2-feature-carousel__background-wrapper .v2-feature-carousel__image img {
+.v2-feature-carousel__background-wrapper .v2-feature-carousel__image img,
+.v2-feature-carousel__background-wrapper .v2-feature-carousel__video {
   aspect-ratio: 1/1;
   display: block;
   object-fit: cover;

@@ -141,7 +141,7 @@ function buildBlockBackground(block) {
 
   if (isVideoLink(firstLink)) {
     const videoLink = firstLink.getAttribute('href');
-    console.log('videoLink: ', videoLink);
+
     return createVideo(
       videoLink,
       `${blockName}__video`,
