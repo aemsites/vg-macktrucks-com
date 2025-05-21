@@ -491,8 +491,7 @@
   aspect-ratio: 1;
 }
 
-[data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__image,
-[data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__video {
+[data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__image {
   display: block;
   position: unset;
   object-fit: contain;
