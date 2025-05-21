@@ -2,7 +2,7 @@ import { getImageURLs, createResponsivePicture, variantsClassesToBEM, decorateIc
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 import { initializeCountdown } from '../../common/countdown/countdown.js';
 
-export const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
+export const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown', 'with-engine-stats'];
 const blockName = 'v2-hero';
 let hasVideo;
 

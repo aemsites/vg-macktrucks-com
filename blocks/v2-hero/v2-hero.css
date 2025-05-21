@@ -479,6 +479,39 @@
 
 /* PDP - electric model stats bar END */
 
+/* PDP - with engine stats bar START */
+
+[data-page='pdp'] .v2-hero--with-engine-stats {
+  height: unset;
+}
+
+[data-page='pdp'] .v2-hero--with-engine-stats picture {
+  background-color: var(--c-secondary-steel);
+  display: block;
+  aspect-ratio: 1;
+}
+
+[data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__image,
+[data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__video {
+  display: block;
+  position: unset;
+  object-fit: contain;
+  padding: 50px;
+}
+
+@media (min-width: 990px) {
+  [data-page='pdp'] .v2-hero--with-engine-stats {
+    display: flex;
+    flex-direction: row;
+  }
+
+  [data-page='pdp'] .v2-hero--with-engine-stats .v2-hero__content ul {
+    display: block;
+  }
+}
+
+/* PDP - with engine stats bar END */
+
 /* PDP - Hero section END */
 
 /* Countdown variant */
