@@ -521,10 +521,7 @@ const buildFeaturedCardsHtml = (list, isDoubleFeaturedCard) => {
     featuredCardsHtml += generateFeaturedCardHtml(secondCard);
   }
 
-  // Remove used items from the list to avoid duplicate rendering
-  list.children[0]?.remove();
   if (isDoubleFeaturedCard) {
-    list.children[0]?.remove(); // still index 0 after first removal
     featuredCardsHtml = `<div class="${blockName}__featured-card-group">${featuredCardsHtml}</div>`;
   }
 
@@ -579,6 +576,10 @@ const buildMenuContent = (menuData, navEl) => {
 
         if (isFeaturedCard) {
           accordionParentClassList.add(tabsVariants.FEATURED_CARD);
+        }
+
+        if (isDoubleFeaturedCard) {
+          accordionParentClassList.add(tabsVariants.FEATURED_CARD_DOUBLE);
         }
 
         if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS) || cat.classList.contains(tabsVariants.TAB)) {
