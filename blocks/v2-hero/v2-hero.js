@@ -83,6 +83,12 @@ export default async function decorate(block) {
   const isHalfHeight = block.classList.contains(`${blockName}--half-height`);
   const isMagazine = block.classList.contains(`${blockName}--magazine`);
   const isCountdown = block.classList.contains(`${blockName}--countdown`);
+  const hasEngineStats = block.classList.contains(`${blockName}--with-engine-stats`);
+  const hasBackgroundImage = block.closest('.section--with-background');
+
+  if (hasEngineStats && hasBackgroundImage) {
+    hasBackgroundImage.classList.add('reduced-height');
+  }
 
   const images = [...block.querySelectorAll('p > picture')];
   const imageURLs = getImageURLs(images);
