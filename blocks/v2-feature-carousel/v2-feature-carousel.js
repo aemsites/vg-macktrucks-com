@@ -94,22 +94,6 @@ const arrowFragment = () =>
   `);
 
 /**
- * From all the <picture> elements array, a class and a data attribute are added and returned
- * into a string containing all pictures.
- * @param {Array<HTMLElement>} pictures - The <picture> elements.
- * @returns {string} - The HTML string for the carousel images as one.
- */
-const createImageList = (pictures) => {
-  let images = '';
-  pictures.forEach((pic, idx) => {
-    pic.classList.add(`${CLASSES.image}`);
-    pic.dataset.index = idx;
-    images += pic.outerHTML;
-  });
-  return images;
-};
-
-/**
  * From all the <div> elements array that contain the slides properties are added and returned
  * as a string containing all <li> to insert into a <ul> element.
  * @param {Array<HTMLElement>} nodes - The slide <div> elements of the carousel.
@@ -136,38 +120,44 @@ const createCardsList = (nodes) => {
   return cardItems;
 };
 
-function buildBlockBackground(block) {
+function buildBlockBackgrounds(block) {
   const firstLink = block.querySelector(':scope > div div a');
 
   if (isVideoLink(firstLink)) {
     const videoLink = firstLink.getAttribute('href');
 
-    return createVideo(
-      videoLink,
-      `${blockName}__video`,
-      {
-        autoplay: true,
-        fill: true,
-      },
-      { usePosterAutoDetection: true },
-    );
+    return [
+      createVideo(
+        videoLink,
+        `${blockName}__video`,
+        {
+          autoplay: true,
+          fill: true,
+        },
+        { usePosterAutoDetection: true },
+      ),
+    ];
   } else {
     const pictureNodes = [];
+    let idx = 0;
 
     block.querySelectorAll(':scope > div div').forEach((el) => {
       if (el.querySelector('picture')) {
         const picEl = el.querySelector('picture');
+        picEl.classList.add(`${CLASSES.image}`);
+        picEl.dataset.index = idx;
         pictureNodes.push(picEl);
+        idx++;
       }
     });
 
-    return createImageList(pictureNodes);
+    return pictureNodes;
   }
 }
 
 export default async function decorate(block) {
   const listNodes = [];
-  const blockBackground = buildBlockBackground(block);
+  const blockBackgrounds = buildBlockBackgrounds(block);
 
   block.querySelectorAll(':scope > div div').forEach((el) => {
     if (!el.querySelector('picture') && !(el.children.length === 1 && el.querySelector('a') && isVideoLink(el.querySelector('a')))) {
@@ -199,7 +189,7 @@ export default async function decorate(block) {
   block.innerHTML = '';
   block.append(carousel);
 
-  block.querySelector(`.${CLASSES.backgroundWrapper}`).appendChild(blockBackground);
+  block.querySelector(`.${CLASSES.backgroundWrapper}`).append(...blockBackgrounds);
 
   decorateIcons(block);
 }

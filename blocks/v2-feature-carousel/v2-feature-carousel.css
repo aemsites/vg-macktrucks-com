@@ -75,7 +75,8 @@
 .v2-feature-carousel__button:disabled,
 .v2-feature-carousel__button:disabled:hover {
   --color-icon: var(--button-disabled-color);
-
+  
+  cursor: default;
   background-color: var(--button-secondary-gold-disabled);
 }
 
