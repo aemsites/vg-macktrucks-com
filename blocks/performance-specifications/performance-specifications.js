@@ -2,6 +2,12 @@ import { a, button, div, domEl, p, ul, li } from '../../scripts/scripts.js';
 import { loadScript } from '../../scripts/aem.js';
 import { getTextLabel } from '../../scripts/common.js';
 
+const TEXTS = {
+  btnText: getTextLabel('Download Specs'),
+  engineRatings: 'POWER / TORQUE RATING',
+  bottomChartLabel: 'RPM',
+};
+
 /**
  * as multiple blocks might be on the same page, the data is accessed using they block node as the
  * key.
@@ -23,7 +29,7 @@ const NoDataEngineDetail = {
   ],
   model: 'No Data',
   performanceData: {
-    'Standard Torque': {
+    Torque: {
       800: 0,
       900: 0,
       1000: 0,
@@ -53,7 +59,7 @@ const moveNavigationLine = (navigationLine, activeTab, tabNavigation) => {
   });
 };
 
-const centerCategoryTab = (tabList, itemTab) => {
+const centerTab = (tabList, itemTab) => {
   const { clientWidth: itemWidth, offsetLeft } = itemTab;
   const scrollPosition = offsetLeft - (tabList.clientWidth - itemWidth) / 2;
   tabList.scrollTo({
@@ -63,10 +69,33 @@ const centerCategoryTab = (tabList, itemTab) => {
 };
 
 /**
+ * @param {Object} data
+ */
+let conversionFactor = 1;
+
+const equalizeData = (data) => {
+  const { Torque, Power } = data.performanceData;
+  const maxTQ = Math.max(...Object.values(Torque));
+  const maxHP = Math.max(...Object.values(Power));
+
+  conversionFactor = Number((maxTQ / maxHP).toFixed(2));
+  Object.keys(Power).forEach((key) => {
+    Power[key] = Number(Power[key] * conversionFactor);
+  });
+  data.equalized = true;
+};
+
+/**
  * @param chartContainer {HTMLElement}
  * @param performanceData {Array<Array<string>>}
  */
-const updateChart = async (chartContainer, performanceData) => {
+const updateChart = async (chartContainer, engineDetails) => {
+  const performanceData = engineDetails.performanceData;
+  // On first pass, normalize power data so that lines align on top
+  if (!engineDetails.equalized) {
+    equalizeData(engineDetails);
+  }
+
   if (!window.echarts) {
     // delay by 3 seconds to ensure a good lighthouse score
 
@@ -91,26 +120,32 @@ const updateChart = async (chartContainer, performanceData) => {
 
   const getEchartsSeries = (sweetSpotStart, sweetSpotEnd) => {
     const metrics = Object.keys(performanceData);
-
-    const series = metrics.map((title) => {
+    const series = metrics.map((title, idx) => {
       const metricValues = Object.entries(performanceData[title]).map(([rpm, value]) => [Number(rpm), Number(value)]);
 
       return {
         type: 'line',
         name: title.toUpperCase(),
+        yAxisIndex: idx,
         symbolSize: 12,
-        smooth: true,
+        itemStyle: {
+          borderWidth: 1,
+          borderType: 'solid',
+          borderColor: '#1D1D1D',
+        },
+        smooth: false,
         data: metricValues,
       };
     });
 
-    // add mark area to first series
+    // Grey area rectangle - TODO, make this configurable
     series[0] = {
       ...series[0],
       markArea: {
         silent: true,
         itemStyle: {
-          color: 'rgb(96 96 96 / 50%)',
+          // color: 'rgb(96 96 96 / 50%)',
+          color: 'transparent',
         },
         data: [[{ xAxis: sweetSpotStart }, { xAxis: sweetSpotEnd }]],
       },
@@ -128,10 +163,10 @@ const updateChart = async (chartContainer, performanceData) => {
       right: MQ.matches ? '0' : 'auto',
       itemHeight: 25,
       itemGap: MQ.matches ? 50 : 10,
+      selectedMode: false,
       textStyle: {
-        letterSpacing: 1.5,
-        fontSize: 15,
-        lineHeight: 16,
+        fontSize: 12,
+        lineHeight: 15,
         fontWeight: 700,
         color: '#ffffff',
       },
@@ -144,9 +179,10 @@ const updateChart = async (chartContainer, performanceData) => {
 
     grid: {
       //  reduce space around the chart
-      left: '50',
-      right: '5',
+      left: '0',
+      right: '0',
       top: '80',
+      containLabel: true,
     },
     textStyle: {
       color: '#ffffff',
@@ -157,7 +193,7 @@ const updateChart = async (chartContainer, performanceData) => {
       type: 'value',
 
       // label center bellow chart
-      name: 'RPM',
+      name: TEXTS.bottomChartLabel,
       nameGap: 40,
       nameLocation: 'center',
       nameTextStyle: {
@@ -187,7 +223,6 @@ const updateChart = async (chartContainer, performanceData) => {
         show: false,
         splitNumber: 3,
       },
-      // unfortunately we can not control which label values are shown
       axisLabel: {
         show: true,
         interval: 0,
@@ -198,21 +233,52 @@ const updateChart = async (chartContainer, performanceData) => {
           return value;
         },
       },
-    },
-    yAxis: {
-      type: 'value',
-      axisLabel: {
-        formatter(value) {
-          // remove thousands separator
-          return value;
-        },
-      },
-      splitLine: {
-        lineStyle: {
-          color: '#8e8e8e',
-        },
+      axisLine: {
+        show: false,
       },
     },
+    yAxis: [
+      {
+        // torque values
+        type: 'value',
+        position: 'left',
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter(value) {
+            // do not display the cero on the bottom
+            return value;
+          },
+        },
+        splitLine: {
+          show: false,
+        },
+      },
+      {
+        // horsepower values
+        type: 'value',
+        position: 'right',
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter(value) {
+            // return orginal value and round it to a 50 unit value
+            return Math.round(value / conversionFactor / 50) * 50;
+          },
+        },
+        splitLine: {
+          show: false,
+        },
+      },
+    ],
     animation: true,
     animationDuration: 400,
   };
@@ -257,8 +323,9 @@ const renderEngineSpecs = (engineDetails) => {
           class: 'button button--primary download-specs',
           href: downloadSpecs ? specsLink.toString() : '#',
           target: '_blank',
+          style: `display: ${downloadSpecs ? 'block' : 'none'};`,
         },
-        getTextLabel('Download Specs'),
+        TEXTS.btnText,
       ),
     ),
   );
@@ -276,17 +343,17 @@ const refreshDetailView = (block) => {
   // update chart
   const chartContainer = block.querySelector('.performance-chart');
   // noinspection JSIgnoredPromiseFromCall
-  updateChart(chartContainer, engineDetails.performanceData);
+  updateChart(chartContainer, engineDetails);
 };
 
 const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
   const categoryDetails = div({ class: 'category-detail' });
   categoryDetails.innerHTML = `
     <h3>${categoryData.nameHTML}</h3>
-    <p class="category-description">${categoryData.descriptionHTML}</p>
+    ${categoryData.descriptionHTML ? `<p class="category-description">${categoryData.descriptionHTML}</p>` : ''}
     <div class="engine-navigation">
-      <p class="engine-ratings">Engine Ratings</p>
-      <div class="engine-tablist" role="tablist" aria-label="Engine Ratings"> </div>
+      <p class="engine-ratings">${TEXTS.engineRatings}</p>
+      <div class="engine-tablist" role="tablist" aria-label="${TEXTS.engineRatings}"> </div>
     </div>`;
 
   const tabList = categoryDetails.querySelector('.engine-tablist');
@@ -308,6 +375,8 @@ const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
       // Remove selection from currently selected tabs and set this tab as selected
       tabList.querySelectorAll('[aria-selected="true"]').forEach((tab) => tab.setAttribute('aria-selected', false));
       engineButton.setAttribute('aria-selected', true);
+
+      centerTab(tabList, engineButton);
 
       refreshDetailView(block);
     });
@@ -338,7 +407,7 @@ const tabListClickHandler = ({ ...params }) => {
 
     moveNavigationLine(activeLine, buttonTab, tabList);
     if (!MQ.matches) {
-      centerCategoryTab(tabList, buttonTab.parentElement);
+      centerTab(tabList, buttonTab.parentElement);
     }
 
     block.querySelector('.category-detail').replaceWith(renderCategoryDetail(block, engineData.get(block)[buttonTab.dataset.categoryId]));
@@ -525,5 +594,5 @@ export default async function decorate(block) {
 
   const chartContainer = block.querySelector('.performance-chart');
   // noinspection JSIgnoredPromiseFromCall,ES6MissingAwait
-  updateChart(chartContainer, engineDetails.performanceData);
+  updateChart(chartContainer, engineDetails);
 }
