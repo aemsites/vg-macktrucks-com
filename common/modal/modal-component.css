@@ -179,7 +179,7 @@
     top: 64px;
   }
 
-  .modal-content .video-mute-toggle {
+  .modal-content .video__mute-toggle-button {
     --video-mute-toggle-button-top: 128px;
   }
 }
