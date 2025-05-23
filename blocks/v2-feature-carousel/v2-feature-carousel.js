@@ -1,12 +1,13 @@
 import { adjustPretitle, createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
 import { listenScroll, createArrowControls, setCarouselPosition } from '../../scripts/carousel-helper.js';
+import { createVideo, isVideoLink } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-feature-carousel';
 const CLASSES = {
   button: `${blockName}__button`,
   buttonPrev: `${blockName}__button-prev`,
   buttonNext: `${blockName}__button-next`,
-  imageWrapper: `${blockName}__image-wrapper`,
+  backgroundWrapper: `${blockName}__background-wrapper`,
   image: `${blockName}__image`,
   listWrapper: `${blockName}__list-wrapper`,
   listContainer: `${blockName}__list-container`,
@@ -93,22 +94,6 @@ const arrowFragment = () =>
   `);
 
 /**
- * From all the <picture> elements array, a class and a data attribute are added and returned
- * into a string containing all pictures.
- * @param {Array<HTMLElement>} pictures - The <picture> elements.
- * @returns {string} - The HTML string for the carousel images as one.
- */
-const createImageList = (pictures) => {
-  let images = '';
-  pictures.forEach((pic, idx) => {
-    pic.classList.add(`${CLASSES.image}`);
-    pic.dataset.index = idx;
-    images += pic.outerHTML;
-  });
-  return images;
-};
-
-/**
  * From all the <div> elements array that contain the slides properties are added and returned
  * as a string containing all <li> to insert into a <ul> element.
  * @param {Array<HTMLElement>} nodes - The slide <div> elements of the carousel.
@@ -135,27 +120,57 @@ const createCardsList = (nodes) => {
   return cardItems;
 };
 
+function buildBlockBackgrounds(block) {
+  const firstLink = block.querySelector(':scope > div div a');
+
+  if (isVideoLink(firstLink)) {
+    const videoLink = firstLink.getAttribute('href');
+
+    return [
+      createVideo(
+        videoLink,
+        `${blockName}__video`,
+        {
+          autoplay: true,
+          fill: true,
+        },
+        { usePosterAutoDetection: true },
+      ),
+    ];
+  } else {
+    const pictureNodes = [];
+    let idx = 0;
+
+    block.querySelectorAll(':scope > div div').forEach((el) => {
+      if (el.querySelector('picture')) {
+        const picEl = el.querySelector('picture');
+        picEl.classList.add(`${CLASSES.image}`);
+        picEl.dataset.index = idx;
+        pictureNodes.push(picEl);
+        idx++;
+      }
+    });
+
+    return pictureNodes;
+  }
+}
+
 export default async function decorate(block) {
-  const pictureNodes = [];
-  const otherNodes = [];
+  const listNodes = [];
+  const blockBackgrounds = buildBlockBackgrounds(block);
 
   block.querySelectorAll(':scope > div div').forEach((el) => {
-    if (el.querySelector('picture')) {
-      const picEl = el.querySelector('picture');
-      pictureNodes.push(picEl);
-    } else {
-      otherNodes.push(el);
+    if (!el.querySelector('picture') && !(el.children.length === 1 && el.querySelector('a') && isVideoLink(el.querySelector('a')))) {
+      listNodes.push(el);
     }
   });
 
   const carousel = document.createRange().createContextualFragment(`
-    <div class='${CLASSES.imageWrapper}'>
-      ${createImageList(pictureNodes)}
-    </div>
+    <div class='${CLASSES.backgroundWrapper}'></div>
     <div class='${CLASSES.listWrapper}'>
       <div class='${CLASSES.listContainer}'>
         <ul class='${CLASSES.list}'>
-          ${createCardsList(otherNodes)}
+          ${createCardsList(listNodes)}
         </ul>
       </div>
     </div>
@@ -163,7 +178,7 @@ export default async function decorate(block) {
 
   const carouselList = carousel.querySelector(`.${CLASSES.list}`);
 
-  if (otherNodes.length > 1) {
+  if (listNodes.length > 1) {
     createArrowControls(carouselList, `.${CLASSES.listItem}.active`, [`${CLASSES.arrowcontrols}`], arrowFragment());
     const elements = carouselList.querySelectorAll(`.${CLASSES.listItem}`);
     listenScroll(carouselList, elements, updateActiveClass, 0.75);
@@ -173,6 +188,8 @@ export default async function decorate(block) {
 
   block.innerHTML = '';
   block.append(carousel);
+
+  block.querySelector(`.${CLASSES.backgroundWrapper}`).append(...blockBackgrounds);
 
   decorateIcons(block);
 }

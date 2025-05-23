@@ -536,8 +536,14 @@ export function createVideoWithPoster(linkUrl, poster, className, videoConfig = 
   };
 
   const videoContainer = document.createElement('div');
-  videoContainer.classList.add('video-wrapper', className);
-  videoContainer.append(poster);
+
+  if (className) {
+    videoContainer.classList.add('video-wrapper', className);
+  }
+
+  if (poster) {
+    videoContainer.append(poster);
+  }
 
   const loadAndSetupPlayer = async (videoUrl) => {
     const playerSetupPromise = setupPlayer(videoUrl, videoContainer, {
