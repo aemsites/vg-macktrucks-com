@@ -93,7 +93,7 @@ export default function decorate(block) {
 
   new VideoComponent(block.videoId);
   const videoElement = createVideo(link, `${blockName}__frame`, videoProps, {
-    addMuteToggle: videoConfig.controls === false, // Only add if custom controls are enabled
+    addMuteToggle: videoConfig.controls === false, // Only add mute toggle when controls are enabled
   });
 
   block.innerHTML = '';

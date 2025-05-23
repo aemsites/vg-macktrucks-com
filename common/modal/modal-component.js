@@ -135,8 +135,10 @@ const createModal = () => {
           {
             autoplay: 'any',
             muted: false,
-            controls: false,
             playsinline: true,
+            controls: false,
+            loop: false,
+            language: document.documentElement.lang,
           },
           {
             addMuteToggle: true,
