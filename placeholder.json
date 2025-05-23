@@ -370,6 +370,14 @@
     {
       "Key": "Image info close",
       "Text": "Close image information panel"
+    },
+    {
+      "Key": "Mute video",
+      "Text": "Mute video"
+    },
+    {
+      "Key": "Unmute video",
+      "Text": "Unmute video"
     }
   ],
   ":type": "sheet"

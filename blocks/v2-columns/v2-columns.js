@@ -24,12 +24,19 @@ const insertVideo = (block, videoAnchor, picture) => {
   const img = picture?.querySelector('img');
   const posterUrl = img ? new URL(img.getAttribute('src'), window.location.href).href : undefined;
   const videoConfig = retrieveVideoConfig(block);
-  const videoElement = createVideo(videoAnchor.getAttribute('href'), `${blockName}__video`, {
-    ...videoConfig,
-    fill: true,
-    language: document.documentElement.lang,
-    poster: posterUrl,
-  });
+  const videoElement = createVideo(
+    videoAnchor.getAttribute('href'),
+    `${blockName}__video`,
+    {
+      ...videoConfig,
+      fill: true,
+      language: document.documentElement.lang,
+      poster: posterUrl,
+    },
+    {
+      addMuteToggle: true,
+    },
+  );
   const videoColumn = block.querySelector(`.${blockName}__column:last-of-type`);
   videoColumn.className = `${blockName}__video-column`;
   videoColumn.innerHTML = '';
