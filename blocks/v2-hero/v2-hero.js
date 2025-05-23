@@ -106,12 +106,12 @@ export default async function decorate(block) {
       { media: '(min-width: 1200px)', width: 1200 },
       { media: '(min-width: 1440px)', width: 1440 },
       { media: '(min-width: 1920px)', width: 1920 },
-      { width: 750 },
+      { width: 1600 },
     ];
   }
 
   if (imageData.length > 1) {
-    imageData[0].breakpoints = [{ media: '(min-width: 600px)', width: 600 }, { width: 750 }];
+    imageData[0].breakpoints = [{ media: '(min-width: 600px)', width: 600 }, { width: 1600 }];
 
     imageData[1].breakpoints = [
       { media: '(min-width: 1200px)', width: 1200 },
