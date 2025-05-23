@@ -127,20 +127,23 @@ const createModal = () => {
       modalContent.appendChild(closeButton);
     } else if (newContent) {
       clearModalContent();
-      let videoOrIframe = null;
+      let videoWrapper = null;
       if (isLowResolutionVideoUrl(newContent)) {
-        // Leverage the <video> HTML tag to improve video display
-        // This implementation addresses video height inconsistencies in Safari when using an iframe
-        videoOrIframe = createElement('video', {
-          classes: 'modal-video',
-          props: {
-            src: newContent,
-            controls: '',
-            autoplay: 'autoplay',
-            playsinline: '',
+        videoWrapper = createVideo(
+          newContent,
+          'modal-video',
+          {
+            autoplay: 'any',
+            muted: false,
+            controls: false,
+            playsinline: true,
           },
-        });
-        modalContent.append(videoOrIframe);
+          {
+            addMuteToggle: true,
+            usePosterAutoDetection: false,
+          },
+        );
+        modalContent.append(videoWrapper);
       } else if (isAEMVideoUrl(newContent)) {
         let videoId;
         const match = newContent.match(videoIdRegex);
@@ -150,22 +153,24 @@ const createModal = () => {
 
         new VideoComponent(videoId);
 
-        videoOrIframe = createVideo(
+        videoWrapper = createVideo(
           newContent,
           'modal-video',
           {
             autoplay: 'any',
-            disablePictureInPicture: true,
-            loop: false,
             muted: false,
             playsinline: true,
+            controls: false,
+            loop: false,
             title: 'video',
             language: document.documentElement.lang,
           },
-          false,
-          videoId,
+          {
+            addMuteToggle: true,
+            usePosterAutoDetection: false,
+          },
         );
-        modalContent.append(videoOrIframe);
+        modalContent.append(videoWrapper);
       } else if (isYoutubeVideoUrl(newContent) && shouldVideoSocialCheck) {
         const videoId = getYoutubeVideoId(newContent);
 
@@ -209,7 +214,7 @@ const createModal = () => {
         }
       } else {
         // otherwise load it as iframe
-        videoOrIframe = createIframe(newContent, { parentEl: modalContent, classes: 'modal-video' });
+        videoWrapper = createIframe(newContent, { parentEl: modalContent, classes: 'modal-video' });
       }
 
       if (beforeBanner) {
@@ -217,17 +222,17 @@ const createModal = () => {
         bannerWrapper.addEventListener('click', (event) => event.stopPropagation());
         bannerWrapper.appendChild(beforeBanner);
 
-        videoOrIframe.parentElement.insertBefore(bannerWrapper, videoOrIframe);
+        videoWrapper.parentElement.insertBefore(bannerWrapper, videoWrapper);
       }
 
       if (beforeIframe) {
         const wrapper = createElement('div', { classes: 'modal-before-iframe' });
         wrapper.appendChild(beforeIframe);
-        videoOrIframe.parentElement.insertBefore(wrapper, videoOrIframe);
+        videoWrapper.parentElement.insertBefore(wrapper, videoWrapper);
       }
 
-      if (videoOrIframe) {
-        videoOrIframe.parentElement.insertBefore(closeButton, videoOrIframe);
+      if (videoWrapper) {
+        videoWrapper.parentElement.insertBefore(closeButton, videoWrapper);
       } else {
         modalContent.insertBefore(closeButton, modalContent.firstChild);
       }

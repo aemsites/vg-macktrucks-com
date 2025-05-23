@@ -1284,6 +1284,14 @@ main .section.responsive-title h1 {
   background-color: var(--c-primary-gold);
 }
 
+.v2-video__playback-button:hover {
+  background-color: var(--button-primary-bg-hover);
+}
+
+.v2-video__playback-button:active {
+  background-color: #87754E;
+}
+
 .v2-video__playback-button:focus {
   outline: 0;
 }
@@ -1308,6 +1316,45 @@ main .section.responsive-title h1 {
 .v2-video__playback-button .icon svg {
   height: var(--playback-button-size);
   width: var(--playback-button-size);
+}
+
+/* Video mute toggle button */
+.video__mute-toggle-button {
+  --video-mute-toggle-button-size: 64px;
+  --video-mute-toggle-button-top: 64px;
+
+  border: 0;
+  cursor: pointer;
+  height: var(--video-mute-toggle-button-size);
+  padding: 0;
+  position: absolute;
+  right: 0;
+  top: var(--video-mute-toggle-button-top);
+  width: var(--video-mute-toggle-button-size);
+  z-index: 1;
+}
+
+.video__mute-toggle-button:focus {
+  outline: 0;
+}
+
+.video__mute-toggle-button:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 2px;
+}
+
+.video__mute-toggle-button .icon {
+  color: var(--button-primary-bg);
+  height: 100%;
+  width: 100%;
+}
+
+.video__mute-toggle-button:active .icon {
+  color: #87754E;
+}
+
+.video__mute-toggle-button:hover .icon {
+  color: var(--button-primary-bg-hover);
 }
 
 /* Section Background colors */

@@ -420,7 +420,86 @@ export function setPlaybackControls(container) {
   });
 }
 
-function createProgressivePlaybackVideo(src, className = '', props = {}) {
+/**
+ * Creates a toggle button that mutes or unmutes the given video element.
+ * The button updates its icon and accessibility labels based on the mute state.
+ *
+ * @param {HTMLVideoElement} videoElement - The video element to control.
+ * @returns {HTMLButtonElement|null} The mute toggle button, or null if the input is invalid.
+ */
+export function createMuteToggleButton(videoElement) {
+  if (!videoElement || !(videoElement instanceof HTMLVideoElement)) {
+    console.warn('createMuteToggleButton requires a valid HTMLVideoElement.');
+    return null;
+  }
+
+  const toggleButton = createElement('button', {
+    classes: 'video__mute-toggle-button',
+    props: { type: 'button' },
+  });
+
+  const iconMuted = createElement('span', { classes: ['icon', 'icon-muted'] });
+  const iconUnmuted = createElement('span', { classes: ['icon', 'icon-unmuted'] });
+
+  toggleButton.append(iconMuted, iconUnmuted);
+  decorateIcons(toggleButton);
+
+  const labelMute = getTextLabel('Mute video');
+  const labelUnmute = getTextLabel('Unmute video');
+
+  /**
+   * Updates the visibility of icons based on mute state.
+   * @param {boolean} muted
+   */
+  const updateIconDisplay = (muted) => {
+    iconMuted.style.display = muted ? 'flex' : 'none';
+    iconUnmuted.style.display = muted ? 'none' : 'flex';
+  };
+
+  /**
+   * Updates the ARIA label and pressed state based on mute state.
+   * @param {boolean} muted
+   */
+  const updateAccessibility = (muted) => {
+    toggleButton.setAttribute('aria-label', muted ? labelUnmute : labelMute);
+    toggleButton.setAttribute('aria-pressed', muted.toString());
+  };
+
+  /**
+   * Applies all UI and accessibility updates.
+   */
+  const updateToggleUI = () => {
+    const isMuted = videoElement.muted;
+    updateIconDisplay(isMuted);
+    updateAccessibility(isMuted);
+  };
+
+  updateToggleUI();
+
+  toggleButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    videoElement.muted = !videoElement.muted;
+    updateToggleUI();
+  });
+
+  return toggleButton;
+}
+
+/**
+ * Appends a mute/unmute toggle button to a video container.
+ * @param {HTMLElement} container - The container that holds the <video> element.
+ */
+export function appendMuteToggleButton(container) {
+  const videoElement = container.querySelector('video');
+  if (!videoElement) {
+    return;
+  }
+
+  const muteToggleButton = createMuteToggleButton(videoElement);
+  container.appendChild(muteToggleButton);
+}
+
+function createProgressivePlaybackVideo(src, className = '', props = {}, addMuteToggle = false) {
   const video = createElement('video', {
     classes: className,
   });
@@ -473,16 +552,22 @@ function createProgressivePlaybackVideo(src, className = '', props = {}) {
     );
   }
 
-  // set playback controls after video container is attached to dom
+  const wrapper = createElement('div', { classes: className });
+  wrapper.appendChild(video);
+
   if (!props.controls) {
     setTimeout(() => {
-      setPlaybackControls(video.parentElement);
+      setPlaybackControls(wrapper);
     }, 0);
+  }
+
+  if (addMuteToggle) {
+    appendMuteToggleButton(wrapper);
   }
 
   video.appendChild(source);
 
-  return video;
+  return wrapper;
 }
 
 export function getDynamicVideoHeight(video) {
@@ -521,7 +606,7 @@ export function getDynamicVideoHeight(video) {
  * @param {Object} videoConfig - Properties for video player.
  * @return {HTMLElement} - The container element that holds the video and poster.
  */
-export function createVideoWithPoster(linkUrl, poster, className, videoConfig = {}) {
+export function createVideoWithPoster(linkUrl, poster, className, videoConfig = {}, configs = {}) {
   const defaultConfig = {
     muted: false,
     autoplay: false,
@@ -535,26 +620,33 @@ export function createVideoWithPoster(linkUrl, poster, className, videoConfig = 
     ...videoConfig,
   };
 
+  const { addMuteToggle = false } = configs;
+
   const videoContainer = document.createElement('div');
   videoContainer.classList.add('video-wrapper', className);
   videoContainer.append(poster);
 
   const loadAndSetupPlayer = async (videoUrl) => {
-    const playerSetupPromise = setupPlayer(videoUrl, videoContainer, {
+    const player = await setupPlayer(videoUrl, videoContainer, {
       fill: true,
       ...config,
     });
 
     const video = videoContainer.querySelector('.video-js');
     video.style.display = 'none';
-    return playerSetupPromise;
+
+    if (addMuteToggle) {
+      appendMuteToggleButton(videoContainer);
+    }
+
+    return player;
   };
 
   if (isLowResolutionVideoUrl(linkUrl)) {
-    const videoOrIframe = createProgressivePlaybackVideo(linkUrl, 'video-wrapper', config);
+    const videoOrIframe = createProgressivePlaybackVideo(linkUrl, 'video-wrapper', config, addMuteToggle);
     if (poster) {
       const posterSrc = poster.querySelector('img')?.src;
-      videoOrIframe.setAttribute('poster', posterSrc);
+      videoOrIframe.querySelector('video')?.setAttribute('poster', posterSrc);
       poster.remove();
     }
     videoContainer.append(videoOrIframe);
@@ -583,8 +675,10 @@ export function createVideoWithPoster(linkUrl, poster, className, videoConfig = 
       async function initializePlayerWithControls() {
         await loadAndSetupPlayer(videoUrl);
         setPlaybackControls(videoContainer);
+        if (addMuteToggle) {
+          appendMuteToggleButton(videoContainer);
+        }
       }
-
       initializePlayerWithControls();
     }
   }
@@ -607,7 +701,8 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
   let src;
   let poster;
 
-  const { usePosterAutoDetection, checkVideoCookie } = configs;
+  const { usePosterAutoDetection, checkVideoCookie, addMuteToggle = false } = configs;
+
   if (link instanceof HTMLAnchorElement) {
     const config = parseVideoLink(link, usePosterAutoDetection);
     if (!config) {
@@ -621,11 +716,11 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
   }
 
   if (isLowResolutionVideoUrl(src)) {
-    return createProgressivePlaybackVideo(src, className, videoParams);
+    return createProgressivePlaybackVideo(src, className, videoParams, addMuteToggle);
   }
 
   if (poster) {
-    return createVideoWithPoster(src, poster, className, videoParams);
+    return createVideoWithPoster(src, poster, className, videoParams, { addMuteToggle });
   }
 
   const container = document.createElement('div');
@@ -638,6 +733,10 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
 
     if (!videoParams.controls) {
       setPlaybackControls(container);
+    }
+
+    if (addMuteToggle) {
+      appendMuteToggleButton(container);
     }
   }
 
