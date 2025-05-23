@@ -164,6 +164,7 @@ const createModal = () => {
             playsinline: true,
             controls: false,
             loop: false,
+            disablePictureInPicture: true,
             title: 'video',
             language: document.documentElement.lang,
           },
