@@ -371,10 +371,11 @@ describe('createVideo function', () => {
   });
 
   it('should create a video element with default attributes', () => {
-    const video = createVideo(videoSrc);
+    const videoWrapper = createVideo(videoSrc);
+    const video = videoWrapper.querySelector('video');
     const source = video.querySelector('source');
 
-    expect(video.tagName).to.equal('VIDEO', 'The created element should be a video tag');
+    expect(video.tagName).to.equal('VIDEO');
     expect(source.src).to.equal(videoSrc);
     expect(video.className).to.equal('');
     expect(video.muted).to.be.false;
@@ -387,10 +388,11 @@ describe('createVideo function', () => {
       autoplay: true,
       controls: true,
     };
-    const video = createVideo(videoSrc, 'custom-class', props);
+    const videoWrapper = createVideo(videoSrc, 'custom-class', props);
+    const video = videoWrapper.querySelector('video');
     const source = video.querySelector('source');
 
-    expect(video.tagName).to.equal('VIDEO', 'The created element should be a video tag');
+    expect(video.tagName).to.equal('VIDEO');
     expect(source.src).to.equal(videoSrc);
     expect(video.className).to.equal('custom-class');
     expect(video.muted).to.be.true;
@@ -403,14 +405,16 @@ describe('createVideo function', () => {
       loop: true,
       preload: 'auto',
     };
-    const video = createVideo(videoSrc, 'extra-attributes', props);
+    const videoWrapper = createVideo(videoSrc, 'extra-attributes', props);
+    const video = videoWrapper.querySelector('video');
 
     expect(video.loop).to.be.true;
     expect(video.preload).to.equal('auto');
   });
 
   it('should create a source element with correct attributes', () => {
-    const video = createVideo(videoSrc);
+    const videoWrapper = createVideo(videoSrc);
+    const video = videoWrapper.querySelector('video');
     const source = video.querySelector('source');
 
     expect(source).to.exist;
