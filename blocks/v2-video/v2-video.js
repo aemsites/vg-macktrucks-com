@@ -61,7 +61,7 @@ export default async function decorate(block) {
     },
     {
       usePosterAutoDetection: true,
-      addMuteToggle: config.controls === false, // Only add mute toggle when controls are enabled
+      addMuteToggle: config.controls === false, // Only add mute toggle when custom controls are enabled
     },
   );
 
