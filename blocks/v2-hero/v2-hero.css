@@ -584,7 +584,7 @@
   .v2-hero--with-engine-stats .v2-hero__heading {
     padding-left: var(--spacing-left);
   }
-  
+
   .redesign-v2 .v2-hero-container.section--with-background.reduced-height > picture {
     position: unset;
   }
@@ -601,6 +601,12 @@
 
   .v2-hero--with-engine-stats .v2-hero__heading {
     min-height: calc(576px - var(--stats-height));
+  }
+}
+
+@media (min-width: 1920px) {
+  .redesign-v2 .v2-hero-container.section--with-background.reduced-height .v2-hero--with-engine-stats {
+    --spacing-left: calc(calc(1920px - var(--wrapper-width)) / 2);
   }
 }
 
