@@ -301,10 +301,28 @@ header {
   width: 100%;
   background-color: var(--header-background-color);
   color: var(--header-color);
-  position: sticky;
-  top: 0;
   z-index: 3;
   min-height: var(--nav-height);
+}
+
+body:has(.header-menu-scrollable) header {
+  position: sticky;
+  top: 0;
+}
+
+body:has(.header-menu-scrollable) .header {
+  left: 0;
+  right: 0;
+  position: fixed;
+  top: 0;
+}
+
+body:has(.header-menu-scrollable) .header__accordion-container {
+  position: fixed !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  max-height: calc(100vh - 2 * var(--nav-height)) !important;
+  top: var(--nav-height);
 }
 
 h1,

@@ -314,7 +314,9 @@ const setTabActive = (tab) => {
 
 const onNavExpandChange = (isExpanded) => {
   // disabling scroll when menu is open
-  document.body.classList.toggle('disable-scroll', isExpanded);
+  if (document.body.querySelector('.header-menu-scrollable')) {
+    document.body.classList.toggle('disable-scroll', isExpanded);
+  }
   document.querySelector(`.${blockName}.block`).classList.toggle(`${blockName}--expanded`, isExpanded);
 };
 

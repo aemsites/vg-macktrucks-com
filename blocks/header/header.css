@@ -27,10 +27,6 @@
   background: var(--header-background-color);
   width: 100%;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
   color: var(--header-color);
   z-index: 1;
 }
@@ -561,15 +557,14 @@ a.header__link {
   }
 
   .header__main-nav-item > .header__accordion-container {
-    position: fixed;
+    position: absolute;
     background: var(--header-background-color);
-    width: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    top: var(--nav-height);
+    left: 0 !important;
+    width: 100% !important;
+    top: calc(var(--nav-height) - 19px);
+    transform: none !important;
     transition: unset;
     overflow-y: auto;
-    max-height: calc(100vh - 2 * var(--nav-height));
     display: none;
     padding: 0;
     min-width: 1170px;
