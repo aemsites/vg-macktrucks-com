@@ -1289,7 +1289,7 @@ main .section.responsive-title h1 {
 }
 
 .v2-video__playback-button:active {
-  background-color: #87754E;
+  background-color: var(--c-gold);
 }
 
 .v2-video__playback-button:focus {
@@ -1350,7 +1350,7 @@ main .section.responsive-title h1 {
 }
 
 .video__mute-toggle-button:active .icon {
-  color: #87754E;
+  color: var(--c-gold);
 }
 
 .video__mute-toggle-button:hover .icon {
