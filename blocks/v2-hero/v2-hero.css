@@ -508,7 +508,7 @@
 @media (min-width: 990px) {
   .v2-hero--with-engine-stats {
     --stats-height: 160px;
-    --spacing-left: calc(calc(100vw - var(--wrapper-width)) / 2);
+    --spacing-left: calc((100vw - var(--wrapper-width)) / 2);
 
     display: flex;
     flex-direction: row-reverse;
