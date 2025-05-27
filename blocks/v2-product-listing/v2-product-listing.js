@@ -8,7 +8,7 @@ import {
 } from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
-const variantClasses = ['with-filter', 'with-dots', 'with-featured', '2-columns', 'pencil-promo'];
+const variantClasses = ['with-filter', 'with-dots', 'with-featured', '2-featured', '2-columns', 'pencil-promo'];
 
 function getActiveFilterButton(block) {
   const AllFilterButtons = block.querySelectorAll(`.${blockName}__button-list .${blockName}__segment-button`);
@@ -124,6 +124,7 @@ function handFilterClick(e, firstSegment) {
   dropdown.dataset.selected = clickedSegment;
 
   const hasFeatured = activeBlock.classList.contains(`${blockName}--with-featured`);
+  const has2Featured = activeBlock.classList.contains(`${blockName}--2-featured`);
 
   const isFirstSegmentActive = firstSegment === clickedSegment;
   activeBlock.dataset.selected = clickedSegment;
@@ -138,6 +139,9 @@ function handFilterClick(e, firstSegment) {
 
     if (idx === 0) {
       product.classList.toggle('featured', isFirstSegmentActive && hasFeatured);
+    }
+    if (idx === 1) {
+      product.classList.toggle('featured', isFirstSegmentActive && has2Featured);
     }
   });
 
@@ -232,12 +236,16 @@ export default function decorate(block) {
   const firstSegment = allSegmentNames[0].trim().toLowerCase();
   const hasFilters = block.classList.contains(`${blockName}--with-filter`);
   const hasFeatured = block.classList.contains(`${blockName}--with-featured`);
+  const has2Featured = block.classList.contains(`${blockName}--2-featured`);
 
   const productElement = block.querySelectorAll(`.${blockName} > div`);
   productElement.forEach((prodEle, idx) => {
     prodEle.classList.add(`${blockName}__product`);
     if (idx === 0) {
       prodEle.classList.add(hasFeatured ? 'featured' : 'first-item');
+    }
+    if (idx === 1 && hasFeatured) {
+      prodEle.classList.add(has2Featured ? 'featured' : 'first-item');
     }
 
     const rowClass = getRowClass(idx, hasFeatured);
