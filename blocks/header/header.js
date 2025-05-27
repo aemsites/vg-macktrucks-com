@@ -294,7 +294,17 @@ const setTabActive = (tab) => {
   const tabsWithCards = tab.closest(`.${blockName}__main-link-wrapper--tabs-with-cards`);
   if (tabsWithCards) {
     const tabContentId = tab.getAttribute('aria-controls');
-    document.querySelector(`#${tabContentId}`).scrollIntoView({ behavior: 'smooth' });
+    const target = document.querySelector(`#${tabContentId}`);
+    if (target) {
+      const container = target.parentElement;
+      const offsetLeft = target.offsetLeft;
+
+      // Scroll just the X axis
+      container.scrollTo({
+        left: offsetLeft,
+        behavior: 'smooth',
+      });
+    }
   } else {
     console.warn('No %ctabs with cards %cfound for the provided tab.', 'color:red', 'color:default', { tab });
   }
@@ -313,8 +323,6 @@ const setTabActive = (tab) => {
 };
 
 const onNavExpandChange = (isExpanded) => {
-  // disabling scroll when menu is open
-  document.body.classList.toggle('disable-scroll', isExpanded);
   document.querySelector(`.${blockName}.block`).classList.toggle(`${blockName}--expanded`, isExpanded);
 };
 
