@@ -59,7 +59,10 @@ export default async function decorate(block) {
       ...config,
       fill: true,
     },
-    { usePosterAutoDetection: true },
+    {
+      usePosterAutoDetection: true,
+      addMuteToggle: config.controls === false, // Only add mute toggle when custom controls are enabled
+    },
   );
 
   cleanupVideoLink(block, videoLink, true);
