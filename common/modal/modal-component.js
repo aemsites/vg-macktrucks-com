@@ -133,8 +133,7 @@ const createModal = () => {
           newContent,
           'modal-video',
           {
-            autoplay: 'any',
-            muted: true,
+            autoplay: 'autoplay',
             playsinline: true,
             controls: false,
             loop: false,
@@ -160,7 +159,7 @@ const createModal = () => {
           'modal-video',
           {
             autoplay: 'any',
-            muted: true,
+            muted: false,
             playsinline: true,
             controls: false,
             loop: false,
