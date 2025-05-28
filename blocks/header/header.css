@@ -587,7 +587,7 @@ a.header__link {
     display: flex;
     box-sizing: border-box;
     min-width: 180px;
-    gap: 40px;
+    gap: 24px;
     overflow-y: auto;
     justify-content: flex-start;
     flex-wrap: wrap;
@@ -764,7 +764,7 @@ a.header__link {
 
   .header.block a.button.button--small {
     min-width: 96px;
-    padding: 8px 20px 4px;
+    padding: 6px 20px;
   }
 
   .header.block .button.button--primary {
@@ -868,6 +868,10 @@ a.header__link {
 
   .header__featured-card-links a:hover {
     color: var(--c-tertiary-cool-gray);
+  }
+
+  .header__featured-card-group .header__featured-card-links a {
+    width: fit-content;
   }
 
   .header .header__main-link-wrapper--tabs .header__menu-content a {
@@ -1009,7 +1013,9 @@ a.header__link {
     left: 0;
   }
 
-  .featured-card .header__category-item:first-of-type {
+  .featured-card .header__category-item:first-of-type,
+  .featured-card-double .header__category-item:first-of-type,
+  .featured-card-double .header__category-item:nth-of-type(2) {
     display: none;
   }
 
@@ -1153,6 +1159,17 @@ a.header__link {
     border-top: solid 1px var(--line-subtle);
   }
 
+  .header__featured-card-group {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1350px;
+    margin: 0 auto;
+    padding-left: 25px;
+    padding-right: 25px;
+    gap: 16px;
+  }
+
   .header__featured-card {
     display: flex;
     gap: 72px;
@@ -1161,26 +1178,10 @@ a.header__link {
     padding-top: 40px;
   }
 
-  .header__featured-card-buttons {
-    display: none;
-    gap: 16px;
-    margin-bottom: 32px;
-  }
-
-  .header__featured-card-links {
-    display: none;
-    gap: 24px;
-  }
-
-  .header__featured-card:hover {
-    .header__featured-card-buttons,
-    .header__featured-card-links {
-      display: flex;
-    }
-
-    .header__featured-card-image picture:nth-of-type(2) {
-      opacity: 1;
-    }
+  .header__featured-card-group .header__featured-card {
+    flex-direction: column;
+    height: auto;
+    gap: 32px;
   }
 
   .header__featured-card-image {
@@ -1188,10 +1189,9 @@ a.header__link {
     flex: 1;
   }
 
-  .header__featured-card-image picture:nth-of-type(2) img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
+  .header__featured-card-group .header__featured-card-image {
+    height: 335px;
+    flex: none;
   }
 
   .header__featured-card-content {
@@ -1200,8 +1200,71 @@ a.header__link {
     padding-bottom: 74px;
   }
 
+  .header__featured-card-group .header__featured-card-content {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
   .header__featured-card-content > * {
     max-width: 451px;
+  }
+
+  .header__featured-card-group .header__featured-card-content > * {
+    max-width: none;
+  }
+
+  .header__featured-card-text {
+    margin-top: 0;
+    margin-bottom: 16px;
+    font-weight: 400;
+    letter-spacing: 0.16px;
+  }
+
+  .header__featured-card-group .header__featured-card-text {
+    margin-bottom: 24px;
+  }
+
+  .header__featured-card-group .header__featured-card-button {
+    margin-bottom: 24px;
+  }
+
+  .header__featured-card-links {
+    display: flex;
+    opacity: 0;
+    gap: 24px;
+  }
+
+  .header__featured-card-group .header__featured-card-links {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .header__featured-card-buttons {
+    display: flex;
+    opacity: 0;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .header__featured-card-group .header__featured-card-buttons {
+    margin-bottom: 24px;
+  }
+
+  .header__featured-card:hover {
+    .header__featured-card-buttons,
+    .header__featured-card-links {
+      opacity: 1;
+    }
+
+    .header__featured-card-image picture:nth-of-type(2) {
+      opacity: 1;
+    }
+  }
+
+  .header__featured-card-image picture:nth-of-type(2) img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
   }
 
   .header__featured-card-title {
@@ -1218,18 +1281,16 @@ a.header__link {
     letter-spacing: 1.2px;
   }
 
-  .header__featured-card-text {
-    margin-top: 0;
-    margin-bottom: 16px;
-    font-weight: 400;
-    letter-spacing: 0.16px;
-  }
-
+  /* High specificity needed to override the header button styles */
   .header__featured-card .header__featured-card-content .header__featured-card-buttons .header__featured-card-button {
-    /* High specificity needed to override the header button styles */
     width: 160px;
     padding-top: 16.5px;
     padding-bottom: 13.5px;
+  }
+
+  .header__featured-card-group .header__featured-card .header__featured-card-buttons .header__featured-card-button {
+    padding: 6px 20px;
+    width: auto;
   }
 }
 
