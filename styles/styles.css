@@ -393,6 +393,10 @@ pre {
   overflow: scroll;
 }
 
+ul li:has(> ul > li) {
+  list-style: none;
+}
+
 /* buttons */
 
 :where(html:not(.redesign-v2)) a.button:any-link,
