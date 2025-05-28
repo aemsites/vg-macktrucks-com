@@ -1,6 +1,9 @@
 .header-wrapper {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
   z-index: 100;
 
   --logo-height: 30px;
@@ -391,7 +394,7 @@ a.header__link {
     --logo-height: 51px;
     --logo-wrapper-width: 164px;
 
-    flex-direction: column;
+    position: relative;
   }
 
 
