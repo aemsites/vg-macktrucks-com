@@ -28,11 +28,12 @@
   background: var(--header-background-color);
   width: 100%;
   align-items: center;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   color: var(--header-color);
-  z-index: 999;
+  z-index: 1;
 }
 
 .header__nav {
@@ -407,6 +408,8 @@ a.header__link {
     width: 100%;
     justify-content: center;
     border-bottom: 1px solid var(--header-background-color);
+    position: relative;
+    z-index: 999;
   }
 
   .header--expanded {
