@@ -1271,13 +1271,15 @@ main .section.responsive-title h1 {
 }
 
 /* Play/pause buttons */
-.v2-video__playback-button {
+.v2-video__playback-button,
+.video-js button.vjs-big-play-button {
   --playback-button-size: 64px;
 
   border: 0;
   color: var(--c-primary-black);
   cursor: pointer;
   height: var(--playback-button-size);
+  line-height: var(--playback-button-size);
   padding: 0;
   position: absolute;
   right: 0;
@@ -1285,13 +1287,28 @@ main .section.responsive-title h1 {
   width: var(--playback-button-size);
   z-index: 1;
   background-color: var(--c-primary-gold);
+  border-radius: 0;
+  margin: 0;
+  left: auto;
+  transition: none;
 }
 
-.v2-video__playback-button:hover {
+.video-js button.vjs-big-play-button .vjs-icon-placeholder::before {
+  font-size: 48px;
+}
+
+.video-js.vjs-controls-enabled:hover {
+  cursor: pointer;
+}
+
+.v2-video__playback-button:hover,
+.video-js button.vjs-big-play-button:hover,
+.video-js:hover button.vjs-big-play-button {
   background-color: var(--button-primary-bg-hover);
 }
 
-.v2-video__playback-button:active {
+.v2-video__playback-button:active,
+.video-js button.vjs-big-play-button:active {
   background-color: var(--c-gold);
 }
 
