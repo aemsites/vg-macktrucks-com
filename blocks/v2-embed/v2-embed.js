@@ -36,6 +36,7 @@ const extractAspectRatio = (block) => {
 const retrieveVideoConfig = (block, aspectRatio) => {
   const image = block.querySelector('img');
   const poster = image ? new URL(image.getAttribute('src'), window.location.href).href : undefined;
+  console.log(block.classList.contains('loop'));
 
   return {
     ...(aspectRatio ? { aspectRatio: `${aspectRatio.width}:${aspectRatio.height}` } : {}),
@@ -92,7 +93,9 @@ export default function decorate(block) {
   configureVideo(block, videoId);
 
   new VideoComponent(block.videoId);
-  const videoElement = createVideo(link, `${blockName}__frame`, videoProps);
+  const videoElement = createVideo(link, `${blockName}__frame`, videoProps, {
+    addMuteToggle: videoConfig.controls === false, // Only add mute toggle when custom controls are enabled
+  });
 
   block.innerHTML = '';
   block.append(videoElement);
