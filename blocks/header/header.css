@@ -34,7 +34,7 @@ body:has(.header-menu-scrollable) .header-wrapper {
   left: 0;
   right: 0;
   color: var(--header-color);
-  z-index: 1;
+  z-index: 999;
 }
 
 .header__nav {
