@@ -1,6 +1,5 @@
 .header-wrapper {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   z-index: 100;
 
@@ -9,11 +8,6 @@
   --logo-animation: opacity var(--duration-small) ease-in-out;
   --menu-cards-gutter: 16px;
   --menu-animation: right 450ms ease-in-out;
-}
-
-body:has(.header-menu-scrollable) .header-wrapper {
-  position: sticky;
-  top: 0;
 }
 
 @media (prefers-reduced-motion) {
@@ -396,6 +390,14 @@ a.header__link {
   .header-wrapper {
     --logo-height: 51px;
     --logo-wrapper-width: 164px;
+
+    flex-direction: column;
+  }
+
+
+  body:has(.header-menu-scrollable) .header-wrapper {
+    position: sticky;
+    top: 0;
   }
 
   .header {
