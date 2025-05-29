@@ -1,8 +1,9 @@
-/* stylelint-disable string-quotes */
-/* stylelint-disable max-line-length */
 .header-wrapper {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
   z-index: 100;
 
   --logo-height: 30px;
@@ -393,16 +394,25 @@ a.header__link {
   .header-wrapper {
     --logo-height: 51px;
     --logo-wrapper-width: 164px;
+
+    position: relative;
   }
 
   .header {
     width: 100%;
     justify-content: center;
     border-bottom: 1px solid var(--header-background-color);
+    position: relative;
+    z-index: 999;
   }
 
   .header--expanded {
     border-bottom-color: var(--header-color);
+  }
+
+  body:has(.header--expanded):has(.header-menu-scrollable),
+  body:has(.header--expanded):has(.header-menu-scrollable) main {
+    overflow: hidden;
   }
 
   .header__nav {
@@ -561,26 +571,31 @@ a.header__link {
   }
 
   .header__main-nav-item > .header__accordion-container {
-    position: fixed;
     background: var(--header-background-color);
-    width: auto;
-    left: 50%;
-    transform: translateX(-50%);
-    top: var(--nav-height);
+    transform: none;
     transition: unset;
     overflow-y: auto;
-    max-height: calc(100vh - 2 * var(--nav-height));
     display: none;
-    padding: 0;
     min-width: 1170px;
-  }
-
-  .header__main-nav-item.header__menu-open > .header__accordion-container {
-    display: flex;
     flex-direction: column;
     justify-content: space-between;
     width: min-content;
     padding: 0;
+    position: absolute;
+    left: 0;
+    top: calc(var(--nav-height) - 19px);
+  }
+
+  .header__main-nav-item.header__menu-open > .header__accordion-container {
+    display: flex;
+  }
+
+  body:has(.header-menu-scrollable) .header__main-nav-item > .header__accordion-container {
+    position: fixed;
+    top: var(--nav-height);
+    transform: translateX(-50%);
+    left: 50%;
+    max-height: calc(100vh - 2 * var(--nav-height));
   }
 
   .header__accordion-content-wrapper {
@@ -931,8 +946,6 @@ a.header__link {
   .header__main-nav-item.header__menu-open > .header__main-link-wrapper--tabs-with-cards {
     width: 100vw;
     max-width: 1440px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .header__main-nav-item.header__menu-open > .header__main-link-wrapper--tabs-with-cards > .header__accordion-content-wrapper {

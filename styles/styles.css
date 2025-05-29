@@ -302,8 +302,6 @@ header {
   width: 100%;
   background-color: var(--header-background-color);
   color: var(--header-color);
-  position: sticky;
-  top: 0;
   z-index: 3;
   min-height: var(--nav-height);
 }
