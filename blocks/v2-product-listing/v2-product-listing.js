@@ -8,7 +8,7 @@ import {
 } from '../../scripts/common.js';
 
 const blockName = 'v2-product-listing';
-const variantClasses = ['with-filter', 'with-dots', 'with-featured', '2-columns', 'pencil-promo'];
+const variantClasses = ['with-filter', 'with-dots', '2-columns', 'pencil-promo'];
 
 function getActiveFilterButton(block) {
   const AllFilterButtons = block.querySelectorAll(`.${blockName}__button-list .${blockName}__segment-button`);
@@ -112,7 +112,7 @@ function buildSegments(segmentList, allSegmentNames) {
   });
 }
 
-function handFilterClick(e, firstSegment) {
+function handFilterClick(e, firstSegment, featuredAmount) {
   const { target } = e;
   const activeBlock = target.closest(`.${blockName}`);
   const products = activeBlock.querySelectorAll(`.${blockName}__product`);
@@ -122,8 +122,6 @@ function handFilterClick(e, firstSegment) {
 
   const dropdown = activeBlock.querySelector(`.${blockName}__dropdown`);
   dropdown.dataset.selected = clickedSegment;
-
-  const hasFeatured = activeBlock.classList.contains(`${blockName}--with-featured`);
 
   const isFirstSegmentActive = firstSegment === clickedSegment;
   activeBlock.dataset.selected = clickedSegment;
@@ -136,8 +134,8 @@ function handFilterClick(e, firstSegment) {
     product.style.display = isSelected ? 'flex' : 'none';
     product.classList.toggle('selected-product', isSelected);
 
-    if (idx === 0) {
-      product.classList.toggle('featured', isFirstSegmentActive && hasFeatured);
+    if (idx < featuredAmount) {
+      product.classList.toggle('featured', isFirstSegmentActive);
     }
   });
 
@@ -149,10 +147,9 @@ function handFilterClick(e, firstSegment) {
 
       const selectedProducts = activeBlock.querySelectorAll('.selected-product');
       selectedProducts.forEach((selectedProduct, i) => {
-        if (hasFeatured && isFirstSegmentActive) {
-          i++;
-        }
-        if (i % 2 === 0) {
+        const newIdx = isFirstSegmentActive ? i + featuredAmount : i;
+        console.log(newIdx);
+        if (newIdx % 2 === 0) {
           selectedProduct.classList.remove('even');
           selectedProduct.classList.add('odd');
         } else {
@@ -177,7 +174,7 @@ function handFilterClick(e, firstSegment) {
   });
 }
 
-function buildFilter(allSegmentNames, firstSegment) {
+function buildFilter(allSegmentNames, firstSegment, featuredAmount) {
   const dropdownWrapper = createElement('div', { classes: `${blockName}__dropdown` });
   const selectedItemWrapper = createElement('div', { classes: `${blockName}__selected-item-wrapper` });
   const selectedItem = createElement('div', { classes: `${blockName}__selected-item` });
@@ -204,7 +201,7 @@ function buildFilter(allSegmentNames, firstSegment) {
     segmentNamesList.appendChild(li);
     li.append(filterButton);
 
-    filterButton.addEventListener('click', (e) => handFilterClick(e, firstSegment));
+    filterButton.addEventListener('click', (e) => handFilterClick(e, firstSegment, featuredAmount));
   });
 
   return dropdownWrapper;
@@ -221,26 +218,39 @@ function handleListeners(dropdownWrapper, block) {
   });
 }
 
-const getRowClass = (idx, hasFeatured) => {
-  const newId = hasFeatured ? idx + 1 : idx;
+const getRowClass = (idx, amount) => {
+  const newId = amount + idx;
   return newId % 2 ? 'even' : 'odd';
 };
 
 export default function decorate(block) {
+  let featuredAmount = 0;
+
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const allSegmentNames = [getTextLabel('All Products')];
   const firstSegment = allSegmentNames[0].trim().toLowerCase();
   const hasFilters = block.classList.contains(`${blockName}--with-filter`);
-  const hasFeatured = block.classList.contains(`${blockName}--with-featured`);
+
+  const classes = block.classList;
+  classes.forEach((cl) => {
+    if (cl.endsWith('-featured')) {
+      featuredAmount = Number(cl.split('-')[1]);
+    }
+  });
+
+  if (featuredAmount !== 0) {
+    block.classList.add('with-featured');
+  }
 
   const productElement = block.querySelectorAll(`.${blockName} > div`);
   productElement.forEach((prodEle, idx) => {
     prodEle.classList.add(`${blockName}__product`);
-    if (idx === 0) {
-      prodEle.classList.add(hasFeatured ? 'featured' : 'first-item');
+
+    if (idx < featuredAmount) {
+      prodEle.classList.add('featured');
     }
 
-    const rowClass = getRowClass(idx, hasFeatured);
+    const rowClass = getRowClass(idx, featuredAmount);
     prodEle.classList.add(rowClass);
 
     buildProductImageDom(prodEle);
@@ -256,7 +266,7 @@ export default function decorate(block) {
     const segmentList = block.querySelectorAll(`.${blockName}__product > div > ul`);
     block.dataset.selected = firstSegment;
     buildSegments(segmentList, allSegmentNames);
-    const dropdownWrapper = buildFilter(allSegmentNames, firstSegment);
+    const dropdownWrapper = buildFilter(allSegmentNames, firstSegment, featuredAmount);
     block.prepend(dropdownWrapper);
     dropdownWrapper.dataset.selected = firstSegment;
     dropdownWrapper.classList.add('initial-state');
