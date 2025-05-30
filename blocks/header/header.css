@@ -1030,7 +1030,7 @@ a.header__link {
   .featured-card-double .header__category-item:nth-of-type(2) {
     display: none;
   }
-  
+
   .header__main-link-wrapper--tabs-with-cards .desktop-wrapper > div > div > ul > .header__category-item {
     padding: 20px 0;
   }
