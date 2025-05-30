@@ -91,6 +91,12 @@
   --c-error-inverted: #099;
   --c-success: #1a6c31;
 
+  /* Buttons */
+  --button-primary-color: var(--c-primary-black);
+  --button-primary-bg: var(--c-primary-gold);
+  --button-primary-bg-hover: #d9b781;
+  --button-primary-bg-active: #a18860;
+
   /* Font family */
 
   /*
@@ -684,6 +690,9 @@ body.disable-scroll main {
   text-decoration: underline;
   font-size: 16px;
   font-weight: 400;
+  border: none;
+  color: var(--c-primary-white, #fff);
+  cursor: pointer;
 }
 
 .low-resolution-banner-cookie-settings:hover,
@@ -986,11 +995,11 @@ main .section.responsive-title h1 {
   /* GT America Mono, Regular, 18px, 120% */
   --accent-1-font-size: 1.125rem; /* 18px */
   --accent-1-line-height: 120%;
-  
+
   /* GT America Mono, Regular, 14px, 120% */
   --accent-2-font-size: 0.875rem; /* 14px */
   --accent-2-line-height: 120%;
-  
+
   /* Inter, Bold, 12px, 130% 17% */
   --label-font-size-small: 0.75rem; /* 12px */
   --label-line-height-small: 130%;
@@ -1010,7 +1019,7 @@ main .section.responsive-title h1 {
   --button-letter-spacing: 0.08rem; /* 1.28px */
   --button-letter-spacing-small: 0.07rem; /* 1.12px */
   --button-font-weight: var(--fw-medium);
-  
+
   /* GT America, Extended Roman, 24px, 120%, -2% / 18px, 120%, -2% */
   --testimonial-font-size: 1.125rem; /* 18px */
   --testimonial-line-height: 120%;
@@ -1051,7 +1060,7 @@ main .section.responsive-title h1 {
 
   /* Border color */
   --light-border: 1px solid #e1e1e1;
-  
+
   /* Placeholder text color */
   --c-placeholder-text: #757575;
 }
