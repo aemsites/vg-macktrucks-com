@@ -128,10 +128,11 @@
 .v2-video__playback-button {
   position: fixed;
   top: 64px;
+  margin-top: 0;
 }
 
 .video__mute-toggle-button {
-  right: 64px;
+  top: 128px;
 }
 
 @media (min-width: 744px) {
