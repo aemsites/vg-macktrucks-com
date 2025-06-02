@@ -22,8 +22,8 @@
 .modal-background button.modal-close-button {
   text-decoration: none;
   border: none;
-  background: var(--c-primary-white, #fff);
-  color: var(--color-icon, var(--c-primary-black), #000);
+  background: var(--c-primary-white);
+  color: var(--color-icon, var(--c-primary-black));
   cursor: pointer;
   top: 0;
   right: 0;
@@ -111,7 +111,7 @@
   display: flex;
   justify-content: center;
   background: transparent;
-  color: var(--c-primary-white, #fff);
+  color: var(--c-primary-white);
   font-size: 16px;
   text-align: center;
   cursor: default;
