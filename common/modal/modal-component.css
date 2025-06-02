@@ -126,13 +126,9 @@
 
 .video__mute-toggle-button,
 .v2-video__playback-button {
-  position: fixed;
-  top: 64px;
-  margin-top: 0;
-}
+  --video-mute-toggle-button-top: 64px;
 
-.video__mute-toggle-button {
-  top: 128px;
+  margin-top: 0;
 }
 
 @media (min-width: 744px) {
@@ -192,14 +188,8 @@
     max-width: 1040px;
   }
 
-  .video__mute-toggle-button,
   .v2-video__playback-button {
-    position: absolute;
-  }
-
-  .video__mute-toggle-button {
-    top: 128px;
-    right: 0;
+    top: 64px;
   }
 
   .modal-content .video__mute-toggle-button {
