@@ -1026,7 +1026,6 @@ a.header__link {
     left: 0;
   }
 
-  .featured-card .header__category-item:first-of-type,
   .featured-card-double .header__category-item:first-of-type,
   .featured-card-double .header__category-item:nth-of-type(2) {
     display: none;
@@ -1036,6 +1035,7 @@ a.header__link {
     padding: 20px 0;
   }
 
+  .featured-card .header__category-items > .header__category-item:first-of-type,
   .header__main-link-wrapper--tabs-with-cards .desktop-wrapper .header__category-item ul::after {
     display: none;
   }
