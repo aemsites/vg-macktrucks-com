@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktruckshistoricalmuseum.org/mack-news/</id>
     <title>Mack News</title>
-    <updated>2025-05-28T00:00:00.000Z</updated>
+    <updated>2025-06-03T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktruckshistoricalmuseum.org/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3342,5 +3342,13 @@
         <updated>2025-05-28T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“For 125 years, Mack Trucks has built a global reputation for reliability, durability and authentic American grit,” said Cam Creech, senior manager of partnerships and licensing at Mack Trucks.]]></content>
         <published>2025-05-28T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Donates Electric Refuse Chassis to Río Hondo College to Advance Heavy-Duty EV Training]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-donates-electric-refuse-chassis-to-rio-hondo-college-to-advance-heavy-duty-ev-training</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/mack-trucks-donates-electric-refuse-chassis-to-rio-hondo-college-to-advance-heavy-duty-ev-training"/>
+        <updated>2025-06-03T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“As the industry continues exploring alternative fuel solutions, including battery electric vehicles, this donation will help prepare the next generation of technicians for careers in sustainable transportation,” said Jonthan Randall, president, Mack Trucks North America.]]></content>
+        <published>2025-06-03T00:00:00.000Z</published>
     </entry>
 </feed>
