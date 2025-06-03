@@ -2,7 +2,7 @@ import { getImageURLs, createResponsivePicture, variantsClassesToBEM, decorateIc
 import { isVideoLink, createVideo } from '../../scripts/video-helper.js';
 import { initializeCountdown } from '../../common/countdown/countdown.js';
 
-export const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown'];
+export const variantClasses = ['dark', 'light', 'half-height', 'magazine', 'countdown', 'with-engine-stats'];
 const blockName = 'v2-hero';
 let hasVideo;
 
@@ -83,6 +83,12 @@ export default async function decorate(block) {
   const isHalfHeight = block.classList.contains(`${blockName}--half-height`);
   const isMagazine = block.classList.contains(`${blockName}--magazine`);
   const isCountdown = block.classList.contains(`${blockName}--countdown`);
+  const hasEngineStats = block.classList.contains(`${blockName}--with-engine-stats`);
+  const hasBackgroundImage = block.closest('.section--with-background');
+
+  if (hasEngineStats && hasBackgroundImage) {
+    hasBackgroundImage.classList.add('reduced-height');
+  }
 
   const images = [...block.querySelectorAll('p > picture')];
   const imageURLs = getImageURLs(images);
@@ -106,12 +112,12 @@ export default async function decorate(block) {
       { media: '(min-width: 1200px)', width: 1200 },
       { media: '(min-width: 1440px)', width: 1440 },
       { media: '(min-width: 1920px)', width: 1920 },
-      { width: 750 },
+      { width: 1600 },
     ];
   }
 
   if (imageData.length > 1) {
-    imageData[0].breakpoints = [{ media: '(min-width: 600px)', width: 600 }, { width: 750 }];
+    imageData[0].breakpoints = [{ media: '(min-width: 600px)', width: 600 }, { width: 1600 }];
 
     imageData[1].breakpoints = [
       { media: '(min-width: 1200px)', width: 1200 },

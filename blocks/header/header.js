@@ -12,6 +12,16 @@ const tabsVariants = {
   TAB_WITH_CARDS: 'tabs-with-cards',
   TAB: 'tabs',
   FEATURED_CARD: 'featured-card',
+  FEATURED_CARD_DOUBLE: 'featured-card-double',
+};
+const DESKTOP_MEDIA_QUERY = '(min-width: 1200px)';
+const LARGE_IMAGE_WIDTHS = {
+  '2x': 1368,
+  '1x': 684,
+};
+const STANDARD_IMAGE_WIDTHS = {
+  '2x': 580,
+  '1x': 290,
 };
 
 const setTabIndexForLinks = (el, tabIndexValue) => {
@@ -197,21 +207,57 @@ const rebuildCategoryItem = (item) => {
   }
 };
 
-const optimiseImage = (picture, shouldUseLargeSources) => {
+/**
+ * Generates an array of responsive image source definitions for use in <picture> elements.
+ *
+ * @param {{ '2x': number, '1x': number }} widths - Object defining widths for 1x and 2x resolution.
+ * @returns {Array<{ media: string, width: number }>} An array of responsive image source definitions.
+ */
+const getResponsiveSources = (widths) => [
+  { media: `${DESKTOP_MEDIA_QUERY} and (min-resolution: 2x)`, width: widths['2x'] },
+  { media: DESKTOP_MEDIA_QUERY, width: widths['1x'] },
+];
+
+/**
+ * Replaces an existing <picture> element with an optimized version using responsive sources.
+ *
+ * @param {HTMLPictureElement} picture - The original picture element in the DOM.
+ * @param {boolean} isInsideFeaturedCard - Whether the picture is part of a featured card (to use large sizes).
+ * @returns {void}
+ */
+const optimiseImage = (picture, isInsideFeaturedCard) => {
   const img = picture.querySelector('img');
-  const isInsideFeaturedCard = picture.closest('.featured-card');
-  const sources =
-    shouldUseLargeSources && isInsideFeaturedCard
-      ? [
-          { media: '(min-width: 1200px) and (min-resolution: 2x)', width: '1368' },
-          { media: '(min-width: 1200px)', width: '684' },
-        ]
-      : [
-          { media: '(min-width: 1200px) and (min-resolution: 2x)', width: '580' },
-          { media: '(min-width: 1200px)', width: '290' },
-        ];
+  if (!img?.src) {
+    return;
+  }
+
+  const widths = isInsideFeaturedCard ? LARGE_IMAGE_WIDTHS : STANDARD_IMAGE_WIDTHS;
+  const sources = getResponsiveSources(widths);
   const newPicture = createOptimizedPicture(img.src, img.alt, false, sources);
   picture.replaceWith(newPicture);
+};
+
+/**
+ * Optimizes <picture> elements within the header menu.
+ * Applies larger image widths for featured cards and smaller ones for standard menu items.
+ *
+ * @param {HTMLElement} menu - The menu element to process.
+ */
+const optimisePicturesInMenu = (menu) => {
+  [...menu.querySelectorAll('picture')].forEach((picture, i) => {
+    const isFeaturedCard = Boolean(picture.closest('.featured-card'));
+    const isDoubleFeaturedCard = Boolean(picture.closest('.featured-card-double'));
+
+    if (isFeaturedCard) {
+      // Optimise the first 2 pictures only (main + background) in a single featured card
+      optimiseImage(picture, i < 2);
+    } else if (isDoubleFeaturedCard) {
+      // Optimise the first 4 pictures only (2 cards × 2 images per card) in a double featured card
+      optimiseImage(picture, i < 4);
+    } else {
+      optimiseImage(picture);
+    }
+  });
 };
 
 /* transformMenuData unify HTML that comes from word doc */
@@ -250,11 +296,9 @@ const transformMenuData = (data) => {
         menuItem.children[1].replaceWith(listEl);
       }
     });
-
-    [...menuData.querySelectorAll('picture')].forEach((picture, i) => {
-      optimiseImage(picture, i < 2);
-    });
   });
+
+  data.forEach(optimisePicturesInMenu);
 
   const results = document.createRange().createContextualFragment(`
     <div>
@@ -294,7 +338,17 @@ const setTabActive = (tab) => {
   const tabsWithCards = tab.closest(`.${blockName}__main-link-wrapper--tabs-with-cards`);
   if (tabsWithCards) {
     const tabContentId = tab.getAttribute('aria-controls');
-    document.querySelector(`#${tabContentId}`).scrollIntoView({ behavior: 'smooth' });
+    const target = document.querySelector(`#${tabContentId}`);
+    if (target) {
+      const container = target.parentElement;
+      const offsetLeft = target.offsetLeft;
+
+      // Scroll just the X axis
+      container.scrollTo({
+        left: offsetLeft,
+        behavior: 'smooth',
+      });
+    }
   } else {
     console.warn('No %ctabs with cards %cfound for the provided tab.', 'color:red', 'color:default', { tab });
   }
@@ -313,8 +367,6 @@ const setTabActive = (tab) => {
 };
 
 const onNavExpandChange = (isExpanded) => {
-  // disabling scroll when menu is open
-  document.body.classList.toggle('disable-scroll', isExpanded);
   document.querySelector(`.${blockName}.block`).classList.toggle(`${blockName}--expanded`, isExpanded);
 };
 
@@ -454,6 +506,37 @@ const injectMenuFooter = (categories, menuFooter) => {
 };
 
 /**
+ * Builds and returns HTML for one or two featured cards,
+ * and removes those cards from the given list to prevent duplication.
+ *
+ * @param {HTMLUListElement} list - The list containing card <li> elements.
+ * @param {boolean} isDoubleFeaturedCard - Whether to extract two cards instead of one.
+ * @returns {string} featuredCardsHtml - The resulting HTML markup for the featured cards.
+ */
+const buildFeaturedCardsHtml = (list, isDoubleFeaturedCard) => {
+  if (!list?.children?.length) {
+    return '';
+  }
+
+  let featuredCardsHtml = '';
+  const firstCardItem = list.children[0].cloneNode(true);
+  const firstCard = extractFeaturedCardData(firstCardItem);
+  featuredCardsHtml += generateFeaturedCardHtml(firstCard);
+
+  if (isDoubleFeaturedCard && list.children[1]) {
+    const secondCardItem = list.children[1].cloneNode(true);
+    const secondCard = extractFeaturedCardData(secondCardItem);
+    featuredCardsHtml += generateFeaturedCardHtml(secondCard);
+  }
+
+  if (isDoubleFeaturedCard) {
+    featuredCardsHtml = `<div class="${blockName}__featured-card-group">${featuredCardsHtml}</div>`;
+  }
+
+  return featuredCardsHtml;
+};
+
+/**
  * Builds the menu content for the Mega-menu
  * @param {Element[]} menuData
  * @param {Element} navEl
@@ -493,13 +576,18 @@ const buildMenuContent = (menuData, navEl) => {
         const list = cat.querySelector(':scope > ul');
         const accordionParentClassList = accordionContentWrapper.parentElement.classList;
         let extraClass = '';
-        const isFeaturedCard = cat.classList.contains(tabsVariants.FEATURED_CARD);
+        const isFeaturedCard = cat.classList.contains(tabsVariants.FEATURED_CARD) || cat.classList.contains(tabsVariants.FEATURED_CARD_DOUBLE);
+        const isDoubleFeaturedCard = cat.classList.contains(tabsVariants.FEATURED_CARD_DOUBLE);
 
         title?.classList.add(`${blockName}__link`, `${blockName}__link-accordion`, `${blockName}__menu-heading`);
         title?.removeAttribute('href');
 
         if (isFeaturedCard) {
           accordionParentClassList.add(tabsVariants.FEATURED_CARD);
+        }
+
+        if (isDoubleFeaturedCard) {
+          accordionParentClassList.add(tabsVariants.FEATURED_CARD_DOUBLE);
         }
 
         if (cat.classList.contains(tabsVariants.TAB_WITH_CARDS) || cat.classList.contains(tabsVariants.TAB)) {
@@ -514,16 +602,7 @@ const buildMenuContent = (menuData, navEl) => {
           extraClass = `${blockName}__main-link-wrapper--${tabsVariants.TAB}`;
         }
 
-        const firstListItem = extractAndCloneFirstListItem(list, isFeaturedCard);
-        let featureItemHtml = '';
-
-        if (firstListItem) {
-          const featuredItemData = extractFeaturedCardData(firstListItem);
-
-          if (featuredItemData) {
-            featureItemHtml = generateFeaturedCardHtml(featuredItemData);
-          }
-        }
+        const featuredCardsHtml = isFeaturedCard ? buildFeaturedCardsHtml(list, isDoubleFeaturedCard) : '';
 
         list.classList.add(`${blockName}__category-items`);
         [...list.querySelectorAll('li')].forEach(rebuildCategoryItem);
@@ -544,7 +623,7 @@ const buildMenuContent = (menuData, navEl) => {
               ${title.outerHTML}
               <div class="${blockName}__category-content ${blockName}__accordion-container">
                 <div class="${blockName}__accordion-content-wrapper">
-                  ${isFeaturedCard && featureItemHtml ? featureItemHtml : ''}
+                  ${isFeaturedCard && featuredCardsHtml ? featuredCardsHtml : ''}
                   ${list.outerHTML}
                 </div>
               </div>

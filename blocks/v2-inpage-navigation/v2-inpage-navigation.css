@@ -9,7 +9,7 @@
   left: 0;
   overflow: unset !important;
   position: sticky;
-  top: var(--nav-height);
+  top: 0;
   width: 100%;
   z-index: 99;
 }

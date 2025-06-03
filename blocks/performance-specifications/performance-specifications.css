@@ -40,6 +40,7 @@
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
   position: relative;
+  padding: 0;
 }
 
 .performance-specifications .category-tablist::-webkit-scrollbar {
@@ -120,8 +121,17 @@
   gap: var(--category-detail-gap);
 }
 
+.performance-specifications .category-detail h3 p,
 .performance-specifications .category-detail h3 {
   margin: 0;
+  display: none;
+}
+
+.performance-specifications .category-tablist .category-tab p {
+  margin: 0;
+  font-weight: 700;
+  line-height: var(--body-1-line-height);
+  letter-spacing: 0.032px;
 }
 
 .performance-specifications .category-detail .category-description {
@@ -133,6 +143,9 @@
 .performance-specifications .engine-ratings {
   font-family: var(--ff-body-bold);
   font-size: var(--body-font-size-xxs);
+  letter-spacing: var(--label-letter-spacing-small);
+  line-height: var(--label-line-height-small);
+  width: 140px;
   text-transform: uppercase;
   margin: 0;
 }
@@ -141,25 +154,32 @@
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  align-items: flex-end;
-  gap: 1em;
+  align-items: flex-start;
+  gap: 1.5em;
 }
 
 .performance-specifications .engine-tablist {
   display: flex;
   gap: 1em;
+  overflow: scroll hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */
 .performance-specifications .engine-tablist [role='tab'] {
   background-color: var(--c-primary-white);
   font-size: var(--body-font-size-xs);
+  letter-spacing: var(--button-letter-spacing-small);
   color: var(--c-primary-black);
   border-radius: 2px;
-  padding: 0.4em 0.7em 0.2em;
+  padding: 0.4em 1.45em 0.2em;
+  height: 32px;
   line-height: 18px;
   margin: 0;
   border-style: none;
+  min-width: 80px;
 }
 
 .performance-specifications .engine-tablist [role='tab'][aria-selected='true'] {
@@ -196,7 +216,7 @@
 }
 
 .details-panel .key-specs {
-  max-width: 290px;
+  max-width: 240px;
 }
 
 .details-panel .loading-spinner {
@@ -226,9 +246,13 @@
 
 @media (min-width: 768px) {
   .performance-specifications {
-    --specs-grid-template-columns: 1fr 3fr;
+    --specs-grid-template-columns: 1fr 4fr;
     --category-tablist-margin: 0 0 24px;
     --key-specs-margin: 0 0 2.5em;
+  }
+
+  .performance-specifications .details-panel dl {
+    margin-top: 80px;
   }
 }
 
