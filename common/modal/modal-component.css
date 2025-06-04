@@ -1,3 +1,7 @@
+:root {
+  --link-hover-color: var(--c-primary-gold);
+}
+
 .modal-background {
   position: fixed;
   top: 0;
@@ -18,7 +22,8 @@
 .modal-background button.modal-close-button {
   text-decoration: none;
   border: none;
-  background: white;
+  background: var(--c-primary-white);
+  color: var(--color-icon, var(--c-primary-black));
   cursor: pointer;
   top: 0;
   right: 0;
@@ -63,6 +68,7 @@
   display: flex;
   align-items: center;
   position: relative;
+  flex-direction: column-reverse;
 }
 
 .modal-content .modal-cookie-message {
@@ -105,7 +111,7 @@
   display: flex;
   justify-content: center;
   background: transparent;
-  color: white;
+  color: var(--c-primary-white);
   font-size: 16px;
   text-align: center;
   cursor: default;
@@ -116,6 +122,13 @@
   justify-content: flex-end;
   flex-direction: column;
   height: 100%;
+}
+
+.video__mute-toggle-button,
+.v2-video__playback-button {
+  --video-mute-toggle-button-top: 64px;
+
+  margin-top: 0;
 }
 
 @media (min-width: 744px) {
@@ -175,7 +188,7 @@
     max-width: 1040px;
   }
 
-  .modal-content .v2-video__playback-button {
+  .v2-video__playback-button {
     top: 64px;
   }
 
