@@ -92,7 +92,7 @@ function safePlay(playable) {
  *
  * @param {Object} options - Configuration options for autoplay behavior.
  * @param {HTMLElement} options.target - The DOM element to observe for visibility.
- * @param {Function} options.play - Function to call when the element is fully visible.
+ * @param {Function} options.play - Function to call when the element is visible.
  * @param {Function} options.pause - Function to call when the element is no longer visible.
  * @param {number} [options.threshold=0] - Visibility ratio required to trigger autoplay (e.g., 0 = enters viewport, 1.0 = 100% visible).
  * @param {boolean} [options.once=false] - If true, the observer stops after the first play trigger.
@@ -126,7 +126,7 @@ function observeAutoplayWhenVisible({ target, play, pause, threshold = 0, once =
 }
 
 /**
- * Attaches an autoplay observer to a video.js player so that it plays/pause based on full visibility.
+ * Attaches an autoplay observer to a video.js player so that it plays/pause based on visibility.
  *
  * @param {HTMLVideoElement} videoElement - The video element used by the player.
  * @param {Object} player - The video.js player instance.
