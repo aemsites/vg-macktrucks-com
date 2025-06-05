@@ -57,6 +57,37 @@ async function waitForVideoJs() {
 }
 
 /**
+ * Attempts to safely play a media element or player object,
+ * catching and logging `NotAllowedError` and other playback-related errors.
+ *
+ * This is useful for browsers that block autoplay (especially Safari and iOS)
+ * unless the video is muted or triggered by user interaction.
+ *
+ * @param {HTMLMediaElement | { play: () => Promise<void> | void }} playable
+ *   - A native <video> or <audio> element, or a player object like video.js with a `.play()` method.
+ */
+function safePlay(playable) {
+  try {
+    const result = playable.play();
+    if (result instanceof Promise) {
+      result.catch((err) => {
+        if (err.name === 'NotAllowedError') {
+          console.warn('Autoplay prevented by browser:', err);
+        } else {
+          console.error('Error playing video:', err);
+        }
+      });
+    }
+  } catch (err) {
+    if (err.name === 'NotAllowedError') {
+      console.warn('Autoplay prevented by browser:', err);
+    } else {
+      console.error('Error playing video:', err);
+    }
+  }
+}
+
+/**
  * Sets up an IntersectionObserver to autoplay a media element when it becomes visible.
  *
  * @param {Object} options - Configuration options for autoplay behavior.
@@ -103,9 +134,9 @@ function observeAutoplayWhenVisible({ target, play, pause, threshold = 0, once =
 function setupAutopause(videoElement, player) {
   observeAutoplayWhenVisible({
     target: videoElement,
-    play: () => player.play(),
+    play: () => safePlay(player),
     pause: () => player.pause(),
-    threshold: 0,
+    threshold: 1.0,
     debounceMs: 100,
   });
 }
@@ -590,13 +621,13 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
       if (wrapperParent) {
         observeAutoplayWhenVisible({
           target: video,
-          play: () => video.play(),
+          play: () => safePlay(video),
           pause: () => video.pause(),
-          threshold: 0,
+          threshold: 1.0,
           debounceMs: 100,
         });
       } else {
-        video.play().catch((err) => console.warn('[autoplay fallback]', err));
+        safePlay(video);
       }
     });
   }
