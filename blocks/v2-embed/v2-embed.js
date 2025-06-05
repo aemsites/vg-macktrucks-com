@@ -36,7 +36,6 @@ const extractAspectRatio = (block) => {
 const retrieveVideoConfig = (block, aspectRatio) => {
   const image = block.querySelector('img');
   const poster = image ? new URL(image.getAttribute('src'), window.location.href).href : undefined;
-  console.log(block.classList.contains('loop'));
 
   return {
     ...(aspectRatio ? { aspectRatio: `${aspectRatio.width}:${aspectRatio.height}` } : {}),

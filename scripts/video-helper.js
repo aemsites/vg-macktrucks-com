@@ -56,23 +56,89 @@ async function waitForVideoJs() {
   });
 }
 
-function setupAutopause(videoElement, player) {
+/**
+ * Attempts to safely play a media element or player object,
+ * catching and logging `NotAllowedError` and other playback-related errors.
+ *
+ * This is useful for browsers that block autoplay (especially Safari and iOS)
+ * unless the video is muted or triggered by user interaction.
+ *
+ * @param {HTMLMediaElement | { play: () => Promise<void> | void }} playable
+ *   - A native <video> or <audio> element, or a player object like video.js with a `.play()` method.
+ */
+function safePlay(playable) {
+  try {
+    const result = playable.play();
+    if (result instanceof Promise) {
+      result.catch((err) => {
+        if (err.name === 'NotAllowedError') {
+          console.warn('Autoplay prevented by browser:', err);
+        } else {
+          console.error('Error playing video:', err);
+        }
+      });
+    }
+  } catch (err) {
+    if (err.name === 'NotAllowedError') {
+      console.warn('Autoplay prevented by browser:', err);
+    } else {
+      console.error('Error playing video:', err);
+    }
+  }
+}
+
+/**
+ * Sets up an IntersectionObserver to autoplay a media element when it becomes visible.
+ *
+ * @param {Object} options - Configuration options for autoplay behavior.
+ * @param {HTMLElement} options.target - The DOM element to observe for visibility.
+ * @param {Function} options.play - Function to call when the element is visible.
+ * @param {Function} options.pause - Function to call when the element is no longer visible.
+ * @param {number} [options.threshold=0] - Visibility ratio required to trigger autoplay (e.g., 0 = enters viewport, 1.0 = 100% visible).
+ * @param {boolean} [options.once=false] - If true, the observer stops after the first play trigger.
+ * @param {number} [options.debounceMs=0] - Delay (in ms) before triggering `play` when visible.
+ */
+function observeAutoplayWhenVisible({ target, play, pause, threshold = 0, once = false, debounceMs = 0 }) {
+  let timeout;
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          player.play();
+        const isVisible = entry.isIntersecting && entry.intersectionRatio >= threshold;
+
+        clearTimeout(timeout);
+        if (isVisible) {
+          timeout = setTimeout(() => {
+            play();
+            if (once) {
+              observer.unobserve(entry.target);
+            }
+          }, debounceMs);
         } else {
-          player.pause();
+          pause();
         }
       });
     },
-    {
-      threshold: [0.5],
-    },
+    { threshold },
   );
 
-  observer.observe(videoElement);
+  observer.observe(target);
+}
+
+/**
+ * Attaches an autoplay observer to a video.js player so that it plays/pause based on visibility.
+ *
+ * @param {HTMLVideoElement} videoElement - The video element used by the player.
+ * @param {Object} player - The video.js player instance.
+ */
+function setupAutopause(videoElement, player) {
+  observeAutoplayWhenVisible({
+    target: videoElement,
+    play: () => safePlay(player),
+    pause: () => player.pause(),
+    threshold: 0,
+    debounceMs: 100,
+  });
 }
 
 export async function setupPlayer(url, videoContainer, config, video) {
@@ -95,11 +161,8 @@ export async function setupPlayer(url, videoContainer, config, video) {
     preload: config.poster && !config.autoplay ? 'none' : 'auto',
     bigPlayButton: config.controls ?? true,
     controls: config.controls ?? false,
+    autoplay: false, // Disable built-in autoplay
   };
-
-  if (config.autoplay) {
-    videojsConfig.autoplay = true;
-  }
 
   if (config.muted) {
     videojsConfig.muted = true;
@@ -114,9 +177,21 @@ export async function setupPlayer(url, videoContainer, config, video) {
   const player = videojs(videoElement, videojsConfig);
   player.src(url);
 
+  // Ensure player does not autoplay prematurely
+  player.pause();
+
   player.ready(() => {
     if (config.autoplay) {
-      setupAutopause(videoElement, player);
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const wrapper = videoElement.closest('.v2-video, .v2-embed');
+          if (wrapper) {
+            setupAutopause(videoElement, player);
+          } else {
+            player.play();
+          }
+        }, 100);
+      });
     }
   });
 
@@ -525,31 +600,7 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
     },
   });
 
-  // If the video is not playing, we’ll try to play again
-  if (props.autoplay) {
-    video.addEventListener(
-      'loadedmetadata',
-      () => {
-        setTimeout(() => {
-          if (video.paused) {
-            console.warn('Failed to autoplay video, fallback code executed');
-            // TODO: This is just a way of prevent the code to break due to the NotAllowedError error on iOS and Safari
-            // For this to work better needs further development and either way it will always be an hack can at any point can stop working
-            try {
-              video.play();
-            } catch (error) {
-              if (error.name === 'NotAllowedError') {
-                console.error('Playback was prevented by the browser:', error);
-              } else {
-                console.error('An error occurred while trying to play the video:', error);
-              }
-            }
-          }
-        }, 500);
-      },
-      { once: true },
-    );
-  }
+  video.appendChild(source);
 
   const wrapper = createElement('div', { classes: className });
   wrapper.appendChild(video);
@@ -564,7 +615,22 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
     appendMuteToggleButton(wrapper);
   }
 
-  video.appendChild(source);
+  if (props.autoplay) {
+    requestAnimationFrame(() => {
+      const wrapperParent = wrapper.closest('.v2-embed, .v2-video');
+      if (wrapperParent) {
+        observeAutoplayWhenVisible({
+          target: video,
+          play: () => safePlay(video),
+          pause: () => video.pause(),
+          threshold: 0,
+          debounceMs: 100,
+        });
+      } else {
+        safePlay(video);
+      }
+    });
+  }
 
   return wrapper;
 }
