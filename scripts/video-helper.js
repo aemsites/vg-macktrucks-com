@@ -67,7 +67,7 @@ async function waitForVideoJs() {
  * @param {boolean} [options.once=false] - If true, the observer stops after the first play trigger.
  * @param {number} [options.debounceMs=0] - Delay (in ms) before triggering `play` when visible.
  */
-function observeAutoplayWhenVisible({ target, play, pause, threshold = 1.0, once = false, debounceMs = 0 }) {
+function observeAutoplayWhenVisible({ target, play, pause, threshold = 0, once = false, debounceMs = 0 }) {
   let timeout;
 
   const observer = new IntersectionObserver(
