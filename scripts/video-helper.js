@@ -63,7 +63,7 @@ async function waitForVideoJs() {
  * @param {HTMLElement} options.target - The DOM element to observe for visibility.
  * @param {Function} options.play - Function to call when the element is fully visible.
  * @param {Function} options.pause - Function to call when the element is no longer visible.
- * @param {number} [options.threshold=1.0] - Visibility ratio required to trigger autoplay (e.g., 0 = enters viewport, 1.0 = 100% visible).
+ * @param {number} [options.threshold=0] - Visibility ratio required to trigger autoplay (e.g., 0 = enters viewport, 1.0 = 100% visible).
  * @param {boolean} [options.once=false] - If true, the observer stops after the first play trigger.
  * @param {number} [options.debounceMs=0] - Delay (in ms) before triggering `play` when visible.
  */
@@ -151,10 +151,14 @@ export async function setupPlayer(url, videoContainer, config, video) {
 
   player.ready(() => {
     if (config.autoplay) {
-      // Delay observer attachment to prevent early triggering
       requestAnimationFrame(() => {
         setTimeout(() => {
-          setupAutopause(videoElement.closest('.v2-embed') || videoElement, player);
+          const wrapper = videoElement.closest('.v2-video, .v2-embed');
+          if (wrapper) {
+            setupAutopause(videoElement, player);
+          } else {
+            player.play();
+          }
         }, 100);
       });
     }
@@ -581,12 +585,19 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
   }
 
   if (props.autoplay) {
-    observeAutoplayWhenVisible({
-      target: wrapper,
-      play: () => video.play(),
-      pause: () => video.pause(),
-      threshold: 0,
-      debounceMs: 100,
+    requestAnimationFrame(() => {
+      const wrapperParent = wrapper.closest('.v2-embed, .v2-video');
+      if (wrapperParent) {
+        observeAutoplayWhenVisible({
+          target: video,
+          play: () => video.play(),
+          pause: () => video.pause(),
+          threshold: 0,
+          debounceMs: 100,
+        });
+      } else {
+        video.play().catch((err) => console.warn('[autoplay fallback]', err));
+      }
     });
   }
 
