@@ -136,7 +136,7 @@ function setupAutopause(videoElement, player) {
     target: videoElement,
     play: () => safePlay(player),
     pause: () => player.pause(),
-    threshold: 1.0,
+    threshold: 0,
     debounceMs: 100,
   });
 }
@@ -623,7 +623,7 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
           target: video,
           play: () => safePlay(video),
           pause: () => video.pause(),
-          threshold: 1.0,
+          threshold: 0,
           debounceMs: 100,
         });
       } else {
