@@ -1870,7 +1870,6 @@ main .section.responsive-title h1 {
 /* Revert mnobile to default: */
 @media (min-width: 1200px) {
   .redesign-v2 .header .black-label {
-    left: auto;
     font-size: var(--black-label-font-size);
     letter-spacing: var(--label-letter-spacing-small);
     margin-left: var(--black-label-margin-left);

@@ -181,9 +181,20 @@ const rebuildCategoryItem = (item) => {
   item.classList.add(`${blockName}__category-item`);
 
   [...item.childNodes].forEach((el) => {
-    // unwrapping images & links inside paragraphs
-    if (el.tagName === 'P' && el.querySelectorAll(':scope > picture, :scope > a').length === 1) {
-      el.replaceWith(el.children[0]);
+    // unwrapping images & links inside EMPTY paragraphs
+    if (el.tagName === 'P') {
+      const link = el.querySelector('a');
+      const linkTextLength = link?.textContent.length;
+      const paragraphTextLength = el.textContent?.length;
+      const paragraphHasOwnText = linkTextLength && linkTextLength !== paragraphTextLength;
+      const paragraphContainsLinkOrImage = el.querySelectorAll(':scope > picture, :scope > a').length === 1;
+
+      if (paragraphHasOwnText) {
+        el.classList.add('with-inline-link');
+        link.classList.add('inline-link');
+      } else if (paragraphContainsLinkOrImage) {
+        el.replaceWith(el.children[0]);
+      }
     }
 
     // second list of links should be rendered as buttons
@@ -419,19 +430,15 @@ const onAccordionItemClick = (el) => {
   }
 };
 
-const extractAndCloneFirstListItem = (list, isFeaturedCard) =>
-  isFeaturedCard && list.children.length ? list.firstElementChild?.cloneNode(true) : null;
-
 const extractFeaturedCardData = (item) => {
   const pictures = item.querySelectorAll('picture');
   const paragraphs = [...item.querySelectorAll('p')];
-
   return {
     mainImage: pictures[0] || '',
     backgroundImage: pictures[1] || '',
     title: item.querySelector('h3 a') || '',
     subtitle: paragraphs[2]?.textContent.trim() || '',
-    text: paragraphs[3]?.textContent.trim() || '',
+    text: paragraphs[3]?.innerHTML || '',
     primaryButton: paragraphs[4]?.querySelector('a') || '',
     secondaryButton: paragraphs[5]?.querySelector('a') || '',
     primaryLink: paragraphs[6]?.querySelector('a') || '',
@@ -606,7 +613,10 @@ const buildMenuContent = (menuData, navEl) => {
 
         list.classList.add(`${blockName}__category-items`);
         [...list.querySelectorAll('li')].forEach(rebuildCategoryItem);
-        [...list.querySelectorAll('a')].forEach((el) => el.classList.add(`${blockName}__link`));
+        [...list.querySelectorAll('a')].forEach((el) => {
+          const isInlineLink = el.classList.contains('inline-link');
+          el.classList[isInlineLink ? 'remove' : 'add'](`${blockName}__link`);
+        });
         [...list.querySelectorAll('li > a:not(.button):not(:only-child)')].forEach((el) => el.classList.add('standalone-link'));
 
         let menuContent;

@@ -357,6 +357,7 @@ a.header__link {
   display: none;
 }
 
+
 .header__category-item a:first-of-type:any-link:not(.standalone-link) {
   display: flex;
 }
@@ -1151,6 +1152,11 @@ a.header__link {
     font-size: 14px;
     line-height: 150%;
     letter-spacing: 0.14px;
+  }
+
+  .header__main-link-wrapper--tabs-with-cards .header__category-item p.with-inline-link,
+  .header__main-link-wrapper--tabs-with-cards .header__category-item p.with-inline-link a.inline-link {
+    display: inline;
   }
 
   /* tabs with cards - END */
