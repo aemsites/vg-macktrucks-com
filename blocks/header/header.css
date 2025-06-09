@@ -357,7 +357,6 @@ a.header__link {
   display: none;
 }
 
-
 .header__category-item a:first-of-type:any-link:not(.standalone-link) {
   display: flex;
 }
