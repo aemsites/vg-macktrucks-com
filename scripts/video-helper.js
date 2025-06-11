@@ -141,6 +141,38 @@ function setupAutopause(videoElement, player) {
   });
 }
 
+/**
+ * Waits until a given DOM element is present in the document and has a parent matching a selector,
+ * then calls the callback with the found wrapper as an argument.
+ *
+ * This is useful for situations where elements may be attached to the DOM asynchronously,
+ * or when wrappers/components may appear after a delay (such as with dynamic libraries).
+ *
+ * @param {HTMLElement} el - The DOM element to check for presence and wrapping.
+ * @param {string} wrapperSelector - The CSS selector for the required ancestor/wrapper.
+ * @param {(wrapper: HTMLElement|null) => void} cb - The callback invoked when the condition is met
+ *        (with the wrapper as argument) or when retries are exhausted (with `null`).
+ * @param {number} [maxTries=40] - Maximum number of polling attempts before giving up (default: 40).
+ * @param {number} [delay=50] - Delay in milliseconds between polling attempts (default: 50ms).
+ */
+export function whenInDOMAndWrapped(el, wrapperSelector, cb, maxTries = 40, delay = 50) {
+  let tries = 0;
+
+  function check() {
+    const inDOM = document.body.contains(el);
+    const wrapper = el.closest ? el.closest(wrapperSelector) : null;
+    if (inDOM && wrapper) {
+      cb(wrapper);
+    } else if (tries < maxTries) {
+      tries++;
+      setTimeout(check, delay);
+    } else {
+      cb(null);
+    }
+  }
+  check();
+}
+
 export async function setupPlayer(url, videoContainer, config, video) {
   let videoElement = video;
   if (!videoElement) {
@@ -182,15 +214,14 @@ export async function setupPlayer(url, videoContainer, config, video) {
 
   player.ready(() => {
     if (config.autoplay) {
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          const wrapper = videoElement.closest('.v2-video, .v2-embed');
-          if (wrapper) {
-            setupAutopause(videoElement, player);
-          } else {
-            player.play();
-          }
-        }, 100);
+      // Always get the actual <video> from the DOM after ready
+      const currentVideoElement = videoContainer.querySelector('video');
+      whenInDOMAndWrapped(currentVideoElement, '.v2-video, .v2-embed', (wrapper) => {
+        if (wrapper) {
+          setupAutopause(currentVideoElement, player);
+        } else {
+          player.play();
+        }
       });
     }
   });
@@ -618,6 +649,7 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
   if (props.autoplay) {
     requestAnimationFrame(() => {
       const wrapperParent = wrapper.closest('.v2-embed, .v2-video');
+      console.log(wrapperParent, video);
       if (wrapperParent) {
         observeAutoplayWhenVisible({
           target: video,
