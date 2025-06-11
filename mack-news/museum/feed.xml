@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktruckshistoricalmuseum.org/mack-news/</id>
     <title>Mack News</title>
-    <updated>2025-06-05T00:00:00.000Z</updated>
+    <updated>2025-06-11T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktruckshistoricalmuseum.org/mack-news/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3358,5 +3358,13 @@
         <updated>2025-06-05T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“This year’s calendar is a celebration of legacy, innovation and shared values, and we’re especially proud to feature our first-ever fully electric calendar winner,” said David Galbraith, Mack Trucks vice president of global brand and marketing.]]></content>
         <published>2025-06-05T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Experience and Customize the All-New Mack Pioneer™ with Innovative Digital Tools]]></title>
+        <id>https://www.macktruckshistoricalmuseum.org/mack-news/2025/experience-and-customize-the-all-new-mack-pioneer-with-innovative-digital-tools</id>
+        <link href="https://www.macktruckshistoricalmuseum.org/mack-news/2025/experience-and-customize-the-all-new-mack-pioneer-with-innovative-digital-tools"/>
+        <updated>2025-06-11T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“We’re excited to offer truck buyers two powerful ways to experience the all-new Mack Pioneer without leaving their home or office,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
+        <published>2025-06-11T00:00:00.000Z</published>
     </entry>
 </feed>
