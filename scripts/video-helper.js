@@ -88,33 +88,35 @@ function safePlay(playable) {
 }
 
 /**
- * Sets up an IntersectionObserver to autoplay a media element when it becomes visible.
+ * Sets up an IntersectionObserver to autoplay a media element when it is fully in view,
+ * and pause it when it is fully out of view.
  *
- * @param {Object} options - Configuration options for autoplay behavior.
+ * @param {Object} options - Configuration options for autoplay and pause behavior.
  * @param {HTMLElement} options.target - The DOM element to observe for visibility.
- * @param {Function} options.play - Function to call when the element is visible.
- * @param {Function} options.pause - Function to call when the element is no longer visible.
- * @param {number} [options.threshold=0] - Visibility ratio required to trigger autoplay (e.g., 0 = enters viewport, 1.0 = 100% visible).
- * @param {boolean} [options.once=false] - If true, the observer stops after the first play trigger.
- * @param {number} [options.debounceMs=0] - Delay (in ms) before triggering `play` when visible.
+ * @param {Function} options.play - Callback invoked when the element is 100% visible in the viewport.
+ * @param {Function} options.pause - Callback invoked when the element is 0% visible (fully out of view).
+ * @param {number|number[]} [options.threshold=[0, 1.0]] - One or more intersection thresholds. Defaults to [0, 1.0] to track full entry and exit.
+ * @param {boolean} [options.once=false] - If true, the observer stops observing after the video plays once.
+ * @param {number} [options.debounceMs=0] - Delay (in milliseconds) before invoking the `play()` callback when the element becomes fully visible.
  */
-function observeAutoplayWhenVisible({ target, play, pause, threshold = 0, once = false, debounceMs = 0 }) {
+function observeAutoplayWhenVisible({ target, play, pause, threshold = [0, 1.0], once = false, debounceMs = 0 }) {
   let timeout;
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const isVisible = entry.isIntersecting && entry.intersectionRatio >= threshold;
-
         clearTimeout(timeout);
-        if (isVisible) {
+
+        if (entry.intersectionRatio === 1) {
+          // Fully in view: autoplay
           timeout = setTimeout(() => {
             play();
             if (once) {
               observer.unobserve(entry.target);
             }
           }, debounceMs);
-        } else {
+        } else if (entry.intersectionRatio === 0) {
+          // Fully out of view: pause
           pause();
         }
       });
@@ -136,7 +138,7 @@ function setupAutopause(videoElement, player) {
     target: videoElement,
     play: () => safePlay(player),
     pause: () => player.pause(),
-    threshold: 0,
+    threshold: [0, 1.0],
     debounceMs: 100,
   });
 }
@@ -655,7 +657,7 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
           target: video,
           play: () => safePlay(video),
           pause: () => video.pause(),
-          threshold: 0,
+          threshold: [0, 1.0],
           debounceMs: 100,
         });
       } else {
