@@ -183,15 +183,17 @@ const rebuildCategoryItem = (item) => {
   [...item.childNodes].forEach((el) => {
     // unwrapping images & links inside EMPTY paragraphs
     if (el.tagName === 'P') {
-      const link = el.querySelector('a');
-      const linkTextLength = link?.textContent.length;
+      const links = el.querySelectorAll('a');
+      const linkTextLength = links[0]?.textContent.length;
       const paragraphTextLength = el.textContent?.length;
       const paragraphHasOwnText = linkTextLength && linkTextLength !== paragraphTextLength;
       const paragraphContainsLinkOrImage = el.querySelectorAll(':scope > picture, :scope > a').length === 1;
 
       if (paragraphHasOwnText) {
         el.classList.add('with-inline-link');
-        link.classList.add('inline-link');
+        links.forEach((link) => {
+          link.classList.add('inline-link');
+        });
       } else if (paragraphContainsLinkOrImage) {
         el.replaceWith(el.children[0]);
       }
