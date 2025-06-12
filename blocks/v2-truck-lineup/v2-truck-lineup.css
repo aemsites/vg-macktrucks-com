@@ -74,6 +74,14 @@ main .section.v2-truck-lineup-container {
   width: auto;
 }
 
+.v2-truck-lineup__image-item .v2-truck-lineup__picture-mobile img {
+  aspect-ratio: 3 / 4;
+}
+
+.v2-truck-lineup__image-item .v2-truck-lineup__picture-desktop {
+  display: none;
+}
+
 .v2-truck-lineup__content {
   margin: 0 auto 32px;
   text-align: center;
@@ -286,6 +294,18 @@ ul.v2-truck-lineup__navigation {
 
 @media screen and (min-width: 744px) {
   .v2-truck-lineup__arrow-controls {
+    display: block;
+  }
+  
+  .v2-truck-lineup__image-item img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .v2-truck-lineup__image-item .v2-truck-lineup__picture-mobile {
+    display: none;
+  }
+
+  .v2-truck-lineup__image-item .v2-truck-lineup__picture-desktop {
     display: block;
   }
 }
