@@ -14,7 +14,6 @@ export function fetchAutosuggest(term, autosuggestEle, rowEle, func) {
       tenant: TENANT,
       term,
       language,
-      sizeSuggestions: 5,
     },
   }).then(({ errors, data }) => {
     if (errors) {

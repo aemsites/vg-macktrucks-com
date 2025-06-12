@@ -66,11 +66,11 @@ $facets: [EdsFieldEnum], $sort: EdsSortOptionsEnum, $article: ArticleFilter, $ca
 `;
 
 export const autosuggestQuery = () => `
-query edssuggest($term: String!, $tenant: String!, $language: EdsLocaleEnum!, $sizeSuggestions: Int = 8) {
-  edssuggest(term: $term, tenant: $tenant, language: $language, sizeSuggestions: $sizeSuggestions) {
-    terms
+  query EdsWordPhraseSuggest($term: String!, $tenant: String!, $language: EdsLocaleEnum!) {
+    edsWordPhraseSuggest(term: $term, tenant: $tenant, language: $language) {
+      terms
+    }
   }
-}
 `;
 
 export const magazineSearchQuery = () => `
