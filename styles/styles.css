@@ -1320,7 +1320,7 @@ main .section.responsive-title h1 {
 
 .v2-video__playback-button:active,
 .video-js button.vjs-big-play-button:active {
-  background-color: var(--c-gold);
+  background-color: var(--c-secondary-dark-gold, #87754e);
 }
 
 .v2-video__playback-button:focus {
@@ -1381,7 +1381,7 @@ main .section.responsive-title h1 {
 }
 
 .video__mute-toggle-button:active .icon {
-  color: var(--c-gold);
+  color: var(--c-secondary-dark-gold, #87754e);
 }
 
 .video__mute-toggle-button:hover .icon {
