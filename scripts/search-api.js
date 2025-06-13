@@ -3,16 +3,21 @@ import { SEARCH_CONFIGS } from './common.js';
 export const { TENANT = false, SEARCH_URL_PROD = false, SEARCH_URL_DEV = false } = SEARCH_CONFIGS;
 
 export async function fetchData(queryObj) {
+  const query = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Content-Length': queryObj.length,
+    },
+    body: JSON.stringify(queryObj),
+  };
+
   try {
-    const response = await fetch(SEARCH_URL_PROD, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Content-Length': queryObj.length,
-      },
-      body: JSON.stringify(queryObj),
-    });
+    let response = await fetch(SEARCH_URL_PROD, query);
+    if (!response.ok) {
+      response = await fetch(SEARCH_URL_DEV, query);
+    }
 
     return response.json();
   } catch (error) {
