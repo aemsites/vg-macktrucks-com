@@ -1354,6 +1354,7 @@ main .section.responsive-title h1 {
   --video-mute-toggle-button-size: 64px;
   --video-mute-toggle-button-top: 64px;
 
+  background-color: var(--c-primary-gold);
   border: 0;
   cursor: pointer;
   height: var(--video-mute-toggle-button-size);
@@ -1374,18 +1375,18 @@ main .section.responsive-title h1 {
   outline-offset: 2px;
 }
 
+.video__mute-toggle-button:hover {
+  background-color: var(--button-primary-bg-hover);
+}
+
+.video__mute-toggle-button:active {
+  background-color: var(--c-secondary-dark-gold, #87754e);
+}
+
 .video__mute-toggle-button .icon {
-  color: var(--button-primary-bg);
+  /* color: var(--button-primary-bg); */
   height: 100%;
   width: 100%;
-}
-
-.video__mute-toggle-button:active .icon {
-  color: var(--c-secondary-dark-gold, #87754e);
-}
-
-.video__mute-toggle-button:hover .icon {
-  color: var(--button-primary-bg-hover);
 }
 
 /* Section Background colors */
