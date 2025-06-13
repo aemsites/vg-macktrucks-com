@@ -187,8 +187,8 @@ export default async function decorate(block) {
     const headings = tabContent ? tabContent.querySelectorAll('h1, h2, h3, h4, h5, h6') : [];
     [...headings].forEach((heading) => heading.classList.add(`${blockName}__title`));
 
-    // create div for image and append inside image div container
-    const picture = tabItem.querySelector('picture');
+    // create div for images and append inside image div container
+    const pictures = tabItem.querySelectorAll('picture');
     // adds the featured class only to the first featured item even if there are more than one
     const tabFeatured = tabContent.dataset.truckCarouselFeatured;
     const hasImageFeatured = imagesContainer.querySelector('.featured');
@@ -196,7 +196,12 @@ export default async function decorate(block) {
       classes: [`${blockName}__image-item`, ...(tabFeatured && !hasImageFeatured ? ['featured'] : [])],
     });
 
-    imageItem.appendChild(picture);
+    pictures.forEach((pic, idx) => {
+      if (pictures.length > 1) {
+        pic.classList.add(`${blockName}__picture-${idx === 0 ? 'mobile' : 'desktop'}`);
+      }
+      imageItem.appendChild(pic);
+    });
     imagesContainer.appendChild(imageItem);
 
     // remove empty tags
