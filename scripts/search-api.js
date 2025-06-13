@@ -13,6 +13,10 @@ export async function fetchData(queryObj) {
     body: JSON.stringify(queryObj),
   };
 
+  if (!SEARCH_URL_PROD && !SEARCH_URL_DEV) {
+    throw new Error('Search link not found');
+  }
+
   try {
     let response = await fetch(SEARCH_URL_PROD, query);
     if (!response.ok) {
