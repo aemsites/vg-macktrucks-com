@@ -76,6 +76,7 @@ main .section.v2-truck-lineup-container {
 
 .v2-truck-lineup__image-item .v2-truck-lineup__picture-mobile img {
   aspect-ratio: 3 / 4;
+  max-height: 400px;
 }
 
 .v2-truck-lineup__image-item .v2-truck-lineup__picture-desktop {
@@ -296,7 +297,9 @@ ul.v2-truck-lineup__navigation {
   .v2-truck-lineup__arrow-controls {
     display: block;
   }
-  
+}
+
+@media screen and (min-width: 990px) {
   .v2-truck-lineup__image-item img {
     aspect-ratio: 16 / 9;
   }
