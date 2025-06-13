@@ -1,6 +1,6 @@
 import { SEARCH_CONFIGS } from './common.js';
 
-export const { TENANT, SEARCH_URL_PROD } = SEARCH_CONFIGS;
+export const { TENANT = false, SEARCH_URL_PROD = false, SEARCH_URL_DEV = false } = SEARCH_CONFIGS;
 
 export async function fetchData(queryObj) {
   try {
