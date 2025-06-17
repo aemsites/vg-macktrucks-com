@@ -87,7 +87,7 @@ const buildBlock = (articles, block) => {
  * @returns {void}
  */
 export default async function decorate(block) {
-  const queryVariables = { facets: [] };
+  const queryVariables = { facets: [], sort: 'PUBLISH_DATE_DESC' };
   const allMagazineData = await fetchMagazineData(queryVariables);
   const allArticles = formatArticlesArray(allMagazineData?.items);
   if (!allArticles.length) {

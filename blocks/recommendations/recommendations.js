@@ -63,7 +63,7 @@ export default async function decorate(block) {
   const queryVariables = {
     limit: limit + 1,
     facets: ['ARTICLE'],
-    sort: 'LAST_MODIFIED_DESC',
+    sort: 'PUBLISH_DATE_DESC',
     article: { category },
   };
   const allMagazineData = await fetchMagazineData(queryVariables);

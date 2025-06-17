@@ -37,7 +37,7 @@ const createList = (articles) => `
 export default async function decorate(block) {
   const limit = extractLimitFromBlock(block) || defaultLimit;
 
-  const queryVariables = { limit: limit + 1, sort: 'LAST_MODIFIED_DESC' };
+  const queryVariables = { limit: limit + 1, sort: 'PUBLISH_DATE_DESC' };
   const allMagazineData = await fetchMagazineData(queryVariables);
   const allArticles = formatArticlesArray(allMagazineData?.items);
 
