@@ -1153,6 +1153,11 @@ a.header__link {
     letter-spacing: 0.14px;
   }
 
+  .header__main-link-wrapper--tabs-with-cards .header__category-item p.with-inline-link,
+  .header__main-link-wrapper--tabs-with-cards .header__category-item p.with-inline-link a.inline-link {
+    display: inline;
+  }
+
   /* tabs with cards - END */
 
   .menu-footer {
