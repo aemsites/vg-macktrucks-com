@@ -54,6 +54,7 @@ $facets: [EdsFieldEnum], $sort: EdsSortOptionsEnum, $article: ArticleFilter, $ca
         description
         url
         lastModified
+        publishDate
         language
         category
         article {
