@@ -1,18 +1,27 @@
 import { SEARCH_CONFIGS } from './common.js';
 
-export const { TENANT, SEARCH_URL_PROD } = SEARCH_CONFIGS;
+export const { TENANT = false, SEARCH_URL_PROD = false, SEARCH_URL_DEV = false } = SEARCH_CONFIGS;
 
 export async function fetchData(queryObj) {
+  const query = {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Content-Length': queryObj.length,
+    },
+    body: JSON.stringify(queryObj),
+  };
+
+  if (!SEARCH_URL_PROD && !SEARCH_URL_DEV) {
+    throw new Error('Search link not found');
+  }
+
   try {
-    const response = await fetch(SEARCH_URL_PROD, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'Content-Length': queryObj.length,
-      },
-      body: JSON.stringify(queryObj),
-    });
+    let response = await fetch(SEARCH_URL_PROD, query);
+    if (!response.ok) {
+      response = await fetch(SEARCH_URL_DEV, query);
+    }
 
     return response.json();
   } catch (error) {
@@ -45,6 +54,7 @@ $facets: [EdsFieldEnum], $sort: EdsSortOptionsEnum, $article: ArticleFilter, $ca
         description
         url
         lastModified
+        publishDate
         language
         category
         article {
@@ -66,8 +76,8 @@ $facets: [EdsFieldEnum], $sort: EdsSortOptionsEnum, $article: ArticleFilter, $ca
 `;
 
 export const autosuggestQuery = () => `
-query edssuggest($term: String!, $tenant: String!, $language: EdsLocaleEnum!, $sizeSuggestions: Int = 8) {
-  edssuggest(term: $term, tenant: $tenant, language: $language, sizeSuggestions: $sizeSuggestions) {
+query EdsWordPhraseSuggest($term: String!, $tenant: String!, $language: EdsLocaleEnum!, $sizeSuggestions: Int) {
+  edsWordPhraseSuggest(term: $term, tenant: $tenant, language: $language, sizeSuggestions: $sizeSuggestions) {
     terms
   }
 }
