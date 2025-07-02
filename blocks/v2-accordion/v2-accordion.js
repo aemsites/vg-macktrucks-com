@@ -26,6 +26,8 @@ function loaded(element, pointedContent, display) {
 }
 
 export default async function decorate(block) {
+  const section = block.closest('.section');
+  const hasAccordion = section?.classList.contains(`${blockName}-container`);
   const rows = [...block.querySelectorAll(':scope > div')];
   const accordionsPromises = rows.map(async (row) => {
     const accordionHeader = row.querySelector(
@@ -35,8 +37,9 @@ export default async function decorate(block) {
     const accordionContent = row.querySelector(':scope > div:nth-child(2)');
 
     const headerButton = createElement('button', { classes: `${blockName}__button` });
-    const dropdownArrowIcon = createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] });
-    headerButton.append(accordionHeader, dropdownArrowIcon);
+    const dropdownArrowIcon = hasAccordion && createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] });
+    // If a the accordion container is not present, we will not add the dropdown arrow icon
+    headerButton.append(accordionHeader, hasAccordion ? dropdownArrowIcon : document.createDocumentFragment());
 
     const contentEl = createElement('div', { classes: [`${blockName}__content`, `${blockName}__content-close`] });
 

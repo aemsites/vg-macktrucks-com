@@ -13,7 +13,7 @@ export default async function decorate(block) {
   let accordionWrapper;
 
   const accordionBlock = createElement('div', {
-    classes: ['block', 'v2-accordion', accordionId],
+    classes: ['block', 'v2-accordion', ...(accordionId ? [accordionId] : [])],
     props: { 'data-block-name': 'v2-accordion' },
   });
 
