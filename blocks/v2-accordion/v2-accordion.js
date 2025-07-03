@@ -69,13 +69,15 @@ export default async function decorate(block) {
       }
     }
 
-    const accordionEl = createElement('div', { classes: [`${blockName}__item`, `${blockName}__item-close`] });
+    const accordionEl = createElement('div', { classes: [`${blockName}__item`, ...(hasAccordion ? [`${blockName}__item-close`] : [])] });
     accordionEl.append(headerButton);
     accordionEl.append(contentEl);
 
-    headerButton.addEventListener('click', () => {
-      accordionEl.classList.toggle(`${blockName}__item-close`);
-    });
+    if (hasAccordion) {
+      headerButton.addEventListener('click', () => {
+        accordionEl.classList.toggle(`${blockName}__item-close`);
+      });
+    }
 
     decorateIcons(accordionEl);
     return accordionEl;
