@@ -38,7 +38,7 @@ export default async function decorate(block) {
 
     const headerButton = createElement('button', { classes: `${blockName}__button` });
     const dropdownArrowIcon = hasAccordion && createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] });
-    // If a the accordion container is not present, we will not add the dropdown arrow icon
+    // If the accordion container is not present, the dropdown arrow icon will not be added.
     headerButton.append(accordionHeader, hasAccordion ? dropdownArrowIcon : document.createDocumentFragment());
 
     const contentEl = createElement('div', { classes: [`${blockName}__content`, `${blockName}__content-close`] });
