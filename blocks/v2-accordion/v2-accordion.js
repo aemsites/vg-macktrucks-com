@@ -37,9 +37,12 @@ export default async function decorate(block) {
     const accordionContent = row.querySelector(':scope > div:nth-child(2)');
 
     const headerButton = createElement('button', { classes: `${blockName}__button` });
-    const dropdownArrowIcon = hasAccordion && createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] });
-    // If the accordion container is not present, the dropdown arrow icon will not be added.
-    headerButton.append(accordionHeader, hasAccordion ? dropdownArrowIcon : document.createDocumentFragment());
+    const dropdownArrowIcon = hasAccordion ? createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] }) : null;
+
+    headerButton.append(accordionHeader);
+    if (dropdownArrowIcon) {
+      headerButton.append(dropdownArrowIcon);
+    }
 
     const contentEl = createElement('div', { classes: [`${blockName}__content`, `${blockName}__content-close`] });
 
