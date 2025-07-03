@@ -33,16 +33,27 @@ const getBlockWidth = (block) => {
 
 const fitting = (block) => getCrumbsWidth(block) < getBlockWidth(block);
 
+const hasFormattingTags = (element) => {
+  if (element.querySelectorAll('em').length > 0 || element.querySelectorAll('strong').length > 0 || element.querySelectorAll('sup').length > 0) {
+    return true;
+  }
+  return false;
+};
+
 const generateCustomUrl = (block) => {
   const allCrumbs = [];
   block.querySelectorAll(':scope > div').forEach((row) => {
     if (row.children) {
       const cols = [...row.children];
       if (cols[1]) {
+        const crumbEl = cols[0].children[0] || null;
         const obj = {
+          element: crumbEl,
+          hasFormattingTags: crumbEl ? hasFormattingTags(crumbEl) : false,
           key: cols[0].textContent,
           value: row.children[1].textContent,
         };
+
         allCrumbs.push(obj);
       }
     }
@@ -90,7 +101,12 @@ export default function decorate(block) {
     if (hasCustomClass) {
       addTargetBlankToExternalLink(crumb);
     }
-    crumb.textContent = content;
+    // append nodes if element has formatting tags like em, strong and sup
+    if (customLinks[i].hasFormattingTags) {
+      crumb.append(...customLinks[i].element.childNodes);
+    } else {
+      crumb.textContent = content;
+    }
     liEl.append(crumb);
     return liEl;
   });
@@ -146,7 +162,10 @@ export default function decorate(block) {
         const link = crumb.firstElementChild;
         if (i > 0) {
           crumb.classList.remove(`${blockName}__crumb-item--hidden`);
-          link.textContent = link.dataset.content;
+
+          if (!hasFormattingTags(link)) {
+            link.textContent = link.dataset.content;
+          }
         }
       });
       checkCrumbsFits();
