@@ -1072,11 +1072,6 @@ main .section.responsive-title h1 {
   letter-spacing: var(--body-1-letter-spacing);
 }
 
-.redesign-v2 strong,
-.redesign-v2 b {
-  font-weight: normal;
-}
-
 /* stylelint-disable no-descending-specificity */
 :where(.redesign-v2) h1,
 :where(.redesign-v2) h2,
