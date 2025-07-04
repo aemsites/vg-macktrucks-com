@@ -34,10 +34,7 @@ const getBlockWidth = (block) => {
 const fitting = (block) => getCrumbsWidth(block) < getBlockWidth(block);
 
 const hasFormattingTags = (element) => {
-  if (element.querySelectorAll('em').length > 0 || element.querySelectorAll('strong').length > 0 || element.querySelectorAll('sup').length > 0) {
-    return true;
-  }
-  return false;
+  return element.querySelectorAll('em, strong, sup').length > 0;
 };
 
 const generateCustomUrl = (block) => {
