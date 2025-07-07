@@ -189,6 +189,10 @@
   background-color: var(--c-primary-black);
 }
 
+.section.gray-background .v2-hero--half-height .v2-hero__content-wrapper {
+  background-color: var(--c-tertiary-light-cool-gray);
+}
+
 .v2-hero--half-height .v2-hero__heading {
   font-size: var(--headline-2-font-size);
 }
@@ -208,8 +212,7 @@
 
   .v2-hero--half-height .v2-hero__image {
     position: absolute;
-    top: -50%;
-    height: auto;
+    aspect-ratio: 32/9; /* 1440 / 372 -> the aspect ratio has been doubled to avoid decimals */
   }
 
   .v2-hero--half-height .v2-hero__content-wrapper,
