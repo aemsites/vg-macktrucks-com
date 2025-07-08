@@ -26,6 +26,8 @@ function loaded(element, pointedContent, display) {
 }
 
 export default async function decorate(block) {
+  const section = block.closest('.section');
+  const hasAccordion = section?.classList.contains(`${blockName}-container`);
   const rows = [...block.querySelectorAll(':scope > div')];
   const accordionsPromises = rows.map(async (row) => {
     const accordionHeader = row.querySelector(
@@ -35,8 +37,12 @@ export default async function decorate(block) {
     const accordionContent = row.querySelector(':scope > div:nth-child(2)');
 
     const headerButton = createElement('button', { classes: `${blockName}__button` });
-    const dropdownArrowIcon = createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] });
-    headerButton.append(accordionHeader, dropdownArrowIcon);
+    const dropdownArrowIcon = hasAccordion ? createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] }) : null;
+
+    headerButton.append(accordionHeader);
+    if (dropdownArrowIcon) {
+      headerButton.append(dropdownArrowIcon);
+    }
 
     const contentEl = createElement('div', { classes: [`${blockName}__content`, `${blockName}__content-close`] });
 
@@ -66,13 +72,15 @@ export default async function decorate(block) {
       }
     }
 
-    const accordionEl = createElement('div', { classes: [`${blockName}__item`, `${blockName}__item-close`] });
+    const accordionEl = createElement('div', { classes: [`${blockName}__item`, ...(hasAccordion ? [`${blockName}__item-close`] : [])] });
     accordionEl.append(headerButton);
     accordionEl.append(contentEl);
 
-    headerButton.addEventListener('click', () => {
-      accordionEl.classList.toggle(`${blockName}__item-close`);
-    });
+    if (hasAccordion) {
+      headerButton.addEventListener('click', () => {
+        accordionEl.classList.toggle(`${blockName}__item-close`);
+      });
+    }
 
     decorateIcons(accordionEl);
     return accordionEl;
