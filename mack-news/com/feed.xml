@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/news-and-stories/press-releases/</id>
     <title>Mack News</title>
-    <updated>2025-06-25T00:00:00.000Z</updated>
+    <updated>2025-07-09T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktrucks.com/news-and-stories/press-releases/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3382,5 +3382,13 @@
         <updated>2025-06-25T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“The transportation industry is evolving rapidly with fleet managers facing rising operational costs, complex logistics demands and ongoing driver recruitment challenges,” said Stephen Roy, global president of Mack Trucks.]]></content>
         <published>2025-06-25T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack® Pioneer Sets New Safety Standards with Comprehensive Protection Technologies]]></title>
+        <id>https://www.macktrucks.com/mack-news/2025/mack-pioneer-sets-new-safety-standards-with-comprehensive-protection-technologies</id>
+        <link href="https://www.macktrucks.com/mack-news/2025/mack-pioneer-sets-new-safety-standards-with-comprehensive-protection-technologies"/>
+        <updated>2025-07-09T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“The safety features in the Pioneer reflect our deep understanding of drivers’ needs and our commitment to their well-being,” said Stephen Roy, president, Mack Trucks.]]></content>
+        <published>2025-07-09T00:00:00.000Z</published>
     </entry>
 </feed>
