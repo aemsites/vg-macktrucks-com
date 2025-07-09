@@ -156,7 +156,6 @@
 
 /* Half height variant */
 .v2-hero.v2-hero--half-height {
-  max-width: var(--section-max-width);
   margin: 0 auto;
   height: unset;
 }
