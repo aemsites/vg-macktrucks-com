@@ -185,7 +185,7 @@
   padding: 40px 16px;
 }
 
-.section--gray-background .v2-hero--half-height .v2-hero__content-wrapper {
+.section--light-gray-background .v2-hero--half-height .v2-hero__content-wrapper {
   background-color: var(--c-tertiary-light-cool-gray);
 }
 
@@ -216,6 +216,7 @@
   }
 
   .v2-hero--half-height .v2-hero__content-wrapper,
+  .section--light-gray-background .v2-hero--half-height .v2-hero__content-wrapper,
   .section.text-black .v2-hero--half-height .v2-hero__content-wrapper,
   .section.text-white .v2-hero--half-height .v2-hero__content-wrapper {
     background-color: unset;
