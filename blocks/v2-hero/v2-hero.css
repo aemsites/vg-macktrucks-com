@@ -211,7 +211,7 @@
 
   .v2-hero--half-height .v2-hero__image {
     position: absolute;
-    aspect-ratio: 32/9; /* 1440 / 372 -> the aspect ratio has been doubled to avoid decimals */
+    aspect-ratio: 32/9; /* 16 / 4.5 -> the aspect ratio has been doubled to avoid decimals */
   }
 
   .v2-hero--half-height .v2-hero__content-wrapper,
