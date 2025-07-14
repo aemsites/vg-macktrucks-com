@@ -1730,6 +1730,20 @@ main .section.responsive-title h1 {
   }
 }
 
+@media (min-width: 990px) {
+  .v2-hero {
+    --hero-max-height: 900px;
+
+    max-height: var(--hero-max-height);
+  }
+
+  @supports (height: 1svh) {
+    .v2-hero {
+      max-height: var(--hero-max-height);
+    }
+  }
+}
+
 .v2-inpage-navigation {
   opacity: 0;
 }
