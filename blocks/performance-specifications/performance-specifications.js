@@ -7,16 +7,16 @@ const blockName = 'performance-specifications';
 
 // TODO get all these to placeholder.json for translations
 const TEXTS = {
-  btnText: getTextLabel('Download Specs'),
-  engineRatings: 'POWER / TORQUE RATING',
-  bottomChartLabel: 'RPM',
+  btnText: getTextLabel('SpecsCharts:DownloadButton'),
+  engineRatings: getTextLabel('SpecsCharts:RatingLabels'),
+  bottomChartLabel: getTextLabel('SpecsCharts:RPM'),
   facts: [
-    ['peak power', 'No Data'],
-    ['peak power rpm', 'No Data'],
-    ['max torque', 'No Data'],
-    ['max torque rpm', 'No Data'],
+    [getTextLabel('SpecsCharts:PeakPower'), getTextLabel('SpecsCharts:NoData')],
+    [getTextLabel('SpecsCharts:PeakPowerRPM'), getTextLabel('SpecsCharts:NoData')],
+    [getTextLabel('MaxTorque'), getTextLabel('SpecsCharts:NoData')],
+    [getTextLabel('MaxTorqueRPM'), getTextLabel('SpecsCharts:NoData')],
   ],
-  noData: 'No Data',
+  noData: getTextLabel('SpecsCharts:NoData'),
 };
 
 const COLORS = {
