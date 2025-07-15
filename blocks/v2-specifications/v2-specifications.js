@@ -24,23 +24,19 @@ export default async function decorate(block) {
   block.appendChild(accordionBlockWrapper);
 
   // Hx tag used for the titles of the accordion
-  const titleMeta = block.closest('.section').dataset.header;
-  if (!titleMeta) {
-    return;
-  }
-
+  const titleMeta = block.closest('.section').dataset.header || 'header 3';
   const headerTag = titleMeta.charAt(titleMeta.length - 1);
   const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].slice(headerTag);
+
+  // Add title styles to the headings that are not as the accordion button
+  const headingString = headings.join(',');
+  const headingsList = [...block.querySelectorAll(headingString)];
+  headingsList.forEach((heading) => heading.classList.add(`${blockName}__subtitle`, 'h5'));
 
   [...items].forEach((item) => {
     const typeTitle = item.querySelector(`h${headerTag}`); // header of the accordion
     const typePicture = item.querySelector('picture'); // with image
     const typeDownloads = item.querySelector('.button-container a'); // with downloads
-
-    // Add title styles to the headings that are not as the accordion button
-    const headingString = headings.join(',');
-    const headingsList = [...block.querySelectorAll(headingString)];
-    headingsList.forEach((heading) => heading.classList.add(`${blockName}__subtitle`, 'h5'));
     const subtitleCounter = item.querySelectorAll(`.${blockName}__subtitle`).length;
 
     if (typeTitle) {
@@ -98,7 +94,9 @@ export default async function decorate(block) {
       classes.push(`${blockName}__list--with-text`);
     }
 
-    item.classList.add(...classes);
+    if (classes.length > 0) {
+      item.classList.add(...classes);
+    }
 
     if (accordionContent) {
       accordionContent.appendChild(item);
