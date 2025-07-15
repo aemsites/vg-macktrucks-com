@@ -156,7 +156,6 @@
 
 /* Half height variant */
 .v2-hero.v2-hero--half-height {
-  max-width: var(--section-max-width);
   margin: 0 auto;
   height: unset;
 }
@@ -185,6 +184,10 @@
   padding: 40px 16px;
 }
 
+.section--light-gray-background .v2-hero--half-height .v2-hero__content-wrapper {
+  background-color: var(--c-tertiary-light-cool-gray);
+}
+
 .section.text-white .v2-hero--half-height .v2-hero__content-wrapper {
   background-color: var(--c-primary-black);
 }
@@ -208,11 +211,11 @@
 
   .v2-hero--half-height .v2-hero__image {
     position: absolute;
-    top: -50%;
-    height: auto;
+    aspect-ratio: 32/9; /* 16 / 4.5 -> the aspect ratio has been doubled to avoid decimals */
   }
 
   .v2-hero--half-height .v2-hero__content-wrapper,
+  .section--light-gray-background .v2-hero--half-height .v2-hero__content-wrapper,
   .section.text-black .v2-hero--half-height .v2-hero__content-wrapper,
   .section.text-white .v2-hero--half-height .v2-hero__content-wrapper {
     background-color: unset;

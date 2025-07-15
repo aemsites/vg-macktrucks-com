@@ -1072,11 +1072,6 @@ main .section.responsive-title h1 {
   letter-spacing: var(--body-1-letter-spacing);
 }
 
-.redesign-v2 strong,
-.redesign-v2 b {
-  font-weight: normal;
-}
-
 /* stylelint-disable no-descending-specificity */
 :where(.redesign-v2) h1,
 :where(.redesign-v2) h2,
@@ -1732,6 +1727,20 @@ main .section.responsive-title h1 {
 
   .v2-breadcrumb-container.v2-hero-container .v2-hero:not(.v2-hero--no-image) {
     height: calc(100svh - (var(--nav-height) + var(--breadcrumb-height)));
+  }
+}
+
+@media (min-width: 990px) {
+  .v2-hero {
+    --hero-max-height: 900px;
+
+    max-height: var(--hero-max-height);
+  }
+
+  @supports (height: 1svh) {
+    .v2-hero {
+      max-height: var(--hero-max-height);
+    }
   }
 }
 
