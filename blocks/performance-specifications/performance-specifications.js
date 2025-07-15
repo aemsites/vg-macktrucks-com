@@ -5,7 +5,6 @@ import { getTextLabel } from '../../scripts/common.js';
 const MQ = window.matchMedia('(min-width: 744px)');
 const blockName = 'performance-specifications';
 
-// TODO get all these to placeholder.json for translations
 const TEXTS = {
   btnText: getTextLabel('SpecsCharts:DownloadButton'),
   engineRatings: getTextLabel('SpecsCharts:RatingLabels'),
