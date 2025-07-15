@@ -5,7 +5,6 @@ import { getTextLabel } from '../../scripts/common.js';
 const MQ = window.matchMedia('(min-width: 744px)');
 const blockName = 'performance-specifications';
 
-// TODO get all these to placeholder.json for translations
 const TEXTS = {
   btnText: getTextLabel('SpecsCharts:DownloadButton'),
   engineRatings: getTextLabel('SpecsCharts:RatingLabels'),
@@ -64,7 +63,7 @@ const updateChart = async (chartContainer, engineDetails) => {
   }
 
   const chartHeight = () => ({
-    height: MQ.matches ? 540 : 480,
+    height: MQ.matches ? 510 : 480,
   });
 
   let myChart = window.echarts.getInstanceByDom(chartContainer);
@@ -103,13 +102,11 @@ const updateChart = async (chartContainer, engineDetails) => {
 
   const getLineValues = () => {
     const lines = [];
-    const keys = Object.keys(performanceData);
-
-    keys.forEach((key, idx) => {
-      const isOdd = idx % 2 === 0;
+    Object.keys(performanceData).forEach((key) => {
+      const isTorqueRating = key.toLowerCase().includes('torque');
       const lineObj = {
         type: 'value',
-        position: isOdd ? 'left' : 'right',
+        position: isTorqueRating ? 'left' : 'right',
         axisTick: {
           show: false,
         },
@@ -127,8 +124,8 @@ const updateChart = async (chartContainer, engineDetails) => {
           show: false,
         },
         min: 0,
-        max: isOdd ? 2000 : 600,
-        interval: isOdd ? 200 : 50,
+        max: isTorqueRating ? 2000 : 600,
+        interval: isTorqueRating ? 200 : 50,
       };
       lines.push(lineObj);
     });
@@ -152,17 +149,16 @@ const updateChart = async (chartContainer, engineDetails) => {
         color: COLORS.white,
       },
     },
-
     series: getEchartsSeries(),
     // Global palette:
     color: COLORS.chartLines,
     backgroundColor: COLORS.bgColor,
     //  reduce space around the chart
     grid: {
-      left: '0',
-      right: '0',
-      top: '80',
-      containLabel: true,
+      left: 50,
+      right: 40,
+      top: 80,
+      containLabel: false,
     },
     textStyle: {
       color: COLORS.white,
