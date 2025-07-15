@@ -81,7 +81,7 @@ const updateChart = async (chartContainer, engineDetails) => {
   }
 
   const chartHeight = () => ({
-    height: MQ.matches ? 550 : 480,
+    height: MQ.matches ? 540 : 480,
   });
 
   let myChart = window.echarts.getInstanceByDom(chartContainer);
