@@ -115,19 +115,6 @@ const updateChart = async (chartContainer, engineDetails) => {
       };
     });
 
-    // Grey area rectangle - TODO, make this configurable
-    series[0] = {
-      ...series[0],
-      markArea: {
-        silent: true,
-        itemStyle: {
-          // color: 'rgb(96 96 96 / 50%)',
-          color: 'transparent',
-        },
-        // data: [[{ xAxis: sweetSpotStart }, { xAxis: sweetSpotEnd }]],
-      },
-    };
-
     return series;
   };
 
@@ -241,7 +228,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         interval: 200,
       },
       {
-        // horsepower values
+        // power values
         type: 'value',
         position: 'right',
         axisTick: {
