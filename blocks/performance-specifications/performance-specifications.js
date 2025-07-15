@@ -14,7 +14,7 @@ const TEXTS = {
 
 const COLORS = {
   white: '#ffffff',
-  chartLines: ['#b3976b', '#ffffff'],
+  chartLines: ['#b3976b', '#ffffff', '#87754E', '#A7ABAF'],
   bgColor: '#1D1D1D',
   verticalLines: '#8e8e8e',
 };
@@ -101,6 +101,40 @@ const updateChart = async (chartContainer, engineDetails) => {
     return series;
   };
 
+  const getLineValues = () => {
+    const lines = [];
+    const keys = Object.keys(performanceData);
+
+    keys.forEach((key, idx) => {
+      const isOdd = idx % 2 === 0;
+      const lineObj = {
+        type: 'value',
+        position: isOdd ? 'left' : 'right',
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter(value) {
+            // remove thousands separator
+            return value;
+          },
+          margin: 20,
+        },
+        splitLine: {
+          show: false,
+        },
+        min: 0,
+        max: isOdd ? 2000 : 600,
+        interval: isOdd ? 200 : 50,
+      };
+      lines.push(lineObj);
+    });
+    return lines;
+  };
+
   const option = {
     legend: {
       icon: 'circle',
@@ -185,56 +219,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         show: false,
       },
     },
-    yAxis: [
-      {
-        // torque values
-        type: 'value',
-        position: 'left',
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          formatter(value) {
-            // remove thousands separator
-            return value;
-          },
-          margin: 20,
-        },
-        splitLine: {
-          show: false,
-        },
-        min: 0,
-        max: 2000,
-        interval: 200,
-      },
-      {
-        // power values
-        type: 'value',
-        position: 'right',
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          formatter(value) {
-            // remove thousands separator
-            return value;
-          },
-          margin: 20,
-        },
-        splitLine: {
-          show: false,
-        },
-        min: 0,
-        max: 600,
-        interval: 50,
-      },
-    ],
+    yAxis: getLineValues(),
     animation: true,
     animationDuration: 400,
   };
