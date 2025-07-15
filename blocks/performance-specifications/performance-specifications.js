@@ -2,6 +2,9 @@ import { a, button, div, domEl, p, ul, li } from '../../scripts/scripts.js';
 import { loadScript } from '../../scripts/aem.js';
 import { getTextLabel } from '../../scripts/common.js';
 
+const MQ = window.matchMedia('(min-width: 744px)');
+const blockName = 'performance-specifications';
+
 // TODO get all these to placeholder.json for translations
 const TEXTS = {
   btnText: getTextLabel('Download Specs'),
@@ -33,8 +36,6 @@ const rpmValues = [600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600,
  */
 const engineData = new Map();
 
-const MQ = window.matchMedia('(min-width: 744px)');
-const blockName = 'performance-specifications';
 // Selected engine doesn't have data available in the JSON file
 const NoDataEngineDetail = {
   'download specs': null,
