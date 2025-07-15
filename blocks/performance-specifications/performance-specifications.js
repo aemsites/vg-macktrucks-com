@@ -10,13 +10,6 @@ const TEXTS = {
   btnText: getTextLabel('SpecsCharts:DownloadButton'),
   engineRatings: getTextLabel('SpecsCharts:RatingLabels'),
   bottomChartLabel: getTextLabel('SpecsCharts:RPM'),
-  facts: [
-    [getTextLabel('SpecsCharts:PeakPower'), getTextLabel('SpecsCharts:NoData')],
-    [getTextLabel('SpecsCharts:PeakPowerRPM'), getTextLabel('SpecsCharts:NoData')],
-    [getTextLabel('MaxTorque'), getTextLabel('SpecsCharts:NoData')],
-    [getTextLabel('MaxTorqueRPM'), getTextLabel('SpecsCharts:NoData')],
-  ],
-  noData: getTextLabel('SpecsCharts:NoData'),
 };
 
 const COLORS = {
@@ -35,16 +28,6 @@ const rpmValues = [600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600,
  * @type {Map<HTMLElement, Record<string, CategoryData>>}>}
  */
 const engineData = new Map();
-
-// Selected engine doesn't have data available in the JSON file
-const NoDataEngineDetail = {
-  'download specs': null,
-  facts: TEXTS.facts,
-  model: TEXTS.noData,
-  performanceData: {},
-  series: TEXTS.noData,
-  rpm: {},
-};
 
 const moveNavigationLine = (navigationLine, activeTab, tabNavigation) => {
   const { x: navigationX } = tabNavigation.getBoundingClientRect();
@@ -308,7 +291,7 @@ const refreshDetailView = (block) => {
   const { categoryId } = block.querySelector('.category-tablist button[aria-selected="true"]')?.dataset || null;
   const engineId = block.querySelector('.engine-tablist button[aria-selected="true"]')?.textContent || null;
   const engineDetail = engineData.get(block)[categoryId]?.engines[engineId];
-  const engineDetails = engineDetail || NoDataEngineDetail || {};
+  const engineDetails = engineDetail || {};
 
   // replace key specs
   block.querySelector('.key-specs').replaceWith(renderEngineSpecs(engineDetails));
@@ -330,10 +313,6 @@ const renderCategoryDetail = (block, categoryData, selectEngineId = null) => {
     </div>`;
 
   const tabList = categoryDetails.querySelector('.engine-tablist');
-
-  if (Object.keys(categoryData.engines).length === 0) {
-    categoryData.engines = { 'No Data': NoDataEngineDetail };
-  }
 
   Object.keys(categoryData.engines).forEach((engineId, index) => {
     const isSelected = selectEngineId ? engineId === selectEngineId : index === 0;
