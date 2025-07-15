@@ -2,11 +2,28 @@ import { a, button, div, domEl, p, ul, li } from '../../scripts/scripts.js';
 import { loadScript } from '../../scripts/aem.js';
 import { getTextLabel } from '../../scripts/common.js';
 
+// TODO get all these to placeholder.json for translations
 const TEXTS = {
   btnText: getTextLabel('Download Specs'),
   engineRatings: 'POWER / TORQUE RATING',
   bottomChartLabel: 'RPM',
+  facts: [
+    ['peak power', 'No Data'],
+    ['peak power rpm', 'No Data'],
+    ['max torque', 'No Data'],
+    ['max torque rpm', 'No Data'],
+  ],
+  noData: 'No Data',
 };
+
+const COLORS = {
+  white: '#ffffff',
+  chartLines: ['#b3976b', '#ffffff'],
+  bgColor: '#1D1D1D',
+  verticalLines: '#8e8e8e',
+};
+
+const rpmValues = [600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200];
 
 /**
  * as multiple blocks might be on the same page, the data is accessed using they block node as the
@@ -21,33 +38,11 @@ const blockName = 'performance-specifications';
 // Selected engine doesn't have data available in the JSON file
 const NoDataEngineDetail = {
   'download specs': null,
-  facts: [
-    ['peak power', 'No Data'],
-    ['peak power rpm', 'No Data'],
-    ['max torque', 'No Data'],
-    ['max torque rpm', 'No Data'],
-  ],
-  model: 'No Data',
-  performanceData: {
-    Torque: {
-      800: 0,
-      900: 0,
-      1000: 0,
-      1100: 0,
-      1200: 0,
-      1300: 0,
-      1400: 0,
-      1500: 0,
-      1600: 0,
-      1700: 0,
-      1800: 0,
-      1900: 0,
-      1950: 0,
-      2000: 0,
-      2100: 0,
-    },
-  },
-  series: 'No Data',
+  facts: TEXTS.facts,
+  model: TEXTS.noData,
+  performanceData: {},
+  series: TEXTS.noData,
+  rpm: {},
 };
 
 const moveNavigationLine = (navigationLine, activeTab, tabNavigation) => {
@@ -69,32 +64,11 @@ const centerTab = (tabList, itemTab) => {
 };
 
 /**
- * @param {Object} data
- */
-let conversionFactor = 1;
-
-const equalizeData = (data) => {
-  const { Torque, Power } = data.performanceData;
-  const maxTQ = Math.max(...Object.values(Torque));
-  const maxHP = Math.max(...Object.values(Power));
-
-  conversionFactor = Number((maxTQ / maxHP).toFixed(2));
-  Object.keys(Power).forEach((key) => {
-    Power[key] = Number(Power[key] * conversionFactor);
-  });
-  data.equalized = true;
-};
-
-/**
  * @param chartContainer {HTMLElement}
  * @param performanceData {Array<Array<string>>}
  */
 const updateChart = async (chartContainer, engineDetails) => {
   const performanceData = engineDetails.performanceData;
-  // On first pass, normalize power data so that lines align on top
-  if (!engineDetails.equalized) {
-    equalizeData(engineDetails);
-  }
 
   if (!window.echarts) {
     // delay by 3 seconds to ensure a good lighthouse score
@@ -105,20 +79,22 @@ const updateChart = async (chartContainer, engineDetails) => {
     await loadScript('/common/echarts-5.4.2/echarts.custom.only-linecharts.min.js');
   }
 
+  const chartHeight = () => ({
+    height: MQ.matches ? 550 : 480,
+  });
+
   let myChart = window.echarts.getInstanceByDom(chartContainer);
   if (!myChart) {
-    myChart = window.echarts.init(chartContainer, 'dark');
+    myChart = window.echarts.init(chartContainer, 'dark', chartHeight());
     window.addEventListener('resize', () => {
+      myChart.resize(chartHeight());
       if (!myChart.isDisposed()) {
         myChart.resize();
       }
     });
   }
 
-  const firstMetric = Object.values(performanceData)[0];
-  const rpmValues = Object.keys(firstMetric).map(Number);
-
-  const getEchartsSeries = (sweetSpotStart, sweetSpotEnd) => {
+  const getEchartsSeries = () => {
     const metrics = Object.keys(performanceData);
     const series = metrics.map((title, idx) => {
       const metricValues = Object.entries(performanceData[title]).map(([rpm, value]) => [Number(rpm), Number(value)]);
@@ -131,7 +107,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         itemStyle: {
           borderWidth: 1,
           borderType: 'solid',
-          borderColor: '#1D1D1D',
+          borderColor: COLORS.bgColor,
         },
         smooth: false,
         data: metricValues,
@@ -147,7 +123,7 @@ const updateChart = async (chartContainer, engineDetails) => {
           // color: 'rgb(96 96 96 / 50%)',
           color: 'transparent',
         },
-        data: [[{ xAxis: sweetSpotStart }, { xAxis: sweetSpotEnd }]],
+        // data: [[{ xAxis: sweetSpotStart }, { xAxis: sweetSpotEnd }]],
       },
     };
 
@@ -168,28 +144,28 @@ const updateChart = async (chartContainer, engineDetails) => {
         fontSize: 12,
         lineHeight: 15,
         fontWeight: 700,
-        color: '#ffffff',
+        color: COLORS.white,
       },
     },
 
-    series: getEchartsSeries(1300, 1700),
+    series: getEchartsSeries(),
     // Global palette:
-    color: ['#b3976b', '#ffffff'],
-    backgroundColor: '#1d1d1d',
-
+    color: COLORS.chartLines,
+    backgroundColor: COLORS.bgColor,
+    //  reduce space around the chart
     grid: {
-      //  reduce space around the chart
       left: '0',
       right: '0',
       top: '80',
       containLabel: true,
     },
     textStyle: {
-      color: '#ffffff',
+      color: COLORS.white,
     },
     xAxis: {
       min: rpmValues.at(0),
-      max: rpmValues.at(-1) + 100,
+      max: rpmValues.at(-1),
+      interval: 200,
       type: 'value',
 
       // label center bellow chart
@@ -205,14 +181,14 @@ const updateChart = async (chartContainer, engineDetails) => {
       splitLine: {
         show: true,
         lineStyle: {
-          color: '#8e8e8e',
+          color: COLORS.verticalLines,
           width: 1,
         },
       },
       minorSplitLine: {
         show: true,
         lineStyle: {
-          color: '#8e8e8e',
+          color: COLORS.verticalLines,
           width: 1,
         },
       },
@@ -221,17 +197,18 @@ const updateChart = async (chartContainer, engineDetails) => {
       },
       minorTick: {
         show: false,
-        splitNumber: 3,
+        splitNumber: 2,
       },
       axisLabel: {
         show: true,
         interval: 0,
-        showMinLabel: false,
-        showMaxLabel: false,
+        showMinLabel: true,
+        showMaxLabel: true,
         formatter(value) {
           // remove thousands separator
           return value;
         },
+        margin: 15,
       },
       axisLine: {
         show: false,
@@ -250,13 +227,17 @@ const updateChart = async (chartContainer, engineDetails) => {
         },
         axisLabel: {
           formatter(value) {
-            // do not display the cero on the bottom
+            // remove thousands separator
             return value;
           },
+          margin: 20,
         },
         splitLine: {
           show: false,
         },
+        min: 0,
+        max: 2000,
+        interval: 200,
       },
       {
         // horsepower values
@@ -270,13 +251,17 @@ const updateChart = async (chartContainer, engineDetails) => {
         },
         axisLabel: {
           formatter(value) {
-            // return orginal value and round it to a 50 unit value
-            return Math.round(value / conversionFactor / 50) * 50;
+            // remove thousands separator
+            return value;
           },
+          margin: 20,
         },
         splitLine: {
           show: false,
         },
+        min: 0,
+        max: 600,
+        interval: 50,
       },
     ],
     animation: true,
