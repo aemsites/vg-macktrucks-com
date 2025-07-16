@@ -24,7 +24,12 @@ export default async function decorate(block) {
   block.appendChild(accordionBlockWrapper);
 
   // Hx tag used for the titles of the accordion
-  const titleMeta = block.closest('.section').dataset.header || 'header 3';
+  const titleMeta = block.closest('.section').dataset.header;
+  if (!titleMeta) {
+    console.warn('No %cheader%c tag found in section metadata for v2-specifications block', 'color: red', 'color: inherit');
+    return;
+  }
+
   const headerTag = titleMeta.charAt(titleMeta.length - 1);
   const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].slice(headerTag);
 
