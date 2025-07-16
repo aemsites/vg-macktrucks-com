@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/news-and-stories/press-releases/</id>
     <title>Mack News</title>
-    <updated>2025-07-09T00:00:00.000Z</updated>
+    <updated>2025-07-16T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktrucks.com/news-and-stories/press-releases/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3390,5 +3390,13 @@
         <updated>2025-07-09T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“The safety features in the Pioneer reflect our deep understanding of drivers’ needs and our commitment to their well-being,” said Stephen Roy, president, Mack Trucks.]]></content>
         <published>2025-07-09T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Trucks Unveils Groundbreaking Mack Protect™ Safety System on the All-New Pioneer™ Highway Truck]]></title>
+        <id>https://www.macktrucks.com/mack-news/2025/mack-trucks-unveils-groundbreaking-mack-protect-safety-system-on-the-all-new-pioneer-highway-truck</id>
+        <link href="https://www.macktrucks.com/mack-news/2025/mack-trucks-unveils-groundbreaking-mack-protect-safety-system-on-the-all-new-pioneer-highway-truck"/>
+        <updated>2025-07-16T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“With Mack Protect, we're not just introducing new safety features – we’re fundamentally changing our approach to active safety technology”]]></content>
+        <published>2025-07-16T00:00:00.000Z</published>
     </entry>
 </feed>
