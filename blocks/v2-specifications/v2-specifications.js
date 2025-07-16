@@ -28,7 +28,7 @@ export default async function decorate(block) {
   const headerTag = titleMeta.charAt(titleMeta.length - 1);
   const headings = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].slice(headerTag);
 
-  // Add title styles to the headings that are not as the accordion button
+  // Add subtitle styles to headings inside the accordion, excluding those used as button titles
   const headingString = headings.join(',');
   const headingsList = [...block.querySelectorAll(headingString)];
   headingsList.forEach((heading) => heading.classList.add(`${blockName}__subtitle`, 'h5'));
