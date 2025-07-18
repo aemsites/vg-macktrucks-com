@@ -53,7 +53,7 @@ export default async function decorate(block) {
     contentEl.innerHTML = accordionContent.innerHTML;
 
     if (isContentInsideAnotherElement(accordionContent)) {
-      const pointedContent = document.querySelector(`.${accordionContent.textContent.substring(1)}`);
+      const pointedContent = [...document.querySelectorAll(`.${accordionContent.textContent.substring(1)}`)].at(-1);
       if (pointedContent) {
         const prevDisplay = pointedContent.parentElement.style.display;
         pointedContent.parentElement.style.display = 'none';
