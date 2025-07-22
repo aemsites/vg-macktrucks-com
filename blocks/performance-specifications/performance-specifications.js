@@ -94,7 +94,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         },
         smooth: false,
         data: metricValues,
-        z: series.length - (idx + 1),
+        z: metrics.length - (idx + 1),
       };
     });
 
