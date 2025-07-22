@@ -13,7 +13,7 @@ const TEXTS = {
 
 const COLORS = {
   white: '#ffffff',
-  chartLines: ['#b3976b', '#ffffff', '#87754E', '#A7ABAF'],
+  chartLines: ['#87754E', '#A7ABAF', '#b3976b', '#ffffff'],
   bgColor: '#1D1D1D',
   verticalLines: '#8e8e8e',
 };
