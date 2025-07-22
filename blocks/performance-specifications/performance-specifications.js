@@ -149,6 +149,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         color: COLORS.white,
       },
     },
+
     series: getEchartsSeries(),
     // Global palette:
     color: COLORS.chartLines,
