@@ -378,6 +378,18 @@
     {
       "Key": "Unmute video",
       "Text": "Unmute video"
+    },
+    {
+      "Key": "SpecsCharts:RatingLabels",
+      "Text": "POWER / TORQUE RATING"
+    },
+    {
+      "Key": "SpecsCharts:RPM",
+      "Text": "RPM"
+    },
+    {
+      "Key": "SpecsCharts:DownloadButton",
+      "Text": "Download Specs"
     }
   ],
   ":type": "sheet"
