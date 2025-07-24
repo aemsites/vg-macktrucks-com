@@ -13,7 +13,7 @@ const TEXTS = {
 
 const COLORS = {
   white: '#ffffff',
-  chartLines: ['#b3976b', '#ffffff'],
+  chartLines: ['#b3976b', '#ffffff', '#87754E', '#A7ABAF'],
   bgColor: '#1D1D1D',
   verticalLines: '#8e8e8e',
 };
@@ -63,7 +63,7 @@ const updateChart = async (chartContainer, engineDetails) => {
   }
 
   const chartHeight = () => ({
-    height: MQ.matches ? 540 : 480,
+    height: MQ.matches ? 510 : 480,
   });
 
   let myChart = window.echarts.getInstanceByDom(chartContainer);
@@ -94,10 +94,43 @@ const updateChart = async (chartContainer, engineDetails) => {
         },
         smooth: false,
         data: metricValues,
+        z: metrics.length - (idx + 1),
       };
     });
 
     return series;
+  };
+
+  const getLineValues = () => {
+    const lines = [];
+    Object.keys(performanceData).forEach((key) => {
+      const isTorqueRating = key.toLowerCase().includes('torque');
+      const lineObj = {
+        type: 'value',
+        position: isTorqueRating ? 'left' : 'right',
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter(value) {
+            // remove thousands separator
+            return value;
+          },
+          margin: 20,
+        },
+        splitLine: {
+          show: false,
+        },
+        min: 0,
+        max: isTorqueRating ? 2000 : 600,
+        interval: isTorqueRating ? 200 : 50,
+      };
+      lines.push(lineObj);
+    });
+    return lines;
   };
 
   const option = {
@@ -124,10 +157,10 @@ const updateChart = async (chartContainer, engineDetails) => {
     backgroundColor: COLORS.bgColor,
     //  reduce space around the chart
     grid: {
-      left: '0',
-      right: '0',
-      top: '80',
-      containLabel: true,
+      left: 50,
+      right: 40,
+      top: 80,
+      containLabel: false,
     },
     textStyle: {
       color: COLORS.white,
@@ -184,56 +217,7 @@ const updateChart = async (chartContainer, engineDetails) => {
         show: false,
       },
     },
-    yAxis: [
-      {
-        // torque values
-        type: 'value',
-        position: 'left',
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          formatter(value) {
-            // remove thousands separator
-            return value;
-          },
-          margin: 20,
-        },
-        splitLine: {
-          show: false,
-        },
-        min: 0,
-        max: 2000,
-        interval: 200,
-      },
-      {
-        // power values
-        type: 'value',
-        position: 'right',
-        axisTick: {
-          show: false,
-        },
-        axisLine: {
-          show: false,
-        },
-        axisLabel: {
-          formatter(value) {
-            // remove thousands separator
-            return value;
-          },
-          margin: 20,
-        },
-        splitLine: {
-          show: false,
-        },
-        min: 0,
-        max: 600,
-        interval: 50,
-      },
-    ],
+    yAxis: getLineValues(),
     animation: true,
     animationDuration: 400,
   };
