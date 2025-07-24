@@ -72,11 +72,11 @@ const processVideoLink = (block, link) => {
     });
 
     block.prepend(video);
-    link.remove();
+    link.parentElement.remove();
   }
 };
 
-export default async function decorate(block) {
+export default function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
   const blockContainer = block.parentElement.parentElement;
   const isPdp = blockContainer.dataset.page === 'pdp';
@@ -150,9 +150,8 @@ export default async function decorate(block) {
     firstHeading?.classList.add('with-marker');
   }
 
+  const heading = content.querySelector(`.${blockName}__heading`);
   if (isMagazine) {
-    const heading = content.querySelector(`.${blockName}__heading`);
-
     if (heading) {
       addLineBreaksToWords(heading);
     }
@@ -160,6 +159,15 @@ export default async function decorate(block) {
 
   const button = content.querySelector('a');
   const allTexts = content.querySelectorAll('p');
+  const buttons = content.querySelectorAll('p.button-container');
+  const heroContent = block.querySelector(`.${blockName}__content`);
+
+  if (buttons.length > 1) {
+    heroContent.classList.add(`${blockName}__content--2-buttons`);
+    const buttonsWrapper = createElement('div');
+    heading.after(buttonsWrapper, buttons[0]);
+    buttonsWrapper.append(...buttons);
+  }
 
   if (!button && allTexts.length > 0) {
     content.classList.add('with-text');

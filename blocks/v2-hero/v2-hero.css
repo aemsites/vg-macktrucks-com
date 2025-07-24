@@ -624,3 +624,20 @@
   letter-spacing: 0.17em;
   max-width: 375px;
 }
+
+/* Hero with 2 buttons */
+.v2-hero__content.v2-hero__content--2-buttons {
+  align-items: flex-start;
+}
+
+.v2-hero__content.v2-hero__content--2-buttons > div {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 496px) {
+  .v2-hero__content.v2-hero__content--2-buttons > div {
+    flex-direction: row;
+    gap: 24px;
+  }
+}
