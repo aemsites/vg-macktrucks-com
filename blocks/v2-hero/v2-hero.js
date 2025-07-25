@@ -76,13 +76,10 @@ const processVideoLink = (block, link) => {
   }
 };
 
-const handleMultipleButtons = (block) => {
-  const heroContent = block.querySelector(`.${blockName}__content`);
-  const heading = heroContent.querySelector(`.${blockName}__heading`);
-  const buttons = heroContent.querySelectorAll('p.button-container');
-
+const handleMultipleButtons = (content, buttons = []) => {
+  const heading = content.querySelector(`.${blockName}__heading`);
   if (buttons.length > 1) {
-    heroContent.classList.add(`${blockName}__content--2-buttons`);
+    content.classList.add(`${blockName}__content--2-buttons`);
     const buttonsWrapper = createElement('div');
     heading.after(buttonsWrapper, buttons[0]);
     buttonsWrapper.append(...buttons);
@@ -173,7 +170,10 @@ export default function decorate(block) {
   const button = content.querySelector('a');
   const allTexts = content.querySelectorAll('p');
 
-  handleMultipleButtons(block);
+  const buttons = content.querySelectorAll('p.button-container');
+  if (buttons.length > 1) {
+    handleMultipleButtons(content, buttons);
+  }
 
   if (!button && allTexts.length > 0) {
     content.classList.add('with-text');
