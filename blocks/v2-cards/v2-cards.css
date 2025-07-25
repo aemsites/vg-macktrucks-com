@@ -32,6 +32,26 @@
   flex-direction: column;
 }
 
+.v2-cards__text-wrapper ul {
+  list-style: none;
+  padding-inline-start: 5px;
+}
+
+.list-style-bullets .v2-cards__text-wrapper ul {
+  list-style: disc;
+  list-style-position: inside;
+  padding-inline-start: 0;
+}
+
+.list-style-bullets li::before {
+  display: none;
+}
+
+.v2-cards__text-wrapper li::before {
+  content: "-";
+  margin-right: 10px;
+}
+
 .v2-cards--no-background .v2-cards__text-wrapper {
   padding: 40px 0 0;
 }
