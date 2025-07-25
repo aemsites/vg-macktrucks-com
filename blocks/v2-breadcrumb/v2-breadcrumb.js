@@ -83,30 +83,52 @@ export default function decorate(block) {
   const nav = createElement('nav', { classes: [`${blockName}__crumb-nav`] });
   const ul = createElement('ul', { classes: [`${blockName}__crumb-list`] });
 
-  const crumbs = path.map((_, i) => {
-    const liEl = createElement('li', { classes: [`${blockName}__crumb-item`] });
-    const content = hasCustomClass ? path[i] : formatText(path[i]);
-    const crumbProps = { 'data-content': content };
-    const crumbClasses = [`${blockName}__crumb`];
-    if (i !== path.length - 1) {
-      crumbProps.href = hasCustomClass ? `${customLinks[i].value}` : `/${path.slice(0, i + 1).join('/')}/`;
-    } else {
-      crumbClasses.push(`${blockName}__crumb--active`);
-      crumbProps['aria-current'] = 'page';
-    }
-    const crumb = createElement('a', { classes: crumbClasses, props: crumbProps });
-    if (hasCustomClass) {
-      addTargetBlankToExternalLink(crumb);
-    }
-    // append nodes if element has formatting tags like em, strong and sup
-    if (customLinks[i].hasFormattingTags) {
-      crumb.append(...customLinks[i].element.childNodes);
-    } else {
-      crumb.textContent = content;
-    }
-    liEl.append(crumb);
-    return liEl;
-  });
+  const crumbs = path
+    .map((_, i) => {
+      const liEl = createElement('li', { classes: [`${blockName}__crumb-item`] });
+      const crumbClasses = [`${blockName}__crumb`];
+      let content;
+      let crumbProps = {};
+
+      if (hasCustomClass) {
+        const linkData = customLinks[i];
+        if (!linkData) {
+          return null;
+        }
+        content = path[i];
+        crumbProps = { 'data-content': content };
+        if (i !== path.length - 1) {
+          crumbProps.href = linkData.value;
+        } else {
+          crumbClasses.push(`${blockName}__crumb--active`);
+          crumbProps['aria-current'] = 'page';
+        }
+        const crumb = createElement('a', { classes: crumbClasses, props: crumbProps });
+        addTargetBlankToExternalLink(crumb);
+        if (linkData.hasFormattingTags) {
+          crumb.append(...linkData.element.childNodes);
+        } else {
+          crumb.textContent = content;
+        }
+        liEl.append(crumb);
+      } else {
+        content = formatText(path[i]);
+        crumbProps = { 'data-content': content };
+        if (i !== path.length - 1) {
+          crumbProps.href = `/${path.slice(0, i + 1).join('/')}/`;
+        } else {
+          crumbClasses.push(`${blockName}__crumb--active`);
+          crumbProps['aria-current'] = 'page';
+        }
+        const crumb = createElement('a', { classes: crumbClasses, props: crumbProps });
+        crumb.textContent = content;
+        liEl.append(crumb);
+      }
+
+      return liEl;
+    })
+    .filter(Boolean);
+
   const homeItem = createElement('li', { classes: [`${blockName}__crumb-item`] });
   const homeEl = createElement('a', {
     classes: [`${blockName}__crumb`, `${blockName}__crumb--home`],
