@@ -633,11 +633,19 @@
 .v2-hero__content.v2-hero__content--2-buttons > div {
   display: flex;
   flex-direction: column;
+  gap: 24px;
+}
+
+.v2-hero__content.v2-hero__content--2-buttons > div .button-container:last-of-type {
+  margin-top: 0;
 }
 
 @media (min-width: 496px) {
   .v2-hero__content.v2-hero__content--2-buttons > div {
     flex-direction: row;
-    gap: 24px;
+  }
+  
+  .v2-hero__content.v2-hero__content--2-buttons > div .button-container:last-of-type {
+    margin-top: 16px;
   }
 }
