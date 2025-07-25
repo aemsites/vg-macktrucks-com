@@ -78,12 +78,10 @@ const processVideoLink = (block, link) => {
 
 const handleMultipleButtons = (content, buttons = []) => {
   const heading = content.querySelector(`.${blockName}__heading`);
-  if (buttons.length > 1) {
-    content.classList.add(`${blockName}__content--2-buttons`);
-    const buttonsWrapper = createElement('div');
-    heading.after(buttonsWrapper, buttons[0]);
-    buttonsWrapper.append(...buttons);
-  }
+  content.classList.add(`${blockName}__content--2-buttons`);
+  const buttonsWrapper = createElement('div');
+  heading.after(buttonsWrapper, buttons[0]);
+  buttonsWrapper.append(...buttons);
 };
 
 export default function decorate(block) {
