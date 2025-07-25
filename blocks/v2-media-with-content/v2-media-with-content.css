@@ -24,6 +24,26 @@
   width: 100vw;
 }
 
+.v2-media-with-content__column ul {
+  list-style: none;
+  padding-inline-start: 5px;
+}
+
+.list-style-bullets .v2-media-with-content__column ul {
+  list-style: disc;
+  list-style-position: inside;
+  padding-inline-start: 0;
+}
+
+.list-style-bullets li::before {
+  display: none;
+}
+
+.v2-media-with-content__column li::before {
+  content: "-";
+  margin-right: 10px;
+}
+
 .v2-media-with-content__title {
   font-family: var(--ff-headline-medium);
   font-size: var(--heading-font-size-s);
