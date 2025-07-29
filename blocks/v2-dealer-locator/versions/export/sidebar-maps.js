@@ -1578,14 +1578,14 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/uptime.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
           if ($electricDealer === true || (details.services && Object.values(details.services).includes('Mack Certified EV Dealer'))) {
             var pinIcon = {
               url: "/blocks/v2-dealer-locator/images/uptime-electric.svg",
               scaledSize: new google.maps.Size(58, 80), // scaled size
               origin: new google.maps.Point(0, 0), // origin
-              anchor: new google.maps.Point(0, 0)
+              anchor: new google.maps.Point(19, 57)
             }
           }
         }
@@ -1594,7 +1594,7 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/dealer-electric.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
         }
         else {
@@ -1602,7 +1602,7 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/dealer.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
         }
 
