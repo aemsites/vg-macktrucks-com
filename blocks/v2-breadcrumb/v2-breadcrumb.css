@@ -12,6 +12,7 @@
 
 .v2-breadcrumb .v2-breadcrumb__crumb-list {
   display: flex;
+  padding-left: 0;
 }
 
 .v2-breadcrumb .v2-breadcrumb__crumb-item {
