@@ -12,65 +12,35 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
-// COOKIE ACCEPTANCE CHECKING
-if (isPerformanceAllowed()) {
-  if (GTM_ID) {
-    loadGoogleTagManager();
-  }
-  if (HOTJAR_ID) {
-    loadHotjar();
-  }
-}
-
-if (isSocialAllowed()) {
-  if (FACEBOOK_ID) {
-    loadFacebookPixel();
-  }
-  if (LINKEDIN_PARTNER_ID) {
-    loadLinkedInInsightTag();
-  }
-}
-
-if (isTargetingAllowed()) {
-  if (ACC_ENG_TRACKING) {
-    loadAccountEngagementTracking();
-  }
-}
-
-// add more delayed functionality here
-
-// Prevent the cookie banner from loading when running in library
-if (!window.location.pathname.includes('srcdoc') && !isDevHost()) {
-  loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
-    type: 'text/javascript',
-    charset: 'UTF-8',
-    'data-domain-script': DATA_DOMAIN_SCRIPT,
-  });
-
-  window.OptanonWrapper = () => {
-    const currentOnetrustActiveGroups = window.OnetrustActiveGroups;
-
-    function isSameGroups(groups1, groups2) {
-      const s1 = JSON.stringify(groups1.split(','));
-      const s2 = JSON.stringify(groups2.split(','));
-
-      return s1 === s2;
-    }
-
-    window.OneTrust.OnConsentChanged(() => {
-      // reloading the page only when the active group has changed
-      if (window.isSingleVideo === true) {
-        return;
-      }
-      if (!isSameGroups(currentOnetrustActiveGroups, window.OnetrustActiveGroups) && window.isSingleVideo !== 'true') {
-        window.location.reload();
-      }
-    });
-  };
-}
-
 if (isDevHost()) {
   import('./validate-elements.js');
+}
+
+// Maze Universal Snippet
+function loadMaze() {
+  (function autoLoadMazeFunction(m, a, z, e) {
+    let t;
+    try {
+      t = m.sessionStorage.getItem('maze-us');
+    } catch (err) {
+      console.error(err);
+    }
+
+    if (!t) {
+      t = new Date().getTime();
+      try {
+        m.sessionStorage.setItem('maze-us', t);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    const s = a.createElement('script');
+    s.src = `${z}?apiKey=${e}`;
+    s.async = true;
+    a.getElementsByTagName('head')[0].appendChild(s);
+    m.mazeUniversalSnippetApiKey = e;
+  })(window, document, 'https://snippet.maze.co/maze-universal-loader.js', '2852429c-8735-46e0-8655-38f2f515fa53');
 }
 
 // Google Analytics
@@ -167,3 +137,64 @@ async function loadLinkedInInsightTag() {
     s.parentNode.insertBefore(b, s);
   })(window.lintrk);
 }
+
+function delayedInit() {
+  // COOKIE ACCEPTANCE CHECKING
+  if (isPerformanceAllowed()) {
+    if (GTM_ID) {
+      loadGoogleTagManager();
+    }
+    if (HOTJAR_ID) {
+      loadHotjar();
+    }
+  }
+
+  if (isSocialAllowed()) {
+    if (FACEBOOK_ID) {
+      loadFacebookPixel();
+    }
+    if (LINKEDIN_PARTNER_ID) {
+      loadLinkedInInsightTag();
+    }
+  }
+
+  if (isTargetingAllowed()) {
+    if (ACC_ENG_TRACKING) {
+      loadAccountEngagementTracking();
+    }
+  }
+
+  loadMaze();
+
+  // Prevent the cookie banner from loading when running in library
+  if (!window.location.pathname.includes('srcdoc') && !isDevHost()) {
+    loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
+      type: 'text/javascript',
+      charset: 'UTF-8',
+      'data-domain-script': DATA_DOMAIN_SCRIPT,
+    });
+
+    window.OptanonWrapper = () => {
+      const currentOnetrustActiveGroups = window.OnetrustActiveGroups;
+
+      function isSameGroups(groups1, groups2) {
+        const s1 = JSON.stringify(groups1.split(','));
+        const s2 = JSON.stringify(groups2.split(','));
+
+        return s1 === s2;
+      }
+
+      window.OneTrust.OnConsentChanged(() => {
+        // reloading the page only when the active group has changed
+        if (window.isSingleVideo === true) {
+          return;
+        }
+        if (!isSameGroups(currentOnetrustActiveGroups, window.OnetrustActiveGroups) && window.isSingleVideo !== 'true') {
+          window.location.reload();
+        }
+      });
+    };
+  }
+}
+
+delayedInit();
