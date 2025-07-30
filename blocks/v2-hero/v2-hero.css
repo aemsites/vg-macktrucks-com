@@ -648,4 +648,8 @@
   .v2-hero__content.v2-hero__content--2-buttons > div .button-container:last-of-type {
     margin-top: 16px;
   }
+
+  .v2-hero--half-height .v2-hero__content.v2-hero__content--2-buttons .button-container:last-of-type {
+    margin-top: 0;
+  }
 }
