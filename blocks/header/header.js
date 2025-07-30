@@ -704,7 +704,11 @@ export default async function decorate(block) {
   const content = document.createRange().createContextualFragment(await resp.text());
 
   const [logoContainer, navigationContainer, actionsContainer, ...menuContent] = content.children;
+  const headerLogoAlignment = getMetadata('header-logo-alignment');
   const nav = createElement('nav', { classes: [`${blockName}__nav`] });
+  if (headerLogoAlignment) {
+    nav.classList.add(`${blockName}__nav-logo--${headerLogoAlignment}`);
+  }
   const navContent = document.createRange().createContextualFragment(`
     <div class="${blockName}__menu-overlay"></div>
     ${createLogo(logoContainer).outerHTML}
