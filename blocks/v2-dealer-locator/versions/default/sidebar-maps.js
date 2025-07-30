@@ -235,17 +235,6 @@ var $distanceToggles = $('.toggle-container');
     $directionsService = new google.maps.DirectionsService();
     $directionsDisplay = new google.maps.DirectionsRenderer();
 
-    google.maps.event.addListener(
-      $directionsDisplay,
-      'routeindex_changed',
-      function () {
-
-        //$.fn.directionsMessage();
-
-        //$.fn.willDealerBeOpen();
-      }
-    );
-
     // Set inital slider position based on active locale unit
     [...$distanceToggles].forEach(toggle => {
       $activeButton = toggle.querySelector('.toggle-button');
