@@ -39,6 +39,19 @@
   object-position: center;
 }
 
+.v2-recommendations__article-video {
+  position: relative;
+  height: 241px;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.v2-recommendations__article-video .video-js {
+  width: 100%;
+  height: 100%;
+}
+
 .v2-recommendations__article-content {
   background-color: var(--c-primary-white);
   padding: 24px;
@@ -94,7 +107,8 @@
     height: 100%;
   }
 
-  .v2-recommendations__article-image {
+  .v2-recommendations__article-image,
+  .v2-recommendations__article-video {
     height: 198px;
   }
 
