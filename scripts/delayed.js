@@ -12,30 +12,33 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
-// COOKIE ACCEPTANCE CHECKING
-if (isPerformanceAllowed()) {
-  if (GTM_ID) {
-    loadGoogleTagManager();
+// This functions runs once at the begining and whenever the selected group of cookies changes.
+function checkCookiesAndLoadAllScripts() {
+  if (isPerformanceAllowed()) {
+    if (GTM_ID) {
+      loadGoogleTagManager();
+    }
+    if (HOTJAR_ID) {
+      loadHotjar();
+    }
   }
-  if (HOTJAR_ID) {
-    loadHotjar();
-  }
-}
 
-if (isSocialAllowed()) {
-  if (FACEBOOK_ID) {
-    loadFacebookPixel();
+  if (isSocialAllowed()) {
+    if (FACEBOOK_ID) {
+      loadFacebookPixel();
+    }
+    if (LINKEDIN_PARTNER_ID) {
+      loadLinkedInInsightTag();
+    }
   }
-  if (LINKEDIN_PARTNER_ID) {
-    loadLinkedInInsightTag();
-  }
-}
 
-if (isTargetingAllowed()) {
-  if (ACC_ENG_TRACKING) {
-    loadAccountEngagementTracking();
+  if (isTargetingAllowed()) {
+    if (ACC_ENG_TRACKING) {
+      loadAccountEngagementTracking();
+    }
   }
 }
+checkCookiesAndLoadAllScripts();
 
 // add more delayed functionality here
 
@@ -63,7 +66,8 @@ if (!window.location.pathname.includes('srcdoc') && !isDevHost()) {
         return;
       }
       if (!isSameGroups(currentOnetrustActiveGroups, window.OnetrustActiveGroups) && window.isSingleVideo !== 'true') {
-        window.location.reload();
+        // Run all cookie checks and their associated scripts
+        checkCookiesAndLoadAllScripts();
       }
     });
   };
