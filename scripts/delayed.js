@@ -12,7 +12,7 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
-// This functions runs once at the begining and whenever a change in the selected group of cookies change.
+// This functions runs once at the begining and whenever the selected group of cookies changes.
 function checkCookiesAndLoadAllScripts() {
   if (isPerformanceAllowed()) {
     if (GTM_ID) {
