@@ -12,6 +12,10 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
+if (isDevHost()) {
+  import('./validate-elements.js');
+}
+
 // This functions runs once at the begining and whenever the selected group of cookies changes.
 function checkCookiesAndLoadAllScripts() {
   if (isPerformanceAllowed()) {
@@ -38,43 +42,32 @@ function checkCookiesAndLoadAllScripts() {
     }
   }
 }
-checkCookiesAndLoadAllScripts();
 
-// add more delayed functionality here
-
-// Prevent the cookie banner from loading when running in library
-if (!window.location.pathname.includes('srcdoc') && !isDevHost()) {
-  loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
-    type: 'text/javascript',
-    charset: 'UTF-8',
-    'data-domain-script': DATA_DOMAIN_SCRIPT,
-  });
-
-  window.OptanonWrapper = () => {
-    const currentOnetrustActiveGroups = window.OnetrustActiveGroups;
-
-    function isSameGroups(groups1, groups2) {
-      const s1 = JSON.stringify(groups1.split(','));
-      const s2 = JSON.stringify(groups2.split(','));
-
-      return s1 === s2;
+// Maze Universal Snippet
+function loadMaze() {
+  (function autoLoadMazeFunction(m, a, z, e) {
+    let t;
+    try {
+      t = m.sessionStorage.getItem('maze-us');
+    } catch (err) {
+      console.error(err);
     }
 
-    window.OneTrust.OnConsentChanged(() => {
-      // reloading the page only when the active group has changed
-      if (window.isSingleVideo === true) {
-        return;
+    if (!t) {
+      t = new Date().getTime();
+      try {
+        m.sessionStorage.setItem('maze-us', t);
+      } catch (err) {
+        console.error(err);
       }
-      if (!isSameGroups(currentOnetrustActiveGroups, window.OnetrustActiveGroups) && window.isSingleVideo !== 'true') {
-        // Run all cookie checks and their associated scripts
-        checkCookiesAndLoadAllScripts();
-      }
-    });
-  };
-}
+    }
 
-if (isDevHost()) {
-  import('./validate-elements.js');
+    const s = a.createElement('script');
+    s.src = `${z}?apiKey=${e}`;
+    s.async = true;
+    a.getElementsByTagName('head')[0].appendChild(s);
+    m.mazeUniversalSnippetApiKey = e;
+  })(window, document, 'https://snippet.maze.co/maze-universal-loader.js', '2852429c-8735-46e0-8655-38f2f515fa53');
 }
 
 // Google Analytics
@@ -171,3 +164,43 @@ async function loadLinkedInInsightTag() {
     s.parentNode.insertBefore(b, s);
   })(window.lintrk);
 }
+
+function delayedInit() {
+  // COOKIE ACCEPTANCE CHECKING
+  checkCookiesAndLoadAllScripts();
+
+  loadMaze();
+
+  // Prevent the cookie banner from loading when running in library
+  if (!window.location.pathname.includes('srcdoc') && !isDevHost()) {
+    loadScript('https://cdn.cookielaw.org/scripttemplates/otSDKStub.js', {
+      type: 'text/javascript',
+      charset: 'UTF-8',
+      'data-domain-script': DATA_DOMAIN_SCRIPT,
+    });
+
+    window.OptanonWrapper = () => {
+      const currentOnetrustActiveGroups = window.OnetrustActiveGroups;
+
+      function isSameGroups(groups1, groups2) {
+        const s1 = JSON.stringify(groups1.split(','));
+        const s2 = JSON.stringify(groups2.split(','));
+
+        return s1 === s2;
+      }
+
+      window.OneTrust.OnConsentChanged(() => {
+        // reloading the page only when the active group has changed
+        if (window.isSingleVideo === true) {
+          return;
+        }
+        if (!isSameGroups(currentOnetrustActiveGroups, window.OnetrustActiveGroups) && window.isSingleVideo !== 'true') {
+          // Run all cookie checks and their associated scripts
+          checkCookiesAndLoadAllScripts();
+        }
+      });
+    };
+  }
+}
+
+delayedInit();
