@@ -421,6 +421,21 @@ a.header__link {
     justify-content: space-between;
   }
 
+  .header__actions {
+    width: auto;
+  }
+
+  .header__nav-logo--left .header__logo-image-wrapper {
+    position: relative;
+    left: unset;
+    transform: none;
+  }
+
+  .header__nav-logo--left .header__actions,
+  .header__custom .header__nav-logo--left .header__actions {
+    margin-left: 0;
+  }
+
   .header__logo-image-wrapper:has(.icon-bulldog):hover svg {
     opacity: 0;
     transition-delay: 0s;
@@ -442,10 +457,6 @@ a.header__link {
   .header__logo-image-wrapper:has(.icon-bulldog):hover::after {
     opacity: 1;
     transition-delay: calc(var(--duration-small) * 1.25);
-  }
-
-  .header__actions {
-    width: auto;
   }
 
   .header__action-link.header__hamburger-menu {

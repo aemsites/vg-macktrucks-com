@@ -12,8 +12,35 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
+
 if (isDevHost()) {
   import('./validate-elements.js');
+
+// This functions runs once at the begining and whenever the selected group of cookies changes.
+function checkCookiesAndLoadAllScripts() {
+  if (isPerformanceAllowed()) {
+    if (GTM_ID) {
+      loadGoogleTagManager();
+    }
+    if (HOTJAR_ID) {
+      loadHotjar();
+    }
+  }
+
+  if (isSocialAllowed()) {
+    if (FACEBOOK_ID) {
+      loadFacebookPixel();
+    }
+    if (LINKEDIN_PARTNER_ID) {
+      loadLinkedInInsightTag();
+    }
+  }
+
+  if (isTargetingAllowed()) {
+    if (ACC_ENG_TRACKING) {
+      loadAccountEngagementTracking();
+    }
+  }
 }
 
 // Maze Universal Snippet
@@ -140,29 +167,7 @@ async function loadLinkedInInsightTag() {
 
 function delayedInit() {
   // COOKIE ACCEPTANCE CHECKING
-  if (isPerformanceAllowed()) {
-    if (GTM_ID) {
-      loadGoogleTagManager();
-    }
-    if (HOTJAR_ID) {
-      loadHotjar();
-    }
-  }
-
-  if (isSocialAllowed()) {
-    if (FACEBOOK_ID) {
-      loadFacebookPixel();
-    }
-    if (LINKEDIN_PARTNER_ID) {
-      loadLinkedInInsightTag();
-    }
-  }
-
-  if (isTargetingAllowed()) {
-    if (ACC_ENG_TRACKING) {
-      loadAccountEngagementTracking();
-    }
-  }
+  checkCookiesAndLoadAllScripts();
 
   loadMaze();
 
@@ -190,7 +195,8 @@ function delayedInit() {
           return;
         }
         if (!isSameGroups(currentOnetrustActiveGroups, window.OnetrustActiveGroups) && window.isSingleVideo !== 'true') {
-          window.location.reload();
+          // Run all cookie checks and their associated scripts
+          checkCookiesAndLoadAllScripts();
         }
       });
     };
