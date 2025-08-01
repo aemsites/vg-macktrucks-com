@@ -86,7 +86,7 @@ $electricDealer = false;
 $hoverText = $('#hoverText').val();
 
 $locale = window.locatorConfig.locale;
-$units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 0.62137 }];
+$units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 1 }];
 $activeUnit = $units[($locale === 'en-BS' || $locale === 'en-US') ? 0 : 1].name;
 var $distanceToggles = $('.toggle-container');
 
@@ -96,7 +96,7 @@ var $distanceToggles = $('.toggle-container');
 
     $geocoder = new google.maps.Geocoder();
 
-    $map = new google.maps.Map(document.getElementById("map"),{
+    $map = new google.maps.Map(document.getElementById("map"), {
       center: {
         lat: 39.670469,
         lng: -101.766407
@@ -235,17 +235,6 @@ var $distanceToggles = $('.toggle-container');
     $directionsService = new google.maps.DirectionsService();
     $directionsDisplay = new google.maps.DirectionsRenderer();
 
-    google.maps.event.addListener(
-        $directionsDisplay,
-        'routeindex_changed',
-        function () {
-
-          //$.fn.directionsMessage();
-
-          //$.fn.willDealerBeOpen();
-        }
-    );
-
     // Set inital slider position based on active locale unit
     [...$distanceToggles].forEach(toggle => {
       $activeButton = toggle.querySelector('.toggle-button');
@@ -326,64 +315,44 @@ $.fn.loadPins = function () {
     url: window.locatorConfig.dataSource + '?' + ((window.locatorConfig.asist) ? 'asist=1%26' : '') + 'state=1',
     type: "GET",
     success: function (data) {
-
       try {
         data = JSON.parse(data);
       } catch (e) {
         // data is already an object, proceed.
       }
-
       for (var country in data.countries) {
-
         if (data.countries.hasOwnProperty(country)) {
-
           $country = data.countries[country];
-
           for (var state in $country.states) {
-
             if ($country.states.hasOwnProperty(state)) {
-
               $state = $country.states[state];
-
               for (var dealer in $state.dealers) {
-
                 if ($state.dealers.hasOwnProperty(dealer)) {
-
                   $dealer = $state.dealers[dealer];
-
                   if ($dealer.services) {
-
                     for (var service in $dealer.services) {
-
                       if ($dealer.services.hasOwnProperty(service)) {
-
                         $service = $dealer.services[service];
-
                         if ($service.toLowerCase().indexOf("certified uptime") > -1) {
                           $dealer.isCertifiedUptimeCenter = true;
                           $electricDealer = false;
                         }
-
                         if ($service.toLowerCase().indexOf("certified") > -1) {
                           $dealer.isCertifiedCenter = true;
                         }
-
                         if ($service.toLowerCase().indexOf('premium used') > -1) {
                           $dealer.isPremiumUsedTruckDealer = true;
                           $service = 'Premium Certified Used Truck Dealer';
                         }
-
                         if ($service.toLowerCase().indexOf('select part store') > -1) {
                           $dealer.isPartsAssist = true;
                           $dealer.services[service] = 'SELECT Part Store&reg;';
                         }
                       }
-
                     }
                     if (Object.values($dealer.services).includes('Mack Certified EV Dealer')) {
                       $electricDealer = true;
                     }
-
                   }
                   if ($dealer.isCertifiedUptimeCenter) {
                     var pinIcon = {
@@ -428,15 +397,10 @@ $.fn.loadPins = function () {
 
                   // Marker click event listener
                   $marker.addListener('click', function () {
-
                     var index = $markers.indexOf(this);
-
                     var marker = $markers[index];
-
                     $map.panTo(marker.position);
-
                     if ($lastPane == 'sidebar-select-pins') {
-
                       var details = null;
                       for (i = 0; i < $pins.length; i++) {
 
@@ -509,14 +473,14 @@ $.fn.loadPins = function () {
                         url: "/blocks/v2-dealer-locator/images/uptime.svg",
                         scaledSize: new google.maps.Size(58, 80), // scaled size
                         origin: new google.maps.Point(0, 0), // origin
-                        anchor: new google.maps.Point(0, 0)
+                        anchor: new google.maps.Point(19, 57)
                       }
                       if ($electricDealer === true || (details.services && Object.values(details.services).includes('Mack Certified EV Dealer'))) {
                         var pinIcon = {
                           url: "/blocks/v2-dealer-locator/images/uptime-electric.svg",
                           scaledSize: new google.maps.Size(58, 80), // scaled size
                           origin: new google.maps.Point(0, 0), // origin
-                          anchor: new google.maps.Point(0, 0)
+                          anchor: new google.maps.Point(19, 57)
                         }
                       }
                     }
@@ -525,7 +489,7 @@ $.fn.loadPins = function () {
                         url: "/blocks/v2-dealer-locator/images/dealer-electric.svg",
                         scaledSize: new google.maps.Size(58, 80), // scaled size
                         origin: new google.maps.Point(0, 0), // origin
-                        anchor: new google.maps.Point(0, 0)
+                        anchor: new google.maps.Point(19, 57)
                       }
                     }
                     else {
@@ -533,7 +497,7 @@ $.fn.loadPins = function () {
                         url: "/blocks/v2-dealer-locator/images/dealer.svg",
                         scaledSize: new google.maps.Size(58, 80), // scaled size
                         origin: new google.maps.Point(0, 0), // origin
-                        anchor: new google.maps.Point(0, 0)
+                        anchor: new google.maps.Point(19, 57)
                       }
                     }
 
@@ -689,7 +653,7 @@ $.fn.getOpenHours = function (pin) {
 $.fn.isOpen = async function (dealer, time) {
   var hours = $.fn.getOpenHours(dealer);
   var compareDate = '1/1/2000 '
-  
+
   if (!dealer.timeZoneId) {
     dealer.timeZoneId = await $.fn.getTimeZoneId(dealer);
   }
@@ -774,13 +738,13 @@ $.fn.renderPinDirections = function (markerId) {
     $('.from-directions input').val($origin);
   }
 
-  let { 
+  let {
     MAIN_ADDRESS_LINE_1_TXT: address1,
     MAIN_ADDRESS_LINE_2_TXT: address2,
     MAIN_CITY_NM: mainCity,
     MAIN_STATE_PROV_CD: mainState,
     MAIN_POSTAL_CD: postalCd,
-   } = markerDetails;
+  } = markerDetails;
 
   $destination = `${address1 || address2} ${mainCity} ${mainState} ${postalCd}`
 
@@ -798,17 +762,17 @@ $.fn.renderPinDirections = function (markerId) {
   };
 
   $directionsService.route(
-      $directionsObject,
-      function (result, status) {
-        if (status == 'OK') {
+    $directionsObject,
+    function (result, status) {
+      if (status == 'OK') {
 
-          $directionsDisplay.setMap($map);
+        $directionsDisplay.setMap($map);
 
-          $directionsDisplay.setPanel(templateClone.find("#directions-container").get(0));
-          $directionsDisplay.setDirections(result);
-          $directionResults = result;
-        }
+        $directionsDisplay.setPanel(templateClone.find("#directions-container").get(0));
+        $directionsDisplay.setDirections(result);
+        $directionResults = result;
       }
+    }
   );
 
   $('.from-directions input').val($origin);
@@ -902,9 +866,9 @@ $.fn.renderPinDetails = async function (markerId) {
   templateClone.find('#phone div').html('<a href="tel:' + markerDetails.REG_PHONE_NUMBER + '">' + $.fn.formatPhoneNumber(markerDetails.REG_PHONE_NUMBER) + '</a>');
   templateClone.find('#directions').attr('data-id', markerDetails.IDENTIFIER_VALUE);
   templateClone.find('#clipboard-address').attr('data-clipboard', markerDetails.MAIN_ADDRESS_LINE_1_TXT + ' ' + markerDetails.MAIN_ADDRESS_LINE_2_TXT + ' ' + markerDetails.MAIN_CITY_NM + ', ' + markerDetails.MAIN_STATE_PROV_CD + ' ' + markerDetails.MAIN_POSTAL_CD);
-  
+
   templateClone.find('#open-website').attr('onclick', "window.open('" + $.fn.formatWebAddress(markerDetails.WEB_ADDRESS) + "', '_blank')");
-  
+
   templateClone.find('#share-link').val(window.location.href.split('?')[0] + '?view=' + markerDetails.IDENTIFIER_VALUE);
 
   if (markerDetails.REG_PHONE_NUMBER) {
@@ -914,7 +878,7 @@ $.fn.renderPinDetails = async function (markerId) {
     templateClone.find('.detail-call a').css({'pointer-events':'none','cursor':'default','opacity':'0.5'});
   }
 
-  
+
 
   templateClone.find('#head-marker').attr('src', $viewingPin.icon.url);
   templateClone.find('#head-marker').css('width', '31px');
@@ -1004,9 +968,9 @@ $.fn.renderPinDetails = async function (markerId) {
   var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   var hasPartsHours = false,
-      hasServiceHours = false,
-      hasLeasingHours = false,
-      hasSalesHours = false;
+    hasServiceHours = false,
+    hasLeasingHours = false,
+    hasSalesHours = false;
 
 
   if (markerDetails.hours.Parts) {
@@ -1542,7 +1506,7 @@ $.fn.sortedPins = function () {
   for (var i = 0; i < $pinLength; i++) {
 
     $pins[i];
-    $pins[i].distance = $.fn.getDistanceInKm([$pins[i].MAIN_LATITUDE, $pins[i].MAIN_LONGITUDE]);
+    $pins[i].distance = $.fn.getDistanceInMiles([$pins[i].MAIN_LATITUDE, $pins[i].MAIN_LONGITUDE]);
 
   }
 
@@ -1572,11 +1536,11 @@ $.fn.showPin = function (pin) {
     switch (filter) {
       case 'all':
         condition = pin.DEALER_TYPE_DESC.toLowerCase().indexOf('full line') > -1
-            || pin.DEALER_TYPE_DESC.toLowerCase().indexOf('parts & service') > -1
-            || pin.DEALER_TYPE_DESC.toLowerCase().indexOf('parts only') > -1
-            || pin.DEALER_TYPE_DESC.toLowerCase().indexOf('satellite') > -1
-            || pin.isCertifiedCenter
-            || pin.isCertifiedUptimeCenter;
+          || pin.DEALER_TYPE_DESC.toLowerCase().indexOf('parts & service') > -1
+          || pin.DEALER_TYPE_DESC.toLowerCase().indexOf('parts only') > -1
+          || pin.DEALER_TYPE_DESC.toLowerCase().indexOf('satellite') > -1
+          || pin.isCertifiedCenter
+          || pin.isCertifiedUptimeCenter;
         break;
 
       case 'rental-leasing':
@@ -1664,7 +1628,7 @@ $.fn.tmpPins = function (tmpPinList) {
     const distanceInKms = (distanceInMiles * $units[0].factor).toFixed(2);
 
     const isActive = (unit) => unit === $activeUnit ? 'active' : '';
-   
+
     const distances = `
       <p class='distance-text ${isActive($units[0].name)}'>
         ${distanceInMiles + ' ' + $units[0].name}
@@ -1683,7 +1647,7 @@ $.fn.tmpPins = function (tmpPinList) {
     } else {
       templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_1_TXT + ', ' + pin.MAIN_ADDRESS_LINE_2_TXT);
     }
- 
+
     if (pin.WEB_ADDRESS) {
       templateClone.find('.website a').attr("href", $.fn.formatWebAddress(pin.WEB_ADDRESS));
     } else {
@@ -1697,7 +1661,7 @@ $.fn.tmpPins = function (tmpPinList) {
       templateClone.find('.call').text('Call');
       templateClone.find('.call').css({'pointer-events':'none','cursor':'default','opacity':'0.7','border-color':'rgba(0, 0, 0, 0.7)'});
     }
-        
+
     var marker;
     for (i = 0; i < $markers.length; i++) {
 
@@ -1785,14 +1749,14 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/uptime.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
           if ($electricDealer === true || (details.services && Object.values(details.services).includes('Mack Certified EV Dealer'))) {
             var pinIcon = {
               url: "/blocks/v2-dealer-locator/images/uptime-electric.svg",
               scaledSize: new google.maps.Size(58, 80), // scaled size
               origin: new google.maps.Point(0, 0), // origin
-              anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
             }
           }
         }
@@ -1801,7 +1765,7 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/dealer-electric.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
         }
         else {
@@ -1809,7 +1773,7 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/dealer.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
         }
 
@@ -2341,21 +2305,22 @@ $.fn.selectNearbyPins = function () {
   }
 };
 
-$.fn.getDistanceInKm = function ($b) {
+$.fn.getDistanceInMiles = function ($b) {
 
   if (!$location) {
     return 0;
   }
 
-  $R = 6371; // Radius of the earth in km
+  // Radius of the earth in km divided by 0.621371 mi/km
+  $R = 6371 * 0.621371;
   $dLat = $.fn.deg2rad($b[0] - $location[0]);  // deg2rad below
   $dLon = $.fn.deg2rad($b[1] - $location[1]);
   $a =
-      Math.sin($dLat / 2) * Math.sin($dLat / 2) +
-      Math.cos($.fn.deg2rad($location[0])) * Math.cos($.fn.deg2rad($b[0])) *
-      Math.sin($dLon / 2) * Math.sin($dLon / 2);
+    Math.sin($dLat / 2) * Math.sin($dLat / 2) +
+    Math.cos($.fn.deg2rad($location[0])) * Math.cos($.fn.deg2rad($b[0])) *
+    Math.sin($dLon / 2) * Math.sin($dLon / 2);
   $c = 2 * Math.atan2(Math.sqrt($a), Math.sqrt(1 - $a));
-  $d = $R * $c; // Distance in km
+  $d = $R * $c; // Distance in miles
   return $d;
 };
 
@@ -2933,9 +2898,9 @@ $.fn.directionsMessage = function (message) {
 
 $.fn.getUrlParameter = function (sParam) {
   var sPageURL = window.location.search.substring(1),
-      sURLVariables = sPageURL.split('&'),
-      sParameterName,
-      i;
+    sURLVariables = sPageURL.split('&'),
+    sParameterName,
+    i;
 
   for (i = 0; i < sURLVariables.length; i++) {
     sParameterName = sURLVariables[i].split('=');

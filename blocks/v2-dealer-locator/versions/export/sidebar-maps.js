@@ -106,7 +106,7 @@ $country = window.locatorConfig.country;
 var isLocationOFF = false;
 
 $locale = window.locatorConfig.locale;
-$units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 0.62137 }];
+$units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 1 }];
 $activeUnit = $units[($locale === 'en-BS' || $locale === 'en-US') ? 0 : 1].name;
 var $distanceToggles = $('.toggle-container');
 
@@ -1416,7 +1416,7 @@ $.fn.sortedPins = function (isLocationOff = false) {
   for (var i = 0; i < $pinLength; i++) {
 
     $pins[i];
-    $pins[i].distance = $.fn.getDistanceInKm([$pins[i].MAIN_LATITUDE, $pins[i].MAIN_LONGITUDE]);
+    $pins[i].distance = $.fn.getDistanceInMiles([$pins[i].MAIN_LATITUDE, $pins[i].MAIN_LONGITUDE]);
 
   }
 
@@ -1578,14 +1578,14 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/uptime.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
           if ($electricDealer === true || (details.services && Object.values(details.services).includes('Mack Certified EV Dealer'))) {
             var pinIcon = {
               url: "/blocks/v2-dealer-locator/images/uptime-electric.svg",
               scaledSize: new google.maps.Size(58, 80), // scaled size
               origin: new google.maps.Point(0, 0), // origin
-              anchor: new google.maps.Point(0, 0)
+              anchor: new google.maps.Point(19, 57)
             }
           }
         }
@@ -1594,7 +1594,7 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/dealer-electric.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
         }
         else {
@@ -1602,7 +1602,7 @@ $.fn.tmpPins = function (tmpPinList) {
             url: "/blocks/v2-dealer-locator/images/dealer.svg",
             scaledSize: new google.maps.Size(58, 80), // scaled size
             origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(0, 0)
+            anchor: new google.maps.Point(19, 57)
           }
         }
 
@@ -2136,21 +2136,22 @@ $.fn.selectNearbyPins = function () {
 
 };
 
-$.fn.getDistanceInKm = function ($b) {
+$.fn.getDistanceInMiles = function ($b) {
 
   if (!$location) {
     return 0;
   }
 
-  $R = 6371; // Radius of the earth in km
+  // Radius of the earth in km divided by 0.621371 mi/km
+  $R = 6371 * 0.621371;
   $dLat = $.fn.deg2rad($b[0] - $location[0]);  // deg2rad below
   $dLon = $.fn.deg2rad($b[1] - $location[1]);
   $a =
-      Math.sin($dLat / 2) * Math.sin($dLat / 2) +
-      Math.cos($.fn.deg2rad($location[0])) * Math.cos($.fn.deg2rad($b[0])) *
-      Math.sin($dLon / 2) * Math.sin($dLon / 2);
+    Math.sin($dLat / 2) * Math.sin($dLat / 2) +
+    Math.cos($.fn.deg2rad($location[0])) * Math.cos($.fn.deg2rad($b[0])) *
+    Math.sin($dLon / 2) * Math.sin($dLon / 2);
   $c = 2 * Math.atan2(Math.sqrt($a), Math.sqrt(1 - $a));
-  $d = $R * $c; // Distance in km
+  $d = $R * $c; // Distance in miles
   return $d;
 };
 

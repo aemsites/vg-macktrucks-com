@@ -1531,7 +1531,7 @@ $.fn.sortedPins = function () {
   for (var i = 0; i < $pinLength; i++) {
 
     $pins[i];
-    $pins[i].distance = $.fn.getDistanceInKm([$pins[i].MAIN_LATITUDE, $pins[i].MAIN_LONGITUDE]);
+    $pins[i].distance = $.fn.getDistanceInMiles([$pins[i].MAIN_LATITUDE, $pins[i].MAIN_LONGITUDE]);
 
   }
 
@@ -2323,21 +2323,22 @@ $.fn.selectNearbyPins = function () {
 
 };
 
-$.fn.getDistanceInKm = function ($b) {
+$.fn.getDistanceInMiles = function ($b) {
 
   if (!$location) {
     return 0;
   }
 
-  $R = 6371; // Radius of the earth in km
+  // Radius of the earth in km divided by 0.621371 mi/km
+  $R = 6371 * 0.621371;
   $dLat = $.fn.deg2rad($b[0] - $location[0]);  // deg2rad below
   $dLon = $.fn.deg2rad($b[1] - $location[1]);
   $a =
-      Math.sin($dLat / 2) * Math.sin($dLat / 2) +
-      Math.cos($.fn.deg2rad($location[0])) * Math.cos($.fn.deg2rad($b[0])) *
-      Math.sin($dLon / 2) * Math.sin($dLon / 2);
+    Math.sin($dLat / 2) * Math.sin($dLat / 2) +
+    Math.cos($.fn.deg2rad($location[0])) * Math.cos($.fn.deg2rad($b[0])) *
+    Math.sin($dLon / 2) * Math.sin($dLon / 2);
   $c = 2 * Math.atan2(Math.sqrt($a), Math.sqrt(1 - $a));
-  $d = $R * $c; // Distance in km
+  $d = $R * $c; // Distance in miles
   return $d;
 };
 
