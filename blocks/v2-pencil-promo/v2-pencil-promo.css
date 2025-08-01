@@ -19,6 +19,10 @@
   margin: 24px 0;
 }
 
+.v2-pencil-promo--narrow-text .v2-pencil-promo__content {
+  max-width: 512px;
+}
+
 .v2-pencil-promo:hover {
   cursor: pointer;
 }
@@ -28,6 +32,8 @@
 }
 
 .v2-pencil-promo__content a {
+  display: inline-flex;
+  align-items: center;
   color: var(--text-color);
   text-decoration: underline;
   text-decoration-color: var(--c-accent-red);
@@ -75,13 +81,16 @@
 .v2-pencil-promo__pencil-banner .v2-pencil-promo__content {
   padding: 30px 16px;
   width: 100%;
-  max-width: 512px;
 }
 
 .v2-pencil-promo__pencil-banner .v2-pencil-promo__content p {
   display: inline;
   font: var(--headline-4-font-weight) var(--headline-4-font-size) / var(--headline-4-line-height) var(--ff-subheadings-medium);
   letter-spacing: var(--headline-4-letter-spacing);
+}
+
+.v2-pencil-promo__pencil-banner .icon {
+  height: 24px;
 }
 
 .v2-pencil-promo__pencil-banner .icon svg {

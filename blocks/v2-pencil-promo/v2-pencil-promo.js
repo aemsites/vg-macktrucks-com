@@ -14,7 +14,7 @@ function addDataAttributes(element, block) {
 export default async function decorate(block) {
   const blockName = 'v2-pencil-promo';
   // variant pencil banner black is default
-  const variantClasses = ['pencil-banner-black', 'pencil-banner-copper', 'promo-banner-gold', 'promo-banner-copper'];
+  const variantClasses = ['pencil-banner-black', 'pencil-banner-copper', 'promo-banner-gold', 'promo-banner-copper', 'narrow-text'];
   const indexVariant = variantClasses.findIndex((variant) => block.classList.contains(variant));
   const currentVariant = (indexVariant >= 0 && variantClasses[indexVariant]) || variantClasses[0];
   const isPencil = currentVariant.includes('pencil');
