@@ -212,6 +212,13 @@ export default async function decorate(block) {
     const descriptions = tabContent.querySelectorAll('p:not(.button-container)');
     [...descriptions].forEach((description) => description.classList.add(`${blockName}__description`));
 
+    if (!descriptions || descriptions.length === 0) {
+      const buttonLink = tabContent.querySelector('.button-container:has(:not(.button))');
+      if (buttonLink) {
+        buttonLink.className = `${blockName}__description`;
+      }
+    }
+
     // Wrap text in container
     const textContainer = createElement('div', { classes: `${blockName}__text` });
     const text = tabContent.querySelector('.default-content-wrapper')?.querySelectorAll(':scope > *:not(.button-container)');
