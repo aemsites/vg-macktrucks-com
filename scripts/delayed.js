@@ -12,9 +12,9 @@ const {
   LINKEDIN_PARTNER_ID = false,
 } = COOKIE_CONFIGS;
 
-
 if (isDevHost()) {
   import('./validate-elements.js');
+}
 
 // This functions runs once at the begining and whenever the selected group of cookies changes.
 function checkCookiesAndLoadAllScripts() {
