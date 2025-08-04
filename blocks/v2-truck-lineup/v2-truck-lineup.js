@@ -213,9 +213,9 @@ export default async function decorate(block) {
     [...descriptions].forEach((description) => description.classList.add(`${blockName}__description`));
 
     if (!descriptions || descriptions.length === 0) {
-      const buttonLink = tabContent.querySelector('.button-container:has(:not(.button))');
-      if (buttonLink) {
-        buttonLink.className = `${blockName}__description`;
+      const buttonContainer = tabContent.querySelector('.button-container:has(:not(.button))');
+      if (buttonContainer) {
+        buttonContainer.className = `${blockName}__description`;
       }
     }
 
