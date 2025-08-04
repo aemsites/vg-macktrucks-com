@@ -84,7 +84,7 @@ main .section.v2-dealer-locator-container > div {
   padding: 10px 40px 10px 15px;
   border: none;
   border-radius: 0;
-  background-color: #ebebea;
+  background-color: var(--c-secondary-silver);
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -124,7 +124,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .partsasist-form .backdrop {
-  background-color: #fff;
+  background-color: var(--c-primary-white);
   position: absolute;
   width: 100%;
   height: 100%;
@@ -143,7 +143,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .partsasist-form .regForm #select-form #eloquaForm {
-  color: #4d4e53 !important;
+  color: var(--c-tertiary-cool-gray) !important;
 }
 
 .v2-dealer-locator .partsasist-form .regForm #select-form #eloquaForm .field-holder {
@@ -170,7 +170,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .datasource-option .backdrop {
-  background-color: #000;
+  background-color: var(--c-primary-black);
   opacity: 0.6;
   position: absolute;
   width: 100%;
@@ -184,11 +184,11 @@ main .section.v2-dealer-locator-container > div {
   top: 50%;
   transform: translate(-50%, -50%);
   width: 600px;
-  background-color: #fff;
+  background-color: var(--c-primary-white);
   height: 350px;
   display: grid;
   align-items: center;
-  border: 15px solid #4d4e53;
+  border: 15px solid var(--c-tertiary-cool-gray);
 }
 
 .v2-dealer-locator .datasource-option .row {
@@ -210,7 +210,7 @@ main .section.v2-dealer-locator-container > div {
   touch-action: manipulation;
   cursor: pointer;
   background-image: none;
-  border: 2px solid #4d4e53;
+  border: 2px solid var(--c-tertiary-cool-gray);
   white-space: nowrap;
   padding: 12px 32px;
   font-size: 16px;
@@ -218,8 +218,8 @@ main .section.v2-dealer-locator-container > div {
   border-radius: 0;
   user-select: none;
   user-select: none;
-  color: #4d4e53;
-  background-color: #fff;
+  color: var(--c-tertiary-cool-gray);
+  background-color: var(--c-primary-white);
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -244,9 +244,9 @@ main .section.v2-dealer-locator-container > div {
   visibility: hidden;
   font-family: var(--fallback-ff-default);
   width: 120px;
-  background-color: #000;
+  background-color: var(--c-primary-black);
   font-size: 12px;
-  color: #fff;
+  color: var(--c-primary-white);
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
@@ -295,7 +295,7 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .main-directions .go-back button {
   background: 0 0;
   cursor: pointer;
-  border: 1px solid #000;
+  border: 1px solid var(--c-primary-black);
   font-size: 14px;
   padding: 6px;
   margin-bottom: 10px;
@@ -304,7 +304,7 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .main-directions .go-back button:hover {
   opacity: 1;
-  background-color: #e6e6e6;
+  background-color: var(--c-secondary-silver);
   border: 1px solid transparent;
 }
 
@@ -317,7 +317,7 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .select-directions .go-back button {
   background: 0 0;
   cursor: pointer;
-  border: 1px solid #000;
+  border: 1px solid var(--c-primary-black);
   font-size: 14px;
   padding: 6px;
   margin-bottom: 10px;
@@ -326,7 +326,7 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .select-directions .go-back button:hover {
   opacity: 1;
-  background-color: #e6e6e6;
+  background-color: var(--c-secondary-silver);
   border: 1px solid transparent;
 }
 
@@ -337,7 +337,7 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .go-back-pin button {
   background: 0 0;
   cursor: pointer;
-  border: 1px solid #000;
+  border: 1px solid var(--c-primary-black);
   font-size: 14px;
   padding: 6px;
   margin-bottom: 10px;
@@ -347,7 +347,7 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .go-back-pin button:hover {
   opacity: 1;
-  background-color: #e6e6e6;
+  background-color: var(--c-secondary-silver);
   border: 1px solid transparent;
 }
 
@@ -358,9 +358,9 @@ main .section.v2-dealer-locator-container > div {
   left: 0;
   padding: 10px;
   width: 388px;
-  color: #8c8c8c;
+  color: var(--c-secondary-steel);
   z-index: 10;
-  background: #fff;
+  background: var(--c-primary-white);
   display: none;
 }
 
@@ -372,12 +372,8 @@ main .section.v2-dealer-locator-container > div {
   overflow: hidden;
 }
 
-.v2-dealer-locator .nearby-pins > div {
-  border: 1px solid transparent;
-}
-
 .v2-dealer-locator .nearby-pins::-webkit-scrollbar-thumb {
-  background-color: #888 !important;
+  background-color: var(--c-secondary-steel) !important;
 }
 
 .v2-dealer-locator .nearby-pins::-webkit-scrollbar {
@@ -386,12 +382,12 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .nearby-pins .panel-card {
   box-shadow: none;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid var(--c-secondary-silver);
   cursor: default;
 }
 
 .v2-dealer-locator .nearby-pins .panel-card:hover {
-  background-color: #f2f2f3;
+  background-color: var(--c-tertiary-light-gray);
 }
 
 .v2-dealer-locator .nearby-pins article.teaser {
@@ -438,7 +434,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .nearby-pins article.teaser .teaser-top .heading p {
-  color: #000;
+  color: var(--c-primary-black);
   font-size: 14px;
   display: block;
   font-weight: 700;
@@ -450,7 +446,7 @@ main .section.v2-dealer-locator-container > div {
   font-size: 14px;
   margin-top: 10px;
   font-weight: 700;
-  color: #000;
+  color: var(--c-primary-black);
 }
 
 .v2-dealer-locator .nearby-pins article.teaser .teaser-top .info {
@@ -461,7 +457,7 @@ main .section.v2-dealer-locator-container > div {
   -moz-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
-  color: #000;
+  color: var(--c-primary-black);
   font-weight: 700;
 }
 
@@ -471,7 +467,7 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .nearby-pins article.teaser .teaser-top .left {
   font-size: 10px;
-  color: #000;
+  color: var(--c-primary-black);
   font-weight: 700;
   margin-top: 10px;
   max-width: 320px;
@@ -483,64 +479,20 @@ main .section.v2-dealer-locator-container > div {
   -moz-box-pack: justify;
   -ms-flex-pack: justify;
   padding-top: 14px;
+  gap: 10px;
 }
 
 .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left,
 .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right {
-  border: 0;
-  font: inherit;
-  font-size: 10px;
-  margin: 0;
-  padding: 0;
-  vertical-align: baseline;
-  display: inline-block;
-  font-weight: 700;
+  min-width: 69px;
 }
 
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .call,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .direction,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .more,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .direction,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .more {
-  border: 1px solid #000;
-  padding: 3px 0 0;
-  margin-left: 10px;
-  border-radius: 4px;
-  width: 69px;
-  height: 22px;
-  text-align: center;
-}
-
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .call:hover,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .direction:hover,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .more:hover,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call:hover,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .direction:hover,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .more:hover {
-  background: #fff;
+.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left:hover,
+.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right:hover {
+  background: var(--c-primary-white);
 }
 
 @media (max-width: 992px) {
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .call,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .direction,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .more,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .direction,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .more {
-    width: 56px;
-    margin-left: 4px;
-  }
-
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .call:hover,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .direction:hover,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .more:hover,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call:hover,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .direction:hover,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .more:hover {
-    background: 0 0;
-  }
-
   .v2-dealer-locator .nearby-pins article.teaser .teaser-top .heading p {
     max-width: unset;
   }
@@ -548,26 +500,9 @@ main .section.v2-dealer-locator-container > div {
   .v2-dealer-locator .nearby-pins article.teaser .teaser-top .left {
     max-width: unset;
   }
-}
 
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .website,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .website {
-  border: 1px solid #000;
-  padding: 3px 0 0;
-  border-radius: 4px;
-  width: 69px;
-  height: 22px;
-  text-align: center;
-}
-
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .website:hover,
-.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .website:hover {
-  background: #fff;
-}
-
-@media (max-width: 992px) {
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left .website:hover,
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .website:hover {
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left > div:hover,
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right > div:hover {
     background: 0 0;
   }
 }
@@ -575,8 +510,18 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left a,
 .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right a {
   cursor: pointer;
-  vertical-align: middle;
-  color: #323232;
+  color: var(--c-tertiary-dark-gray);
+}
+
+.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left > div,
+.v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--c-primary-black);
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .v2-dealer-locator .nearby-select {
@@ -591,7 +536,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .nearby-select::-webkit-scrollbar-thumb {
-  background-color: #888 !important;
+  background-color: var(--c-secondary-steel) !important;
 }
 
 .v2-dealer-locator .nearby-select::-webkit-scrollbar {
@@ -600,11 +545,11 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .nearby-select .panel-card {
   box-shadow: none;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid var(--c-secondary-silver);
 }
 
 .v2-dealer-locator .nearby-select .panel-card:hover {
-  background-color: #f2f2f3;
+  background-color: var(--c-tertiary-light-gray);
 }
 
 .v2-dealer-locator .nearby-select article.teaser {
@@ -637,7 +582,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .nearby-select article.teaser .teaser-top .heading p {
-  color: #007bcd;
+  color: var(--c-secondary-dark-gold);
   font-size: 14px;
   display: block;
   font-weight: 700;
@@ -648,7 +593,7 @@ main .section.v2-dealer-locator-container > div {
   font-size: 14px;
   margin-top: 10px;
   font-weight: 700;
-  color: #000;
+  color: var(--c-primary-black);
 }
 
 .v2-dealer-locator .nearby-select article.teaser .teaser-top .info {
@@ -712,8 +657,8 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .map-geo-container button {
-  background: #fff;
-  border: #fff;
+  background: var(--c-primary-white);
+  border: var(--c-primary-white);
   border-radius: 2px;
   width: 28px;
   height: 38px;
@@ -745,10 +690,10 @@ main .section.v2-dealer-locator-container > div {
   display: inline-block;
   opacity: 1;
   font-size: 12px;
-  color: #222942;
+  color: var(--c-primary-black);
   width: 70px;
   height: 27px;
-  background: #fff;
+  background: var(--c-primary-white);
   right: 0;
   left: 0;
 }
@@ -835,7 +780,6 @@ main .section.v2-dealer-locator-container > div {
   padding: 4px;
 }
 
-
 .v2-dealer-locator .sidebar .mobile-main-header .toggle-container {
   position: relative;
   height: 28px;
@@ -871,11 +815,11 @@ main .section.v2-dealer-locator-container > div {
   pointer-events: none;
 }
 
-.v2-dealer-locator .mobile-main-header .toggle-button[data-active="mi"]::after {
+.v2-dealer-locator .mobile-main-header .toggle-button[data-active='mi']::after {
   left: 50%;
 }
 
-.v2-dealer-locator .mobile-main-header .toggle-button[data-active="km"]::after {
+.v2-dealer-locator .mobile-main-header .toggle-button[data-active='km']::after {
   left: 4px;
 }
 
@@ -924,7 +868,7 @@ main .section.v2-dealer-locator-container > div {
   .v2-dealer-locator .mobile-main-header .panel-header {
     position: relative;
     display: block;
-    background: #fff;
+    background: var(--c-primary-white);
     box-sizing: border-box;
     border: 1px solid;
     width: 100%;
@@ -933,7 +877,7 @@ main .section.v2-dealer-locator-container > div {
     padding: 5px 20px;
     transition-property: background, box-shadow;
     transition-duration: 0.3s;
-    margin-bottom: 1px
+    margin-bottom: 1px;
   }
 
   .v2-dealer-locator .mobile-main-header .panel-header.add-directions {
@@ -942,7 +886,7 @@ main .section.v2-dealer-locator-container > div {
   }
 
   .v2-dealer-locator .mobile-main-header .panel-header.add-directions:hover {
-    background-color: #e6e6e6;
+    background-color: var(--c-secondary-silver);
   }
 
   .v2-dealer-locator .mobile-main-header .panel-header.to-directions {
@@ -961,8 +905,8 @@ main .section.v2-dealer-locator-container > div {
     border: none;
     z-index: 1;
     background-color: transparent;
-    -webkit-text-fill-color: #4d4e53;
-    color: #4d4e53;
+    -webkit-text-fill-color: var(--c-tertiary-cool-gray);
+    color: var(--c-tertiary-cool-gray);
     transition: all 218ms ease 0s;
     opacity: 1;
     text-align: left;
@@ -1079,7 +1023,7 @@ main .section.v2-dealer-locator-container > div {
   }
 
   .v2-dealer-locator .mobile-main-header .panel-header .geo-container button {
-    color: #4174c4;
+    color: var(--c-accent-copper);
     display: block;
     height: 48px;
     opacity: 0.8;
@@ -1111,7 +1055,7 @@ main .section.v2-dealer-locator-container > div {
   }
 
   .v2-dealer-locator .mobile-main-header .panel-header .go-back button {
-    color: #000;
+    color: var(--c-primary-black);
     display: block;
     height: 48px;
     opacity: 0.8;
@@ -1145,10 +1089,10 @@ main .section.v2-dealer-locator-container > div {
   display: inline-block;
   opacity: 1;
   font-size: 12px;
-  color: #222942;
+  color: var(--c-primary-black);
   width: 70px;
   height: 27px;
-  background: #fff;
+  background: var(--c-primary-white);
   border-radius: 4px;
   border: 1px solid #a7a8a9;
   right: 0;
@@ -1161,7 +1105,7 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .sidebar {
   float: left;
   height: 100%;
-  background: #fff !important;
+  background: var(--c-primary-white) !important;
   left: -408px;
   z-index: 99;
   box-shadow: 5px 0 5px -5px rgb(0 0 0 / 30%);
@@ -1175,7 +1119,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content {
-  background-color: #fff;
+  background-color: var(--c-primary-white);
   width: 460px;
   margin: 11px;
   position: relative;
@@ -1188,7 +1132,7 @@ main .section.v2-dealer-locator-container > div {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: var(--c-primary-white);
   z-index: 90;
   opacity: 0.8;
 }
@@ -1205,7 +1149,7 @@ main .section.v2-dealer-locator-container > div {
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #fff;
+  background: var(--c-primary-white);
   z-index: 90;
   opacity: 0.8;
 }
@@ -1235,11 +1179,11 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header {
-  background-color: #fff;
+  background-color: var(--c-primary-white);
   padding: 10px;
   height: 160px;
   position: relative;
-  color: #000;
+  color: var(--c-primary-black);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -1321,7 +1265,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header .dealer-deatils-header a {
-  color: #000;
+  color: var(--c-primary-black);
   font-size: 10px;
   display: flex;
   flex-direction: column;
@@ -1347,7 +1291,7 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header .dealer-deatils-header .detail-share span {
   font-size: 10px;
-  color: #000;
+  color: var(--c-primary-black);
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header .dealer-deatils-header .detail-share span:hover {
@@ -1369,7 +1313,7 @@ main .section.v2-dealer-locator-container > div {
   display: flex;
   width: 70px;
   height: 70px;
-  border: 2px solid #000;
+  border: 2px solid var(--c-primary-black);
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -1383,7 +1327,7 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header div#my-dealer {
   position: absolute;
-  background-color: #fff;
+  background-color: var(--c-primary-white);
   right: 15px;
   width: 35px;
   cursor: pointer;
@@ -1393,7 +1337,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header div#my-dealer i {
-  color: #000;
+  color: var(--c-primary-black);
   font-size: 24px;
   top: 4px;
   left: 6px;
@@ -1407,7 +1351,7 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header div#set-dealer {
   margin-right: 10px;
-  background-color: #fff;
+  background-color: var(--c-primary-white);
   cursor: pointer;
   box-shadow: 0 0 20px rgb(0 0 0 / 30%);
   opacity: 0.9;
@@ -1418,7 +1362,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header div#set-dealer button {
-  background: #f2f2f2;
+  background: var(--c-secondary-silver);
   border: 0;
   text-transform: uppercase;
   padding: 10px;
@@ -1427,7 +1371,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header div#directions {
-  background-color: #fff;
+  background-color: var(--c-primary-white);
   cursor: pointer;
   box-shadow: 0 0 20px rgb(0 0 0 / 30%);
   opacity: 0.9;
@@ -1438,7 +1382,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-header div#directions button {
-  background: #f2f2f2;
+  background: var(--c-secondary-silver);
   border: 0;
   text-transform: uppercase;
   padding: 10px;
@@ -1465,7 +1409,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-container::-webkit-scrollbar-thumb {
-  background-color: #888 !important;
+  background-color: var(--c-secondary-steel) !important;
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-container::-webkit-scrollbar {
@@ -1483,7 +1427,7 @@ main .section.v2-dealer-locator-container > div {
   left: 0;
   width: 90%;
   margin-left: 8px;
-  color: #000;
+  color: var(--c-primary-black);
   font-size: 13px;
   padding: 10px 15px;
 }
@@ -1494,7 +1438,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .accordion .toggle-arrow {
-  border: solid #000;
+  border: solid var(--c-primary-black);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -1517,16 +1461,16 @@ main .section.v2-dealer-locator-container > div {
   background: 0 0;
   border: 0;
   width: fit-content;
-  border-bottom: 1px solid #e6e6e6;
+  border-bottom: 1px solid var(--c-secondary-silver);
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-actions .join-select {
   width: 100%;
   text-align: center;
-  border: 1px solid #ccc;
+  border: 1px solid var(--c-secondary-steel);
   padding: 8px 0;
-  background-color: #ccc;
-  color: #000;
+  background-color: var(--c-secondary-steel);
+  color: var(--c-primary-black);
   font-weight: 700;
 }
 
@@ -1536,7 +1480,7 @@ main .section.v2-dealer-locator-container > div {
   padding: 24px;
   font-size: 13px;
   display: inline-grid;
-  color: #1251b5;
+  color: var(--c-accent-copper);
   cursor: pointer;
   opacity: 0.8;
   outline: 0;
@@ -1560,7 +1504,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .sidebar-content .pin-actions .accordion .toggle-arrow {
-  border: solid #000;
+  border: solid var(--c-primary-black);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -1617,14 +1561,14 @@ main .section.v2-dealer-locator-container > div {
   content: ' ';
   width: 66%;
   height: 1px;
-  background: #ccc;
+  background: var(--c-secondary-steel);
   position: relative;
   display: block;
   margin-bottom: 5px;
 }
 
 .v2-dealer-locator .sidebar .sidebar-content ul.pin-details .accordion .toggle-arrow {
-  border: solid #000;
+  border: solid var(--c-primary-black);
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -1654,7 +1598,7 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .sidebar .sidebar-content ul.pin-details > li a,
 .v2-dealer-locator .sidebar .sidebar-content ul.pin-details > li div {
   margin-top: 3px;
-  color: #000;
+  color: var(--c-primary-black);
   font-size: 12px;
   display: inline-block;
   font-weight: 700;
@@ -1757,7 +1701,7 @@ main .section.v2-dealer-locator-container > div {
   list-style-type: none;
   padding-top: 12px;
   font-size: 10px;
-  color: #000;
+  color: var(--c-primary-black);
 }
 
 .v2-dealer-locator .sidebar .sidebar-content ul[id='drivers'] {
@@ -1772,7 +1716,7 @@ main .section.v2-dealer-locator-container > div {
   list-style-type: none;
   padding-top: 12px;
   font-size: 10px;
-  color: #000;
+  color: var(--c-primary-black);
 }
 
 .v2-dealer-locator .sidebar .direction-content {
@@ -1796,7 +1740,7 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .sidebar .panel-header {
   position: relative;
   display: block;
-  background: #f2f2f3;
+  background: var(--c-tertiary-light-gray);
   border-radius: 4px;
   box-sizing: border-box;
   width: 461px;
@@ -1821,7 +1765,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .panel-header.add-directions:hover {
-  background-color: #e6e6e6;
+  background-color: var(--c-secondary-silver);
 }
 
 .v2-dealer-locator .sidebar .panel-header input {
@@ -1836,8 +1780,8 @@ main .section.v2-dealer-locator-container > div {
   border: none;
   z-index: 1;
   background-color: transparent;
-  -webkit-text-fill-color: #4d4e53;
-  color: #4d4e53;
+  -webkit-text-fill-color: var(--c-tertiary-cool-gray);
+  color: var(--c-tertiary-cool-gray);
   transition: all 218ms ease 0s;
   opacity: 1;
   text-align: left;
@@ -1951,7 +1895,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .panel-header .geo-container button {
-  color: #4174c4;
+  color: var(--c-accent-copper);
   display: block;
   opacity: 0.8;
   width: 54px;
@@ -1983,7 +1927,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .panel-header .go-back button {
-  color: #000;
+  color: var(--c-primary-black);
   display: block;
   height: 48px;
   opacity: 0.8;
@@ -2012,7 +1956,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .directions-panel::-webkit-scrollbar-thumb {
-  background-color: #888 !important;
+  background-color: var(--c-secondary-steel) !important;
 }
 
 .v2-dealer-locator .sidebar .directions-panel::-webkit-scrollbar {
@@ -2056,7 +2000,7 @@ main .section.v2-dealer-locator-container > div {
   width: 100%;
   box-sizing: border-box;
   cursor: pointer;
-  background: #fff;
+  background: var(--c-primary-white);
   border: 0;
   border-radius: 0;
   font: inherit;
@@ -2068,7 +2012,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container button:hover {
-  background-color: #f7f7f7;
+  background-color: var(--c-primary-white);
   text-decoration: none;
 }
 
@@ -2104,7 +2048,7 @@ main .section.v2-dealer-locator-container > div {
   width: 100%;
   height: 15px;
   border-radius: 5px;
-  background: #e1dfdd;
+  background: var(--c-secondary-silver);
   outline: 0;
   opacity: 0.7;
   transition: 0.2s;
@@ -2121,7 +2065,7 @@ main .section.v2-dealer-locator-container > div {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #000;
+  background: var(--c-primary-black);
   z-index: 15;
   cursor: pointer;
 }
@@ -2130,7 +2074,7 @@ main .section.v2-dealer-locator-container > div {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: #000;
+  background: var(--c-primary-black);
   z-index: 15;
   cursor: pointer;
 }
@@ -2147,41 +2091,41 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container .range-filter::-ms-fill-lower {
-  background: #2a6495;
+  background: var(--c-accent-copper);
   border: 0.2px solid #010101;
   border-radius: 2.6px;
   box-shadow:
-    1px 1px 1px #000,
+    1px 1px 1px var(--c-primary-black),
     0 0 1px #0d0d0d;
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container .range-filter::-ms-fill-upper {
-  background: #3071a9;
+  background: var(--border-focus);
   border: 0.2px solid #010101;
   border-radius: 2.6px;
   box-shadow:
-    1px 1px 1px #000,
+    1px 1px 1px var(--c-primary-black),
     0 0 1px #0d0d0d;
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container .range-filter::-ms-thumb {
   box-shadow:
-    1px 1px 1px #000,
+    1px 1px 1px var(--c-primary-black),
     0 0 1px #0d0d0d;
-  border: 1px solid #000;
+  border: 1px solid var(--c-primary-black);
   height: 36px;
   width: 16px;
   border-radius: 3px;
-  background: #fff;
+  background: var(--c-primary-white);
   cursor: pointer;
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container .range-filter:focus::-ms-fill-lower {
-  background: #3071a9;
+  background: var(--border-focus);
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container .range-filter:focus::-ms-fill-upper {
-  background: #367ebd;
+  background: var(--c-accent-copper);
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container .sliderticks {
@@ -2241,7 +2185,7 @@ main .section.v2-dealer-locator-container > div {
   left: 0;
   height: 25px;
   width: 25px;
-  background-color: #eee;
+  background-color: var(--c-secondary-silver);
   border-radius: 50%;
 }
 
@@ -2254,7 +2198,7 @@ main .section.v2-dealer-locator-container > div {
   width: 19px !important;
   height: 18px !important;
   border-radius: 50%;
-  background: #fff;
+  background: var(--c-primary-white);
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container #filter-options li input:checked ~ .checkmark::after {
@@ -2262,16 +2206,26 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container #filter-options li input:checked ~ .checkmark {
-  background-color: #000;
+  background-color: var(--c-primary-black);
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container #filter-options li:hover input ~ .checkmark {
-  background-color: #ccc;
+  background-color: var(--c-secondary-steel);
 }
 
 .v2-dealer-locator #marker {
-  width: 31px;
+  width: 100%;
   height: 43px;
+  display: flex;
+  margin: 0 auto 70px;
+}
+
+@media (min-width: 992px) {
+  .v2-dealer-locator #marker {
+    width: 31px;
+    height: 43px;
+    margin: 0 0 70px;
+  }
 }
 
 .v2-dealer-locator .sidebar-legend {
@@ -2287,16 +2241,16 @@ main .section.v2-dealer-locator-container > div {
   position: relative;
   display: inline-block;
   font-size: 12px;
-  color: #fff;
+  color: var(--c-primary-white);
   vertical-align: middle;
   text-align: center;
 }
 
 .v2-dealer-locator .sidebar-legend .dealer {
-  border: 1px solid #000;
+  border: 1px solid var(--c-primary-black);
   border-radius: 4px;
   width: 81px;
-  background: #000;
+  background: var(--c-primary-black);
   height: 35px;
 }
 
@@ -2306,7 +2260,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar-legend .dealer:hover {
-  background-color: #484a4e !important;
+  background-color: var(--c-tertiary-dark-gray) !important;
 }
 
 @media (max-width: 992px) {
@@ -2316,10 +2270,10 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar-legend .uptime-dealer {
-  border: 1px solid #000;
+  border: 1px solid var(--c-primary-black);
   border-radius: 4px;
   width: 178px;
-  background: #000;
+  background: var(--c-primary-black);
   height: 35px;
   margin-left: 4px;
 }
@@ -2330,7 +2284,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar-legend .uptime-dealer:hover {
-  background-color: #484a4e !important;
+  background-color: var(--c-tertiary-dark-gray) !important;
 }
 
 @media (max-width: 992px) {
@@ -2340,10 +2294,10 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar-legend .electric-dealer {
-  border: 1px solid #000;
+  border: 1px solid var(--c-primary-black);
   border-radius: 4px;
   width: 178px;
-  background: #000;
+  background: var(--c-primary-black);
   height: 35px;
   margin-left: 4px;
 }
@@ -2354,7 +2308,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar-legend .electric-dealer:hover {
-  background-color: #484a4e !important;
+  background-color: var(--c-tertiary-dark-gray) !important;
 }
 
 @media (max-width: 992px) {
@@ -2382,9 +2336,9 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .slider-arrow {
   padding: 5px;
   float: left;
-  background: #fff;
+  background: var(--c-primary-white);
   font-size: 30px;
-  color: #000;
+  color: var(--c-primary-black);
   text-decoration: none;
   box-shadow: 0 1px 4px rgb(0 0 0 / 30%);
   height: 48px;
@@ -2413,8 +2367,8 @@ main .section.v2-dealer-locator-container > div {
   visibility: hidden;
   min-width: 250px;
   margin-left: -125px;
-  background-color: #bfbfbf;
-  color: #000;
+  background-color: var(--c-secondary-steel);
+  color: var(--c-primary-black);
   text-align: center;
   border-radius: 2px;
   padding: 16px;
@@ -2501,10 +2455,6 @@ main .section.v2-dealer-locator-container > div {
   .v2-dealer-locator .nearby-pins article.teaser .teaser-top .heading p {
     font-size: 13px;
   }
-
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .website {
-    display: block !important;
-  }
 }
 
 .main-header {
@@ -2525,12 +2475,12 @@ main .section.v2-dealer-locator-container > div {
     position: relative;
     display: inline-block !important;
     font-size: 12px;
-    border: 1px solid #000;
+    border: 1px solid var(--c-primary-black);
     padding: 5px;
-    color: #fff;
+    color: var(--c-primary-white);
     border-radius: 4px;
     width: 81px;
-    background: #000;
+    background: var(--c-primary-black);
     text-align: center;
   }
 
@@ -2540,8 +2490,8 @@ main .section.v2-dealer-locator-container > div {
     display: inline-block !important;
     font-size: 12px;
     padding: 5px 0;
-    color: #fff;
-    background: #000;
+    color: var(--c-primary-white);
+    background: var(--c-primary-black);
     text-align: center;
   }
 
@@ -2551,7 +2501,7 @@ main .section.v2-dealer-locator-container > div {
   }
 
   .sidebar .mobile-uptime-dealer {
-    border: 1px solid #000;
+    border: 1px solid var(--c-primary-black);
     border-radius: 4px;
     width: 142px;
     margin-left: 2px;
@@ -2564,7 +2514,7 @@ main .section.v2-dealer-locator-container > div {
   }
 
   .sidebar .mobile-electric-dealer {
-    border: 1px solid #000;
+    border: 1px solid var(--c-primary-black);
     border-radius: 4px;
     width: 144px;
   }
@@ -2593,7 +2543,7 @@ main .section.v2-dealer-locator-container > div {
 
   .sidebar .panel-card {
     box-shadow: none;
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid var(--c-secondary-silver);
     cursor: default;
   }
 
@@ -2675,9 +2625,9 @@ footer {
 .tooltip-inner {
   max-width: 200px;
   padding: 3px 8px;
-  color: #fff;
+  color: var(--c-primary-white);
   text-decoration: none;
-  background-color: #000;
+  background-color: var(--c-primary-black);
   border-radius: 3px;
 }
 
@@ -2694,7 +2644,7 @@ footer {
 .tooltip.top-right .tooltip-arrow {
   bottom: 0;
   border-width: 5px 5px 0;
-  border-top-color: #000;
+  border-top-color: var(--c-primary-black);
 }
 
 .tooltip.top .tooltip-arrow {
@@ -2717,7 +2667,7 @@ footer {
   left: 0;
   margin-top: -5px;
   border-width: 5px 5px 5px 0;
-  border-right-color: #000;
+  border-right-color: var(--c-primary-black);
 }
 
 .tooltip.left .tooltip-arrow {
@@ -2725,14 +2675,14 @@ footer {
   right: 0;
   margin-top: -5px;
   border-width: 5px 0 5px 5px;
-  border-left-color: #000;
+  border-left-color: var(--c-primary-black);
 }
 
 .tooltip.bottom .tooltip-arrow,
 .tooltip.bottom-left .tooltip-arrow,
 .tooltip.bottom-right .tooltip-arrow {
   border-width: 0 5px 5px;
-  border-bottom-color: #000;
+  border-bottom-color: var(--c-primary-black);
   top: 0;
 }
 
@@ -2756,7 +2706,7 @@ footer {
     display: flex;
     flex-direction: row;
   }
-  
+
   .v2-dealer-locator .sidebar .main-header .toggle-container {
     position: relative;
     height: 28px;
@@ -2767,7 +2717,7 @@ footer {
     margin: 3px 0 0 11px;
     padding: 4px;
   }
-  
+
   .v2-dealer-locator .main-header .toggle-button {
     width: 80px;
     height: 28px;
@@ -2776,11 +2726,11 @@ footer {
     padding: 0;
     margin: 0;
   }
-  
+
   .v2-dealer-locator .main-header .toggle-button:hover {
     cursor: pointer;
   }
-  
+
   .v2-dealer-locator .main-header .toggle-button::after {
     content: '';
     position: absolute;
@@ -2791,27 +2741,27 @@ footer {
     height: 28px;
     pointer-events: none;
   }
-  
-  .v2-dealer-locator .main-header .toggle-button[data-active="mi"]::after {
+
+  .v2-dealer-locator .main-header .toggle-button[data-active='mi']::after {
     left: 50%;
   }
-  
-  .v2-dealer-locator .main-header .toggle-button[data-active="km"]::after {
+
+  .v2-dealer-locator .main-header .toggle-button[data-active='km']::after {
     left: 4px;
   }
-  
+
   .v2-dealer-locator .main-header .units {
     position: absolute;
-    top: 8px;
+    top: 6px;
     padding: 0;
     margin: 0;
     pointer-events: none;
   }
-  
+
   .v2-dealer-locator .main-header .units.unit-km {
     left: 14px;
   }
-  
+
   .v2-dealer-locator .main-header .units.unit-mi {
     right: 14px;
   }
