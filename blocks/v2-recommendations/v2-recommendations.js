@@ -1,4 +1,4 @@
-import { unwrapDivs } from '../../scripts/common.js';
+import { unwrapDivs, createElement } from '../../scripts/common.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { fetchRecommendedArticles, sortArticlesByDateField, formatRecommendedArticlesArray } from '../../scripts/services/magazine.service.js';
 import { createVideo } from '../../scripts/video-helper.js';
@@ -18,7 +18,7 @@ const filterArticlesByCategoryWithFallback = (articles, targetCategory = '', lim
   const primary = [];
   const fallback = [];
 
-  const normalize = (val) => val?.toLowerCase?.();
+  const normalize = (val) => (typeof val === 'string' ? val.toLowerCase() : '');
   const matchesCategory = (cat) => normalize(cat) === targetCategory;
 
   for (const article of articles) {
@@ -49,12 +49,11 @@ const filterArticlesByCategoryWithFallback = (articles, targetCategory = '', lim
  * @returns {HTMLElement} The article element containing the video and metadata.
  */
 const createVideoArticle = (article, blockName) => {
-  const articleEl = document.createElement('article');
-  articleEl.classList.add(`${blockName}__article`);
+  const articleEl = createElement('article', { classes: `${blockName}__article` });
 
   articleEl.innerHTML = `
     <div class="${blockName}__article-media">
-      <div class="video-placeholder"></div>
+      <div class="${blockName}__video-placeholder"></div>
     </div>
     <a href="${article.path}" class="${blockName}__article-link">
       <div class="${blockName}__article-content">
@@ -64,7 +63,7 @@ const createVideoArticle = (article, blockName) => {
     </a>
   `;
 
-  const placeholder = articleEl.querySelector('.video-placeholder');
+  const placeholder = articleEl.querySelector(`.${blockName}__video-placeholder`);
   const videoEl = createVideo(article.videoUrl, `${blockName}__article-video`, {
     autoplay: true,
     muted: true,
@@ -72,8 +71,9 @@ const createVideoArticle = (article, blockName) => {
     controls: false,
     loop: true,
   });
-  placeholder.replaceWith(videoEl);
 
+  videoEl.setAttribute('aria-label', article.title);
+  placeholder.replaceWith(videoEl);
   return articleEl;
 };
 
@@ -89,12 +89,11 @@ const createVideoArticle = (article, blockName) => {
  * @returns {HTMLElement} The article element containing the image and metadata.
  */
 const createImageArticle = (article, blockName) => {
-  const articleEl = document.createElement('article');
-  articleEl.classList.add(`${blockName}__article`);
+  const articleEl = createElement('article', { classes: `${blockName}__article` });
 
   articleEl.innerHTML = `
     <a href="${article.path}" class="${blockName}__article-link">
-      <img src="${article.image}" alt="" class="${blockName}__article-image">
+      <img src="${article.image}" alt="${article.title}" class="${blockName}__article-image">
       <div class="${blockName}__article-content">
         <p class="${blockName}__article-content-category">${article.category}</p>
         <h4 class="${blockName}__article-content-title">${article.title}</h4>
@@ -124,26 +123,15 @@ const createImageArticle = (article, blockName) => {
 const buildBlock = (articles, block) => {
   const fragment = document.createDocumentFragment();
 
-  articles.forEach((article, i) => {
-    // TEMP: Add hardcoded video URLs for testing purposes
-    if (i === 1) {
-      article.videoUrl = 'https://www.macktrucks.com/trucks/anthem/media_1f836bcb54c043f523c2172ffdf69139c49d698fc.mp4';
-    }
+  articles.forEach((article) => {
+    console.log(article.videoUrl);
+    const articleEl = article.videoUrl ? createVideoArticle(article, blockName) : createImageArticle(article, blockName);
 
-    if (i === 2) {
-      article.videoUrl =
-        'https://delivery-p107394-e1241111.adobeaemcloud.com/adobe/assets/urn:aaid:aem:283e5f67-2a55-4fae-ba5e-3f57906999cd/play?accept-experimental=1';
-    }
-
-    const articleElement = article.videoUrl ? createVideoArticle(article, blockName) : createImageArticle(article, blockName);
-
-    fragment.appendChild(articleElement);
+    fragment.appendChild(articleEl);
   });
 
-  const articlesContainer = document.createElement('div');
-  articlesContainer.classList.add(`${blockName}__articles`);
+  const articlesContainer = createElement('div', { classes: `${blockName}__articles` });
   articlesContainer.appendChild(fragment);
-
   block.appendChild(articlesContainer);
 };
 
@@ -155,7 +143,14 @@ const buildBlock = (articles, block) => {
  * @returns {void}
  */
 export default async function decorate(block) {
-  const recommendedData = await fetchRecommendedArticles();
+  let recommendedData;
+  try {
+    recommendedData = await fetchRecommendedArticles();
+  } catch (e) {
+    console.error('Failed to fetch recommended articles:', e);
+    return;
+  }
+
   const items = recommendedData?.items || [];
   const formattedArticles = formatRecommendedArticlesArray(items);
   if (!formattedArticles.length) {

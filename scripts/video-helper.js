@@ -651,7 +651,6 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
   if (props.autoplay) {
     requestAnimationFrame(() => {
       const wrapperParent = wrapper.closest('.v2-embed, .v2-video');
-      console.log(wrapperParent, video);
       if (wrapperParent) {
         observeAutoplayWhenVisible({
           target: video,
