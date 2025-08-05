@@ -1,7 +1,7 @@
 import { unwrapDivs, createElement } from '../../scripts/common.js';
 import { getMetadata } from '../../scripts/aem.js';
 import { fetchRecommendedArticles, sortArticlesByDateField, formatRecommendedArticlesArray } from '../../scripts/services/magazine.service.js';
-import { createVideo } from '../../scripts/video-helper.js';
+import { createVideo, isValidVideoUrl } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-recommendations';
 
@@ -124,8 +124,7 @@ const buildBlock = (articles, block) => {
   const fragment = document.createDocumentFragment();
 
   articles.forEach((article) => {
-    const articleEl = article.videoUrl ? createVideoArticle(article, blockName) : createImageArticle(article, blockName);
-
+    const articleEl = isValidVideoUrl(article.videoUrl) ? createVideoArticle(article, blockName) : createImageArticle(article, blockName);
     fragment.appendChild(articleEl);
   });
 

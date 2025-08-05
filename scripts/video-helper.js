@@ -279,6 +279,14 @@ export function isVideoLink(link) {
   );
 }
 
+export function isValidVideoUrl(url) {
+  if (typeof url !== 'string' || !url.trim()) {
+    return false;
+  }
+
+  return isLowResolutionVideoUrl(url) || isAEMVideoUrl(url);
+}
+
 export function selectVideoLink(links, preferredType, videoType = videoTypes.both) {
   const linksArray = Array.isArray(links) ? links : [...links];
   const hasConsentForSocialVideos = isSocialAllowed();
