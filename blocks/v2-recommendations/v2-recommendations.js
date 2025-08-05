@@ -124,7 +124,6 @@ const buildBlock = (articles, block) => {
   const fragment = document.createDocumentFragment();
 
   articles.forEach((article) => {
-    console.log(article.videoUrl);
     const articleEl = article.videoUrl ? createVideoArticle(article, blockName) : createImageArticle(article, blockName);
 
     fragment.appendChild(articleEl);
