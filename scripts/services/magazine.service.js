@@ -202,7 +202,7 @@ export const formatRecommendedArticlesArray = (items = []) => {
         lastModified: meta.lastModified || null,
       };
     })
-    .filter((article) => article.title && article.path); // ensure valid entries
+    .filter((article) => article.title && article.path);
 };
 
 /**
