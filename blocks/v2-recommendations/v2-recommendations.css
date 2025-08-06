@@ -52,6 +52,10 @@
   height: 100%;
 }
 
+.v2-recommendations .v2-video__playback-button {
+  --playback-button-size: 48px
+}
+
 .v2-recommendations__article-content {
   background-color: var(--c-primary-white);
   padding: 24px;
