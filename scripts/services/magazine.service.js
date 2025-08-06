@@ -1,5 +1,5 @@
 import { getOrigin, getLocale, getTextLabel } from '../common.js';
-import { fetchData, magazineSearchQuery, TENANT } from '../search-api.js';
+import { fetchData, magazineSearchQuery, recommendationSearchQuery, TENANT } from '../search-api.js';
 
 /**
  * Fetches all magazine articles from GraphQL endpoint.
@@ -48,6 +48,64 @@ export const fetchMagazineData = async ({
     return allArticleData || null;
   } catch (error) {
     console.error('Error fetching magazine articles:', error);
+    return [];
+  }
+};
+
+/**
+ * Fetches recommended magazine articles using the edsrecommend query.
+ * @async
+ * @param {Object} options - The query configuration options.
+ * @param {number} [options.limit=100] - Maximum number of articles to retrieve.
+ * @param {number} [options.offset=0] - Offset for pagination.
+ * @param {string} [options.sort='PUBLISH_DATE_DESC'] - Sorting order.
+ * @param {string} [options.tenant=TENANT] - Tenant identifier.
+ * @param {string} [options.language=getLocale().split('-')[0].toUpperCase()] - Language locale.
+ * @param {string|null} [options.category=null] - Category to filter by.
+ * @param {Object|null} [options.article=null] - Additional article filters.
+ * @param {Array|null} [options.facets=null] - Additional facet filters.
+ * @returns {Promise<Object|null>} - An object with `items`, `facets`, etc., or `null`.
+ */
+export const fetchRecommendedArticles = async ({
+  limit = 100,
+  offset = 0,
+  sort = 'PUBLISH_DATE_DESC',
+  tenant = TENANT,
+  language = getLocale().split('-')[0].toUpperCase(),
+  category = null,
+  article = null,
+  facets = null,
+} = {}) => {
+  let allArticleData = [];
+
+  const variables = {
+    tenant,
+    language,
+    limit,
+    offset,
+    sort,
+    category,
+    article,
+    facets,
+  };
+
+  try {
+    const rawData = await fetchData({
+      query: recommendationSearchQuery(),
+      variables,
+    });
+
+    const queryResult = rawData?.data?.edsrecommend;
+
+    if (!queryResult) {
+      return allArticleData;
+    }
+
+    allArticleData = queryResult;
+
+    return allArticleData || null;
+  } catch (error) {
+    console.error('Error fetching recommended articles:', error);
     return [];
   }
 };
@@ -108,6 +166,43 @@ export const formatArticlesArray = (arts = []) => {
     }),
   );
   return articleList;
+};
+
+/**
+ * Formats recommended articles from the edsrecommend query response.
+ * @param {Array} items - Raw article items from GraphQL.
+ * @returns {Array} Formatted article objects.
+ */
+export const formatRecommendedArticlesArray = (items = []) => {
+  const defaultAuthor = getTextLabel('defaultAuthor');
+  const defaultReadTime = getTextLabel('defaultReadTime');
+
+  return items
+    .map((item) => {
+      const meta = item.metadata || {};
+      const articleMeta = meta.article || {};
+
+      const image = meta.image || '';
+      const isImageValid = isImageLink(image);
+      const fullImage = isImageValid ? getOrigin() + image : getDefaultImage();
+
+      return {
+        title: meta.title,
+        description: meta.description,
+        path: meta.url,
+        image: fullImage,
+        isDefaultImage: !isImageValid,
+        author: articleMeta.author || defaultAuthor,
+        readingTime: /\d+/.test(articleMeta.readTime) ? articleMeta.readTime : defaultReadTime,
+        topic: articleMeta.topic || null,
+        truck: Array.isArray(articleMeta.truck) ? articleMeta.truck : [],
+        videoUrl: articleMeta.videoUrl || null,
+        category: articleMeta.category || meta.category || null,
+        date: meta.publishDate || null,
+        lastModified: meta.lastModified || null,
+      };
+    })
+    .filter((article) => article.title && article.path);
 };
 
 /**

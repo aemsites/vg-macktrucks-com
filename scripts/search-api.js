@@ -121,7 +121,7 @@ $category: [String], $facets: [EdsFieldEnum], $article: ArticleFilter, $sort: Ed
 }
 `;
 
-export const topicSearchQuery = () => `
+export const recommendationSearchQuery = () => `
   query Edsrecommend($tenant: String!, $language: EdsLocaleEnum!, $limit: Int, $offset: Int, $category: String, $article: ArticleFilter, $sort: EdsSortOptionsEnum, $facets: [EdsFieldEnum]) {
     edsrecommend(tenant: $tenant, language: $language, limit: $limit, offset: $offset, category: $category, article: $article, sort: $sort, facets: $facets) {
       count
@@ -138,9 +138,11 @@ export const topicSearchQuery = () => `
           image
           article {
             author
+            category
             topic
             truck
             readTime
+            videoUrl
           }
         }
       }
