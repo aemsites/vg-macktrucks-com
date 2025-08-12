@@ -279,6 +279,14 @@ export function isVideoLink(link) {
   );
 }
 
+export function isValidVideoUrl(url) {
+  if (typeof url !== 'string' || !url.trim()) {
+    return false;
+  }
+
+  return isLowResolutionVideoUrl(url) || isAEMVideoUrl(url);
+}
+
 export function selectVideoLink(links, preferredType, videoType = videoTypes.both) {
   const linksArray = Array.isArray(links) ? links : [...links];
   const hasConsentForSocialVideos = isSocialAllowed();
@@ -651,7 +659,6 @@ function createProgressivePlaybackVideo(src, className = '', props = {}, addMute
   if (props.autoplay) {
     requestAnimationFrame(() => {
       const wrapperParent = wrapper.closest('.v2-embed, .v2-video');
-      console.log(wrapperParent, video);
       if (wrapperParent) {
         observeAutoplayWhenVisible({
           target: video,
