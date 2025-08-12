@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://www.macktrucks.com/news-and-stories/press-releases/</id>
     <title>Mack News</title>
-    <updated>2025-07-23T00:00:00.000Z</updated>
+    <updated>2025-08-11T00:00:00.000Z</updated>
     <generator>Mack News - Feed Generator</generator>
     <link rel="alternate" href="https://www.macktrucks.com/news-and-stories/press-releases/"/>
     <subtitle>Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.</subtitle>
@@ -3406,5 +3406,21 @@
         <updated>2025-07-23T00:00:00.000Z</updated>
         <content type="html"><![CDATA[“This delivery represents more than just a new vehicle,” said Jonathan Randall, president of Mack Trucks North America.]]></content>
         <published>2025-07-23T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Pioneer’s Advanced Design Drives Strong Early Customer Response]]></title>
+        <id>https://www.macktrucks.com/mack-news/2025/mack-pioneers-advanced-design-drives-strong-early-customer-response</id>
+        <link href="https://www.macktrucks.com/mack-news/2025/mack-pioneers-advanced-design-drives-strong-early-customer-response"/>
+        <updated>2025-08-07T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“Ergonomically, it was super quiet and rode very well. It didn’t have a lot of sway in the cab like you’re used to with some of them”]]></content>
+        <published>2025-08-07T00:00:00.000Z</published>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Mack Defense Secures New Five-Year Contract for M917A3 Heavy Dump Trucks with U.S. Army]]></title>
+        <id>https://www.macktrucks.com/mack-news/2025/mack-defense-secures-new-five-year-contract-for-m917a3-heavy-dump-trucks-with-us-army</id>
+        <link href="https://www.macktrucks.com/mack-news/2025/mack-defense-secures-new-five-year-contract-for-m917a3-heavy-dump-trucks-with-us-army"/>
+        <updated>2025-08-11T00:00:00.000Z</updated>
+        <content type="html"><![CDATA[“This contract represents continued confidence in our ability to deliver mission-critical vehicles to the U.S. Army,” said David Hartzell, president of Mack Defense]]></content>
+        <published>2025-08-11T00:00:00.000Z</published>
     </entry>
 </feed>
