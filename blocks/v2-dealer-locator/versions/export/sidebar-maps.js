@@ -1725,7 +1725,6 @@ $.fn.filterNearbyPins = function () {
       });
     }
     if (!toggled) {
-      $(this).css('background', '#484a4e');
       tmpPinList2 = filteredArray;
       $.fn.tmpPins(tmpPinList2);
 
@@ -1743,6 +1742,12 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterDealer').style.pointerEvents = 'none';
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'none';
       document.getElementById('filterDealerMobile').style.pointerEvents = 'none';
+
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
+
       document.getElementById('dealer-tag').setAttribute("title", $hoverText);
       document.getElementById('electric-tag').setAttribute("title", $hoverText);
     }
@@ -1767,6 +1772,12 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterDealer').style.pointerEvents = 'auto';
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterDealerMobile').style.pointerEvents = 'auto';
+
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
+
       document.getElementById('dealer-tag').removeAttribute("title", $hoverText);
       document.getElementById('electric-tag').removeAttribute("title", $hoverText);
     }
@@ -1797,7 +1808,6 @@ $.fn.filterNearbyPins = function () {
       });
     }
     if (!toggled) {
-      $(this).css('background', '#484a4e');
       tmpPinList3 = filteredDealerArray;
       $.fn.tmpPins(tmpPinList3);
       newList.forEach(function (pin) {
@@ -1814,6 +1824,12 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterUptime').style.pointerEvents = 'none';
       document.getElementById('filterDealerMobile').style.pointerEvents = 'none';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'none';
+
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
+
       document.getElementById('dealer-tag').setAttribute("title", $hoverText);
       document.getElementById('uptime-tag').setAttribute("title", $hoverText);
     }
@@ -1839,6 +1855,12 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterUptime').style.pointerEvents = 'auto';
       document.getElementById('filterDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'auto';
+
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
+
       document.getElementById('dealer-tag').removeAttribute("title", $hoverText);
       document.getElementById('uptime-tag').removeAttribute("title", $hoverText);
     }
@@ -1868,7 +1890,6 @@ $.fn.filterNearbyPins = function () {
       });
     }
     if (!toggled) {
-      $(this).css('background', '#484a4e');
       tmpPinList4 = filteredDealerArray;
       $.fn.tmpPins(tmpPinList4);
 
@@ -1886,6 +1907,12 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterUptime').style.pointerEvents = 'none';
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'none';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'none';
+
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
+
       document.getElementById('electric-tag').setAttribute("title", $hoverText);
       document.getElementById('uptime-tag').setAttribute("title", $hoverText);
     }
@@ -1911,6 +1938,12 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterUptime').style.pointerEvents = 'auto';
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'auto';
+
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
+
       document.getElementById('electric-tag').removeAttribute("title", $hoverText);
       document.getElementById('uptime-tag').removeAttribute("title", $hoverText);
     }
@@ -3119,8 +3152,14 @@ $(document).on('click', '#print', function (eventObject) {
 // toggle distance units
 const updateToggle = (e) => {
   e.preventDefault;
-  const activeUnit = e.target.dataset.active;
-  e.target.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
+  const button = e.target.closest('.toggle-button')
+  if (!button) return
+  const activeUnit = button.dataset.active;
+  button.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
+
+  // update global variable
+  $activeUnit = $activeUnit === 'mi' ? 'km' : 'mi';
+
   const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text');
   distanceTags.forEach((el) => {
     el.classList.toggle('active');
