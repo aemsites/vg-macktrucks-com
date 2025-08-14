@@ -290,6 +290,23 @@ $.fn.initGoogleMaps = function () {
   });
 };
 
+// toggle distance units
+const updateToggle = (e) => {
+  e.preventDefault;
+  const button = e.target.closest('.toggle-button')
+  if (!button) return
+  const activeUnit = button.dataset.active;
+  button.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
+
+  // update global variable
+  $activeUnit = $activeUnit === 'mi' ? 'km' : 'mi';
+
+  const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text');
+  distanceTags.forEach((el) => {
+    el.classList.toggle('active');
+  });
+}
+
 $.fn.getTimeZoneId = async function (dealer) {
   var lat = dealer.MAIN_LATITUDE;
   var long = dealer.MAIN_LONGITUDE;
@@ -1919,16 +1936,14 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'none';
       document.getElementById('filterDealerMobile').style.pointerEvents = 'none';
 
-      document.getElementById('filterElectricDealer').classList.toggle('active');
-      document.getElementById('filterDealer').classList.toggle('active');
-      document.getElementById('filterElectricDealerMobile').classList.toggle('active');
-      document.getElementById('filterDealerMobile').classList.toggle('active');
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
 
       document.getElementById('dealer-tag').setAttribute("title", $hoverText);
       document.getElementById('electric-tag').setAttribute("title", $hoverText);
 
-      console.log('1');
-      
     }
     else {
       $(this).css('background', '#000');
@@ -1953,15 +1968,14 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterDealerMobile').style.pointerEvents = 'auto';
 
-      document.getElementById('filterElectricDealer').classList.toggle('active');
-      document.getElementById('filterDealer').classList.toggle('active');
-      document.getElementById('filterElectricDealerMobile').classList.toggle('active');
-      document.getElementById('filterDealerMobile').classList.toggle('active');
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
 
       document.getElementById('dealer-tag').removeAttribute("title", $hoverText);
       document.getElementById('electric-tag').removeAttribute("title", $hoverText);
 
-      console.log('2');
     }
     return false;
   });
@@ -2009,15 +2023,14 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterDealerMobile').style.pointerEvents = 'none';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'none';
 
-      document.getElementById('filterDealer').classList.toggle('active');
-      document.getElementById('filterUptime').classList.toggle('active');
-      document.getElementById('filterDealerMobile').classList.toggle('active');
-      document.getElementById('filterUptimeMobile').classList.toggle('active');
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
 
       document.getElementById('dealer-tag').setAttribute("title", $hoverText);
       document.getElementById('uptime-tag').setAttribute("title", $hoverText);
 
-      console.log('3');
     }
     else {
       $(this).css('background', '#000');
@@ -2043,15 +2056,14 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'auto';
       
-      document.getElementById('filterDealer').classList.toggle('active');
-      document.getElementById('filterUptime').classList.toggle('active');
-      document.getElementById('filterDealerMobile').classList.toggle('active');
-      document.getElementById('filterUptimeMobile').classList.toggle('active');
+      document.getElementById('filterDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
 
       document.getElementById('dealer-tag').removeAttribute("title", $hoverText);
       document.getElementById('uptime-tag').removeAttribute("title", $hoverText);
 
-      console.log('4');
     }
     return false;
   });
@@ -2099,15 +2111,14 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'none';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'none';
 
-      document.getElementById('filterElectricDealer').classList.toggle('active');
-      document.getElementById('filterUptime').classList.toggle('active');
-      document.getElementById('filterElectricDealerMobile').classList.toggle('active');
-      document.getElementById('filterUptimeMobile').classList.toggle('active');
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
 
       document.getElementById('electric-tag').setAttribute("title", $hoverText);
       document.getElementById('uptime-tag').setAttribute("title", $hoverText);
 
-      console.log('5');
     }
     else {
       $(this).css('background', '#000');
@@ -2133,15 +2144,14 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'auto';
             
-      document.getElementById('filterElectricDealer').classList.toggle('active');
-      document.getElementById('filterUptime').classList.toggle('active');
-      document.getElementById('filterElectricDealerMobile').classList.toggle('active');
-      document.getElementById('filterUptimeMobile').classList.toggle('active');
+      document.getElementById('filterElectricDealer').classList.toggle('disabled');
+      document.getElementById('filterUptime').classList.toggle('disabled');
+      document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
+      document.getElementById('filterUptimeMobile').classList.toggle('disabled');
       
       document.getElementById('electric-tag').removeAttribute("title", $hoverText);
       document.getElementById('uptime-tag').removeAttribute("title", $hoverText);
 
-      console.log('6');
     }
     return false;
   });
@@ -3336,19 +3346,6 @@ $(document).on('click', '#print', function (eventObject) {
   setTimeout(function () { newWin.close(); }, 10);
 
 });
-
-// toggle distance units
-const updateToggle = (e) => {
-  e.preventDefault;
-  const button = e.target.closest('.toggle-button')
-  if (!button) return
-  const activeUnit = button.dataset.active;
-  button.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
-  const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text');
-  distanceTags.forEach((el) => {
-    el.classList.toggle('active');
-  });
-}
 
 [...$distanceToggles].forEach(toggleBtn => {
   toggleBtn.addEventListener("click", (e) => updateToggle(e));

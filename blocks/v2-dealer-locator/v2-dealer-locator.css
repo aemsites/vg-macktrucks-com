@@ -2321,16 +2321,16 @@ main .section.v2-dealer-locator-container > div {
   }
 }
 
-.v2-dealer-locator .legend-header .dealer:not(.active),
-.v2-dealer-locator .legend-header .uptime-dealer:not(.active),
-.v2-dealer-locator .legend-header .electric-dealer:not(.active) {
+.v2-dealer-locator .legend-header .dealer:not(.disabled),
+.v2-dealer-locator .legend-header .uptime-dealer:not(.disabled),
+.v2-dealer-locator .legend-header .electric-dealer:not(.disabled) {
   opacity: 1;
 }
 
-.v2-dealer-locator .legend-header .dealer.active,
-.v2-dealer-locator .legend-header .uptime-dealer.active,
-.v2-dealer-locator .legend-header .electric-dealer.active {
-  opacity: 0.5;
+.v2-dealer-locator .legend-header .dealer.disabled,
+.v2-dealer-locator .legend-header .uptime-dealer.disabled,
+.v2-dealer-locator .legend-header .electric-dealer.disabled {
+  opacity: 0.6;
 }
 
 .v2-dealer-locator .sidebar-legend .legend-icon {
