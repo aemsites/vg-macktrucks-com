@@ -41,6 +41,7 @@ main .hero p:not(.button-container) {
 
 main .hero p.button-container .button {
   font-family: var(--hero-btn-ff);
+  font-weight: 700;
 }
 
 main .hero picture {
