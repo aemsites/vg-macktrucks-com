@@ -91,7 +91,7 @@
 .v2-sub-navigation__active-item-wrapper {
   cursor: pointer;
   display: block;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-2-font-size);
   font-weight: var(--body-2-font-weight-bold);
   line-height: var(--body-2-line-height);

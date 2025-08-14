@@ -27,8 +27,9 @@
 .download-card .download-texts-title {
   color: var(--c-primary-black);
   font-size: var(--body-font-size-s);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   line-height: 28px;
+  font-weight: 700;
 }
 
 .download-card .download-texts-text a,
@@ -59,10 +60,11 @@
 
 /* download block variation NEW */
 .download-new-list {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   list-style: none;
   padding: 20px 8px;
   margin: 0;
+  font-weight: 700;
 }
 
 .download-new-item {

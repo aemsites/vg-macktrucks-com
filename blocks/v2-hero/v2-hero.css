@@ -375,7 +375,7 @@
   width: 100%;
   position: relative;
   background: transparent;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-1-font-size);
   font-weight: var(--body-1-font-weight-bold);
   line-height: var(--body-1-line-height);

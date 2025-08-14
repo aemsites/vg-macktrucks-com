@@ -138,7 +138,7 @@
 
 .v2-slider__models .model {
   color: var(--text-color);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: 12px;
   font-style: normal;
   line-height: 16px;
@@ -147,6 +147,7 @@
   text-wrap: balance;
   margin: 0;
   max-width: 50%;
+  font-weight: 700;
 }
 
 .v2-slider__models .model-2 {

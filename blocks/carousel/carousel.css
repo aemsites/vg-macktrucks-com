@@ -234,8 +234,9 @@
   line-height: 32px;
   padding: 8px 0 16px;
   margin: 0;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   color: var(--c-primary-black);
+  font-weight: 700;
 }
 
 .block.carousel .carousel-item-subheader {
@@ -243,8 +244,9 @@
   padding-top: 10px;
   line-height: 14px;
   margin: 0;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   color: var(--c-primary-black);
+  font-weight: 700;
 }
 
 @media screen and (min-width: 992px) {
@@ -387,12 +389,13 @@
 }
 
 .block.carousel.cards-variant .carousel-item-text h2 {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: 14px;
   color: var(--c-primary-white);
   margin: 5px 0 10px;
   padding: 0;
   line-height: 14px;
+  font-weight: 700;
 }
 
 .block.carousel.cards-variant .carousel-item-text > * {

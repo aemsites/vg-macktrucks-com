@@ -1,36 +1,107 @@
 /* below the fold CSS goes here */
 
-/* Headings */
 @font-face {
   font-family: 'GT America Extended Medium';
   src:
-    url('../fonts/GT-America-Extended-Medium.woff2') format('woff2'),
-    url('../fonts/GT-America-Extended-Medium.woff') format('woff');
+    url('../fonts/GT-America-Extended-Medium-extended.woff2') format('woff2'),
+    url('../fonts/GT-America-Extended-Medium-extended.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
   font-display: swap;
-}
-
-@font-face {
-  font-family: 'GT America Extended Regular';
-  src:
-    url('../fonts/GT-America-Extended-Regular.woff2') format('woff2'),
-    url('../fonts/GT-America-Extended-Regular.woff') format('woff');
-  font-display: swap;
+  unicode-range: U+0100-024F, U+0300-036F, U+1E00-1EFF;
 }
 
 @font-face {
   font-family: 'GT America Compressed Regular';
   src:
-    url('../fonts/GT-America-Compressed-Regular.woff2') format('woff2'),
-    url('../fonts/GT-America-Compressed-Regular.woff') format('woff');
+    url('../fonts/GT-America-Compressed-Regular-extended.woff2') format('woff2'),
+    url('../fonts/GT-America-Compressed-Regular-extended.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0300-036F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: 'GT America Extended Regular';
+  src:
+    url('../fonts/GT-America-Extended-Regular-extended.woff2') format('woff2'),
+    url('../fonts/GT-America-Extended-Regular-extended.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0300-036F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-Medium-500-extended.woff2') format('woff2'),
+    url('../fonts/Inter-Medium-500-extended.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0300-036F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-Bold-700-extended.woff2') format('woff2'),
+    url('../fonts/Inter-Bold-700-extended.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0100-024F, U+0300-036F, U+1E00-1EFF;
+}
+
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-Bold-700-Italic.woff2') format('woff2'),
+    url('../fonts/Inter-Bold-700-Italic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
   font-display: swap;
 }
 
-/* Accent elements */
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-ExtraBold-800.woff2') format('woff2'),
+    url('../fonts/Inter-ExtraBold-800.woff') format('woff');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-Medium-500-Italic.woff2') format('woff2'),
+    url('../fonts/Inter-Medium-500-Italic.woff') format('woff');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-Regular-400-Italic.woff2') format('woff2'),
+    url('../fonts/Inter-Regular-400-Italic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'GT America Mono Regular';
   src:
     url('../fonts/GT-America-Mono-Regular.woff2') format('woff2'),
     url('../fonts/GT-America-Mono-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -39,6 +110,8 @@
   src:
     url('../fonts/GT-America-Mono-Medium.woff2') format('woff2'),
     url('../fonts/GT-America-Mono-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
   font-display: swap;
 }
 

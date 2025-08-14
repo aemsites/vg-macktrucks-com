@@ -60,11 +60,12 @@
 }
 
 .v2-specifications__list--with-text strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: 12px;
   letter-spacing: 1.92px;
   line-height: 16px;
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 .v2-specifications__list--with-text p {

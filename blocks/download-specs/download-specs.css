@@ -8,11 +8,12 @@ main .section.download-specs-container {
 }
 
 .download-specs-section h3 {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-l);
   position: relative;
   padding: 15px 32px;
   margin: 0;
+  font-weight: 700;
 }
 
 .download-specs-list {
@@ -44,12 +45,13 @@ main .section.download-specs-container {
 }
 
 .download-specs-item .anchor-element .p-element {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-s);
   color: var(--c-primary-black);
   width: 75%;
   margin: 0 0 5px;
   padding: 0 50px 0 0;
+  font-weight: 700;
 }
 
 @media (min-width: 990px) {

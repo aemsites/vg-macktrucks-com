@@ -27,7 +27,8 @@
   padding-block-start: 10px;
   border-block-start: 3px solid var(--c-primary-black);
   text-transform: uppercase;
-  font: 14px var(--ff-body-bold);
+  font: 14px var(--ff-body);
+  font-weight: 700;
 }
 
 .text-on-image-column {
@@ -44,12 +45,13 @@
 }
 
 .teaser-column.text-on-image-column h3 {
-  font: 21px var(--ff-body-bold);
+  font: 21px var(--ff-body);
   color: var(--c-primary-white);
   position: absolute;
   bottom: 0;
   line-height: 1em;
   padding: 3rem 35% 4rem 4rem;
+  font-weight: 700;
 }
 
 @media (min-width: 768px) {

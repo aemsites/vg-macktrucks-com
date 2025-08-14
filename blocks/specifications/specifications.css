@@ -66,11 +66,12 @@ main .section.specifications-container {
 }
 
 .specs-section h3 {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-l);
   position: relative;
   padding: 15px 32px;
   margin: 0;
+  font-weight: 700;
 }
 
 .specs-item p {
@@ -90,10 +91,11 @@ main .section.specifications-container {
 
 .specs-item .specs-link,
 .specs-item p strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-s);
   color: var(--c-primary-black);
   line-height: 1.2;
+  font-weight: 700;
 }
 
 .specs-item .specs-link:hover {

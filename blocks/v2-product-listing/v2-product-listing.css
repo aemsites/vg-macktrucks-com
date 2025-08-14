@@ -17,12 +17,13 @@
   background: transparent;
   color: var(--text-color);
   text-transform: capitalize;
-  font: var(--body-font-size-xxs) / 1.6 var(--ff-body-bold);
+  font: var(--body-font-size-xxs) / 1.6 var(--ff-body);
   padding: 14px 8px 14px 24px;
   margin: 0;
   text-align: left;
   width: 100%;
   border: 0;
+  font-weight: 700;
 }
 
 .v2-product-listing-wrapper {
@@ -190,7 +191,7 @@
 }
 
 .v2-product-listing__detail-list li strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-weight: var(--body-1-font-weight-bold);
   letter-spacing: var(--body-1-letter-spacing-bold);
 }
@@ -250,7 +251,8 @@
 
 .v2-product-listing__selected-item {
   text-transform: capitalize;
-  font: var(--body-font-size-xxs) / 1.6 var(--ff-body-bold);
+  font: var(--body-font-size-xxs) / 1.6 var(--ff-body);
+  font-weight: 700;
 }
 
 .v2-product-listing__svg-wrapper {

@@ -55,7 +55,7 @@
   color: var(--c-primary-black);
   cursor: pointer;
   display: block;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-2-font-size);
   line-height: var(--body-2-line-height);
   font-weight: var(--body-2-font-weight-bold);

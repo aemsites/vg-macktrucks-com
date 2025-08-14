@@ -136,7 +136,7 @@ const updateChart = async (chartContainer, engineDetails) => {
   const option = {
     legend: {
       icon: 'circle',
-      fontFamily: 'Inter 75 Bold',
+      fontFamily: 'Inter',
       top: 'top',
       left: MQ.matches ? 'auto' : '0',
       right: MQ.matches ? '0' : 'auto',

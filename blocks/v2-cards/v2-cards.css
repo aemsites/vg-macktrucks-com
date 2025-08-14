@@ -98,7 +98,8 @@
 }
 
 .v2-cards__text-wrapper strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .v2-cards__text-wrapper li strong {
@@ -175,7 +176,8 @@
 }
 
 .v2-cards.v2-cards--spaced strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .v2-cards.v2-cards--spaced li strong {
