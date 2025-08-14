@@ -19,9 +19,10 @@
 
 .accordion .accordion-header-button h2 {
   margin: 0;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: 14px;
   line-height: 15px;
+  font-weight: 700;
 }
 
 .accordion .accordion-header-button .accordion-close {
@@ -75,9 +76,10 @@
 
 .accordion .accordion-content a {
   color: var(--c-primary-black);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-s);
   line-height: 16px;
+  font-weight: 700;
 }
 
 @media (min-width: 496px) {

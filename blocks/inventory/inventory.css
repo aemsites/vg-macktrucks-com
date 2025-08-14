@@ -25,6 +25,7 @@
 .inventory.block h1 {
   font: 60px/60px var(--ff-inter-extrabold);
   padding: 0 !important;
+  font-weight: 800;
 }
 
 .inventory.block .listings-list.hosted-theme {

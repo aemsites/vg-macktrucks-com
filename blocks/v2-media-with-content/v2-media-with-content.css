@@ -91,8 +91,9 @@ li.v2-media-with-content__list-item {
 .v2-media-with-content__list-item figcaption {
   text-align: center;
   font-size: var(--body-font-size-xxs);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   max-width: 150px;
+  font-weight: 700;
 }
 
 @media (min-width: 1200px) {

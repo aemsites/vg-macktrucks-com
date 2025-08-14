@@ -1,6 +1,7 @@
 /* TITLES */
 .tabs-tab-titles {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .tabs-tab-titles ul {

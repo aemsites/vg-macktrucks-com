@@ -89,11 +89,12 @@
 }
 
 .v2-category-collage__item-category-title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-xxs);
   text-transform: uppercase;
   line-height: 16px;
   letter-spacing: 1.92px;
+  font-weight: 700;
 }
 
 .v2-category-collage__item-content .icon svg {

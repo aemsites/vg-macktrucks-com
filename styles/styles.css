@@ -4,15 +4,91 @@
 /* stylelint-disable number-no-trailing-zeros */
 /* stylelint-disable selector-class-pattern */
 
+/*
+  Font Subset Strategy
+  --------------------
+  We split each font into two subsets to optimize performance while ensuring complete coverage
+  for English, French, and Spanish.  
+  Subsets are only created for the most important and frequently used fonts to keep build size
+  and complexity down — less critical fonts are loaded in full from lazy-styles.css.
+
+  1. Core subset (-core)
+     Unicode range:
+       - U+0020–007F   : Basic Latin (A–Z, a–z, digits, basic punctuation, space)
+       - U+00A0–00FF   : Latin-1 Supplement (accented letters for FR/ES, NBSP, ¡, ¿, etc.)
+       - U+2000–206F   : General Punctuation (– — ‘ ’ “ ” …, thin spaces)
+       - U+20A0–20CF   : Currency symbols (€ £ ¢, etc.)
+     Purpose:
+       - Supports all EN/FR/ES letters, punctuation, and common symbols.
+       - Defined in styles.css and preloaded for fastest above-the-fold rendering.
+
+  2. Extended subset (-extended)
+     Unicode range:
+       - U+0100–024F   : Latin Extended-A/B (extra diacritics for other European languages)
+       - U+0300–036F   : Combining Diacritical Marks
+       - U+1E00–1EFF   : Latin Extended Additional
+     Purpose:
+       - Provides rarer characters not required for EN/FR/ES.
+       - Defined in lazy-styles.css, loaded after first paint.
+
+  Notes:
+    - Both subsets use the same font-family name so browsers merge them seamlessly.
+    - Core and extended ranges are mutually exclusive to avoid duplicate downloads.
+*/
+
 @font-face {
-  font-family: 'fontawesome Fallback';
+  font-family: 'GT America Extended Medium';
+  src:
+    url('../fonts/GT-America-Extended-Medium-core.woff2') format('woff2'),
+    url('../fonts/GT-America-Extended-Medium-core.woff') format('woff');
+  font-weight: 500;
   font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+20A0-20CF;
+}
+
+@font-face {
+  font-family: 'GT America Compressed Regular';
+  src:
+    url('../fonts/GT-America-Compressed-Regular-core.woff2') format('woff2'),
+    url('../fonts/GT-America-Compressed-Regular-core.woff') format('woff');
   font-weight: 400;
-  src: local('Inter');
-  ascent-override: 93.75%;
-  descent-override: 6.25%;
-  line-gap-override: 0%;
-  size-adjust: 100%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+20A0-20CF;
+}
+
+@font-face {
+  font-family: 'GT America Extended Regular';
+  src:
+    url('../fonts/GT-America-Extended-Regular-core.woff2') format('woff2'),
+    url('../fonts/GT-America-Extended-Regular-core.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+20A0-20CF;
+}
+
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-Medium-500-core.woff2') format('woff2'),
+    url('../fonts/Inter-Medium-500-core.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+20A0-20CF;
+}
+
+@font-face {
+  font-family: Inter;
+  src:
+    url('../fonts/Inter-Bold-700-core.woff2') format('woff2'),
+    url('../fonts/Inter-Bold-700-core.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020-007F, U+00A0-00FF, U+2000-206F, U+20A0-20CF;
 }
 
 :root {
@@ -100,46 +176,26 @@
 
   /* Font family */
 
-  /*
-  **Inter renamed from Helvetica Neue LT Pro:
-  Inter 55 Regular: weight 400
-  Inter 65 Medium: weight 500
-  Inter 75 Bold: weight 700
-  Inter 85 ExtraBold: weight 800
-  Inter 56 Regular Italic
-  Inter 66 Medium Italic
-  Inter 76 Bold Italic
-
-  **New Inter naming:
-  Inter Medium: weight 500
-  Inter SemiBold: weight 600
-  Inter Bold: weight 700
-  */
-
   /* Font Weights */
   --fw-medium: 500;
   --fw-semibold: 600;
   --fw-bold: 700;
 
-  /* Alternate fonts */
-  --fallback-ff-default: 'Inter', sans-serif;
-  --fallback-ff-texts: 'Inter', sans-serif;
-  --fallback-ff-headlines: 'Inter', sans-serif;
-  --fallback-ff-accents: 'Inter', sans-serif;
+  /* Fallback font */
+  --fallback-ff-default: sans-serif;
 
   /* Headlines */
-  --ff-headline-medium: 'GT America Extended Medium', var(--fallback-ff-headlines);
-  --ff-headline-compressed: 'GT America Compressed Regular', var(--fallback-ff-headlines);
-  --ff-subheadings-medium: 'Inter 65 Medium', var(--fallback-ff-texts);
+  --ff-headline-medium: 'GT America Extended Medium', var(--fallback-ff-default);
+  --ff-headline-compressed: 'GT America Compressed Regular', var(--fallback-ff-default);
+  --ff-subheadings-medium: 'Inter', var(--fallback-ff-default);
 
   /* Body */
-  --ff-body: 'Inter 65 Medium', var(--fallback-ff-texts);
-  --ff-body-bold: 'Inter 75 Bold', var(--fallback-ff-texts);
-  --ff-testimonial: 'GT America Extended Regular', var(--fallback-ff-accents);
-  --ff-accents: 'GT America Mono Regular', var(--fallback-ff-accents);
+  --ff-body: 'Inter', var(--fallback-ff-default);
+  --ff-testimonial: 'GT America Extended Regular', var(--fallback-ff-default);
+  --ff-accents: 'GT America Mono Regular', var(--fallback-ff-default);
 
   /* Fontawesome */
-  --ff-fontawesome: 'fontawesome', 'fontawesome Fallback';
+  --ff-fontawesome: 'fontawesome',  var(--fallback-ff-default);
 
   /* Digital Display TFB */
   --ff-digital-display: 'Digital Display TBF', var(--fallback-ff-default);
@@ -187,14 +243,14 @@
   OLD CSS VARIABLES
   */
 
-  --ff-inter-extrabold: 'Inter 85 ExtraBold', var(--fallback-ff-texts);
-  --ff-inter-regular-italic: 'Inter 56 Regular Italic', var(--fallback-ff-texts);
-  --ff-inter-medium-italic: 'Inter 66 Medium Italic', var(--fallback-ff-texts);
-  --ff-inter-bold-italic: 'Inter 76 Bold Italic', var(--fallback-ff-texts);
+  --ff-inter-extrabold: 'Inter', var(--fallback-ff-default);
+  --ff-inter-regular-italic: 'Inter', var(--fallback-ff-default);
+  --ff-inter-medium-italic: 'Inter', var(--fallback-ff-default);
+  --ff-inter-bold-italic: 'Inter', var(--fallback-ff-default);
 
   /* Accent elements */
-  --ff-accents-medium: 'GT America Mono Medium', var(--fallback-ff-accents);
-  --ff-accents-regular: 'GT America Mono Regular', var(--fallback-ff-accents);
+  --ff-accents-medium: 'GT America Mono Medium', var(--fallback-ff-default);
+  --ff-accents-regular: 'GT America Mono Regular', var(--fallback-ff-default);
 
   /* Body font sizes */
   --body-font-size-xxl: 2.4rem;
@@ -782,7 +838,7 @@ main .section.magazine-listing-content p:first-of-type {
 }
 
 main .section.magazine-listing-content h3 {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-font-size-s);
   background-color: var(--c-primary-black);
   color: var(--c-primary-white);
@@ -790,6 +846,7 @@ main .section.magazine-listing-content h3 {
   line-height: 38px;
   padding: 5px 0 0 5px;
   margin: 0 0 13px;
+  font-weight: 700;
 }
 
 sup {
@@ -910,24 +967,32 @@ main .section.font-65 {
 }
 
 main .section.font-75 {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 main .section.font-56 {
   font-family: var(--ff-inter-regular-italic);
+  font-style: italic;
+  font-weight: 400;
 }
 
 main .section.font-66 {
   font-family: var(--ff-inter-medium-italic);
+  font-style: italic;
+  font-weight: 500;
 }
 
 main .section.font-76 {
   font-family: var(--ff-inter-bold-italic);
+  font-style: italic;
+  font-weight: 700;
 }
 
 main .section.responsive-title h1 {
   font-family: var(--ff-inter-extrabold);
   font-size: var(--heading-2-mobile-size-l);
+  font-weight: 800;
 }
 
 @media (min-width: 744px) {

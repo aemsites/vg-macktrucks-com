@@ -3,11 +3,12 @@
 }
 
 .recent-articles-section-title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-4-mobile-size-s);
   border-bottom: 3px solid var(--c-accent-copper);
   margin: 55px 0 0;
   padding-bottom: 5px;
+  font-weight: 700;
 }
 
 .recent-articles-list {
@@ -48,13 +49,14 @@
 }
 
 .recent-articles-first-item .recent-articles-first-title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-4-mobile-size-s);
   line-height: 32px;
   word-wrap: break-word;
   width: fit-content;
   height: auto;
   margin-top: 20px;
+  font-weight: 700;
 }
 
 .recent-articles-first-item .recent-articles-first-subtitle {
@@ -104,10 +106,9 @@
 }
 
 .recent-articles-rest-item .recent-articles-rest-title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-font-size-xs);
   color: var(--c-primary-black);
-  font-weight: bolder;
   word-wrap: break-word;
   max-width: 90%;
   width: 100%;
@@ -115,6 +116,7 @@
   margin: 5px 0 0 20px;
   overflow: hidden;
   max-height: 100px;
+  font-weight: 700;
 }
 
 .recent-articles-rest-item .recent-articles-rest-title:hover,

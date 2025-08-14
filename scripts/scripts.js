@@ -34,11 +34,6 @@ import {
 
 import { isVideoLink, addVideoShowHandler, hasVideoOnPage, loadVideoJs } from './video-helper.js';
 import { validateCountries } from './validate-countries.js';
-import { loadAllFonts } from './font-loader.js';
-
-if ('FontFace' in window && window.localStorage) {
-  loadAllFonts();
-}
 
 const disableHeader = getMetadata('disable-header').toLowerCase() === 'true';
 const disableFooter = getMetadata('disable-footer').toLowerCase() === 'true';
