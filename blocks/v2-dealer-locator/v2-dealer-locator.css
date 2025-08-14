@@ -2323,13 +2323,19 @@ main .section.v2-dealer-locator-container > div {
 
 .v2-dealer-locator .legend-header .dealer:not(.disabled),
 .v2-dealer-locator .legend-header .uptime-dealer:not(.disabled),
-.v2-dealer-locator .legend-header .electric-dealer:not(.disabled) {
+.v2-dealer-locator .legend-header .electric-dealer:not(.disabled),
+.v2-dealer-locator .legend-header .mobile-dealer:not(.disabled),
+.v2-dealer-locator .legend-header .mobile-uptime-dealer:not(.disabled),
+.v2-dealer-locator .legend-header .mobile-electric-dealer:not(.disabled) {
   opacity: 1;
 }
 
 .v2-dealer-locator .legend-header .dealer.disabled,
 .v2-dealer-locator .legend-header .uptime-dealer.disabled,
-.v2-dealer-locator .legend-header .electric-dealer.disabled {
+.v2-dealer-locator .legend-header .electric-dealer.disabled,
+.v2-dealer-locator .legend-header .mobile-dealer.disabled,
+.v2-dealer-locator .legend-header .mobile-uptime-dealer.disabled,
+.v2-dealer-locator .legend-header .mobile-electric-dealer.disabled {
   opacity: 0.6;
 }
 

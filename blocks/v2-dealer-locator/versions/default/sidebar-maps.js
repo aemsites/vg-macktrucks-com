@@ -290,23 +290,6 @@ $.fn.initGoogleMaps = function () {
   });
 };
 
-// toggle distance units
-const updateToggle = (e) => {
-  e.preventDefault;
-  const button = e.target.closest('.toggle-button')
-  if (!button) return
-  const activeUnit = button.dataset.active;
-  button.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
-
-  // update global variable
-  $activeUnit = $activeUnit === 'mi' ? 'km' : 'mi';
-
-  const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text');
-  distanceTags.forEach((el) => {
-    el.classList.toggle('active');
-  });
-}
-
 $.fn.getTimeZoneId = async function (dealer) {
   var lat = dealer.MAIN_LATITUDE;
   var long = dealer.MAIN_LONGITUDE;
@@ -1916,7 +1899,6 @@ $.fn.filterNearbyPins = function () {
       });
     }
     if (!toggled) {
-      $(this).css('background', '#484a4e');
       tmpPinList2 = filteredArray;
       $.fn.tmpPins(tmpPinList2);
 
@@ -2004,7 +1986,6 @@ $.fn.filterNearbyPins = function () {
       });
     }
     if (!toggled) {
-      $(this).css('background', '#484a4e');
       tmpPinList3 = filteredDealerArray;
       $.fn.tmpPins(tmpPinList3);
       newList.forEach(function (pin) {
@@ -2091,7 +2072,6 @@ $.fn.filterNearbyPins = function () {
       });
     }
     if (!toggled) {
-      $(this).css('background', '#484a4e');
       tmpPinList4 = filteredDealerArray;
       $.fn.tmpPins(tmpPinList4);
 
@@ -3346,6 +3326,23 @@ $(document).on('click', '#print', function (eventObject) {
   setTimeout(function () { newWin.close(); }, 10);
 
 });
+
+// toggle distance units
+const updateToggle = (e) => {
+  e.preventDefault;
+  const button = e.target.closest('.toggle-button')
+  if (!button) return
+  const activeUnit = button.dataset.active;
+  button.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
+
+  // update global variable
+  $activeUnit = $activeUnit === 'mi' ? 'km' : 'mi';
+
+  const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text');
+  distanceTags.forEach((el) => {
+    el.classList.toggle('active');
+  });
+}
 
 [...$distanceToggles].forEach(toggleBtn => {
   toggleBtn.addEventListener("click", (e) => updateToggle(e));
