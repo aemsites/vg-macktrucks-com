@@ -1,17 +1,51 @@
 import { variantsClassesToBEM } from '../../scripts/common.js';
+import { createVideo } from '../../scripts/video-helper.js';
+
+const blockName = 'v2-cards';
+const variantClasses = [
+  'no-background',
+  'horizontal',
+  'image-aspect-ratio-7-5',
+  'large-heading',
+  '4-cards-row',
+  '2-cards-row',
+  'spaced',
+  'with-border',
+];
+
+const decorateMedia = (block) => {
+  const firstCardItems = [...block.querySelectorAll(':scope > div > div:first-of-type')];
+  firstCardItems.forEach((el) => {
+    const pictureEl = el.querySelector(':scope > picture');
+    const videoURL = el.querySelector(':scope > p > a.text-link-with-video');
+    if (pictureEl) {
+      const imageEl = pictureEl.querySelector('img');
+      pictureEl.classList.add(`${blockName}__picture`);
+      pictureEl.parentElement.classList.add(`${blockName}__picture-wrapper`);
+      pictureEl.parentElement.classList.remove(`${blockName}__text-wrapper`);
+      imageEl.classList.add(`${blockName}__image`);
+    }
+    if (videoURL) {
+      const { href } = videoURL;
+      const videoContainer = createVideo(href, `${blockName}__video-container`, {
+        autoplay: true,
+        muted: true,
+        playsinline: true,
+        controls: false,
+        loop: true,
+      });
+      const videoEl = videoContainer.querySelector('video');
+      el.classList.add(`${blockName}__video-wrapper`);
+      el.classList.remove(`${blockName}__text-wrapper`);
+      videoEl.classList.add(`${blockName}__video`);
+      videoEl.classList.remove(`${blockName}__video-container`);
+      videoURL.parentElement.classList.add(`${blockName}__video-wrapper`);
+      videoURL.replaceWith(videoContainer);
+    }
+  });
+};
 
 export default async function decorate(block) {
-  const blockName = 'v2-cards';
-  const variantClasses = [
-    'no-background',
-    'horizontal',
-    'image-aspect-ratio-7-5',
-    'large-heading',
-    '4-cards-row',
-    '2-cards-row',
-    'spaced',
-    'with-border',
-  ];
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 
   const cardsItems = [...block.querySelectorAll(':scope > div')];
@@ -22,15 +56,7 @@ export default async function decorate(block) {
     el.classList.add(`${blockName}__text-wrapper`);
   });
 
-  const pictures = [...block.querySelectorAll('picture')];
-  pictures.forEach((el) => {
-    el.classList.add(`${blockName}__picture`);
-    el.parentElement.classList.add(`${blockName}__picture-wrapper`);
-    el.parentElement.classList.remove(`${blockName}__text-wrapper`);
-  });
-
-  const images = [...block.querySelectorAll('img')];
-  images.forEach((el) => el.classList.add(`${blockName}__image`));
+  decorateMedia(block);
 
   const cardsHeadings = [...block.querySelectorAll('h1, h2, h3, h4, h5, h6')];
   cardsHeadings.forEach((el) => {

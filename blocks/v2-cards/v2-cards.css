@@ -26,6 +26,10 @@
   padding: 24px;
 }
 
+.v2-cards__video-wrapper {
+  margin: 0;
+}
+
 .v2-cards__text-wrapper ul,
 .v2-cards__text-wrapper {
   display: flex;
@@ -60,11 +64,16 @@
   display: flex;
 }
 
+.v2-cards__video,
 .v2-cards__image {
   background: var(--media-background);
   aspect-ratio: 16/9;
   width: 100%;
   object-fit: cover;
+}
+
+.v2-cards__video {
+  height: 100%;
 }
 
 .v2-cards--image-aspect-ratio-7-5 .v2-cards__image {
