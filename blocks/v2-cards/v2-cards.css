@@ -64,6 +64,10 @@
   display: flex;
 }
 
+.v2-cards__video-container {
+  position: relative;
+}
+
 .v2-cards__video,
 .v2-cards__image {
   background: var(--media-background);
@@ -74,6 +78,10 @@
 
 .v2-cards__video {
   height: 100%;
+}
+
+.v2-cards__video-container .v2-video__playback-button {
+  --playback-button-size: 48px;
 }
 
 .v2-cards--image-aspect-ratio-7-5 .v2-cards__image {
