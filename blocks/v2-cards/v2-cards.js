@@ -1,5 +1,5 @@
 import { variantsClassesToBEM } from '../../scripts/common.js';
-import { createVideo } from '../../scripts/video-helper.js';
+import { createVideo, isVideoLink } from '../../scripts/video-helper.js';
 
 const blockName = 'v2-cards';
 const variantClasses = [
@@ -13,36 +13,52 @@ const variantClasses = [
   'with-border',
 ];
 
+const decoratePicture = (picture) => {
+  const imageEl = picture.querySelector('img');
+  picture.classList.add(`${blockName}__picture`);
+  picture.parentElement.classList.add(`${blockName}__media-wrapper`);
+  picture.parentElement.classList.remove(`${blockName}__text-wrapper`);
+  imageEl.classList.add(`${blockName}__image`);
+};
+
+const processVideoLink = (card, link) => {
+  const videoWrapper = createVideo(link.href, `${blockName}__video-wrapper`, {
+    autoplay: true,
+    muted: true,
+    playsinline: true,
+    controls: false,
+    loop: true,
+  });
+  const videoEl = videoWrapper.querySelector('video');
+  card.classList.add(`${blockName}__media-wrapper`);
+  card.classList.remove(`${blockName}__text-wrapper`);
+  videoEl.classList.add(`${blockName}__video`);
+  videoEl.classList.remove(`${blockName}__video-wrapper`);
+  link.parentElement.replaceWith(videoWrapper);
+};
+
 const decorateMedia = (block) => {
-  const firstCardItems = [...block.querySelectorAll(':scope > div > div:first-of-type')];
-  firstCardItems.forEach((el) => {
-    const pictureEl = el.querySelector(':scope > picture');
-    const videoURL = el.querySelector(':scope > p > a.text-link-with-video');
+  const cards = [...block.querySelectorAll(':scope > div > div:first-of-type')];
+  if (!cards.length) {
+    console.warn('No %ccards% c found', 'font-weight: bold; color: red;', 'font-weight: normal; color: inherit;');
+    return;
+  }
+  cards.forEach((card) => {
+    const pictureEl = card.querySelector(':scope > picture');
+    const links = [...card.querySelectorAll(':scope a')];
     if (pictureEl) {
-      const imageEl = pictureEl.querySelector('img');
-      pictureEl.classList.add(`${blockName}__picture`);
-      pictureEl.parentElement.classList.add(`${blockName}__media-wrapper`);
-      pictureEl.parentElement.classList.remove(`${blockName}__text-wrapper`);
-      imageEl.classList.add(`${blockName}__image`);
+      decoratePicture(pictureEl);
     }
-    if (videoURL) {
-      const { href } = videoURL;
-      const videoContainer = createVideo(href, `${blockName}__video-container`, {
-        autoplay: true,
-        muted: true,
-        playsinline: true,
-        controls: false,
-        loop: true,
+    if (links.length) {
+      links.forEach((link) => {
+        if (!isVideoLink(link)) {
+          console.warn('Link %c%s%c is not a video link', 'font-weight: bold; color: red;', link.href, 'font-weight: normal; color: inherit;');
+          return;
+        }
+        processVideoLink(card, link);
       });
-      const videoEl = videoContainer.querySelector('video');
-      el.classList.add(`${blockName}__media-wrapper`);
-      el.classList.remove(`${blockName}__text-wrapper`);
-      videoEl.classList.add(`${blockName}__video`);
-      videoEl.classList.remove(`${blockName}__video-container`);
-      videoURL.parentElement.classList.add(`${blockName}__video-wrapper`);
-      videoURL.replaceWith(videoContainer);
     }
-    if (!pictureEl && !videoURL) {
+    if (!pictureEl && !links.length) {
       console.warn('No %cmedia element%c found', 'font-weight: bold; color: red;', 'font-weight: normal; color: inherit;');
       return;
     }

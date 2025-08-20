@@ -28,6 +28,7 @@
 
 .v2-cards__video-wrapper {
   margin: 0;
+  position: relative;
 }
 
 .v2-cards__text-wrapper ul,
@@ -64,10 +65,6 @@
   display: flex;
 }
 
-.v2-cards__video-container {
-  position: relative;
-}
-
 .v2-cards__video,
 .v2-cards__image {
   background: var(--media-background);
@@ -80,7 +77,7 @@
   height: 100%;
 }
 
-.v2-cards__video-container .v2-video__playback-button {
+.v2-cards__video-wrapper .v2-video__playback-button {
   --playback-button-size: 48px;
 }
 
@@ -280,12 +277,12 @@
     width: 50%;
   }
 
-  .v2-cards--horizontal .v2-cards__video-container,
+  .v2-cards--horizontal .v2-cards__video-wrapper,
   .v2-cards--horizontal .v2-cards__media-wrapper {
     display: flex;
   }
 
-  .v2-cards--horizontal .v2-cards__video-container,
+  .v2-cards--horizontal .v2-cards__video-wrapper,
   .v2-cards--horizontal .v2-cards__picture {
     margin: auto;
   }
