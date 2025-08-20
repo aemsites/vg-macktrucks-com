@@ -47,11 +47,9 @@ const decorateMedia = (block) => {
     }
     if (links.length) {
       links.forEach((link) => {
-        if (!isVideoLink(link)) {
-          console.warn('Link %c%s%c is not a video link', 'font-weight: bold; color: red;', link.href, 'font-weight: normal; color: inherit;');
-          return;
+        if (isVideoLink(link)) {
+          processVideoLink(card, link);
         }
-        processVideoLink(card, link);
       });
     }
     if (!pictureEl && !links.length) {
