@@ -52,10 +52,6 @@ const decorateMedia = (block) => {
         }
       });
     }
-    if (!pictureEl && !links.length) {
-      console.warn('No %cmedia element%c found', 'font-weight: bold; color: red;', 'font-weight: normal; color: inherit;');
-      return;
-    }
   });
 };
 
