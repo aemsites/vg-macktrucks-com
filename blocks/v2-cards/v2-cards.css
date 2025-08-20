@@ -71,6 +71,10 @@
   aspect-ratio: 7/5;
 }
 
+.v2-cards--with-uncrop-image .v2-cards__image {
+  aspect-ratio: auto;
+}
+
 .v2-cards__heading {
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-5-font-size);
