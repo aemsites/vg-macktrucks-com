@@ -21,7 +21,7 @@ const decorateMedia = (block) => {
     if (pictureEl) {
       const imageEl = pictureEl.querySelector('img');
       pictureEl.classList.add(`${blockName}__picture`);
-      pictureEl.parentElement.classList.add(`${blockName}__picture-wrapper`);
+      pictureEl.parentElement.classList.add(`${blockName}__media-wrapper`);
       pictureEl.parentElement.classList.remove(`${blockName}__text-wrapper`);
       imageEl.classList.add(`${blockName}__image`);
     }
@@ -35,7 +35,7 @@ const decorateMedia = (block) => {
         loop: true,
       });
       const videoEl = videoContainer.querySelector('video');
-      el.classList.add(`${blockName}__video-wrapper`);
+      el.classList.add(`${blockName}__media-wrapper`);
       el.classList.remove(`${blockName}__text-wrapper`);
       videoEl.classList.add(`${blockName}__video`);
       videoEl.classList.remove(`${blockName}__video-container`);
