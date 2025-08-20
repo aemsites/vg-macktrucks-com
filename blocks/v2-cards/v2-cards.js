@@ -11,7 +11,7 @@ export default async function decorate(block) {
     '2-cards-row',
     'spaced',
     'with-border',
-    'with-uncrop-image',
+    'with-uncropped-image',
   ];
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 

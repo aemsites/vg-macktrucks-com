@@ -71,7 +71,7 @@
   aspect-ratio: 7/5;
 }
 
-.v2-cards--with-uncrop-image .v2-cards__image {
+.v2-cards--with-uncropped-image .v2-cards__image {
   aspect-ratio: auto;
 }
 
