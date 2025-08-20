@@ -42,6 +42,10 @@ const decorateMedia = (block) => {
       videoURL.parentElement.classList.add(`${blockName}__video-wrapper`);
       videoURL.replaceWith(videoContainer);
     }
+    if (!pictureEl && !videoURL) {
+      console.warn('No %cmedia element%c found', 'font-weight: bold; color: red;', 'font-weight: normal; color: inherit;');
+      return;
+    }
   });
 };
 
