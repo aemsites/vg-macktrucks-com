@@ -89,7 +89,7 @@
 
 .footer-truck-list__title,
 .footer-newsletter__title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-weight: normal;
   font-size: 12px;
   line-height: 16px;

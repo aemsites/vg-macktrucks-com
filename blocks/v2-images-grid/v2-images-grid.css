@@ -369,8 +369,9 @@
     background-color: var(--c-secondary-graphite);
     right: 10px;
     text-transform: uppercase;
-    font: 12px/16px var(--ff-body-bold);
+    font: 12px/16px var(--ff-body);
     letter-spacing: 1.92px;
+    font-weight: 700;
   }
 }
 
