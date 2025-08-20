@@ -39,10 +39,6 @@ const processVideoLink = (card, link) => {
 
 const decorateMedia = (block) => {
   const cards = [...block.querySelectorAll(':scope > div > div:first-of-type')];
-  if (!cards.length) {
-    console.warn('No %ccards% c found', 'font-weight: bold; color: red;', 'font-weight: normal; color: inherit;');
-    return;
-  }
   cards.forEach((card) => {
     const pictureEl = card.querySelector(':scope > picture');
     const links = [...card.querySelectorAll(':scope a')];
