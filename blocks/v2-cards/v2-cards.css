@@ -71,8 +71,9 @@
   aspect-ratio: 7/5;
 }
 
+/* Show image as exactly 571px x 811px(≈0.704) */
 .v2-cards--with-uncropped-image .v2-cards__image {
-  aspect-ratio: auto;
+  aspect-ratio: 0.704;
 }
 
 .v2-cards__heading {
