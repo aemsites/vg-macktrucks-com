@@ -353,10 +353,13 @@
   max-height: 275px;
   aspect-ratio: 1;
   position: absolute;
-  right: 0;
+  right: 10%;
   z-index: 1;
-  background: var(--c-primary-gold);
-  mask: url('/media/dots-mobile.svg');  
+  background: #3D3D3D 75%;
+  mask-image: url('/media/dots-mobile.svg');
+  mask-position: 50% 20%;
+  mask-repeat: no-repeat;
+  mask-size: 80%;
 }
 
 .v2-columns.v2-columns--with-dots picture:first-child img {
@@ -509,8 +512,11 @@
   }
 
   .v2-columns.v2-columns--with-dots picture:first-child::before {
-    mask: url('/media/dots-desktop.svg');
-    left: 0;
+    background: var(--c-primary-gold);
+    left: 10%;
+    mask-image: url('/media/dots-desktop.svg');
+    mask-position: 0 50%;
+    mask-size: 100%;
   }
 }
 
