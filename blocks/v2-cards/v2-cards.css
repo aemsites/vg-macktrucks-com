@@ -172,6 +172,7 @@
 }
 
 /* 2 cards row variant */
+.v2-cards--2-cards-row .v2-cards__video,
 .v2-cards--2-cards-row .v2-cards__image {
   aspect-ratio: 7/5;
 }
