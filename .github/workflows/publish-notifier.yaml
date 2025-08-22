@@ -98,7 +98,7 @@ jobs:
           actor="${{ github.actor }}"
           timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-          # Curate error patterns you care about
+          # Errors to alert on
           declare -a errors=(
             "No Valid Documents to Ingest"
             "Documents not ingested"
