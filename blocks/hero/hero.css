@@ -4,7 +4,7 @@
 :root {
   --hero-header-ff: var(--ff-inter-extrabold);
   --hero-text-ff: var(--ff-subheadings-medium);
-  --hero-btn-ff: var(--ff-body-bold);
+  --hero-btn-ff: var(--ff-body);
   --hero-text-size: 20px;
 }
 
@@ -31,6 +31,7 @@ main .hero h1 {
 
 main .hero :is(h1, h2) {
   font-family: var(--hero-header-ff);
+  font-weight: 800;
 }
 
 main .hero p:not(.button-container) {
@@ -40,6 +41,7 @@ main .hero p:not(.button-container) {
 
 main .hero p.button-container .button {
   font-family: var(--hero-btn-ff);
+  font-weight: 700;
 }
 
 main .hero picture {
@@ -220,10 +222,11 @@ main .hero.specs .hero-content-wrapper p {
 
 main .hero.specs .hero-content-wrapper h1 {
   color: var(--c-primary-black);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: 60px;
   width: 100%;
   margin: 50px auto;
+  font-weight: 700;
 }
 
 main .hero.specs .hero-content-wrapper h1::after {
@@ -311,9 +314,10 @@ main .hero.magazine .hero-content-wrapper {
 }
 
 main .hero.magazine .hero-content-wrapper h1 {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-font-size-xxl);
   color: var(--c-primary-black);
+  font-weight: 700;
 }
 
 main .hero.magazine .hero-content-wrapper p {
@@ -327,9 +331,10 @@ main .hero.magazine .hero-content-wrapper p:first-of-type {
 }
 
 main .hero.magazine .hero-content-wrapper a {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-xs);
   margin: 0;
+  font-weight: 700;
 }
 
 main .hero.magazine .hero-content-wrapper a:hover {

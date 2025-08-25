@@ -247,12 +247,14 @@
 
 .hotspots-container .hotspot-layover h5 {
   margin: 10px 0 8px;
-  font: 12px/12px var(--ff-body-bold);
+  font: 12px/12px var(--ff-body);
   text-transform: uppercase;
+  font-weight: 700;
 }
 
 .hotspots-container .hotspot-layover h6 {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .hotspots-container .hotspot-layover p,
@@ -276,8 +278,9 @@
 }
 
 .hotspots-container .hotspot-layover a {
-  font: 16px/16px var(--ff-body-bold);
+  font: 16px/16px var(--ff-body);
   color: var(--c-primary-white);
+  font-weight: 700;
 }
 
 @media (max-width: 896px) {
@@ -286,7 +289,8 @@
   }
 
   .hotspots-container .hotspot-layover h3 {
-    font: 28px/28px var(--ff-body-bold);
+    font: 28px/28px var(--ff-body);
+    font-weight: 700;
   }
 
   .hotspots-container .hotspot-layover :is(h4, h5) {
@@ -495,8 +499,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: var(--ff-body-bold), serif;
+  font-family: var(--ff-body), serif;
   font-size: 0.85em;
+  font-weight: 700;
 }
 
 @media (min-width: 897px) {

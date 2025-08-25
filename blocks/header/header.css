@@ -686,13 +686,14 @@ a.header__link {
 
   .header .header__menu-content .header__menu-heading {
     color: var(--header-color);
-    font-family: var(--ff-body-bold);
+    font-family: var(--ff-body);
     font-size: 12px;
     line-height: 16px;
     letter-spacing: 1.92px;
     text-transform: uppercase;
     padding: 0 0 16px;
     cursor: unset;
+    font-weight: 700;
   }
 
   .header .header__menu-content .header__menu-heading:hover {

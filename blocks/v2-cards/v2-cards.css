@@ -86,6 +86,11 @@
   aspect-ratio: 7/5;
 }
 
+/* Show image as exactly 571px x 811px(≈0.704) */
+.v2-cards--with-uncropped-image .v2-cards__image {
+  aspect-ratio: 0.704;
+}
+
 .v2-cards__heading {
   font-family: var(--ff-subheadings-medium);
   font-size: var(--headline-5-font-size);
@@ -113,7 +118,8 @@
 }
 
 .v2-cards__text-wrapper strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .v2-cards__text-wrapper li strong {
@@ -191,7 +197,8 @@
 }
 
 .v2-cards.v2-cards--spaced strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .v2-cards.v2-cards--spaced li strong {
