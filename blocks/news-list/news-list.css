@@ -1,8 +1,8 @@
 .news-list a.title-with-icon {
   color: var(--text-color);
   font-size: var(--heading-font-size-xs);
-  font-family: var(--ff-body-bold);
-  font-weight: bold;
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .news-list a.title-with-icon:hover {
@@ -48,9 +48,9 @@
 
 .news-list a h3 {
   font-size: var(--heading-font-size-m);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   margin-top: 0;
-  font-weight: bold;
+  font-weight: 700;
   margin-bottom: 5px;
 }
 

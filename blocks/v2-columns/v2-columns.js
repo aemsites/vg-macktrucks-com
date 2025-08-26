@@ -46,7 +46,16 @@ const insertVideo = (block, videoAnchor, picture) => {
 export default async function decorate(block) {
   const blockParent = block.parentElement.parentElement;
 
-  const variantClasses = ['with-background-image', 'background-plane', 'icon-list', 'navigation-links', 'inset', 'headline', 'video-launcher'];
+  const variantClasses = [
+    'with-background-image',
+    'background-plane',
+    'icon-list',
+    'navigation-links',
+    'inset',
+    'headline',
+    'video-launcher',
+    'with-dots',
+  ];
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 
   const isBackgroundImageVariant = block.classList.contains(`${blockName}--with-background-image`);

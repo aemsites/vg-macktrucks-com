@@ -65,8 +65,9 @@ hr.column-underline {
   color: var(--c-primary-white);
   font-size: var(--body-font-size-xs);
   text-align: center;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   line-height: 14px;
+  font-weight: 700;
 }
 
 .columns.options h3 {
@@ -74,7 +75,8 @@ hr.column-underline {
   margin: 0;
   line-height: 14px;
   font-size: var(--body-font-size-xs);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 /* stylelint-disable-next-line no-descending-specificity */

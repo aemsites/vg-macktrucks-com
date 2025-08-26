@@ -1,7 +1,8 @@
 .recommendations-section-title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-3-mobile-size-m);
   margin: 40px 4px 0;
+  font-weight: 700;
 }
 
 .recommendations-list {
@@ -166,10 +167,11 @@
 }
 
 .magazine-categories.recommendations-container .recommendations-text-content .recommendations-title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-font-size-s);
   margin: 5px 0 0;
   padding: 0 0 5px;
+  font-weight: 700;
 }
 
 .magazine-categories.recommendations-container .recommendations-text-content .recommendations-subtitle {

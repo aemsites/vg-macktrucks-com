@@ -48,8 +48,9 @@
 
 .v2-breadcrumb__crumb--active {
   color: var(--c-primary-white);
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   white-space: nowrap;
+  font-weight: 700;
 }
 
 .v2-breadcrumb__crumb--active:hover {

@@ -141,13 +141,14 @@
 }
 
 .performance-specifications .engine-ratings {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-xxs);
   letter-spacing: var(--label-letter-spacing-small);
   line-height: var(--label-line-height-small);
   width: 140px;
   text-transform: uppercase;
   margin: 0;
+  font-weight: 700;
 }
 
 .performance-specifications .engine-navigation {
@@ -200,11 +201,12 @@
 }
 
 .performance-specifications .details-panel dl dt {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-xxs);
   text-transform: uppercase;
   line-height: 1em;
   letter-spacing: 0.1em;
+  font-weight: 700;
 }
 
 .performance-specifications .details-panel dl dd {

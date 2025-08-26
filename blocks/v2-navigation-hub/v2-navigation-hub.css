@@ -64,12 +64,13 @@
 }
 
 .v2-navigation-hub__card-nav-title {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   text-transform: uppercase;
   color: var(--c-tertiary-cool-gray);
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.16em;
+  font-weight: 700;
 }
 
 .v2-navigation-hub__card-nav-list {

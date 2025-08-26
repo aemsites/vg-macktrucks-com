@@ -56,8 +56,9 @@ main .template.section.article-hero-container {
 
 .article-hero-content .article-hero-title {
   width: 90%;
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-font-size-m);
+  font-weight: 700;
   color: var(--c-primary-white);
   margin: 20px 0 0;
 }
@@ -84,15 +85,17 @@ main .template.section.article-hero-container {
 }
 
 .article-texts-container .default-content-subtitle {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--heading-font-size-s);
+  font-weight: 700;
   color: var(--c-primary-black);
   margin: 0 4px 10px;
 }
 
 .article-texts-container .current-article-container .author-text {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-size: var(--body-font-size-xs);
+  font-weight: 700;
   line-height: 21px;
   margin: 20px 4px 10px;
 }

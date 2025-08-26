@@ -26,6 +26,11 @@
   padding: 24px;
 }
 
+.v2-cards__video-wrapper {
+  margin: 0;
+  position: relative;
+}
+
 .v2-cards__text-wrapper ul,
 .v2-cards__text-wrapper {
   display: flex;
@@ -60,6 +65,7 @@
   display: flex;
 }
 
+.v2-cards__video,
 .v2-cards__image {
   background: var(--media-background);
   aspect-ratio: 16/9;
@@ -67,8 +73,22 @@
   object-fit: cover;
 }
 
+.v2-cards__video {
+  height: 100%;
+}
+
+.v2-cards__video-wrapper .v2-video__playback-button {
+  --playback-button-size: 48px;
+}
+
+.v2-cards--image-aspect-ratio-7-5 .v2-cards__video,
 .v2-cards--image-aspect-ratio-7-5 .v2-cards__image {
   aspect-ratio: 7/5;
+}
+
+/* Show image as exactly 571px x 811px(≈0.704) */
+.v2-cards--with-uncropped-image .v2-cards__image {
+  aspect-ratio: 0.704;
 }
 
 .v2-cards__heading {
@@ -98,7 +118,8 @@
 }
 
 .v2-cards__text-wrapper strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .v2-cards__text-wrapper li strong {
@@ -157,6 +178,7 @@
 }
 
 /* 2 cards row variant */
+.v2-cards--2-cards-row .v2-cards__video,
 .v2-cards--2-cards-row .v2-cards__image {
   aspect-ratio: 7/5;
 }
@@ -175,7 +197,8 @@
 }
 
 .v2-cards.v2-cards--spaced strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
+  font-weight: 700;
 }
 
 .v2-cards.v2-cards--spaced li strong {
@@ -193,11 +216,18 @@
   margin-top: 12px;
 }
 
+/* horizontal variant */
+.v2-cards--horizontal .v2-cards__card-item,
+.v2-cards--horizontal .v2-cards__video-wrapper {
+  width: 100%;
+}
+
 /* with border variant */
 .v2-cards.v2-cards--with-border .v2-cards__card-item {
   border: 1px solid var(--c-tertiary-light-cool-gray);
 }
 
+.v2-cards.v2-cards--with-border .v2-cards__video,
 .v2-cards.v2-cards--with-border .v2-cards__image {
   aspect-ratio: 4/3;
 }
@@ -218,7 +248,9 @@
 .v2-cards.v2-cards--heading-with-arrow .v2-cards__heading a {
   color: var(--text-color);
   width: 100%;
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .v2-cards.v2-cards--heading-with-arrow .v2-cards__heading a::after {
@@ -238,6 +270,7 @@
 
   .v2-cards__card-item {
     max-width: calc((100% - 32px) / 3);
+    width: 100%;
   }
 
   .v2-cards--horizontal .v2-cards__card-item {
@@ -247,14 +280,17 @@
   }
 
   .v2-cards--horizontal .v2-cards__picture-wrapper,
+  .v2-cards--horizontal .v2-cards__media-wrapper,
   .v2-cards--horizontal .v2-cards__text-wrapper {
     width: 50%;
   }
 
-  .v2-cards--horizontal .v2-cards__picture-wrapper {
+  .v2-cards--horizontal .v2-cards__video-wrapper,
+  .v2-cards--horizontal .v2-cards__media-wrapper {
     display: flex;
   }
 
+  .v2-cards--horizontal .v2-cards__video-wrapper,
   .v2-cards--horizontal .v2-cards__picture {
     margin: auto;
   }

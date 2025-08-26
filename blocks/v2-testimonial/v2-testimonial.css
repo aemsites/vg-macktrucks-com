@@ -88,7 +88,7 @@
 
 .v2-testimonial__blockquote-container strong,
 .v2-testimonial__video-section strong {
-  font-family: var(--ff-body-bold);
+  font-family: var(--ff-body);
   font-weight: normal;
 }
 
