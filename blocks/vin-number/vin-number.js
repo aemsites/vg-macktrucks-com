@@ -25,7 +25,6 @@ const valueDisplayList = [
   },
   {
     key: 'tc_recall_date',
-    frenchKey: 'tc_recall_date_french',
   },
   {
     key: 'mfr_recall_number',
