@@ -1,6 +1,7 @@
 import { getTextLabel, createElement, getJsonFromUrl } from '../../scripts/common.js';
 
 const docRange = document.createRange();
+const isFrench = window.location.href.indexOf('fr') > -1;
 const blockName = 'vin-number';
 
 const apiConfig = {
@@ -22,6 +23,9 @@ const apiConfig = {
 const valueDisplayList = [
   {
     key: 'recall_date',
+  },
+  {
+    key: 'tc_recall_date',
   },
   {
     key: 'mfr_recall_number',
@@ -52,6 +56,13 @@ const valueDisplayList = [
   {
     key: 'remedy_description',
     class: `${blockName}__detail-item--column`,
+  },
+  {
+    key: 'recall_effective_date',
+    class: `${blockName}__detail-item--column`,
+    text: 'recall_effective_text',
+    frenchText: 'recall_effective_text_french',
+    displayIfEmpty: true,
   },
   {
     key: 'mfr_notes',
@@ -180,8 +191,15 @@ function renderRecalls(recallsData) {
             itemValue = getTextLabel(recall[item.key]);
           }
 
+          if (itemValue && item.key === 'recall_effective_date') {
+            const recallText = getTextLabel(`recall_effective_text${isFrench ? '_french' : ''}`).split('//');
+            const recallDate = new Date(itemValue).setHours(0, 0, 0, 0);
+            const today = new Date().setHours(0, 0, 0, 0);
+            itemValue = recallDate > today ? ` ${recallText[1]} ${itemValue} .` : recallText[0];
+          }
+
           const itemFragment = docRange.createContextualFragment(`<li class="${blockName}__detail-item ${item.class ? item.class : ''}" >
-            <h5 class="${blockName}__detail-title"> ${getTextLabel(item.key)} </h5>
+            <h5 class="${blockName}__detail-title">${getTextLabel(item.key)}</h5>
             <span class="${blockName}__detail-value ${recallClass}">${itemValue}</span>
           </li>`);
           recallDetailsList.append(...itemFragment.children);
