@@ -660,7 +660,11 @@ const decorateCTA = (wrapper) => {
     link.classList.add(`${blockName}__custom-button`, 'button', 'button--primary');
     wrapper.appendChild(link);
   });
-  wrapper.firstElementChild.remove();
+
+  if (wrapper.firstElementChild) {
+    wrapper.firstElementChild.remove();
+  }
+
   return wrapper;
 };
 
