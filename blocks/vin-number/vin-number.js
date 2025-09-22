@@ -48,6 +48,12 @@ const valueDisplayList = [
     class: `${blockName}__detail-item--column`,
   },
   {
+    key: 'interim_precautions',
+    frenchKey: 'interim_precautions_french',
+    class: `${blockName}__detail-item--column`,
+    displayIfEmpty: true,
+  },
+  {
     key: 'remedy_description',
     class: `${blockName}__detail-item--column`,
   },

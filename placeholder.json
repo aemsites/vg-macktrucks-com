@@ -152,6 +152,10 @@
       "Text": "Safety Risk"
     },
     {
+      "Key": "interim_precautions",
+      "Text": "Precautions to Minimize Risk"
+    },
+    {
       "Key": "remedy_description",
       "Text": "Remedy"
     },
