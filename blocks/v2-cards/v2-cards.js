@@ -11,6 +11,7 @@ const variantClasses = [
   '2-cards-row',
   'spaced',
   'with-border',
+  'with-uncropped-image',
 ];
 
 const decoratePicture = (picture) => {
