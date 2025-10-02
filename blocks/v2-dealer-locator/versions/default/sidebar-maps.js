@@ -76,11 +76,9 @@ $printableDirections = $('#printable-directions');
 $directionResults = null;
 $currentAddress = '';
 $directionsMessage = $('#directions-message');
-$isAsist = window.locatorConfig.asist;
 $isAmentities = window.locatorConfig.amenities;
 $brandOptionSelected = "";
 $eloquaFormHTML = $('script#eloquaForm').html();
-$showAsistDialog = window.locatorConfig.showAsistDialog;
 var uptimeClicked = false;
 $electricDealer = false;
 $hoverText = $('#hoverText').val();
@@ -240,41 +238,6 @@ var $distanceToggles = $('.toggle-container');
       $activeButton = toggle.querySelector('.toggle-button');
       $activeButton.dataset.active = $activeUnit;
     });
-
-    if ($isAsist) {
-      $('#filter-options').css('display', 'none');
-      $brandOptionSelected = window.locatorConfig.selectedBrand;
-    }
-
-    if ($isAsist && $showAsistDialog) {
-
-      $(".datasource-option").toggle();
-
-      var options = $.map([$(".brand button#volvo"), $(".brand button#mack"), $(".brand button#dual")], function (el) { return el.get() });
-      $(options).on('click', function (ev) {
-
-        $id = $brandOptionSelected = $(ev.target).attr("id");
-
-        switch ($id) {
-          case "mack":
-            window.locatorConfig.dataSource = "https://www.macktrucks.com/simpleprox.ashx?https://as-dealerloc-endpoint-prod-001.azurewebsites.net/Mack_DealerJSON.ashx";
-            break;
-
-          case "volvo":
-            window.locatorConfig.dataSource = "https://www.macktrucks.com/simpleprox.ashx?https://mvservices.na.volvogroup.com/Volvo_DealerJSON.ashx";
-            break;
-
-          case "dual":
-            window.locatorConfig.dataSource = "https://www.macktrucks.com/simpleprox.ashx?https://mvservices.na.volvogroup.com/Dualbrand_DealerJSON.ashx";
-            break;
-        }
-
-        $.fn.loadPins();
-
-        $(".datasource-option").toggle();
-      });
-    }
-
   }
 })();
 
@@ -663,7 +626,6 @@ $.fn.isOpen = async function (dealer, time) {
     var end = new Date(compareDate + hours.close);
 
     if (~hours.close.toLowerCase().indexOf("am")) {
-      // console.log('end date is AM, add 1 day');
       end.setDate(compareDate.getDate() + 1);
     }
 
@@ -810,20 +772,6 @@ $.fn.renderPinDetails = async function (markerId) {
     }
   }
 
-  $asistHtml = '<button title="Request Access" class="join-select" onclick="return false;">Request Access</button>';
-  if ($isAsist) {
-    templateClone.find('#partsasist-button').html($asistHtml);
-    templateClone.find('#partsasist-button').attr('data-dealerid', markerDetails.IDENTIFIER_VALUE);
-    templateClone.find('#partsasist-button').attr('data-name', $.fn.camelCase(markerDetails.COMPANY_DBA_NAME));
-    //Ticket 1072
-    if (markerDetails.PARTS_EMAIL) {
-      templateClone.find('#partsasist-button').attr('data-dealeremail', markerDetails.PARTS_EMAIL.toLowerCase());
-    }
-    else {
-      templateClone.find('#partsasist-button').attr('data-dealeremail', markerDetails.EMAIL_ADDRESS.toLowerCase());
-    }
-    templateClone.find('#partsasist-button').attr('data-postalcode', markerDetails.MAIN_POSTAL_CD);
-  }
   templateClone.find('#title').text($.fn.camelCase(markerDetails.COMPANY_DBA_NAME));
   templateClone.find('#title2').text($.fn.camelCase(markerDetails.COMPANY_DBA_NAME));
 
@@ -1323,29 +1271,6 @@ $.fn.filterRadius = function () {
     $me.setZIndex(0);
   }
 
-  if ($isAsist) {
-    for (var i = 0; i < $markers.length; i++) {
-
-      var pin = $.grep($pins, function (v, b) {
-        return v['IDENTIFIER_VALUE'] === $markers[i].ID;
-      })[0];
-
-      $markers[i].setMap($map);
-
-      $markers[i].setZIndex(2);
-
-      $nearbyPins.push($markers[i].ID);
-
-    }
-
-    $.fn.filterNearbyPins();
-    $.fn.switchSidebarPane('sidebar-pins');
-    $('.waiting-overlay').css('display', 'none');
-    $map.setZoom(4);
-
-    return;
-  }
-
   var radius = $.fn.milesInMeters($('#range').val());
 
   var bounds = new google.maps.LatLngBounds();
@@ -1524,10 +1449,6 @@ $.fn.sortedPins = function () {
 };
 
 $.fn.showPin = function (pin) {
-  if ($isAsist) {
-    return true;
-  }
-
   var filter = $.fn.currentFilter();
 
   var condition;
@@ -2143,11 +2064,6 @@ $.fn.filterNearbyPins = function () {
     $('.panel-footer').html('<img src="' + $.fn.drawPin('', 38, 38, '3F62A5') + '" /> Certified Uptime Dealer');
   } else {
     $('.panel-footer').html('Showing ' + $nearbyPins.length + ' locations');
-
-    if ($isAsist) {
-      $('.panel-footer').html('Showing ' + $nearbyPins.length + ' ' + ($brandOptionSelected == "dual" ? "" : $brandOptionSelected) + ' locations');
-    }
-
   }
 
   $('.loading-overlay').css('display', 'none');
@@ -2436,19 +2352,16 @@ $.fn.setAddress2 = function () {
       $me.setPosition({ lat: parseFloat(pos.lat), lng: parseFloat(pos.lng) });
 
       if (!$radius) {
-
-        if (!$isAsist) {
-          $radius = new google.maps.Circle({
-            strokeColor: '#2c6ba4',
-            strokeOpacity: 0.5,
-            strokeWeight: 2,
-            fillColor: '#2c6ba4',
-            fillOpacity: 0.15,
-            map: $map,
-            center: pos,
-            radius: $.fn.milesInMeters($('#range').val())
-          });
-        }
+        $radius = new google.maps.Circle({
+          strokeColor: '#2c6ba4',
+          strokeOpacity: 0.5,
+          strokeWeight: 2,
+          fillColor: '#2c6ba4',
+          fillOpacity: 0.15,
+          map: $map,
+          center: pos,
+          radius: $.fn.milesInMeters($('#range').val())
+        });
 
         $('.loading-overlay').css('display', 'block');
 
@@ -2541,19 +2454,16 @@ $.fn.setAddress = function () {
 
 
       if (!$radius) {
-
-        if (!$isAsist) {
-          $radius = new google.maps.Circle({
-            strokeColor: '#2c6ba4',
-            strokeOpacity: 0.5,
-            strokeWeight: 2,
-            fillColor: '#2c6ba4',
-            fillOpacity: 0.15,
-            map: $map,
-            center: pos,
-            radius: $.fn.milesInMeters($('#range').val())
-          });
-        }
+        $radius = new google.maps.Circle({
+          strokeColor: '#2c6ba4',
+          strokeOpacity: 0.5,
+          strokeWeight: 2,
+          fillColor: '#2c6ba4',
+          fillOpacity: 0.15,
+          map: $map,
+          center: pos,
+          radius: $.fn.milesInMeters($('#range').val())
+        });
 
         $('.loading-overlay').css('display', 'block');
 
@@ -2609,7 +2519,7 @@ $.fn.setLocation = function () {
 
       if (!$radius) {
 
-        if ($map && !$isAsist) {
+        if ($map) {
           $radius = new google.maps.Circle({
             strokeColor: '#2c6ba4',
             strokeOpacity: 0.5,
@@ -3070,9 +2980,6 @@ $.fn.registration = function (evt) {
   var dealerName = $(evt).attr("data-name");
   var dealerFormTemplate = $($eloquaFormHTML).clone();
 
-  $(".partsasist-form").toggle();
-  $('.partsasist-form h3').text(dealerName);
-
   dealerFormTemplate.find('input[name="Dealercode"]').val(dealerId);
   dealerFormTemplate.find('input[name="SelectedBrand"]').val($brandOptionSelected);
   dealerFormTemplate.find('input[name="DealerPartsEmail"]').val(dealerEmail);
@@ -3105,12 +3012,6 @@ $.fn.registration = function (evt) {
     });
   });
 
-};
-
-$.fn.resetRegistration = function (evt) {
-  $(".partsasist-form").toggle();
-  $("#select-form").html("");
-  $('.partsasist-form h3').text("");
 };
 
 // Event listeners
