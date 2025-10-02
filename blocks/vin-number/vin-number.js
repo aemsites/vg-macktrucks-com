@@ -80,7 +80,7 @@ const recallStatus = {
 function getAPIConfig() {
   let env = 'prod';
 
-  if (window.location.host.includes('hlx.page')) {
+  if (window.location.host.includes('aem.page')) {
     env = 'qa';
   } else if (window.location.host.includes('localhost')) {
     env = 'dev';
