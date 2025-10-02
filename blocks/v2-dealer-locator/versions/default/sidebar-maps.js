@@ -78,7 +78,6 @@ $currentAddress = '';
 $directionsMessage = $('#directions-message');
 $isAmentities = window.locatorConfig.amenities;
 $brandOptionSelected = "";
-$eloquaFormHTML = $('script#eloquaForm').html();
 var uptimeClicked = false;
 $electricDealer = false;
 $hoverText = $('#hoverText').val();
@@ -2969,48 +2968,6 @@ $.fn.copyToClipboard = function (text) {
   document.body.removeChild(textArea);
 
   return result;
-
-};
-
-$.fn.registration = function (evt) {
-
-  var dealerId = $(evt).attr("data-dealerid");
-  var dealerZipcode = $(evt).attr("data-postalcode");
-  var dealerEmail = $(evt).attr("data-dealeremail");
-  var dealerName = $(evt).attr("data-name");
-  var dealerFormTemplate = $($eloquaFormHTML).clone();
-
-  dealerFormTemplate.find('input[name="Dealercode"]').val(dealerId);
-  dealerFormTemplate.find('input[name="SelectedBrand"]').val($brandOptionSelected);
-  dealerFormTemplate.find('input[name="DealerPartsEmail"]').val(dealerEmail);
-  dealerFormTemplate.find('input[name="Postalcode"]').val(dealerZipcode);
-
-  $("#select-form").html(dealerFormTemplate.html());
-
-  $(".ajax").each(function () {
-    var frm = $(this);
-    var frmId = frm.attr("id");
-    $(this).find(".ajaxSitecoreEloquaSubmit").each(function () {
-
-      var redirectURL = "";
-
-      if ($("input[name='redirectURL']").length) {
-        redirectURL = ", '" + $("input[name='redirectURL']").val() + "'";
-      }
-
-      $(this).attr("href", "javascript:void(submitSitecoreEloquaForm('" + frmId + "'" + redirectURL + "));")
-    });
-    $(this).find(".ajaxEloquaSubmit").each(function () {
-
-      var redirectURL = "";
-
-      if ($jq1("input[name='redirectURL']").length) {
-        redirectURL = ", '" + $jq1("input[name='redirectURL']").val() + "'";
-      }
-
-      $(this).attr("href", "javascript:void(submitEloquaForm('" + frmId + "'" + redirectURL + "));")
-    });
-  });
 
 };
 

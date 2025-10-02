@@ -255,41 +255,9 @@
   margin-top: 0;
 }
 
-.modal-content.modal-form .eloqua-form .elq-form input,
-.modal-content.modal-form .eloqua-form .elq-form select,
-.modal-content.modal-form .eloqua-form .elq-form textarea {
-  color: var(--c-primary-white);
-  opacity: 0.6;
-  background-color: rgb(255 255 255 / 40%);
-}
-
-.modal-content.modal-form .eloqua-form input::placeholder {
-  color: var(--c-primary-white);
-}
-
-.modal-content.modal-form .eloqua-form .elq-form .eloqua-select-wrapper::after {
-  color: var(--c-primary-white);
-  border-color: var(--c-primary-white);
-  opacity: 0.6;
-}
-
-.modal-content.modal-form .eloqua-form input[type='submit'] {
-  opacity: 1;
-}
-
-.modal-content.modal-form .eloqua-form .elq-form input[type='checkbox'],
-.modal-content.modal-form .eloqua-form .single-checkbox-row input ~ label.checkbox-aligned.elq-item-label::before {
-  background-color: transparent;
-}
-
 /* stylelint-disable-next-line selector-class-pattern */
 .modal-content.modal-form.modal-red .LV_invalid {
   color: yellow;
-}
-
-.modal-content.modal-form.modal-red .eloqua-form input[type='submit'] {
-  background: var(--c-primary-black);
-  color: var(--c-primary-white);
 }
 
 .modal-content.modal-red {

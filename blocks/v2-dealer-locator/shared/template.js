@@ -483,12 +483,6 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
   </div>
   <div id="locator-snackbar"></div>
 
-  <script id="eloquaForm" type="text/template">
-      <div class="template">
-
-      </div>
-  </script>
-
   </div>`;
 };
 
