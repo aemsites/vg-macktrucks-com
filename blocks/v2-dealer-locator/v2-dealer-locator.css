@@ -2736,3 +2736,13 @@ footer {
     right: 14px;
   }
 }
+
+@media (min-width: 576px) {
+  .dealer-locator .nearby-pins article.teaser .dealerPanelContainer {
+    min-width: 315px;
+  }
+
+  .dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call {
+    display: none;
+  }
+}
