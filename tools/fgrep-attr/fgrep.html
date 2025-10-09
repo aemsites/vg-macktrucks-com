@@ -2,10 +2,10 @@
     <head>
       <!-- we’re not reusing common.js, as it will load aem.js -->
       <!-- aem.js will in turn break fgrep.js -->
-      <script src="fgrep-config.js" type="module"></script>
+      <script nonce="aem" src="fgrep-config.js" type="module"></script>
       <link rel="preload" href="/constants.json" as="fetch" type="application/json" crossorigin="anonymous"/>
       <title>fgrep</title>
-      <script type="module" src="fgrep.js"></script>
+      <script nonce="aem" type="module" src="fgrep.js"></script>
       <style>
 body, input {
   background-color: black;
