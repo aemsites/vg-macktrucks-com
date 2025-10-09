@@ -2742,7 +2742,7 @@ footer {
     min-width: 315px;
   }
 
-  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call {
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right:nth-of-type(3) {
     display: none;
   }
 }
