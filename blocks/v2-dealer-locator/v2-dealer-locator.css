@@ -2738,11 +2738,11 @@ footer {
 }
 
 @media (min-width: 576px) {
-  .dealer-locator .nearby-pins article.teaser .dealerPanelContainer {
+  .v2-dealer-locator .nearby-pins article.teaser .dealerPanelContainer {
     min-width: 315px;
   }
 
-  .dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call {
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right .call {
     display: none;
   }
 }
