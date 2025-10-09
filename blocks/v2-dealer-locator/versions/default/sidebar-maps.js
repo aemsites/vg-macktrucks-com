@@ -1551,10 +1551,10 @@ $.fn.tmpPins = function (tmpPinList) {
 
     const distances = `
       <p class='distance-text ${isActive($units[0].name)}'>
-        ${distanceInMiles + ' ' + $units[0].name}
+        ~ ${Math.round(distanceInMiles) + ' ' + $units[0].name}
       </p>
       <p class='distance-text ${isActive($units[1].name)}'>
-        ${distanceInKms + ' ' + $units[1].name}
+        ~ ${Math.round(distanceInKms) + ' ' + $units[1].name}
       </p>
     `;
 
