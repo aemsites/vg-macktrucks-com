@@ -1,7 +1,7 @@
 import { getTextLabel, createElement, getJsonFromUrl } from '../../scripts/common.js';
 
 const docRange = document.createRange();
-const isFrench = window.location.href.indexOf('fr') > -1;
+const isFrench = window.location.href.indexOf('/fr') > -1;
 const blockName = 'vin-number';
 
 const apiConfig = {
