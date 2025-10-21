@@ -1,7 +1,7 @@
 import { getTextLabel, createElement, getJsonFromUrl } from '../../scripts/common.js';
 
 const docRange = document.createRange();
-const isFrench = window.location.href.indexOf('fr') > -1;
+const isFrench = window.location.href.indexOf('/fr') > -1;
 const blockName = 'vin-number';
 
 const apiConfig = {
@@ -77,6 +77,11 @@ const recallStatus = {
   12: 'recall_incomplete_no_remedy',
 };
 
+const formatFrenchDate = (date) => {
+  const formattedDate = new Date(date).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' });
+  return formattedDate;
+};
+
 function getAPIConfig() {
   let env = 'prod';
 
@@ -125,7 +130,7 @@ async function fetchRefreshDate() {
     try {
       const response = await getJsonFromUrl(`${url}refreshdate?api_key=${key}`);
       setStorageItem('refreshDate', response.refresh_date);
-      return response.refresh_date;
+      return isFrench ? formatFrenchDate(response.refresh_date) : response.refresh_date;
     } catch (error) {
       console.error('Error fetching refresh date:', error);
     }
@@ -169,7 +174,7 @@ function renderRecalls(recallsData) {
           </svg>
         </span>
         <h4 class="${blockName}__recalls-heading" >${getTextLabel('recalls')}  &nbsp; &nbsp;</h4>
-        <p class="${blockName}__recalls-refresh-date"> [${getTextLabel('recall_oldest_info')} ${recallsData.recalls_since}] </p>
+        <p class="${blockName}__recalls-refresh-date"> [${getTextLabel('recall_oldest_info')} ${isFrench ? formatFrenchDate(recallsData.recalls_since) : recallsData.recalls_since}] </p>
       </div>
     `);
 
@@ -198,7 +203,9 @@ function renderRecalls(recallsData) {
             const recallText = getTextLabel(`recall_effective_text${isFrench ? '_french' : ''}`).split('//');
             const recallDate = new Date(itemValue).setHours(0, 0, 0, 0);
             const today = new Date().setHours(0, 0, 0, 0);
-            itemValue = recallDate > today ? ` ${recallText[1]} ${itemValue} .` : recallText[0];
+            itemValue = recallDate > today ? `${recallText[1]} ${isFrench ? formatFrenchDate(itemValue) : itemValue}.` : recallText[0];
+          } else if (item.key === 'recall_date' || item.key === 'tc_recall_date') {
+            itemValue = isFrench ? formatFrenchDate(itemValue) : itemValue;
           }
 
           const itemFragment = docRange.createContextualFragment(`<li class="${blockName}__detail-item ${item.class ? item.class : ''}" >
@@ -215,7 +222,7 @@ function renderRecalls(recallsData) {
     blockEl.append(listWrapperFragment);
     blockEl.appendChild(list);
   } else {
-    resultContent = `${resultContent} [${getTextLabel('recall_available_info')} ${recallsData.recalls_since}]`;
+    resultContent = `${resultContent} [${getTextLabel('recall_available_info')} ${isFrench ? formatFrenchDate(recallsData.recalls_since) : recallsData.recalls_since}]`;
   }
   resultText.innerText = resultContent;
 }
