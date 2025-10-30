@@ -2,7 +2,8 @@ import { loadScript, loadCSS, readBlockConfig } from '../../scripts/aem.js';
 import { TOOLS_CONFIGS, getLocale, isMobileViewport } from '../../scripts/common.js';
 import template from './shared/template.js';
 
-const { GOOGLE_API_KEY } = TOOLS_CONFIGS;
+const missingKeyMessage = 'MissingKey';
+const { GOOGLE_API_KEY: apiKey = missingKeyMessage } = TOOLS_CONFIGS;
 
 /**
  * Escapes HTML characters from a string.
@@ -71,8 +72,13 @@ export default async function decorate(block) {
   // blockConfig.datasource is a required field for the block to work:
   if (!blockConfig.datasource) {
     console.error('The block is missing the datasource field in the configuration.');
-  } else if (!GOOGLE_API_KEY) {
-    console.error('The block is missing the %cGOOGLE_API_KEY%c in the %cTOOLS_CONFIGS', 'color: red;', 'color: initial;', 'color: red;');
+  } else if (!apiKey || apiKey === missingKeyMessage) {
+    console.error(
+      'The block is wrongly set up or is missing the %cGOOGLE_API_KEY%c in the %cTOOLS_CONFIGS',
+      'color: red;',
+      'color: initial;',
+      'color: red;',
+    );
   } else {
     window.locatorConfig = {
       asist: false,
@@ -80,7 +86,7 @@ export default async function decorate(block) {
       consolidateFilters: true,
       selectedBrand: 'mack',
       dataSource: blockConfig.datasource,
-      apiKey: GOOGLE_API_KEY,
+      apiKey,
       version: blockConfig.version, // 'default' or 'export-market'
       country: blockConfig.country,
       amenities: blockConfig.amenities,
