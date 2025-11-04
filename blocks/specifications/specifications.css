@@ -40,7 +40,7 @@ main .section.specifications-container {
 
 .specs-list-multiple .feature-list .p-element {
   width: calc(50% - 65px);
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   min-height: 65px;
 }
 

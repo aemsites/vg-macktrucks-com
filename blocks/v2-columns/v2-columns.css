@@ -56,7 +56,7 @@
 }
 
 .v2-columns__heading {
-  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .v2-columns-container .default-content-wrapper h2,
