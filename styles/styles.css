@@ -160,7 +160,7 @@
   --button-tertiary-white-disabled: var(--c-primary-white);
 
   /* Focus */
-  --border-focus: red;
+  --border-focus: var(--c-primary-gold);
 
   /* Error */
   --c-error: #f66;
@@ -1379,6 +1379,10 @@ main .section.responsive-title h1 {
   background-color: var(--button-primary-bg-hover);
 }
 
+.video-js button.vjs-big-play-button:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .v2-video__playback-button:active,
 .video-js button.vjs-big-play-button:active {
   background-color: var(--c-secondary-dark-gold, #87754e);
@@ -1666,6 +1670,10 @@ main .section.responsive-title h1 {
 .redesign-v2 a.standalone-link:focus {
   color: var(--standalone-link-color-hover);
   text-decoration: underline;
+}
+
+.redesign-v2 a.standalone-link:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 .redesign-v2 .li--hyphen {

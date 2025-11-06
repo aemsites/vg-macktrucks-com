@@ -166,6 +166,11 @@ a.header__link {
   padding: 8px 0;
 }
 
+.header__link.header__link-accordion:any-link:focus-visible,
+.header__link.header__action-link:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .header__link-accordion::after {
   content: '';
   background-image: url('/icons/dropdown-caret.svg');
