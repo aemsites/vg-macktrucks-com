@@ -7,6 +7,10 @@
   z-index: 1;
 }
 
+.columns-container .columns-wrapper a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .columns.info {
   max-width: 1200px;
   margin-inline: auto;

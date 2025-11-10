@@ -96,6 +96,14 @@ a.header__link {
   padding: 8px 0;
 }
 
+a.header__link:focus-visible,
+.header__featured-card-image .header__featured-card-image-link:focus-visible,
+.header__featured-card-title a:focus-visible,
+.header__featured-card-group .header__featured-card-links a:focus-visible,
+.header__logo-image-wrapper:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .header--hamburger-open .header__link:hover,
 .header--hamburger-open .header__link:focus,
 .header--hamburger-open .header__link:active {
@@ -132,6 +140,10 @@ a.header__link {
   color: var(--header-color);
 }
 
+.header__close-menu:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .header__close-menu:focus,
 .header__close-menu:hover {
   background-color: transparent;
@@ -166,8 +178,7 @@ a.header__link {
   padding: 8px 0;
 }
 
-.header__link.header__link-accordion:any-link:focus-visible,
-.header__link.header__action-link:focus-visible {
+.header__link.header__link-accordion:any-link:focus-visible {
   outline: 2px solid var(--border-focus);
 }
 
@@ -255,13 +266,17 @@ a.header__link {
 
 .header__link.header__action-link {
   --color-icon: var(--header-color);
-
+  
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 8px 0;
   text-wrap: nowrap;
   cursor: pointer;
+}
+
+.header__link.header__action-link:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 .header__action-link.header__action-link--button {

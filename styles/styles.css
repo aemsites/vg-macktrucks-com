@@ -487,6 +487,10 @@ ul li:has(> ul > li) {
   cursor: pointer;
 }
 
+:where(html:not(.redesign-v2)) button:focus-visible{
+  outline: 2px solid var(--border-focus);
+}
+
 :where(html:not(.redesign-v2)) button:disabled,
 :where(html:not(.redesign-v2)) button:disabled:hover {
   background-color: var(--c-secondary-silver);
@@ -634,6 +638,14 @@ main .section.padding-16 {
 
 main .section.padding-32 {
   padding: 32px 16px;
+}
+
+main .section a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
+main .section.center a:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 @media (min-width: 600px) {
@@ -1635,6 +1647,10 @@ main .section.responsive-title h1 {
 .redesign-v2 .with-marker {
   padding-top: 18px;
 }
+
+.section.header-with-mark > .default-content-wrapper p a:focus-visible {
+  outline: 2px solid var(--border-focus);
+} 
 
 .section.header-with-mark > .default-content-wrapper > h1:first-child::before,
 .section.header-with-mark > .default-content-wrapper > h2:first-child::before,
