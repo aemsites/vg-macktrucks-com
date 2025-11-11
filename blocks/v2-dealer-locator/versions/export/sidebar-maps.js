@@ -1413,7 +1413,7 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.direction a').text('Direction');
     templateClone.find('.website a').attr("href", $.fn.formatWebAddress(pin.WEB_ADDRESS));
     templateClone.find('.detail-call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + '<img src="/blocks/v2-dealer-locator/images/phone.svg" />' + "Call" + '</a>');
-    templateClone.find('.call a').attr("href", $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
+    templateClone.find('.call a').attr("href",'tel:' + $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
     templateClone.find('.call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + "Call" + '</a>');
     templateClone.find('.direction a').attr('data-id', pin.IDENTIFIER_VALUE);
 
@@ -1449,7 +1449,7 @@ $.fn.tmpPins = function (tmpPinList) {
 
     if (pin.REG_PHONE_NUMBER) {
       templateClone.find('.call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + "Call" + '</a>');      
-      templateClone.find('.call a').attr("href", $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
+      templateClone.find('.call a').attr("href",'tel:' + $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
     } else {
       templateClone.find('.call').text('Call');
       templateClone.find('.call').css({'pointer-events':'none','cursor':'default','opacity':'0.7','border-color':'rgba(0, 0, 0, 0.7)'});
