@@ -2,8 +2,8 @@ import { decorateButtons, getAllElWithChildren } from '../../scripts/scripts.js'
 import { createElement, getTextLabel, MAGAZINE_CONFIGS } from '../../scripts/common.js';
 
 const MQ = window.matchMedia('(min-width: 1140px)');
-const subscribeText = getTextLabel('SUBSCRIBE TO BULLDOG');
-const overviewText = getTextLabel('Overview');
+const subscribeText = getTextLabel('sub_nav:subscribe_button_text');
+const overviewText = getTextLabel('sub_nav:overview_text');
 let fullHeight = 0;
 
 function toggleHeightList(ul) {

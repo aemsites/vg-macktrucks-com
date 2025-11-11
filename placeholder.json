@@ -1,138 +1,170 @@
 {
-  "total": 64,
+  "total": 109,
   "offset": 0,
-  "limit": 64,
+  "limit": 109,
   "data": [
     {
-      "Key": "Low resolution video message",
+      "Key": "video_helper:low_res_message",
       "Text": "For a premium high resolution experience, please accept cookies."
     },
     {
-      "Key": "Change cookie settings",
+      "Key": "video_helper:change_cookie_settings",
       "Text": "Change cookie settings"
     },
     {
-      "Key": "SUBSCRIBE TO BULLDOG",
+      "Key": "footer:submit_button_aria_label",
       "Text": "SUBSCRIBE TO BULLDOG"
     },
     {
-      "Key": "Email Address",
+      "Key": "sub_nav:subscribe_button_text",
+      "Text": "SUBSCRIBE TO BULLDOG"
+    },
+    {
+      "Key": "footer:email_placeholder",
       "Text": "Email Address"
     },
     {
-      "Key": "Overview",
+      "Key": "sub_nav:overview_text",
       "Text": "Overview"
     },
     {
-      "Key": "Recommendations text",
+      "Key": "recommendations:title",
       "Text": "Based on your reading, you might like this..."
     },
     {
-      "Key": "Recent article text",
+      "Key": "recent_articles:title",
       "Text": "Recent Articles"
     },
     {
-      "Key": "READ NOW",
+      "Key": "recent_articles:read_now_text",
       "Text": "READ NOW"
     },
     {
-      "Key": "Search For",
+      "Key": "recommendations:read_now_text",
+      "Text": "READ NOW"
+    },
+    {
+      "Key": "search:search_for",
       "Text": "Search For"
     },
     {
-      "Key": "no results",
+      "Key": "search:no_results",
       "Text": "SORRY, YOUR SEARCH FOR $0 RETURNED NO RESULTS!"
     },
     {
-      "Key": "refine",
+      "Key": "search:refine",
       "Text": "LET'S REFINE, OR TRY SEARCHING BY DIFFERENT SEARCH KEYWORDS INSTEAD."
     },
     {
-      "Key": "Showing results for",
+      "Key": "search:showing_results_for",
       "Text": "Showing <strong>$0 - $1</strong> of <strong>$2</strong> results for <strong>\"$3\"</strong>"
     },
     {
-      "Key": "Sort By",
+      "Key": "search:sort_by",
       "Text": "Sort By"
     },
     {
-      "Key": "Sort Filter",
+      "Key": "v2_explore_articles:sort_by",
+      "Text": "Sort By"
+    },
+    {
+      "Key": "search:sort_filter",
       "Text": "Relevance,Newest Content,Oldest Content"
     },
     {
-      "Key": "Article filter placeholder",
+      "Key": "explore_articles:placeholders",
       "Text": "All Categories,All Trucks"
     },
     {
-      "Key": "Search articles",
+      "Key": "v2_explore_articles:search_articles",
       "Text": "Search articles"
     },
     {
-      "Key": "Showing placeholder",
+      "Key": "v2_explore_articles:showing_placeholder",
       "Text": "Showing $0 of $1 stories"
     },
     {
-      "Key": "Most Recent",
+      "Key": "v2_explore_articles:most_recent",
       "Text": "Most Recent"
     },
     {
-      "Key": "Alphabetical",
+      "Key": "v2_explore_articles:sort_alphabetical",
       "Text": "Alphabetical"
     },
     {
-      "Key": "Filter articles",
+      "Key": "v2_explore_articles:filters_button",
       "Text": "Filter articles"
     },
     {
-      "Key": "Next",
+      "Key": "search:next",
       "Text": "Next"
     },
     {
-      "Key": "Previous",
+      "Key": "v2_feature_carousel:next",
+      "Text": "Next"
+    },
+    {
+      "Key": "v2_icon_cards:next",
+      "Text": "Next"
+    },
+    {
+      "Key": "v2_images_grid:next",
+      "Text": "Next"
+    },
+    {
+      "Key": "v2_stories_carousel:next",
+      "Text": "Next"
+    },
+    {
+      "Key": "v2_truck_lineup:next",
+      "Text": "Next"
+    },
+    {
+      "Key": "search:previous",
       "Text": "Previous"
     },
     {
-      "Key": "No article Message",
+      "Key": "v2_feature_carousel:previous",
+      "Text": "Previous"
+    },
+    {
+      "Key": "v2_icon_cards:previous",
+      "Text": "Previous"
+    },
+    {
+      "Key": "v2_images_grid:previous",
+      "Text": "Previous"
+    },
+    {
+      "Key": "v2_stories_carousel:previous",
+      "Text": "Previous"
+    },
+    {
+      "Key": "v2_truck_lineup:previous",
+      "Text": "Previous"
+    },
+    {
+      "Key": "explore_articles:no_article_message",
       "Text": "No Results Found"
     },
     {
-      "Key": "Load more articles button",
+      "Key": "explore_articles:load_more_button",
       "Text": "Load More Articles"
     },
     {
-      "Key": "visit aria label",
-      "Text": "Please, visit our $0"
-    },
-    {
-      "Key": "social aria label",
-      "Text": "social media"
-    },
-    {
-      "Key": "channel aria label",
-      "Text": "channel"
-    },
-    {
-      "Key": "no form message",
-      "Text": "We cannot show the content because you have not given us permission to store cookie files"
-    },
-    {
-      "Key": "no form link message",
-      "Text": "Change cookie settings"
-    },
-    {
-      "Key": "vinlabel",
+      "Key": "vin_number:label",
       "Text": "Enter your 17-digit VIN (Vehicle Identification Number)"
     },
     {
-      "Key": "vinformat",
+      "Key": "vin_number:format",
       "Text": "The VIN entered is not valid for Mack Truck vehicles"
     },
     {
-      "Key": "result text",
+      "Key": "vin_number:result_text",
       "Text": "${count} recalls available for \"${vin}\""
     },
     {
-      "Key": "recalls",
+      "Key": "vin_number:recalls",
       "Text": "Recalls"
     },
     {
@@ -168,7 +200,7 @@
       "Text": "The remedy for this recall is currently available.//The remedy for this recall is estimated to be available"
     },
     {
-      "Key": "published_info",
+      "Key": "vin_number:published_info",
       "Text": "Information last updated"
     },
     {
@@ -188,11 +220,11 @@
       "Text": "Recall Incomplete, remedy not available"
     },
     {
-      "Key": "loading recalls",
+      "Key": "vin_number:loading_recalls",
       "Text": "Loading recalls"
     },
     {
-      "Key": "no recalls",
+      "Key": "vin_number:no_recalls",
       "Text": "No recalls for VIN"
     },
     {
@@ -200,7 +232,7 @@
       "Text": "Next steps"
     },
     {
-      "Key": "submit",
+      "Key": "vin_number:submit",
       "Text": "Submit"
     },
     {
@@ -212,23 +244,23 @@
       "Text": "NHTSA Recall Number"
     },
     {
-      "Key": "recall_oldest_info",
+      "Key": "vin_number:recall_oldest_info",
       "Text": "Recall information available since:"
     },
     {
-      "Key": "recall_available_info",
+      "Key": "vin_number:recall_available_info",
       "Text": "since:"
     },
     {
-      "Key": "make",
+      "Key": "vin_number:make",
       "Text": "Make"
     },
     {
-      "Key": "model",
+      "Key": "vin_number:model",
       "Text": "Model"
     },
     {
-      "Key": "model year",
+      "Key": "vin_number:model_year",
       "Text": "Model Year"
     },
     {
@@ -236,175 +268,175 @@
       "Text": "Transport Canada Number"
     },
     {
-      "Key": "Open Gallery",
+      "Key": "v2_images_grid:button_text",
       "Text": "Open Gallery"
     },
     {
-      "Key": "home",
+      "Key": "v2_breadcrumbs:home_text",
       "Text": "home"
     },
     {
-      "Key": "breadcrumb",
+      "Key": "v2_breadcrumbs:aria_label",
       "Text": "Breadcrumb"
     },
     {
-      "Key": "All trucks",
+      "Key": "v2_all_trucks:all_trucks",
       "Text": "All trucks"
     },
     {
-      "Key": "form-subscribe-magazine:heading",
+      "Key": "magazine_subscribe:heading",
       "Text": "Subscribe to Bulldog<sup>®</sup> Magazine"
     },
     {
-      "Key": "form-subscribe-magazine:text",
+      "Key": "magazine_subscribe:text",
       "Text": "Be the first to know all the news about Mack Trucks and our products, plus other exciting activities."
     },
     {
-      "Key": "404 Back link title",
+      "Key": "404:back_link_title",
       "Text": "Go back"
     },
     {
-      "Key": "Play video",
+      "Key": "video_helper:play_video_label",
       "Text": "Play video"
     },
     {
-      "Key": "Pause video",
+      "Key": "video_helper:pause_video_label",
       "Text": "Pause video"
     },
     {
-      "Key": "autoscroll_switch",
+      "Key": "v2_magazine_tabbed_carousel:switch_text",
       "Text": "Auto:,On,Off"
     },
     {
-      "Key": "Logo link",
+      "Key": "footer:logo_link_text",
       "Text": "Go to Mack Trucks homepage"
     },
     {
-      "Key": "go to top",
-      "Text": "Go to the top of the page"
+      "Key": "header:logo_link_text",
+      "Text": "Go to Mack Trucks homepage"
     },
     {
-      "Key": "Close menu",
+      "Key": "header:close_menu_label",
       "Text": "Close menu"
     },
     {
-      "Key": "Close modal",
+      "Key": "modal_component:close_modal_label",
       "Text": "Close modal"
     },
     {
-      "Key": "All Products",
+      "Key": "v2_product_listing:all_segment_text",
       "Text": "All Products"
     },
     {
-      "Key": "tooltip copied text",
+      "Key": "v2_social_block:tooltip_copied_text",
       "Text": "Copied!"
     },
     {
-      "Key": "defaultAuthor",
+      "Key": "magazine:default_author",
       "Text": "Mack Trucks"
     },
     {
-      "Key": "defaultReadTime",
+      "Key": "magazine:default_read_time",
       "Text": "10 min"
     },
     {
-      "Key": "Clear All",
+      "Key": "v2_explore_articles:clear_all_button_text",
       "Text": "Clear All"
     },
     {
-      "Key": "Clear",
+      "Key": "v2_explore_articles:clear_button_text",
       "Text": "Clear"
     },
     {
-      "Key": "Apply",
+      "Key": "v2_explore_articles:apply_button_text",
       "Text": "Apply"
     },
     {
-      "Key": "Show more",
+      "Key": "v2_explore_articles:show_more_button_text",
       "Text": "Show more"
     },
     {
-      "Key": "Show less",
+      "Key": "v2_explore_articles:show_less_button_text",
       "Text": "Show less"
     },
     {
-      "Key": "Selected",
+      "Key": "v2_explore_articles:selected_text",
       "Text": "Selected"
     },
     {
-      "Key": "Magazine error title",
+      "Key": "v2_explore_articles:error_title",
       "Text": "SORRY, YOUR FILTER CRITERIA RETURNED NO RESULTS!"
     },
     {
-      "Key": "Magazine error text",
+      "Key": "v2_explore_articles:error_text",
       "Text": "LET'S REFINE, OR TRY FILTERING BY DIFFERENT FILTER OPTION(S) INSTEAD."
     },
     {
-      "Key": "V2CustomForm:SuccessfulSubmissionTitle",
+      "Key": "v2_custom_form:successful_submission_title",
       "Text": "THANK YOU!"
     },
     {
-      "Key": "V2CustomForm:SuccessfulSubmissionText",
+      "Key": "v2_custom_form:successful_submission_text",
       "Text": "Your information has been submitted. Someone will be in touch with you shortly."
     },
     {
-      "Key": "V2CustomForm:ErrorSubmissionTitle",
+      "Key": "v2_custom_form:error_submission_title",
       "Text": "Error"
     },
     {
-      "Key": "V2CustomForm:ErrorSubmissionText",
+      "Key": "v2_custom_form:error_submission_text",
       "Text": "Information not sent. Please, try again later."
     },
-    {
-      "Key": "tooltip",
+    { 
+      "Key": "v2_picture_tooltips:hotspot_aria_label",
       "Text": "Show tooltip"
     },
     {
-      "Key": "single video message title",
+      "Key": "modal_component:cookie_message_title",
       "Text": "Enable cookies to view the reveal?"
     },
     {
-      "Key": "single video message text",
+      "Key": "modal_component:cookie_message_text",
       "Text": "<p class='cookie-message__text'>Our media viewer uses social media cookies and/or similar technologies set by third-party services, as outlined in our <a href='/cookies/'>Cookie Notice</a>.</p><p class='cookie-message__text'>Use “Accept Cookies” to view the reveal and to agree to the storing of cookies on your device and to our use of cookies, or use “Reject Cookies” to decline to review the reveal.</p>"
     },
     {
-      "Key": "single video message button",
+      "Key": "modal_component:cookie_accept_button",
       "Text": "Accept All Cookies"
     },
     {
-      "Key": "single video message button deny",
+      "Key": "modal_component:cookie_reject_button",
       "Text": "Reject Cookies"
     },
     {
-      "Key": "Image info open",
+      "Key": "v2_images_grid:image_info_open_aria_label",
       "Text": "Show more information about this image"
     },
     {
-      "Key": "Image info dialog",
+      "Key": "v2_images_grid:image_info_dialog_aria_label",
       "Text": "Additional image information"
     },
     {
-      "Key": "Image info close",
+      "Key": "v2_images_grid:image_info_close_aria_label",
       "Text": "Close image information panel"
     },
     {
-      "Key": "Mute video",
+      "Key": "video_helper:mute_video_aria_label",
       "Text": "Mute video"
     },
     {
-      "Key": "Unmute video",
+      "Key": "video_helper:unmute_video_aria_label",
       "Text": "Unmute video"
     },
     {
-      "Key": "SpecsCharts:RatingLabels",
+      "Key": "performance_specifications:engine_ratings_labels",
       "Text": "POWER / TORQUE RATING"
     },
     {
-      "Key": "SpecsCharts:RPM",
+      "Key": "performance_specifications:bottom_chart_label",
       "Text": "RPM"
     },
     {
-      "Key": "SpecsCharts:DownloadButton",
+      "Key": "performance_specifications:download_button_text",
       "Text": "Download Specs"
     }
   ],

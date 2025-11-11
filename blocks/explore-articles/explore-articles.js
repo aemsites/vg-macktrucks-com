@@ -10,7 +10,7 @@ const allArticles = formatArticlesArray(allMagazineData?.items);
 const allFacets = formatFacetsArray(allMagazineData?.facets);
 
 const { truck: allTrucks, category: allCategories } = allFacets;
-const [categoryPlaceholder, truckPlaceholder] = getTextLabel('Article filter placeholder').split(',');
+const [categoryPlaceholder, truckPlaceholder] = getTextLabel('explore_articles:placeholders').split(',');
 
 let counter = 1;
 const artsPerChunk = 4;
@@ -160,12 +160,12 @@ const buildArticleList = (articles) => {
   const articlesContent = document.createRange().createContextualFragment(`
       <div class="pagination-section">
         <p class="article-amount">
-          ${selectedArticlesNumber !== 0 ? `${selectedArticlesNumber} articles` : getTextLabel('No article Message')}
+          ${selectedArticlesNumber !== 0 ? `${selectedArticlesNumber} articles` : getTextLabel('explore_articles:no_article_message')}
         </p>
       </div>
       <div class="article-list"></div>
       <div class="${blockName}-more">
-        ${selectedArticlesNumber > artsPerChunk ? `<button class="more-btn">${getTextLabel('Load more articles button')}</button>` : ''}
+        ${selectedArticlesNumber > artsPerChunk ? `<button class="more-btn">${getTextLabel('explore_articles:load_more_button')}</button>` : ''}
       </div>
     `);
 
