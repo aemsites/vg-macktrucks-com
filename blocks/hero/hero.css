@@ -184,7 +184,7 @@ main .hero.magazine .hero-content-media picture {
 /* SPECS hero styling  */
 main .hero.specs {
   padding: 50px;
-  background: radial-gradient(circle, rgba(255 255 255 / 100%) 0%, rgba(198 199 201 / 100%) 100%);
+  background: radial-gradient(circle, rgb(255 255 255 / 100%) 0%, rgb(198 199 201 / 100%) 100%);
   z-index: -1;
   height: 60vh;
 }
@@ -198,7 +198,7 @@ main .hero.specs::after {
   left: 0%;
   width: 100vw;
   height: 400px;
-  background: linear-gradient(0deg, rgba(255 255 255 / 100%) 0%, rgba(255 255 255 / 40%) 70%, rgba(255 255 255 / 0%) 100%);
+  background: linear-gradient(0deg, rgb(255 255 255 / 100%) 0%, rgb(255 255 255 / 40%) 70%, rgb(255 255 255 / 0%) 100%);
 }
 
 main .hero.specs img {
