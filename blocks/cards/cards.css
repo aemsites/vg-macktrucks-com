@@ -27,12 +27,12 @@
   padding: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 16px;
+  gap: 16px;
 }
 
 .cards.cta > ul,
 .cards.dark > ul {
-  grid-gap: 0;
+  gap: 0;
 }
 
 .card.cta > ul {
@@ -266,7 +266,7 @@
     margin: 0 auto;
     flex-direction: row;
     justify-content: space-between;
-    grid-gap: 25px;
+    gap: 25px;
   }
 
   .block.cards.magazine .cards-card-body {

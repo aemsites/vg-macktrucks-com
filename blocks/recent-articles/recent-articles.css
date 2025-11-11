@@ -57,7 +57,7 @@
   font-family: var(--ff-body);
   font-size: var(--heading-4-mobile-size-s);
   line-height: 32px;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   width: fit-content;
   height: auto;
   margin-top: 20px;
@@ -118,7 +118,7 @@
   font-family: var(--ff-body);
   font-size: var(--heading-font-size-xs);
   color: var(--c-primary-black);
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   max-width: 90%;
   width: 100%;
   cursor: pointer;

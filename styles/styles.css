@@ -1844,7 +1844,6 @@ main .section.responsive-title h1 {
 
 .screenreader {
   border: 0;
-  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   height: 1px;
   margin: -1px;
@@ -1993,7 +1992,6 @@ main .section.responsive-title h1 {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  clip: rect(0 0 0 0);
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
