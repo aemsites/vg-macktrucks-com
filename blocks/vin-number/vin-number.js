@@ -1,7 +1,7 @@
-import { getTextLabel, createElement, getJsonFromUrl } from '../../scripts/common.js';
+import { getTextLabel, createElement, getJsonFromUrl, getLanguagePath } from '../../scripts/common.js';
 
 const docRange = document.createRange();
-const isFrench = window.location.href.indexOf('/fr') > -1;
+const isFrench = getLanguagePath() === '/fr-ca/';
 const blockName = 'vin-number';
 
 const apiConfig = {
@@ -41,10 +41,12 @@ const valueDisplayList = [
   },
   {
     key: 'recall_description',
+    frenchKey: 'recall_description_french',
     class: `${blockName}__detail-item--column`,
   },
   {
     key: 'safety_risk_description',
+    frenchKey: 'safety_risk_description_french',
     class: `${blockName}__detail-item--column`,
   },
   {
@@ -55,6 +57,7 @@ const valueDisplayList = [
   },
   {
     key: 'remedy_description',
+    frenchKey: 'remedy_description_french',
     class: `${blockName}__detail-item--column`,
   },
   {
@@ -66,6 +69,7 @@ const valueDisplayList = [
   },
   {
     key: 'mfr_notes',
+    frenchKey: 'mfr_notes_french',
     class: `${blockName}__detail-item--column`,
   },
 ];
@@ -191,25 +195,28 @@ function renderRecalls(recallsData) {
       const recallDetailsList = createElement('ul', { classes: `${blockName}__detail-list` });
 
       valueDisplayList.forEach((item) => {
-        if (recall[item.key] || item.displayIfEmpty) {
-          const recallClass = item.key === 'mfr_recall_status' ? `${blockName}__${recall.mfr_recall_status.replace(/_/g, '-').toLowerCase()}` : '';
-          let itemValue = recall[item.key] || '';
+        const languageVariableKey = isFrench && item.frenchKey ? item.frenchKey : item.key;
+
+        if (recall[languageVariableKey] || item.displayIfEmpty) {
+          const recallClass =
+            languageVariableKey === 'mfr_recall_status' ? `${blockName}__${recall.mfr_recall_status.replace(/_/g, '-').toLowerCase()}` : '';
+          let itemValue = recall[languageVariableKey] || '';
 
           if (recallClass) {
-            itemValue = getTextLabel(recall[item.key]);
+            itemValue = getTextLabel(recall[languageVariableKey]);
           }
 
-          if (itemValue && item.key === 'recall_effective_date') {
+          if (itemValue && languageVariableKey === 'recall_effective_date') {
             const recallText = getTextLabel(`recall_effective_text${isFrench ? '_french' : ''}`).split('//');
             const recallDate = new Date(itemValue).setHours(0, 0, 0, 0);
             const today = new Date().setHours(0, 0, 0, 0);
             itemValue = recallDate > today ? `${recallText[1]} ${isFrench ? formatFrenchDate(itemValue) : itemValue}.` : recallText[0];
-          } else if (item.key === 'recall_date' || item.key === 'tc_recall_date') {
+          } else if (languageVariableKey === 'recall_date' || languageVariableKey === 'tc_recall_date') {
             itemValue = isFrench ? formatFrenchDate(itemValue) : itemValue;
           }
 
           const itemFragment = docRange.createContextualFragment(`<li class="${blockName}__detail-item ${item.class ? item.class : ''}" >
-            <h5 class="${blockName}__detail-title">${getTextLabel(item.key)}</h5>
+            <h5 class="${blockName}__detail-title">${getTextLabel(languageVariableKey)}</h5>
             <span class="${blockName}__detail-value ${recallClass}">${itemValue}</span>
           </li>`);
           recallDetailsList.append(...itemFragment.children);
