@@ -8,8 +8,8 @@ import {
 } from '../../scripts/services/magazine.service.js';
 import { getMetadata, createOptimizedPicture } from '../../scripts/aem.js';
 
-const recommendationsText = getTextLabel('Recommendations text');
-const readNowText = getTextLabel('READ NOW');
+const recommendationsText = getTextLabel('recommendations:title');
+const readNowText = getTextLabel('recommendations:read_now_text');
 const defaultLimit = 2;
 const blockName = 'recommendations';
 

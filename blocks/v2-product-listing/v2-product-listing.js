@@ -227,7 +227,7 @@ export default function decorate(block) {
   let featuredAmount = 0;
 
   variantsClassesToBEM(block.classList, variantClasses, blockName);
-  const allSegmentNames = [getTextLabel('All Products')];
+  const allSegmentNames = [getTextLabel('v2_product_listing:all_segment_text')];
   const firstSegment = allSegmentNames[0].trim().toLowerCase();
   const hasFilters = block.classList.contains(`${blockName}--with-filter`);
 

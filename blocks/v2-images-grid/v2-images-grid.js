@@ -115,10 +115,10 @@ const createModalContent = (content) => {
   const wrapper = createElement('div', { classes: `${blockName}__modal-content` });
 
   itemsWrapper.innerHTML = `<div class="${blockName}__modal-arrows-wrapper">
-    <button class="${blockName}__modal-arrow" aria-label="${getTextLabel('Previous')}">
+    <button class="${blockName}__modal-arrow" aria-label="${getTextLabel('v2_images_grid:previous')}">
       <span class="icon icon-arrow-left" />
     </button>
-    <button class="${blockName}__modal-arrow" aria-label="${getTextLabel('Next')}">
+    <button class="${blockName}__modal-arrow" aria-label="${getTextLabel('v2_images_grid:next')}">
       <span class="icon icon-arrow-right" />
     </button>
   </div>`;
@@ -148,13 +148,13 @@ const showImagesGridModal = async (modalContent) => {
 
 const buildOverlayFragment = (captionText) => {
   return document.createRange().createContextualFragment(`
-    <button class="${blockName}__btn ${blockName}__info-btn" aria-label="${getTextLabel('Image info open')}" aria-haspopup="dialog" aria-expanded="false">
+    <button class="${blockName}__btn ${blockName}__info-btn" aria-label="${getTextLabel('v2_images_grid:image_info_open_aria_label')}" aria-haspopup="dialog" aria-expanded="false">
       <span class="icon icon-info" aria-hidden="true">Info</span>
     </button>
-    <div class="${blockName}__caption-panel" hidden role="dialog" aria-label="${getTextLabel('Image info dialog')}">
+    <div class="${blockName}__caption-panel" hidden role="dialog" aria-label="${getTextLabel('v2_images_grid:image_info_dialog_aria_label')}">
       <p class="${blockName}__caption-text">${captionText}</p>
     </div>
-    <button class="${blockName}__btn ${blockName}__close-btn" hidden aria-label="${getTextLabel('Image info close')}">
+    <button class="${blockName}__btn ${blockName}__close-btn" hidden aria-label="${getTextLabel('v2_images_grid:image_info_close_aria_label')}">
       <span class="icon icon-close" aria-hidden="true">Close</span>
     </button>
   `);
@@ -254,7 +254,7 @@ export default function decorate(block) {
     const button = createElement('a', {
       classes: ['button', 'button--large', 'button--primary'],
     });
-    button.textContent = getTextLabel('Open Gallery');
+    button.textContent = getTextLabel('v2_images_grid:button_text');
     button.addEventListener('click', async () => {
       const carouselItemsList = modalContent.querySelector(`.${blockName}__carousel-items-list`);
       const carouselImagesList = modalContent.querySelector(`.${blockName}__carousel-preview-list`);

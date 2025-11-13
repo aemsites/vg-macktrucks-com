@@ -5,8 +5,8 @@ export default async function decorate(block) {
   const { HREF: href, IFRAME_SIZE } = MAGAZINE_CONFIGS;
   const content = document.createRange().createContextualFragment(`
     <div class="default-content-wrapper">
-      <h2 id="subscribe-to-bulldog-magazine">${getTextLabel('form-subscribe-magazine:heading')}</h2>
-      <p>${getTextLabel('form-subscribe-magazine:text')}</p>
+      <h2 id="subscribe-to-bulldog-magazine">${getTextLabel('magazine_subscribe:heading')}</h2>
+      <p>${getTextLabel('magazine_subscribe:text')}</p>
     </div>
   `);
 

@@ -6,7 +6,7 @@ const variantClasses = ['attribution'];
 const docRange = document.createRange();
 
 const LABELS = {
-  COPIED: getTextLabel('tooltip copied text'),
+  COPIED: getTextLabel('v2_social_block:tooltip_copied_text'),
 };
 
 const CLASSES = {

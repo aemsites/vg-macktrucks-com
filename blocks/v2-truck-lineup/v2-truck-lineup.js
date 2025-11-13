@@ -137,12 +137,12 @@ const scrollObserverFunction = (elements, entry) => {
 };
 
 const arrowFragment = document.createRange().createContextualFragment(`<li>
-  <button aria-label="${getTextLabel('Previous')}">
+  <button aria-label="${getTextLabel('v2_truck_lineup:previous')}">
     <span class="icon icon-arrow-left" />
   </button>
 </li>
 <li>
-  <button aria-label="${getTextLabel('Next')}">
+  <button aria-label="${getTextLabel('v2_truck_lineup:next')}">
     <span class="icon icon-arrow-right" />
   </button>
 </li>`);
