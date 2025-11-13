@@ -96,7 +96,7 @@ const createModal = () => {
   document.body.appendChild(modalBackground);
 
   // adding close modal button
-  const closeModalLabel = getTextLabel('Close modal');
+  const closeModalLabel = getTextLabel('modal_component:close_modal_label');
   const closeButton = createElement('button', { classes: 'modal-close-button', props: { 'aria-label': `${closeModalLabel}` } });
   const closeIcon = createElement('span', { classes: ['icon', 'icon-close'] });
   closeButton.append(closeIcon);
@@ -191,11 +191,11 @@ const createModal = () => {
           cookieMsgContainer.style.background = 'linear-gradient(180deg, rgba(0, 0, 0, 0.00) 0%, rgba(0, 0, 0, 0.80) 100%) center / cover no-repeat';
 
           const cookieMessage = document.createRange().createContextualFragment(`
-            <h3 class="modal-cookie-message__title">${getTextLabel('single video message title')}</h3>
-            ${getTextLabel('single video message text')}
+            <h3 class="modal-cookie-message__title">${getTextLabel('modal_component:cookie_message_title')}</h3>
+            ${getTextLabel('modal_component:cookie_message_text')}
             <div class="modal-cookie-message__button-container">
-              <button class="button primary button--large button--red">${getTextLabel('single video message button')}</button>
-              <button class="button secondary button--large">${getTextLabel('single video message button deny')}</button>
+              <button class="button primary button--large button--red">${getTextLabel('modal_component:cookie_accept_button')}</button>
+              <button class="button secondary button--large">${getTextLabel('modal_component:cookie_reject_button')}</button>
             </div>
           `);
 

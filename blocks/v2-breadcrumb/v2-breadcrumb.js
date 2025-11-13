@@ -3,9 +3,9 @@ import { createElement, getTextLabel, variantsClassesToBEM, addTargetBlankToExte
 
 const blockName = 'v2-breadcrumb';
 const sectionStatus = 'data-section-status';
-const breadcrumb = getTextLabel('breadcrumb');
+const breadcrumb = getTextLabel('v2_breadcrumbs:aria_label');
 const homeText = {
-  home: getTextLabel('home'),
+  home: getTextLabel('v2_breadcrumbs:home_text'),
   ellipsis: '…', // unicode ellipsis
 };
 const variantClasses = ['custom'];

@@ -2,8 +2,8 @@ import { readBlockConfig, loadBlock, getMetadata } from '../../scripts/aem.js';
 import { createElement, decorateIcons, getTextLabel } from '../../scripts/common.js';
 
 const PLACEHOLDERS = {
-  subscribe: getTextLabel('SUBSCRIBE TO BULLDOG'),
-  emailAddress: getTextLabel('Email Address'),
+  subscribe: getTextLabel('footer:submit_button_aria_label'),
+  emailAddress: getTextLabel('footer:email_placeholder'),
 };
 
 const addClassToTitle = (block, className) => {
@@ -143,7 +143,7 @@ export default async function decorate(block) {
     const logo = document.createRange().createContextualFragment(`<div class="${CLASSES.menu}__logo">
       <a href="/">
         <span class="icon icon-logo" />
-        <span class="screenreader">${getTextLabel('Logo link')}</span>
+        <span class="screenreader">${getTextLabel('footer:logo_link_text')}</span>
       </a>
     </div>`);
     newMenu.appendChild(logo);

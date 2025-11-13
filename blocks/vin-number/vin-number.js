@@ -140,7 +140,7 @@ async function fetchRefreshDate() {
 
 function renderRecalls(recallsData) {
   const resultText = document.querySelector(`.${blockName}__results-text`);
-  let resultContent = getTextLabel('result text')
+  let resultContent = getTextLabel('vin_number:result_text')
     .replace(/\${count}/, recallsData.number_of_recalls)
     .replace(/\${vin}/, recallsData.vin);
 
@@ -149,15 +149,15 @@ function renderRecalls(recallsData) {
   const recallsMake = createElement('div', { classes: `${blockName}__recalls-make-wrapper` });
   const makeFragment = docRange.createContextualFragment(`
     <div class="${blockName}__recalls-md-row">
-      <h5 class="${blockName}__recalls-md-title">${getTextLabel('model year')}</h5>
+      <h5 class="${blockName}__recalls-md-title">${getTextLabel('vin_number:model_year')}</h5>
       <span> ${recallsData.year}</span>
     </div>
     <div class="${blockName}__recalls-md-row">
-      <h5 class="${blockName}__recalls-md-title">${getTextLabel('make')}</h5>
+      <h5 class="${blockName}__recalls-md-title">${getTextLabel('vin_number:make')}</h5>
       <span> ${recallsData.make}</span>
     </div>
     <div class="${blockName}__recalls-md-row">
-      <h5 class="${blockName}__recalls-md-title">${getTextLabel('model')}</h5>
+      <h5 class="${blockName}__recalls-md-title">${getTextLabel('vin_number:model')}</h5>
       <span> ${recallsData.model}</span>
     </div>
   `);
@@ -173,8 +173,8 @@ function renderRecalls(recallsData) {
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12.537 2.77441C12.4523 2.60503 12.2792 2.49804 12.0898 2.49805C11.9004 2.49805 11.7273 2.60506 11.6426 2.77445L2.14458 21.7711C2.06709 21.9261 2.07537 22.1102 2.16647 22.2576C2.25758 22.405 2.41851 22.4947 2.5918 22.4947H21.5897C21.7629 22.4947 21.9239 22.405 22.015 22.2576C22.1061 22.1102 22.1144 21.9261 22.0369 21.7711L12.537 2.77441ZM3.4008 21.4947L12.0898 4.11603L20.7806 21.4947H3.4008ZM12.9995 14.6796V15.7512C12.9995 15.8619 12.9046 15.9974 12.7538 15.9974L12.4304 15.9969C12.2549 15.9965 12.0583 15.9961 11.9556 15.9961H11.2484C11.0976 15.9961 11.0027 15.8606 11.0027 15.7499V14.6796L11.0027 8.24501C11.0027 8.13425 11.0976 7.99874 11.2484 7.99874H11.9556C12.0581 7.99874 12.2545 7.99834 12.4299 7.99798H12.43L12.4304 7.99798L12.7538 7.99744C12.9046 7.99744 12.9995 8.13295 12.9995 8.2437L12.9995 14.6796ZM12.9964 18.8443V19.7512C12.9964 19.8619 12.9015 19.9974 12.7507 19.9974L12.4273 19.9969C12.2517 19.9965 12.0551 19.9961 11.9524 19.9961H11.2452C11.0944 19.9961 10.9995 19.8606 10.9995 19.7499V18.8443V18.2437C10.9995 18.1329 11.0944 17.9974 11.2452 17.9974H11.9524C12.0551 17.9974 12.2517 17.997 12.4273 17.9967L12.7507 17.9961C12.9015 17.9961 12.9964 18.1316 12.9964 18.2424L12.9964 18.8443Z" fill="var(--color-icon, #000)"/>
           </svg>
         </span>
-        <h4 class="${blockName}__recalls-heading" >${getTextLabel('recalls')}  &nbsp; &nbsp;</h4>
-        <p class="${blockName}__recalls-refresh-date"> [${getTextLabel('recall_oldest_info')} ${isFrench ? formatFrenchDate(recallsData.recalls_since) : recallsData.recalls_since}] </p>
+        <h4 class="${blockName}__recalls-heading" >${getTextLabel('vin_number:recalls')}  &nbsp; &nbsp;</h4>
+        <p class="${blockName}__recalls-refresh-date"> [${getTextLabel('vin_number:recall_oldest_info')} ${isFrench ? formatFrenchDate(recallsData.recalls_since) : recallsData.recalls_since}] </p>
       </div>
     `);
 
@@ -222,7 +222,7 @@ function renderRecalls(recallsData) {
     blockEl.append(listWrapperFragment);
     blockEl.appendChild(list);
   } else {
-    resultContent = `${resultContent} [${getTextLabel('recall_available_info')} ${isFrench ? formatFrenchDate(recallsData.recalls_since) : recallsData.recalls_since}]`;
+    resultContent = `${resultContent} [${getTextLabel('vin_number:recall_available_info')} ${isFrench ? formatFrenchDate(recallsData.recalls_since) : recallsData.recalls_since}]`;
   }
   resultText.innerText = resultContent;
 }
@@ -238,7 +238,7 @@ async function fetchRecalls(e) {
     recalls.innerHTML = '';
 
     const resultText = document.querySelector(`.${blockName}__results-text`);
-    resultText.innerText = getTextLabel('loading recalls');
+    resultText.innerText = getTextLabel('vin_number:loading_recalls');
 
     const formData = new FormData(e.target);
     const vin = formData.get('vin');
@@ -248,7 +248,7 @@ async function fetchRecalls(e) {
         const { url, key } = getAPIConfig();
         getJsonFromUrl(`${url}vin/${vin}?api_key=${key}&mode=company`).then((response) => {
           if (response.error_code) {
-            resultText.innerHTML = `${getTextLabel('no recalls')} ${vin}`;
+            resultText.innerHTML = `${getTextLabel('vin_number:no_recalls')} ${vin}`;
           } else {
             response.recalls.sort((a, b) => b.mfr_recall_status - a.mfr_recall_status || new Date(b.date) - new Date(a.date));
             renderRecalls(response);
@@ -273,7 +273,7 @@ export default async function decorate(block) {
     classes: `${blockName}__refresh-date-wrapper`,
   });
   const refreshFragment = docRange.createContextualFragment(`<span>
-    ${getTextLabel('published_info')}:
+    ${getTextLabel('vin_number:published_info')}:
     </span>
     <strong class="${blockName}__refresh-date">${refreshDate}</strong>
   `);
@@ -295,9 +295,9 @@ export default async function decorate(block) {
         class="${blockName}__input"
         pattern="^[1,4][M,m][1,2,4,5][A,G,L,P,T,M,a,g,l,p,t,m][A-Za-z0-9]{13}$"
       />
-      <label for="vin_number" class="${blockName}__label">${getTextLabel('vinlabel')}</label>
+      <label for="vin_number" class="${blockName}__label">${getTextLabel('vin_number:label')}</label>
     </div>
-    <button class="button button--primary ${blockName}__submit" type="submit" name="submit">${getTextLabel('submit')}</button>
+    <button class="button button--primary ${blockName}__submit" type="submit" name="submit">${getTextLabel('vin_number:submit')}</button>
   `);
 
   const vinResultsContainer = createElement('div', { classes: `${blockName}__results-container` });
@@ -317,7 +317,7 @@ export default async function decorate(block) {
   const vinInput = block.querySelector(`.${blockName}__input`);
 
   vinInput.oninvalid = (e) => {
-    e.target.setCustomValidity(getTextLabel('vinformat'));
+    e.target.setCustomValidity(getTextLabel('vin_number:format'));
   };
 
   vinInput.oninput = (e) => {

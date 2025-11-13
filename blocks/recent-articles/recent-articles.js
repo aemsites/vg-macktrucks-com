@@ -2,8 +2,8 @@ import { createElement, getOrigin, getTextLabel } from '../../scripts/common.js'
 import { extractLimitFromBlock, clearRepeatedArticles, fetchMagazineData, formatArticlesArray } from '../../scripts/services/magazine.service.js';
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
-const sectionTitle = getTextLabel('Recent article text');
-const readNowText = getTextLabel('READ NOW');
+const sectionTitle = getTextLabel('recent_articles:title');
+const readNowText = getTextLabel('recent_articles:read_now_text');
 const defaultLimit = 5;
 const blockName = 'recent-articles';
 

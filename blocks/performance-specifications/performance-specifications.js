@@ -6,9 +6,9 @@ const MQ = window.matchMedia('(min-width: 744px)');
 const blockName = 'performance-specifications';
 
 const TEXTS = {
-  btnText: getTextLabel('SpecsCharts:DownloadButton'),
-  engineRatings: getTextLabel('SpecsCharts:RatingLabels'),
-  bottomChartLabel: getTextLabel('SpecsCharts:RPM'),
+  btnText: getTextLabel('performance_specifications:download_button_text'),
+  engineRatings: getTextLabel('performance_specifications:engine_ratings_labels'),
+  bottomChartLabel: getTextLabel('performance_specifications:bottom_chart_label'),
 };
 
 const COLORS = {

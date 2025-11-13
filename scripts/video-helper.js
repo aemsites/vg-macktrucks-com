@@ -358,8 +358,8 @@ export function cleanupVideoLink(block, link, hasPoster) {
 }
 
 export function createLowResolutionBanner() {
-  const lowResolutionMessage = getTextLabel('Low resolution video message');
-  const changeCookieSettings = getTextLabel('Change cookie settings');
+  const lowResolutionMessage = getTextLabel('video_helper:low_res_message');
+  const changeCookieSettings = getTextLabel('video_helper:change_cookie_settings');
 
   const banner = createElement('div', { classes: 'low-resolution-banner' });
   banner.innerHTML = `${lowResolutionMessage} <button class="low-resolution-banner-cookie-settings">${changeCookieSettings}</button>`;
@@ -489,8 +489,8 @@ export function setPlaybackControls(container) {
   const playIconElement = container.querySelector('.icon-play-video');
   const pauseIconElement = container.querySelector('.icon-pause-video');
 
-  const pauseVideoLabel = getTextLabel('Pause video');
-  const playVideoLabel = getTextLabel('Play video');
+  const pauseVideoLabel = getTextLabel('video_helper:pause_video_label');
+  const playVideoLabel = getTextLabel('video_helper:play_video_label');
 
   playPauseButton.setAttribute('aria-label', pauseVideoLabel);
 
@@ -559,8 +559,8 @@ export function createMuteToggleButton(videoElement) {
   toggleButton.append(iconMuted, iconUnmuted);
   decorateIcons(toggleButton);
 
-  const labelMute = getTextLabel('Mute video');
-  const labelUnmute = getTextLabel('Unmute video');
+  const labelMute = getTextLabel('video_helper:mute_video_aria_label');
+  const labelUnmute = getTextLabel('video_helper:unmute_video_aria_label');
 
   /**
    * Updates the visibility of icons based on mute state.
