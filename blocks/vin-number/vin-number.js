@@ -1,7 +1,7 @@
-import { getTextLabel, createElement, getJsonFromUrl } from '../../scripts/common.js';
+import { getTextLabel, createElement, getJsonFromUrl, getLanguagePath, getPlaceholders } from '../../scripts/common.js';
 
 const docRange = document.createRange();
-const isFrench = window.location.href.indexOf('/fr') > -1;
+const isFrench = getLanguagePath() === '/fr-ca/';
 const blockName = 'vin-number';
 
 const apiConfig = {
@@ -41,31 +41,34 @@ const valueDisplayList = [
   },
   {
     key: 'recall_description',
+    hasFrenchKey: true,
     class: `${blockName}__detail-item--column`,
   },
   {
     key: 'safety_risk_description',
+    hasFrenchKey: true,
     class: `${blockName}__detail-item--column`,
   },
   {
     key: 'interim_precautions',
-    frenchKey: 'interim_precautions_french',
+    hasFrenchKey: true,
     class: `${blockName}__detail-item--column`,
     displayIfEmpty: true,
   },
   {
     key: 'remedy_description',
+    hasFrenchKey: true,
     class: `${blockName}__detail-item--column`,
   },
   {
     key: 'recall_effective_date',
     class: `${blockName}__detail-item--column`,
-    text: 'recall_effective_text',
-    frenchText: 'recall_effective_text_french',
+    displayText: 'recall_effective_text',
     displayIfEmpty: true,
   },
   {
     key: 'mfr_notes',
+    hasFrenchKey: true,
     class: `${blockName}__detail-item--column`,
   },
 ];
@@ -193,14 +196,16 @@ function renderRecalls(recallsData) {
       valueDisplayList.forEach((item) => {
         if (recall[item.key] || item.displayIfEmpty) {
           const recallClass = item.key === 'mfr_recall_status' ? `${blockName}__${recall.mfr_recall_status.replace(/_/g, '-').toLowerCase()}` : '';
-          let itemValue = recall[item.key] || '';
+
+          const languageKey = isFrench && item.hasFrenchKey ? `${item.key}_french` : item.key;
+          let itemValue = recall[languageKey] || '';
 
           if (recallClass) {
             itemValue = getTextLabel(recall[item.key]);
           }
 
           if (itemValue && item.key === 'recall_effective_date') {
-            const recallText = getTextLabel(`recall_effective_text${isFrench ? '_french' : ''}`).split('//');
+            const recallText = getTextLabel(item.displayText).split('//');
             const recallDate = new Date(itemValue).setHours(0, 0, 0, 0);
             const today = new Date().setHours(0, 0, 0, 0);
             itemValue = recallDate > today ? `${recallText[1]} ${isFrench ? formatFrenchDate(itemValue) : itemValue}.` : recallText[0];
@@ -268,6 +273,8 @@ async function fetchRecalls(e) {
 }
 
 export default async function decorate(block) {
+  await getPlaceholders();
+
   const refreshDate = getStorageItem('refreshDate-MT') || '';
   const refresDateWrapper = createElement('div', {
     classes: `${blockName}__refresh-date-wrapper`,
@@ -275,7 +282,7 @@ export default async function decorate(block) {
   const refreshFragment = docRange.createContextualFragment(`<span>
     ${getTextLabel('vin_number:published_info')}:
     </span>
-    <strong class="${blockName}__refresh-date">${refreshDate}</strong>
+    <strong class="${blockName}__refresh-date">${isFrench ? formatFrenchDate(refreshDate) : refreshDate}</strong>
   `);
 
   const form = createElement('form', {
