@@ -33,6 +33,10 @@
   text-decoration: none;
 }
 
+.v2-recommendations__article .v2-recommendations__article-link:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .v2-recommendations__article-image {
   height: 241px;
   object-fit: cover;

@@ -202,7 +202,7 @@
 .v2-magazine-tabbed-carousel .v2-magazine-tabbed-carousel__figure a:focus-visible,
 .v2-magazine-tabbed-carousel .v2-magazine-tabbed-carousel__navigation-item:focus-visible,
 .v2-magazine-tabbed-carousel .switch-buttons button:focus-visible {
-  outline: 3px solid var(--navigation-line-active-color);
+  outline: 3px solid var(--border-focus);
   outline-offset: -3px;
 }
 

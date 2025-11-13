@@ -94,7 +94,7 @@
 }
 
 .v2-truck-builder__item-header-button:focus-visible {
-  outline: 2px solid var(--c-accent-red);
+  Outline: 2px solid var(--border-focus);
   outline-offset: 2px;
 }
 

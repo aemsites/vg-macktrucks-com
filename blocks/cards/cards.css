@@ -141,6 +141,10 @@
   font-size: 75%;
 }
 
+.cta .cards-card-image .button:focus-visible{
+  outline: 2px solid var(--border-focus);
+}
+
 .cards .cards-card-body > *:first-child {
   margin-top: 0;
 }
@@ -245,6 +249,10 @@
   background-color: var(--c-primary-white);
   padding: 0;
   text-decoration: underline;
+}
+
+.block.cards.magazine .cards-card-body .button-container a:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 .block.cards.magazine .cards-card-body .button-container a:hover {

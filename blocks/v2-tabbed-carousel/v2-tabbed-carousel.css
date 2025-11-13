@@ -153,7 +153,7 @@
 }
 
 .v2-tabbed-carousel__navigation-item button:focus-visible {
-  outline: 3px solid var(--navigation-line-active-color);
+  outline: 3px solid var(--border-focus);
 }
 
 /* heading styles for tabbed carousel, which is optional */

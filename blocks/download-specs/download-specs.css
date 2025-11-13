@@ -31,6 +31,10 @@ main .section.download-specs-container {
   text-decoration: none;
 }
 
+.download-specs-item a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .download-specs-item:first-child {
   border-top: none;
 }

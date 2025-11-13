@@ -17,6 +17,10 @@
   background: transparent;
 }
 
+.v2-accordion__button:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .v2-accordion__title {
   font-family: var(--ff-headline-medium);
   font-size: var(--headline-1-font-size);
