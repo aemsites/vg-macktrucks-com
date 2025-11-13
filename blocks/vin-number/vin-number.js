@@ -51,8 +51,8 @@ const valueDisplayList = [
   },
   {
     key: 'interim_precautions',
-    class: `${blockName}__detail-item--column`,
     hasFrenchKey: true,
+    class: `${blockName}__detail-item--column`,
     displayIfEmpty: true,
   },
   {
