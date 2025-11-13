@@ -1,4 +1,4 @@
-import { getTextLabel, createElement, getJsonFromUrl, getLanguagePath } from '../../scripts/common.js';
+import { getTextLabel, createElement, getJsonFromUrl, getLanguagePath, getPlaceholders } from '../../scripts/common.js';
 
 const docRange = document.createRange();
 const isFrench = getLanguagePath() === '/fr-ca/';
@@ -273,6 +273,8 @@ async function fetchRecalls(e) {
 }
 
 export default async function decorate(block) {
+  await getPlaceholders();
+
   const refreshDate = getStorageItem('refreshDate-MT') || '';
   const refresDateWrapper = createElement('div', {
     classes: `${blockName}__refresh-date-wrapper`,
