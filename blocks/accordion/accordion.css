@@ -17,6 +17,10 @@
   padding: 0;
 }
 
+.accordion .accordion-header-button:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .accordion .accordion-header-button h2 {
   margin: 0;
   font-family: var(--ff-body);

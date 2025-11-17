@@ -112,6 +112,10 @@
   text-decoration: none;
 }
 
+.v2-icon-cards__body a:focus-visible{
+  outline: 2px solid var(--border-focus);
+  }
+
 .v2-icon-cards__column a.button {
   width: fit-content;
   margin: 0;

@@ -44,6 +44,10 @@ main .hero p.button-container .button {
   font-weight: 700;
 }
 
+main .hero p.button-container .button:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 main .hero picture {
   position: absolute;
   inset: 0;

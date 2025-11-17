@@ -30,6 +30,10 @@ main .section.breadcrumb-container {
   text-decoration: none;
 }
 
+.breadcrumb-home a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .breadcrumb-current {
   color: var(--c-primary-black);
   text-transform: capitalize;

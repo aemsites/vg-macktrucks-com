@@ -143,3 +143,7 @@
 .section--with-background .custom-dropdown__option {
   color: var(--c-primary-black);
 }
+
+.v2-custom-form-container .field-wrapper .custom-dropdown__button:focus {
+  outline-offset: 0;
+}

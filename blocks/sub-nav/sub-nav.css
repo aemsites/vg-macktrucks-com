@@ -98,6 +98,10 @@
   text-decoration: none;
 }
 
+.sub-nav-container a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .sub-nav-cta-wrapper {
   display: none;
 }
@@ -309,6 +313,10 @@ header:has(nav[aria-expanded='true']) .sub-nav-container {
   .magazine .button-container .magazine-subscribe-button {
     padding: 10px 30px;
     width: max-content;
+  }
+
+  .magazine .button-container .magazine-subscribe-button:focus-visible {
+    outline: 2px solid var(--border-focus);
   }
 
   header:has(nav[aria-expanded='true']) .sub-nav-container {

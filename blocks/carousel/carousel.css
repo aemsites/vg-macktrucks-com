@@ -171,6 +171,10 @@
     pointer-events: all;
   }
 
+  .block.carousel .desktop-controls button:focus-visible {
+    outline: 2px solid var(--border-focus);
+  }
+
   .block.carousel .desktop-controls button::after {
     display: flex;
     align-items: center;

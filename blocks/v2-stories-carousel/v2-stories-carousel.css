@@ -102,6 +102,11 @@ a.v2-stories-carousel-link {
   color: var(--c-primary-white);
 }
 
+a.v2-stories-carousel-link:focus-visible,
+a.v2-stories-carousel-image-link:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .v2-stories-carousel-control {
   display: none;
 }

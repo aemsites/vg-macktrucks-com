@@ -54,6 +54,10 @@ main .template.section.article-hero-container {
   cursor: pointer;
 }
 
+.article-hero-content a.article-hero-category:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .article-hero-content .article-hero-title {
   width: 90%;
   font-family: var(--ff-body);
@@ -107,6 +111,10 @@ main .template.section.article-hero-container {
   margin: 0 4px 20px;
 }
 
+.article-texts-container .default-content-wrapper p a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .article-texts-container .default-content-wrapper p:first-child {
   margin-top: 50px;
 }
@@ -124,6 +132,10 @@ main .template.section.article-hero-container {
   border-radius: 3px;
   margin-left: 5px;
   padding: 1px 5px;
+}
+
+.current-article-container .share-icons button:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 .current-article-container .share-icons .icon {

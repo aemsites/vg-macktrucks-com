@@ -112,6 +112,11 @@
   transform: rotate(0);
 }
 
+.hotspots-container .hotspot .hotspot-icon-set a.hotspot-icon:focus-visible,
+.hotspots-container .hotspot-layover .hotspot-layover-box .hotspot-layover-controls .hotspot-layover-button:focus-visible{
+  outline: 2px solid var(--border-focus);
+}
+
 .hotspots-container .hotspot .hotspot-icon-set a.hotspot-icon img {
   transition: 0.3s;
 }
