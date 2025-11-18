@@ -130,8 +130,8 @@ const getDefaultImage = () => {
  * @returns {Array} - An array of correctly formatted objects
  */
 export const formatArticlesArray = (arts = []) => {
-  const defaultAuthor = getTextLabel('defaultAuthor');
-  const defaultReadTime = getTextLabel('defaultReadTime');
+  const defaultAuthor = getTextLabel('magazine:default_author');
+  const defaultReadTime = getTextLabel('magazine:default_read_time');
   const articleList = [];
 
   articleList.push(
@@ -174,8 +174,8 @@ export const formatArticlesArray = (arts = []) => {
  * @returns {Array} Formatted article objects.
  */
 export const formatRecommendedArticlesArray = (items = []) => {
-  const defaultAuthor = getTextLabel('defaultAuthor');
-  const defaultReadTime = getTextLabel('defaultReadTime');
+  const defaultAuthor = getTextLabel('magazine:default_author');
+  const defaultReadTime = getTextLabel('magazine:default_read_time');
 
   return items
     .map((item) => {

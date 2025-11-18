@@ -5,21 +5,21 @@ import { createOptimizedPicture } from '../../scripts/aem.js';
 const blockName = 'v2-explore-articles';
 
 const LABELS = {
-  SHOW_MORE: getTextLabel('Show More'),
-  SEARCH: getTextLabel('Search articles'),
-  SHOWING_PLACEHOLDER: getTextLabel('Showing placeholder'),
-  SORT_BY: getTextLabel('Sort by'),
-  SORT_MOST_RECENT: getTextLabel('Most Recent'),
-  SORT_ALPHABETICAL: getTextLabel('Alphabetical'),
-  FILTERS_BUTTON: getTextLabel('Filter articles'),
-  TOGGLE_FILTERS_MORE: getTextLabel('Show more'),
-  TOGGLE_FILTERS_LESS: getTextLabel('Show less'),
-  CLEAR_ALL_BUTTON: getTextLabel('Clear All'),
-  CLEAR_BUTTON: getTextLabel('Clear'),
-  APPLY_BUTTON: getTextLabel('Apply'),
-  SELECTED: getTextLabel('Selected'),
-  ERROR_TITLE: getTextLabel('Magazine error title'),
-  ERROR_TEXT: getTextLabel('Magazine error text'),
+  SHOW_MORE: getTextLabel('v2_explore_articles:show_more_button_text'),
+  SEARCH: getTextLabel('v2_explore_articles:search_articles'),
+  SHOWING_PLACEHOLDER: getTextLabel('v2_explore_articles:showing_placeholder'),
+  SORT_BY: getTextLabel('v2_explore_articles:sort_by'),
+  SORT_MOST_RECENT: getTextLabel('v2_explore_articles:most_recent'),
+  SORT_ALPHABETICAL: getTextLabel('v2_explore_articles:sort_alphabetical'),
+  FILTERS_BUTTON: getTextLabel('v2_explore_articles:filters_button'),
+  TOGGLE_FILTERS_MORE: getTextLabel('v2_explore_articles:show_more_button_text'),
+  TOGGLE_FILTERS_LESS: getTextLabel('v2_explore_articles:show_less_button_text'),
+  CLEAR_ALL_BUTTON: getTextLabel('v2_explore_articles:clear_all_button_text'),
+  CLEAR_BUTTON: getTextLabel('v2_explore_articles:clear_button_text'),
+  APPLY_BUTTON: getTextLabel('v2_explore_articles:apply_button_text'),
+  SELECTED: getTextLabel('v2_explore_articles:selected_text'),
+  ERROR_TITLE: getTextLabel('v2_explore_articles:error_title'),
+  ERROR_TEXT: getTextLabel('v2_explore_articles:error_text'),
 };
 
 const CLASSES = {

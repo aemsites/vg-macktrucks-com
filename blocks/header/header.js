@@ -64,7 +64,7 @@ const createLogo = (logoWrapper) => {
 
   if (logoLink) {
     const logoLinkTextContainer = createElement('span', { classes: ['screenreader'] });
-    const logoLinkText = getTextLabel('Logo link');
+    const logoLinkText = getTextLabel('header:logo_link_text');
     logoLinkTextContainer.append(logoLinkText);
 
     logoLink.append(logoLinkTextContainer);
@@ -98,7 +98,7 @@ const createMainLinks = (mainLinksWrapper) => {
       link.classList.add(`${blockName}__main-nav-link`, `${blockName}__link`, `${blockName}__link-accordion`);
     });
 
-    const closeMenuLabel = getTextLabel('Close menu');
+    const closeMenuLabel = getTextLabel('header:close_menu_label');
     const closeIcon = document.createRange().createContextualFragment(`
       <li class="${blockName}__action-item ${blockName}__action-item--close-menu">
         <button

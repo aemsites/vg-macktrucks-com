@@ -53,6 +53,10 @@
   color: var(--c-primary-white);
 }
 
+.recommendations-image a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .recommendations-text-content .recommendations-category {
   font-family: var(--ff-subheadings-medium);
   font-size: var(--body-font-size-xxs);
@@ -67,10 +71,18 @@
   color: var(--c-primary-gold);
 }
 
+.recommendations-text-content .recommendations-category:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .recommendations-text-content .recommendations-title {
   font-family: var(--ff-body);
   font-size: var(--body-font-size-xs);
   margin: 10px 0 0;
+}
+
+.recommendations-text-content .recommendations-title:focus-visible {
+  outline: 2px solid var(--border-focus);
 }
 
 .recommendations-text-content .recommendations-title:hover {

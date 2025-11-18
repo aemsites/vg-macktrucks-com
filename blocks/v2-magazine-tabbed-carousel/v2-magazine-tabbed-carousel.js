@@ -167,7 +167,7 @@ export default async function decorate(block) {
   const carouselContainerSection = block.closest('.section.v2-magazine-tabbed-carousel-container');
   const intervalTime = parseInt(carouselContainerSection?.dataset.magazineTabbedCarouselIntervalTime || '6000', 10);
 
-  const switchFullTexts = getTextLabel('autoscroll_switch');
+  const switchFullTexts = getTextLabel('v2_magazine_tabbed_carousel:switch_text');
 
   const carouselContainer = createElement('div', { classes: `${blockName}__container` });
   const carouselItems = createElement('ul', { classes: `${blockName}__items` });

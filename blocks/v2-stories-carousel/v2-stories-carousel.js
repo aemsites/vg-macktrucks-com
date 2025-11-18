@@ -105,8 +105,8 @@ const scrollToSlide = (elements, direction = 1, debounced = false) => {
 const createCarousel = (block) => {
   const [header, ...items] = block.children;
   const title = header?.querySelector('h2')?.textContent || '';
-  const previousLabel = getTextLabel('Previous');
-  const nextLabel = getTextLabel('Next');
+  const previousLabel = getTextLabel('v2_stories_carousel:previous');
+  const nextLabel = getTextLabel('v2_stories_carousel:next');
   block.innerHTML = createCarouselStructure(title, blockName, previousLabel, nextLabel);
   const carouselTrack = block.querySelector(`.${blockName}-track`);
 

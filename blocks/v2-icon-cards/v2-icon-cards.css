@@ -58,7 +58,7 @@
 }
 
 .v2-icon-cards__heading {
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   margin: 0;
 }
 
@@ -111,6 +111,10 @@
   border-bottom: 1px solid var(--c-accent-red);
   text-decoration: none;
 }
+
+.v2-icon-cards__body a:focus-visible{
+  outline: 2px solid var(--border-focus);
+  }
 
 .v2-icon-cards__column a.button {
   width: fit-content;

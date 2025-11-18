@@ -82,12 +82,12 @@ const updateActiveClass = (elements, entry) => {
 const arrowFragment = () =>
   document.createRange().createContextualFragment(`
     <li>
-      <button aria-label="${getTextLabel('Previous')}" class="${CLASSES.button} ${CLASSES.buttonPrev}">
+      <button aria-label="${getTextLabel('v2_feature_carousel:previous')}" class="${CLASSES.button} ${CLASSES.buttonPrev}">
         <span class="icon icon-arrow-right" />
       </button>
     </li>
     <li>
-      <button aria-label="${getTextLabel('Next')}" class="${CLASSES.button} ${CLASSES.buttonNext}">
+      <button aria-label="${getTextLabel('v2_feature_carousel:next')}" class="${CLASSES.button} ${CLASSES.buttonNext}">
         <span class="icon icon-arrow-right" />
       </button>
     </li>

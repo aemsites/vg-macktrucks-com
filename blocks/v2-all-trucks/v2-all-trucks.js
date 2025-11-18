@@ -87,7 +87,7 @@ export default function decorate(block) {
       selectedItem.textContent = clickedSegment;
 
       trucks.forEach((truck) => {
-        const isAllTrucks = clickedSegment === getTextLabel('All trucks').trim().toLowerCase();
+        const isAllTrucks = clickedSegment === getTextLabel('v2_all_trucks:all_trucks').trim().toLowerCase();
         truck.style.display = truck.classList.contains(clickedSegment) || isAllTrucks ? 'flex' : 'none';
         const isSelected = truck.style.display === 'flex';
         truck.style.display = isSelected ? 'flex' : 'none';

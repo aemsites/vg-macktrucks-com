@@ -1,7 +1,7 @@
 {
   "name": "macktrucks",
   "private": true,
-  "version": "52.0.0",
+  "version": "53.0.0",
   "description": "Mack Trucks",
   "engines": {
     "node": ">=v20.15.1 <23",
@@ -32,8 +32,6 @@
     "dev:ht": "AEM_PAGES_URL=https://main--macktrucks-ht--volvogroup.aem.page/ aem up",
     "dev:sv": "AEM_PAGES_URL=https://main--macktrucks-sv--volvogroup.aem.page/ aem up",
     "dev:tt": "AEM_PAGES_URL=https://main--macktrucks-tt--volvogroup.aem.page/ aem up",
-    "test": "wtr \"./test/**/*.test.js\" --node-resolve --port=2000 --coverage",
-    "test:watch": "npm test -- --watch",
     "lint:js": "eslint .",
     "lint:css": "stylelint common/**/*.css blocks/**/*.css styles/*.css templates/**/*.css",
     "lint:js:fix": "eslint . --fix",
@@ -59,23 +57,18 @@
   },
   "homepage": "https://github.com/aemsites/vg-macktrucks-com/#readme",
   "devDependencies": {
-    "@babel/core": "7.26.0",
-    "@babel/eslint-parser": "7.25.9",
-    "@esm-bundle/chai": "4.3.4-fix.0",
-    "@web/test-runner": "0.15.1",
-    "@web/test-runner-commands": "0.6.5",
-    "chai": "4.3.7",
+    "@babel/core": "7.28.5",
+    "@babel/eslint-parser": "7.28.5",
     "copyfiles": "^2.4.1",
-    "eslint": "9.17.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "globals": "^15.11.0",
-    "husky": "^9.1.1",
-    "lint-staged": "^15.2.11",
-    "prettier": "^3.3.3",
-    "sinon": "15.0.1",
-    "stylelint": "16.16.0",
-    "stylelint-config-standard": "37.0.0",
-    "video.js": "^8.22.0"
+    "eslint": "9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "stylelint": "16.25.0",
+    "stylelint-config-standard": "39.0.1",
+    "video.js": "^8.23.4"
   }
 }

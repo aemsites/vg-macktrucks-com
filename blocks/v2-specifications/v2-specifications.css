@@ -10,6 +10,10 @@
   margin-bottom: 0;
 }
 
+.v2-specifications__list--with-text a:focus-visible {
+  outline: 2px solid var(--border-focus);
+}
+
 .v2-specifications__list--with-text,
 .v2-specifications__list--with-pictures,
 .v2-specifications__list--with-downloads {

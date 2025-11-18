@@ -103,8 +103,8 @@ function setupSlider(block) {
   const sliderNav = document.createRange().createContextualFragment(`
       <div class="${blockName}__slider-nav">
         <div class="${blockName}__slider-nav-arrows">
-          <button class="${blockName}__slider-nav-button ${blockName}__slider-nav-button--prev" aria-label="${getTextLabel('Previous')}"><span class="icon icon-chevron-right"></span></button>
-          <button class="${blockName}__slider-nav-button ${blockName}__slider-nav-button--next" aria-label="${getTextLabel('Next')}"><span class="icon icon-chevron-right"></span></button>
+          <button class="${blockName}__slider-nav-button ${blockName}__slider-nav-button--prev" aria-label="${getTextLabel('v2_icon_cards:previous')}"><span class="icon icon-chevron-right"></span></button>
+          <button class="${blockName}__slider-nav-button ${blockName}__slider-nav-button--next" aria-label="${getTextLabel('v2_icon_cards:next')}"><span class="icon icon-chevron-right"></span></button>
         </div>
         <div class="${blockName}__slider-progress-wrapper"> <div class="${blockName}__slider-progress"></div></div>
       </div>

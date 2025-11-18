@@ -24,9 +24,9 @@ const errorMessage = (errorTitle, errorText) => `<h3 class='${blockName}__title 
  * @returns {String} use the fn getTextLabel to get the message from placeholder.json
  */
 const getMessageText = (isSuccess, isTitle) => {
-  const key = isSuccess ? 'Successful' : 'Error';
-  const type = isTitle ? 'Title' : 'Text';
-  return getTextLabel(`V2CustomForm:${key}Submission${type}`);
+  const key = isSuccess ? 'successful' : 'error';
+  const type = isTitle ? 'title' : 'text';
+  return getTextLabel(`v2_custom_form:${key}_submission_${type}`);
 };
 
 // Form Block identifies the submit endpoint via these rules and in order
