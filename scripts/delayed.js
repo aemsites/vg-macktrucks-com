@@ -82,7 +82,7 @@ async function loadGoogleTagManager() {
     j.async = true;
     j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
     const n = d.querySelector('[nonce]');
-    n&&j.setAttribute('nonce', n.nonce||n.getAttribute('nonce'));
+    n && j.setAttribute('nonce', n.nonce || n.getAttribute('nonce'));
     f.parentNode.insertBefore(j, f);
   })(window, document, 'script', 'dataLayer', GTM_ID);
 }
