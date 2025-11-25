@@ -858,13 +858,6 @@ initEmbeddedApp({
   metadataPageKey: 'truck-configurator-page',
   shouldDisableHeader: disableHeader,
   headerDetailClass: 'truck-configurator--detail-page',
-  onRouterChange: (loc, html) => {
-    if (loc.pathname && loc.pathname !== '/' && disableHeader) {
-      html.classList.add('truck-configurator--detail-page');
-    } else {
-      html.classList.remove('truck-configurator--detail-page');
-    }
-  },
 });
 
 initEmbeddedApp({

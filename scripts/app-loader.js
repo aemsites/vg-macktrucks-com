@@ -77,30 +77,9 @@ const handleCountryRestrictions = () => {
 };
 
 /**
- * Bind optional SPA router integration.
- */
-const bindRouteChangeHandler = (onRouterChange) => {
-  if (typeof onRouterChange !== 'function') {
-    return;
-  }
-
-  window.addEventListener('reactRouterChange', (e) => {
-    onRouterChange(e.detail, document.documentElement);
-  });
-};
-
-/**
  * Main entry point for embedding an app.
  */
-export const initEmbeddedApp = ({
-  appClass,
-  appId,
-  urls = {},
-  metadataPageKey,
-  shouldDisableHeader = false,
-  headerDetailClass = null,
-  onRouterChange,
-}) => {
+export const initEmbeddedApp = ({ appClass, appId, urls = {}, metadataPageKey, shouldDisableHeader = false, headerDetailClass = null }) => {
   const html = document.documentElement;
   const main = document.querySelector('main');
 
@@ -113,7 +92,6 @@ export const initEmbeddedApp = ({
   mountContainer(main, appId);
   loadAssets(urls);
   applyInitialRoute(metadataPageKey);
-  bindRouteChangeHandler(onRouterChange);
 
   if (shouldDisableHeader && headerDetailClass) {
     html.classList.add(headerDetailClass);
