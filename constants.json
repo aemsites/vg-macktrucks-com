@@ -1,104 +1,104 @@
 {
   "tools": {
-      "total": 8,
-      "offset": 0,
-      "limit": 8,
-      "data": [
-          {
-              "name": "GIT_OWNER",
-              "value": "aemsites"
-          },
-          {
-              "name": "GIT_REPO",
-              "value": "vg-macktrucks-com"
-          },
-          {
-              "name": "GLOBAL_SITEMAP_URL",
-              "value": "/sitemap.xml"
-          },
-          {
-              "name": "v1SectionClasses",
-              "value": "[\"background\",\"background-top\",\"bg-paper\",\"bg-white-paper\",\"dark-background\",\"center\",\"flex-center\",\"font-l\",\"font-m\",\"font-s\",\"font-xl\",\"font-xxl\",\"font-xs\",\"font-xxs\",\"font-55\",\"font-65\",\"font-75\",\"font-56\",\"font-66\",\"font-76\",\"gap\",\"highlight\",\"line-separator\",\"magazine-listing-content\",\"no-first-line\",\"padding-0\",\"padding-16\",\"padding-32\",\"section-width\",\"text-white\",\"text-black\",\"responsive-title\",\"title-line\",\"title-margin-bottom-0\",\"title-white\",\"wrapper-margin-top-0\"]"
-          },
-          {
-              "name": "v2SectionClasses",
-              "value": "[\"header-with-mark\",\"recalls-padding\",\"section--background-with-dots\",\"section--black-background\",\"section--gray-background\",\"section--light-gray-background\",\"section--no-gap\",\"section--no-vertical-padding\",\"section--with-background\"]"
-          },
-          {
-              "name": "v1AllowedBlocks",
-              "value": "[\"v2-embed\",\"v2-forms\"]"
-          },
-          {
-              "name": "v2AllowedBlocks",
-              "value": "[\"embed\",\"footer\",\"fragment\",\"header\",\"iframe\",\"modal\",\"library-metadata\",\"performance-specifications\"]"
-          },
-          {
-              "name": "GOOGLE_API_KEY",
-              "value": "AIzaSyAP8IewqHuU8SMz_6tNiIUlbU_l0GFOd1w"
-          }
-      ]
+    "total": 8,
+    "offset": 0,
+    "limit": 8,
+    "data": [
+      {
+        "name": "GIT_OWNER",
+        "value": "aemsites"
+      },
+      {
+        "name": "GIT_REPO",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "GLOBAL_SITEMAP_URL",
+        "value": "/sitemap.xml"
+      },
+      {
+        "name": "v1SectionClasses",
+        "value": "[\"background\",\"background-top\",\"bg-paper\",\"bg-white-paper\",\"dark-background\",\"center\",\"flex-center\",\"font-l\",\"font-m\",\"font-s\",\"font-xl\",\"font-xxl\",\"font-xs\",\"font-xxs\",\"font-55\",\"font-65\",\"font-75\",\"font-56\",\"font-66\",\"font-76\",\"gap\",\"highlight\",\"line-separator\",\"magazine-listing-content\",\"no-first-line\",\"padding-0\",\"padding-16\",\"padding-32\",\"section-width\",\"text-white\",\"text-black\",\"responsive-title\",\"title-line\",\"title-margin-bottom-0\",\"title-white\",\"wrapper-margin-top-0\"]"
+      },
+      {
+        "name": "v2SectionClasses",
+        "value": "[\"header-with-mark\",\"recalls-padding\",\"section--background-with-dots\",\"section--black-background\",\"section--gray-background\",\"section--light-gray-background\",\"section--no-gap\",\"section--no-vertical-padding\",\"section--with-background\"]"
+      },
+      {
+        "name": "v1AllowedBlocks",
+        "value": "[\"v2-embed\",\"v2-forms\"]"
+      },
+      {
+        "name": "v2AllowedBlocks",
+        "value": "[\"embed\",\"footer\",\"fragment\",\"header\",\"iframe\",\"modal\",\"library-metadata\",\"performance-specifications\"]"
+      },
+      {
+        "name": "GOOGLE_API_KEY",
+        "value": "AIzaSyAP8IewqHuU8SMz_6tNiIUlbU_l0GFOd1w"
+      }
+    ]
   },
   "truckConfigurator": {
-      "total": 8,
-      "offset": 0,
-      "limit": 8,
-      "data": [
-          {
-              "model": "anthem",
-              "pdp path": "/trucks/anthem/",
-              "configurator path": "/trucks/anthem/build/#/anthem"
-          },
-          {
-              "model": "granite",
-              "pdp path": "/trucks/granite-series/",
-              "configurator path": "/trucks/granite-series/build/#/granite"
-          },
-          {
-              "model": "lr",
-              "pdp path": "/trucks/lr-series/",
-              "configurator path": "/trucks/lr-series/build/#/lr"
-          },
-          {
-              "model": "lr electric",
-              "pdp path": "/trucks/lr-electric/",
-              "configurator path": "/trucks/lr-electric/build/#/lr"
-          },
-          {
-              "model": "md series",
-              "pdp path": "/trucks/md/",
-              "configurator path": "/trucks/md/build/#/md"
-          },
-          {
-              "model": "md electric",
-              "pdp path": "/trucks/md-electric/",
-              "configurator path": "/trucks/md-electric/build/#/md"
-          },
-          {
-              "model": "pinnacle",
-              "pdp path": "/trucks/pinnacle-series/",
-              "configurator path": "/trucks/pinnacle-series/build/#/pinnacle"
-          },
-          {
-              "model": "terrapro",
-              "pdp path": "/trucks/terrapro-series/",
-              "configurator path": "/trucks/terrapro-series/build/#/terrapro"
-          }
-      ]
+    "total": 8,
+    "offset": 0,
+    "limit": 8,
+    "data": [
+      {
+        "model": "anthem",
+        "pdp path": "/trucks/anthem/",
+        "configurator path": "/trucks/anthem/build/#/anthem"
+      },
+      {
+        "model": "granite",
+        "pdp path": "/trucks/granite-series/",
+        "configurator path": "/trucks/granite-series/build/#/granite"
+      },
+      {
+        "model": "lr",
+        "pdp path": "/trucks/lr-series/",
+        "configurator path": "/trucks/lr-series/build/#/lr"
+      },
+      {
+        "model": "lr electric",
+        "pdp path": "/trucks/lr-electric/",
+        "configurator path": "/trucks/lr-electric/build/#/lr"
+      },
+      {
+        "model": "md series",
+        "pdp path": "/trucks/md/",
+        "configurator path": "/trucks/md/build/#/md"
+      },
+      {
+        "model": "md electric",
+        "pdp path": "/trucks/md-electric/",
+        "configurator path": "/trucks/md-electric/build/#/md"
+      },
+      {
+        "model": "pinnacle",
+        "pdp path": "/trucks/pinnacle-series/",
+        "configurator path": "/trucks/pinnacle-series/build/#/pinnacle"
+      },
+      {
+        "model": "terrapro",
+        "pdp path": "/trucks/terrapro-series/",
+        "configurator path": "/trucks/terrapro-series/build/#/terrapro"
+      }
+    ]
   },
   "truckConfiguratorUrls": {
-      "total": 2,
-      "offset": 0,
-      "limit": 2,
-      "data": [
-          {
-              "name": "JS",
-              "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/runtime~configurator.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.bundle.js\"]"
-          },
-          {
-              "name": "CSS",
-              "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.css\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.css\"]"
-          }
-      ]
+    "total": 2,
+    "offset": 0,
+    "limit": 2,
+    "data": [
+      {
+        "name": "JS",
+        "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/runtime~configurator.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.bundle.js\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.bundle.js\"]"
+      },
+      {
+        "name": "CSS",
+        "value": "[\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/665.css\",\"https://truckbuilder-mack-100031.onecx.prod.rapidimages.net/configurator.css\"]"
+      }
+    ]
   },
   "searchConfig": {
     "total": 3,
@@ -120,315 +120,330 @@
     ]
   },
   "fgrep": {
-      "total": 3,
-      "offset": 0,
-      "limit": 3,
-      "data": [
-          {
-              "name": "GIT_OWNER",
-              "value": "aemsites"
-          },
-          {
-              "name": "GIT_REPO",
-              "value": "vg-macktrucks-com"
-          },
-          {
-              "name": "GLOBAL_SITEMAP_URL",
-              "value": "/sitemap.xml"
-          }
-      ]
+    "total": 3,
+    "offset": 0,
+    "limit": 3,
+    "data": [
+      {
+        "name": "GIT_OWNER",
+        "value": "aemsites"
+      },
+      {
+        "name": "GIT_REPO",
+        "value": "vg-macktrucks-com"
+      },
+      {
+        "name": "GLOBAL_SITEMAP_URL",
+        "value": "/sitemap.xml"
+      }
+    ]
   },
   "cookieValues": {
-      "total": 9,
-      "offset": 0,
-      "limit": 9,
-      "data": [
-          {
-              "name": "PERFORMANCE_COOKIE",
-              "value": "C0002"
-          },
-          {
-              "name": "FUNCTIONAL_COOKIE",
-              "value": "C0003"
-          },
-          {
-              "name": "TARGETING_COOKIE",
-              "value": "C0004"
-          },
-          {
-              "name": "SOCIAL_COOKIE",
-              "value": "C0005"
-          },
-          {
-              "name": "HOTJAR_ID",
-              "value": "597204"
-          },
-          {
-              "name": "GTM_ID",
-              "value": "GTM-NDMV8BN"
-          },
-          {
-              "name": "DATA_DOMAIN_SCRIPT",
-              "value": "bf50d0a6-e209-4fd4-ad2c-17da5f9e66a5"
-          },
-          {
-              "name": "ACC_ENG_TRACKING",
-              "value": "[\"piAId: 1039343\",\"piCId: 122594\",\"piHostname: pi.pardot.com\"]"
-          },
-          {
-              "name": "COOKIE_CHECK",
-              "value": "false"
-          }
-      ]
+    "total": 9,
+    "offset": 0,
+    "limit": 9,
+    "data": [
+      {
+        "name": "PERFORMANCE_COOKIE",
+        "value": "C0002"
+      },
+      {
+        "name": "FUNCTIONAL_COOKIE",
+        "value": "C0003"
+      },
+      {
+        "name": "TARGETING_COOKIE",
+        "value": "C0004"
+      },
+      {
+        "name": "SOCIAL_COOKIE",
+        "value": "C0005"
+      },
+      {
+        "name": "HOTJAR_ID",
+        "value": "597204"
+      },
+      {
+        "name": "GTM_ID",
+        "value": "GTM-NDMV8BN"
+      },
+      {
+        "name": "DATA_DOMAIN_SCRIPT",
+        "value": "bf50d0a6-e209-4fd4-ad2c-17da5f9e66a5"
+      },
+      {
+        "name": "ACC_ENG_TRACKING",
+        "value": "[\"piAId: 1039343\",\"piCId: 122594\",\"piHostname: pi.pardot.com\"]"
+      },
+      {
+        "name": "COOKIE_CHECK",
+        "value": "false"
+      }
+    ]
   },
   "newsFeedConfig": {
-      "total": 16,
-      "offset": 0,
-      "limit": 16,
-      "data": [
-          {
-              "DOMAIN": "com",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com",
-              "SOURCE_ENDPOINT": "https://www.macktrucks.com/mack-news.json",
-              "TARGET_FILE": "../../mack-news/com/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.com",
-              "FEED_LINK": "https://www.macktrucks.com/news-and-stories/press-releases/",
-              "FEED_TITLE": "Mack News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com",
-              "SOURCE_ENDPOINT": "https://www.macktrucks.com/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.com",
-              "FEED_LINK": "https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "bs",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-bs",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-bs--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/bs/feed.xml",
-              "FEED_SITE_ROOT": "https://bahamas.macktrucks.com",
-              "FEED_LINK": "https://bahamas.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "ca",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-ca",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-ca--hlxsites.hlx.live/mack-news/feed.json",
-              "TARGET_FILE": "../../mack-news/ca/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.ca",
-              "FEED_LINK": "https://www.macktrucks.ca/mack-news/",
-              "FEED_TITLE": "Mack News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "ca",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-ca",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-ca--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/ca/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.ca",
-              "FEED_LINK": "https://www.macktrucks.ca/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "cl",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-cl",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-cl--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/cl/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.cl",
-              "FEED_LINK": "https://www.macktrucks.cl/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com.ec",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-ec",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-ec--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-ec/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.com.ec",
-              "FEED_LINK": "https://www.macktrucks.com.ec/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-emea",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-emea--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/emea/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucksemea.com",
-              "FEED_LINK": "https://www.macktrucksemea.com/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-gy",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-gy--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-gy/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucksguyana.com",
-              "FEED_LINK": "https://www.macktrucksguyana.com/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "org",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-museum",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com--hlxsites.hlx.live/mack-news/feed.json",
-              "TARGET_FILE": "../../mack-news/museum/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktruckshistoricalmuseum.org",
-              "FEED_LINK": "https://www.macktruckshistoricalmuseum.org/mack-news/",
-              "FEED_TITLE": "Mack News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "org",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-museum",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/museum/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktruckshistoricalmuseum.org",
-              "FEED_LINK": "https://www.macktruckshistoricalmuseum.org/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com.mx",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-mx",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-mx--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-mx/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.com.mx",
-              "FEED_LINK": "https://www.macktrucks.com.mx/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-ng",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-ng--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-ng/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucksnigeria.com",
-              "FEED_LINK": "https://www.macktrucksnigeria.com/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-ni",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-ni--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-ni/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucksnicaragua.com",
-              "FEED_LINK": "https://www.macktrucksnicaragua.com/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-tt",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-tt--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/tt/feed.xml",
-              "FEED_SITE_ROOT": "https://tt.macktrucks.com",
-              "FEED_LINK": "https://tt.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal",
-              "LIMIT": "1000"
-          },
-          {
-              "DOMAIN": "com.do",
-              "LANGUAGE": "en",
-              "FOLDER": "vg-macktrucks-com-do",
-              "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-do--hlxsites.hlx.live/body-builder-news.json",
-              "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-do/feed.xml",
-              "FEED_SITE_ROOT": "https://www.macktrucks.com.do",
-              "FEED_LINK": "https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/",
-              "FEED_TITLE": "Mack Body Builder News",
-              "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal",
-              "LIMIT": "1000"
-          }
-      ]
+    "total": 16,
+    "offset": 0,
+    "limit": 16,
+    "data": [
+      {
+        "DOMAIN": "com",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com",
+        "SOURCE_ENDPOINT": "https://www.macktrucks.com/mack-news.json",
+        "TARGET_FILE": "../../mack-news/com/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.com",
+        "FEED_LINK": "https://www.macktrucks.com/news-and-stories/press-releases/",
+        "FEED_TITLE": "Mack News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com",
+        "SOURCE_ENDPOINT": "https://www.macktrucks.com/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.com",
+        "FEED_LINK": "https://www.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "bs",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-bs",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-bs--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/bs/feed.xml",
+        "FEED_SITE_ROOT": "https://bahamas.macktrucks.com",
+        "FEED_LINK": "https://bahamas.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "ca",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-ca",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-ca--hlxsites.hlx.live/mack-news/feed.json",
+        "TARGET_FILE": "../../mack-news/ca/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.ca",
+        "FEED_LINK": "https://www.macktrucks.ca/mack-news/",
+        "FEED_TITLE": "Mack News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "ca",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-ca",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-ca--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/ca/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.ca",
+        "FEED_LINK": "https://www.macktrucks.ca/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "cl",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-cl",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-cl--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/cl/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.cl",
+        "FEED_LINK": "https://www.macktrucks.cl/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com.ec",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-ec",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-ec--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-ec/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.com.ec",
+        "FEED_LINK": "https://www.macktrucks.com.ec/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-emea",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-emea--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/emea/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucksemea.com",
+        "FEED_LINK": "https://www.macktrucksemea.com/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-gy",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-gy--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-gy/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucksguyana.com",
+        "FEED_LINK": "https://www.macktrucksguyana.com/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "org",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-museum",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com--hlxsites.hlx.live/mack-news/feed.json",
+        "TARGET_FILE": "../../mack-news/museum/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktruckshistoricalmuseum.org",
+        "FEED_LINK": "https://www.macktruckshistoricalmuseum.org/mack-news/",
+        "FEED_TITLE": "Mack News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks and see how we are taking our Born Ready semi truck line to the next level with new innovations and technology.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "org",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-museum",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/museum/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktruckshistoricalmuseum.org",
+        "FEED_LINK": "https://www.macktruckshistoricalmuseum.org/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com.mx",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-mx",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-mx--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-mx/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.com.mx",
+        "FEED_LINK": "https://www.macktrucks.com.mx/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-ng",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-ng--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-ng/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucksnigeria.com",
+        "FEED_LINK": "https://www.macktrucksnigeria.com/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-ni",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-ni--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-ni/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucksnicaragua.com",
+        "FEED_LINK": "https://www.macktrucksnicaragua.com/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal.",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-tt",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-tt--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/tt/feed.xml",
+        "FEED_SITE_ROOT": "https://tt.macktrucks.com",
+        "FEED_LINK": "https://tt.macktrucks.com/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal",
+        "LIMIT": "1000"
+      },
+      {
+        "DOMAIN": "com.do",
+        "LANGUAGE": "en",
+        "FOLDER": "vg-macktrucks-com-do",
+        "SOURCE_ENDPOINT": "https://main--vg-macktrucks-com-do--hlxsites.hlx.live/body-builder-news.json",
+        "TARGET_FILE": "../../parts-and-services/support/body-builders/news-and-events/com-do/feed.xml",
+        "FEED_SITE_ROOT": "https://www.macktrucks.com.do",
+        "FEED_LINK": "https://www.macktrucks.com.do/parts-and-services/support/body-builders/news-and-events/",
+        "FEED_TITLE": "Mack Body Builder News",
+        "FEED_DESCRIPTION": "Get the latest news from Mack® Trucks Body Builder Portal",
+        "LIMIT": "1000"
+      }
+    ]
   },
   "headerConfig": {
-      "total": 2,
-      "offset": 0,
-      "limit": 2,
-      "data": [
-          {
-              "name": "SEARCH_DISABLED",
-              "value": "false"
-          },
-          {
-              "name": "LOGIN_DISABLED",
-              "value": "false"
-          }
-      ]
+    "total": 2,
+    "offset": 0,
+    "limit": 2,
+    "data": [
+      {
+        "name": "SEARCH_DISABLED",
+        "value": "false"
+      },
+      {
+        "name": "LOGIN_DISABLED",
+        "value": "false"
+      }
+    ]
   },
   "magazineConfig": {
-      "total": 4,
-      "offset": 0,
-      "limit": 4,
-      "data": [
-          {
-              "name": "HREF",
-              "value": "https://go.pardot.com/l/1038343/2023-12-12/3m4w2c"
-          },
-          {
-              "name": "IFRAME_SIZE",
-              "value": "900px"
-          },
-          {
-              "name": "DATE_LANGUAGE",
-              "value": "en-US"
-          },
-          {
-              "name": "DATE_OPTIONS",
-              "value": "[\"month: long\",\"day: numeric\",\"year: numeric\"]"
-          }
-      ]
+    "total": 4,
+    "offset": 0,
+    "limit": 4,
+    "data": [
+      {
+        "name": "HREF",
+        "value": "https://go.pardot.com/l/1038343/2023-12-12/3m4w2c"
+      },
+      {
+        "name": "IFRAME_SIZE",
+        "value": "900px"
+      },
+      {
+        "name": "DATE_LANGUAGE",
+        "value": "en-US"
+      },
+      {
+        "name": "DATE_OPTIONS",
+        "value": "[\"month: long\",\"day: numeric\",\"year: numeric\"]"
+      }
+    ]
   },
   ":version": 3,
   ":names": [
-      "tools",
-      "truckConfigurator",
-      "truckConfiguratorUrls",
-      "searchUrls",
-      "fgrep",
-      "cookieValues",
-      "newsFeedConfig",
-      "headerConfig",
-      "magazineConfig"
+    "tools",
+    "truckConfigurator",
+    "truckConfiguratorUrls",
+    "searchUrls",
+    "fgrep",
+    "cookieValues",
+    "newsFeedConfig",
+    "headerConfig",
+    "magazineConfig"
   ],
+  "myGarageUrls": {
+    "total": 2,
+    "offset": 0,
+    "limit": 2,
+    "data": [
+      {
+        "name": "JS",
+        "value": "https://dev03-mygarage.onecx.co/assets/my-garage.js"
+      },
+      {
+        "name": "CSS",
+        "value": "https://dev03-mygarage.onecx.co/assets/my-garage.css"
+      }
+    ]
+  },
   ":type": "multi-sheet"
 }
