@@ -163,7 +163,7 @@
   }
 
   .v2-icon-cards__column--main {
-    align-self: center;
+    align-self: start;
     max-width: 329px;
     width: 100%;
   }

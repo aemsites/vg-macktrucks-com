@@ -43,7 +43,8 @@ async function getConstantValues() {
   return constants;
 }
 
-const { searchConfig, cookieValues, magazineConfig, headerConfig, tools, truckConfiguratorUrls, newsFeedConfig, feeds } = await getConstantValues();
+const { searchConfig, cookieValues, magazineConfig, headerConfig, tools, truckConfiguratorUrls, myGarageUrls, newsFeedConfig, feeds } =
+  await getConstantValues();
 
 // This data comes from the sharepoint 'constants.xlsx' file
 const SEARCH_CONFIGS = formatValues(searchConfig?.data);
@@ -54,6 +55,7 @@ const TOOLS_CONFIGS = formatValues(tools?.data);
 const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
 const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
 const FEEDS = formatValuesByKey(feeds?.data);
+const MY_GARAGE_URLS = formatValues(myGarageUrls?.data);
 
 async function getPlaceholders() {
   const url = `${getLanguagePath()}placeholder.json`;
@@ -739,6 +741,7 @@ export {
   HEADER_CONFIGS,
   TOOLS_CONFIGS,
   TRUCK_CONFIGURATOR_URLS,
+  MY_GARAGE_URLS,
   NEWS_FEED_CONFIGS,
   FEEDS,
   getPlaceholders,

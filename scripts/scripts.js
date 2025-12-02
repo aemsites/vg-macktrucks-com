@@ -22,9 +22,9 @@ import {
   addFavIcon,
   createElement,
   decorateIcons,
-  formatStringToArray,
   getPlaceholders,
   TRUCK_CONFIGURATOR_URLS,
+  MY_GARAGE_URLS,
   loadTemplate,
   slugify,
   variantsClassesToBEM,
@@ -33,7 +33,7 @@ import {
 } from './common.js';
 
 import { isVideoLink, addVideoShowHandler, hasVideoOnPage, loadVideoJs } from './video-helper.js';
-import { validateCountries } from './validate-countries.js';
+import { initEmbeddedApp } from './app-loader.js';
 
 const disableHeader = getMetadata('disable-header').toLowerCase() === 'true';
 const disableFooter = getMetadata('disable-footer').toLowerCase() === 'true';
@@ -849,61 +849,22 @@ const moveClassToHtmlEl = (className, elementSelector = 'main') => {
 
 moveClassToHtmlEl('redesign-v2');
 moveClassToHtmlEl('truck-configurator');
+moveClassToHtmlEl('my-garage');
 
-function hasConfigURLs() {
-  return TRUCK_CONFIGURATOR_URLS && TRUCK_CONFIGURATOR_URLS.JS && TRUCK_CONFIGURATOR_URLS.CSS;
-}
+initEmbeddedApp({
+  appClass: 'truck-configurator',
+  appId: 'configurator',
+  urls: TRUCK_CONFIGURATOR_URLS,
+  metadataPageKey: 'truck-configurator-page',
+  shouldDisableHeader: disableHeader,
+  headerDetailClass: 'truck-configurator--detail-page',
+});
 
-if (document.documentElement.classList.contains('truck-configurator')) {
-  const allowedCountries = getMetadata('allowed-countries');
-  const errorPageUrl = getMetadata('redirect-url');
-  if (allowedCountries && errorPageUrl) {
-    validateCountries(allowedCountries, errorPageUrl);
-  }
-
-  const container = createElement('div', { props: { id: 'configurator' } });
-  const main = document.querySelector('main');
-  main.innerHTML = '';
-  main.append(container);
-
-  if (hasConfigURLs()) {
-    const { JS, CSS } = TRUCK_CONFIGURATOR_URLS;
-    const jsUrls = formatStringToArray(JS);
-    const cssUrls = formatStringToArray(CSS);
-
-    jsUrls.forEach((url) => {
-      loadScript(url, { type: 'text/javascript', charset: 'UTF-8', defer: 'defer' });
-    });
-
-    cssUrls.forEach((url) => {
-      loadCSS(url);
-    });
-
-    window.addEventListener('reactRouterChange', (e) => {
-      const newLocation = e.detail;
-      console.info('[truck-configurator]: React Router location changed:', newLocation);
-
-      if (newLocation.pathname && newLocation.pathname !== '/' && disableHeader) {
-        document.documentElement.classList.add('truck-configurator--detail-page');
-      }
-      if (newLocation.pathname && (newLocation.pathname === '/' || newLocation.pathname === '')) {
-        document.documentElement.classList.remove('truck-configurator--detail-page');
-      }
-    });
-  }
-}
-
-if (getMetadata('truck-configurator-page')) {
-  const page = getMetadata('truck-configurator-page').toLowerCase();
-  const currentHash = window.location.hash;
-
-  if (disableHeader) {
-    document.documentElement.classList.add('truck-configurator--detail-page');
-  }
-  if (!currentHash.startsWith(`#/${page}`)) {
-    document.location.hash = `#/${page}`;
-  }
-}
+initEmbeddedApp({
+  appClass: 'my-garage',
+  appId: 'my-garage',
+  urls: MY_GARAGE_URLS,
+});
 
 /* Checks for all <em> tags that contain only 1 character and deletes the space after it. */
 const allItalics = [...document.querySelectorAll('em')];
