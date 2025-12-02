@@ -1,11 +1,11 @@
 {
   "name": "macktrucks",
   "private": true,
-  "version": "53.0.0",
+  "version": "54.0.0",
   "description": "Mack Trucks",
   "engines": {
-    "node": ">=v20.15.1 <23",
-    "npm": ">=10.7.0"
+    "node": ">=20.19.5 <23",
+    "npm": ">=10.8.2"
   },
   "scripts": {
     "dev": "aem up",
