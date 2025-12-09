@@ -204,6 +204,10 @@
       "Text": "Model Year"
     },
     {
+      "Key": "vin_number:format",
+      "Text": "The VIN entered is not valid for Volvo Trucks, Prevost, Nova Bus, or Volvo Bus vehicles"
+    },
+    {
       "Key": "v2_images_grid:button_text",
       "Text": "Open Gallery"
     },
