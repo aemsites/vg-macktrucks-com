@@ -156,10 +156,6 @@
       "Text": "Enter your 17-digit VIN (Vehicle Identification Number)"
     },
     {
-      "Key": "vin_number:format",
-      "Text": "The VIN entered is not valid for Mack Truck vehicles"
-    },
-    {
       "Key": "vin_number:result_text",
       "Text": "${count} recalls available for \"${vin}\""
     },
