@@ -1,7 +1,7 @@
 import { readBlockConfig } from '../../scripts/aem.js';
 import { getTextLabel, createElement, getJsonFromUrl, getPlaceholders, getLocale } from '../../scripts/common.js';
 
-// Only these 2 variables are brand-specific
+// Only these 3 variables are brand-specific
 const BRAND = 'mack';
 const formValidationPattern = '^[1,4][M,m][1,2,4,5][A,G,L,P,T,M,a,g,l,p,t,m][A-Za-z0-9]{13}$';
 const brandBtnClasses = 'button button--primary';
