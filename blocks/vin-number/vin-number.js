@@ -4,6 +4,7 @@ import { getTextLabel, createElement, getJsonFromUrl, getPlaceholders, getLocale
 // Only these 2 variables are brand-specific
 const BRAND = 'mack';
 const formValidationPattern = '^[1,4][M,m][1,2,4,5][A,G,L,P,T,M,a,g,l,p,t,m][A-Za-z0-9]{13}$';
+const brandBtnClasses = 'button button--primary';
 
 const docRange = document.createRange();
 const blockName = 'vin-number';
@@ -398,6 +399,7 @@ export default async function decorate(block) {
   const refresDateWrapper = createElement('div', {
     classes: `${blockName}__refresh-date-wrapper`,
   });
+
   const refreshFragment = docRange.createContextualFragment(`<span>
     ${LABELS.publishedInfo}:
     </span>
@@ -421,9 +423,9 @@ export default async function decorate(block) {
         class="${blockName}__input"
         pattern="${formValidationPattern}"
       />
-      <label for="vin_number" class="${blockName}__label">${getTextLabel(LABELS.label)}</label>
+      <label for="vin_number" class="${blockName}__label">${LABELS.label}</label>
     </div>
-    <button class="button button--primary ${blockName}__submit" type="submit" name="submit">${getTextLabel(LABELS.submit)}</button>
+    <button class="${brandBtnClasses} ${blockName}__submit" type="submit" name="submit">${LABELS.submit}</button>
   `);
 
   const vinResultsContainer = createElement('div', { classes: `${blockName}__results-container` });
@@ -444,10 +446,10 @@ export default async function decorate(block) {
 
   vinInput.oninvalid = (e) => {
     if (e.target.value.length < e.target.maxLength) {
-      e.target.setCustomValidity(getTextLabel(LABELS.formatLength));
+      e.target.setCustomValidity(LABELS.formatLength);
       return;
     }
-    e.target.setCustomValidity(getTextLabel(LABELS.format));
+    e.target.setCustomValidity(LABELS.format);
   };
 
   if (!refreshDate) {
