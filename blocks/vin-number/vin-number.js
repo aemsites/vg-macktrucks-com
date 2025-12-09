@@ -91,7 +91,6 @@ const formatDateWithLocale = (date) => {
 /**
  * Determines the appropriate API configuration based on the current hostname
  * environment (dev, qa, or prod).
- *
  * @function getAPIConfig
  * @returns {Object} The configuration object corresponding to the current environment.
  */
@@ -120,7 +119,20 @@ const getAPIConfig = () => {
  * otherwise returns null.
  */
 const getStorageItem = (key) => {
-  const result = JSON.parse(window.localStorage.getItem(key));
+  const storedValue = window.localStorage.getItem(key);
+  if (!storedValue) {
+    return null;
+  }
+
+  let result = null;
+  try {
+    result = JSON.parse(storedValue);
+  } catch (error) {
+    console.error(`Error parsing localStorage key: "${key}"`, error);
+    window.localStorage.removeItem(key);
+    return null;
+  }
+
   if (result) {
     if (result.expireTime <= Date.now()) {
       window.localStorage.removeItem(key);
@@ -166,13 +178,10 @@ const fetchRefreshDate = async () => {
   const refreshDate = getStorageItem(refreshDateUniqueKey);
   if (!refreshDate) {
     const { url, key } = getAPIConfig();
-    try {
-      const response = await getJsonFromUrl(`${url}refreshdate?api_key=${key}`);
-      setStorageItem(refreshDateUniqueKey, response.refresh_date);
-      return formatDateWithLocale(response.refresh_date);
-    } catch (error) {
-      console.error('Error fetching refresh date:', error);
-    }
+    const response = await getJsonFromUrl(`${url}refreshdate?api_key=${key}`);
+    setStorageItem(refreshDateUniqueKey, response.refresh_date);
+
+    return formatDateWithLocale(response.refresh_date);
   }
   return refreshDate;
 };
