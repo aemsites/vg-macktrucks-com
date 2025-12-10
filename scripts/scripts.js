@@ -550,6 +550,7 @@ async function loadLazy(doc) {
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
 
   // TODO: Shouldn't we load fonts here?
+  import('../tools/sidekick/aem-genai-variations.js');
 }
 
 /**
