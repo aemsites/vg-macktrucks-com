@@ -57,15 +57,12 @@
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
+  margin-top: 24px;
 }
 
 .vin-number__recalls-heading {
   text-transform: uppercase;
-}
-
-.vin-number__recalls-refresh-date,
-.vin-number__recalls-heading {
-  margin-bottom: 0;
+  margin: 0;
 }
 
 .vin-number__recalls-alert-icon {
@@ -74,6 +71,7 @@
 
 .vin-number__recalls-refresh-date {
   align-self: center;
+  margin: 0;
 }
 
 .vin-number__list,
@@ -111,6 +109,11 @@
 .vin-number__recalls-md-title {
   margin-bottom: 0;
   margin-top: 0;
+}
+
+.vin-number__detail-value {
+  display: flex;
+  align-items: flex-end;
 }
 
 .vin-number__recall-incomplete,
