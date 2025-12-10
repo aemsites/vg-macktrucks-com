@@ -96,15 +96,17 @@ const formatDateWithLocale = (date) => {
  * @returns {Object} The configuration object corresponding to the current environment.
  */
 const getAPIConfig = () => {
-  let env = 'prod';
+  const host = window.location.host;
 
-  if (window.location.host.includes('aem.page')) {
-    env = 'qa';
-  } else if (window.location.host.includes('localhost')) {
-    env = 'dev';
+  if (host.includes('aem.page')) {
+    return apiConfig['qa'];
   }
 
-  return apiConfig[env];
+  if (host.includes('localhost')) {
+    return apiConfig['dev'];
+  }
+
+  return apiConfig['prod'];
 };
 
 /**
@@ -125,23 +127,20 @@ const getStorageItem = (key) => {
     return null;
   }
 
-  let result = null;
   try {
-    result = JSON.parse(storedValue);
+    const result = JSON.parse(storedValue);
+
+    if (result.expireTime <= Date.now()) {
+      window.localStorage.removeItem(key);
+      return null;
+    }
+
+    return formatDateWithLocale(result.data);
   } catch (error) {
     console.error(`Error parsing localStorage key: "${key}"`, error);
     window.localStorage.removeItem(key);
     return null;
   }
-
-  if (result) {
-    if (result.expireTime <= Date.now()) {
-      window.localStorage.removeItem(key);
-      return null;
-    }
-    return formatDateWithLocale(result.data);
-  }
-  return null;
 };
 
 /**
