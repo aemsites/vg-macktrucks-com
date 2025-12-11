@@ -764,7 +764,7 @@ async function createForm(formURL) {
     form.append(el);
   });
 
-  const siteKey = ''; //Site key for reCAPTCHA v3
+  const siteKey = '6Lc1OBQsAAAAANcHvnWdBgKr7M2DNIqcKt0o7PZ_'; //Site key for reCAPTCHA v3
   const recaptcha = new GoogleReCaptcha(
     { siteKey, version: 'v3', uri: `https://www.google.com/recaptcha/api.js?render=${siteKey}` },
     null,
@@ -818,6 +818,30 @@ async function createForm(formURL) {
       alert('Não foi possível validar o reCAPTCHA');
       return;
     }
+
+    try {
+      const resp = await fetch('/adobe/forms/af/recaptcha/validate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token })
+      })
+      const data = await resp.json();
+      console.log('aqui')
+
+      // O Adobe retorna { success: true/false }
+      console.log(data)
+
+    } catch (err) {
+      console.error('Erro ao validar token do reCAPTCHA no Adobe', err);
+    }
+
+    if (!resp.ok) {
+      console.error('Erro na requisição de validação do Adobe reCAPTCHA', resp.status);
+      return false;
+    }
+
     if (form.hasAttribute('novalidate')) {
       isValid = form.checkValidity();
     }
