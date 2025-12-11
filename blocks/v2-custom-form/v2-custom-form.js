@@ -1,6 +1,7 @@
 import { loadScript, sampleRUM } from '../../scripts/aem.js';
 import { getTextLabel, createElement, variantsClassesToBEM } from '../../scripts/common.js';
 import { getCustomDropdown } from '../../../common/custom-dropdown/custom-dropdown.js';
+import GoogleReCaptcha from './recaptcha.js';
 
 const blockName = 'v2-custom-form';
 const variantClasses = ['double-column'];
@@ -763,6 +764,16 @@ async function createForm(formURL) {
     form.append(el);
   });
 
+  const siteKey = ''; //Site key for reCAPTCHA v3
+  const recaptcha = new GoogleReCaptcha(
+    { siteKey, version: 'v3', uri: `https://www.google.com/recaptcha/api.js?render=${siteKey}` },
+    null,
+    null,
+    form.getAttribute('name') || 'eds-form',
+  );
+
+  recaptcha.loadCaptcha(form);
+
   if (customDropdowns.length > 0) {
     customDropdowns.forEach(async (fd, index) => {
       const hasDependency = dependencies.find((d) => d.name === fd.Name);
@@ -798,8 +809,15 @@ async function createForm(formURL) {
   }
 
   groupFieldsByFieldSet(form);
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     let isValid = true;
+
+    const token = await recaptcha.getToken();
+
+    if (!token) {
+      alert('Não foi possível validar o reCAPTCHA');
+      return;
+    }
     if (form.hasAttribute('novalidate')) {
       isValid = form.checkValidity();
     }
