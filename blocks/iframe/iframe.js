@@ -1,19 +1,87 @@
-import { createElement } from '../../scripts/common.js';
+import { createElement, variantsClassesToBEM } from '../../scripts/common.js';
+
+const blockName = 'iframe';
+const variantClasses = ['fullscreen'];
+
+/**
+ * Returns the first class name matching the provided RegExp.
+ *
+ * @param {DOMTokenList} classList
+ * @param {RegExp} pattern
+ * @returns {string|null}
+ */
+const findClass = (classList, pattern) => [...classList].find((cls) => pattern.test(cls)) || null;
+
+/**
+ * Extracts a fixed height value from block classes (e.g. "600px").
+ *
+ * @param {HTMLElement} block
+ * @returns {string|null}
+ */
+const getFixedHeight = (block) => findClass(block.classList, /^[0-9]+px$/);
+
+/**
+ * Extracts a max-width value from block classes (e.g. "width-800px").
+ *
+ * @param {HTMLElement} block
+ * @returns {string|null}
+ */
+const getMaxWidth = (block) => findClass(block.classList, /^width-[0-9]+px$/)?.replace('width-', '') || null;
+
+/**
+ * Enables fullscreen mode for the iframe block.
+ *
+ * Adds:
+ *  - `iframe-container--fullscreen` to the block container
+ *  - `iframe-fullscreen` to the document body
+ *
+ * @param {HTMLElement} block
+ */
+const enableFullscreenMode = (block) => {
+  const container = block.closest(`.${blockName}-container`);
+  if (container) {
+    container.classList.add(`${blockName}-container--fullscreen`);
+  }
+  document.body.classList.add(`${blockName}-fullscreen`);
+};
+
+/**
+ * Creates an iframe element with default configuration.
+ *
+ * @param {string} src
+ * @returns {HTMLIFrameElement}
+ */
+const createIframe = (src) =>
+  createElement('iframe', {
+    props: {
+      src,
+      frameborder: 0,
+      loading: 'lazy',
+    },
+  });
 
 export default async function decorate(block) {
-  const link = block.querySelector('a')?.getAttribute('href');
-  const iframe = createElement('iframe', {
-    props: { frameborder: 0, src: link },
-  });
-  const fixedHeightClass = [...block.classList].find((el) => /[0-9]+px/.test(el));
-  const maxWidthClass = [...block.classList].find((el) => /width-[0-9]+px/.test(el));
+  variantsClassesToBEM(block.classList, variantClasses, blockName);
 
-  if (fixedHeightClass) {
-    iframe.height = fixedHeightClass;
+  const isFullscreen = block.classList.contains(`${blockName}--fullscreen`);
+  const src = block.querySelector('a')?.getAttribute('href') || '';
+
+  const iframe = createIframe(src);
+
+  if (!isFullscreen) {
+    const fixedHeight = getFixedHeight(block);
+    const maxWidth = getMaxWidth(block);
+
+    if (fixedHeight) {
+      iframe.height = fixedHeight;
+    }
+
+    if (maxWidth) {
+      iframe.style.maxWidth = maxWidth;
+    }
+  } else {
+    enableFullscreenMode(block);
   }
-  if (maxWidthClass) {
-    const maxWidth = maxWidthClass.split('width-')[1];
-    iframe.style.maxWidth = maxWidth;
-  }
+
   block.replaceChildren(iframe);
 }
