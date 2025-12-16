@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { loadScript, sampleRUM } from '../../scripts/aem.js';
 import { getTextLabel, createElement, variantsClassesToBEM } from '../../scripts/common.js';
 import { getCustomDropdown } from '../../../common/custom-dropdown/custom-dropdown.js';
@@ -261,9 +262,9 @@ function createButton(fd) {
   if (fd.Type === 'submit' && fd.Action) {
     button.formAction = fd.Action;
   }
-  if (fd.Extra) {
-    button.dataset.redirect = fd.Extra;
-  }
+  // if (fd.Extra) {
+  //   button.dataset.redirect = fd.Extra;
+  // }
   button.textContent = fd.Label;
   wrapper.replaceChildren(button);
   return wrapper;
@@ -723,6 +724,10 @@ async function createForm(formURL) {
   }
 
   const form = createElement('form');
+  form.dataset.af = true;
+  form.dataset.afAction = '/submit/adaptive-form';
+  form.id = 'v2-custom-form-for-endpoint';
+
   const customDropdowns = [];
   const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
@@ -764,7 +769,7 @@ async function createForm(formURL) {
     form.append(el);
   });
 
-  const siteKey = '6Lc1OBQsAAAAANcHvnWdBgKr7M2DNIqcKt0o7PZ_'; //Site key for reCAPTCHA v3
+  const siteKey = ''; //Site key for reCAPTCHA v3
   const recaptcha = new GoogleReCaptcha(
     { siteKey, version: 'v3', uri: `https://www.google.com/recaptcha/api.js?render=${siteKey}` },
     null,
@@ -819,27 +824,29 @@ async function createForm(formURL) {
       return;
     }
 
+    console.log(token);
+
     try {
-      const resp = await fetch('/adobe/forms/af/recaptcha/validate', {
+      const resp = await fetch('http://localhost:7071/api/captchaValidator', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token })
-      })
+        body: JSON.stringify({ token }),
+      });
       const data = await resp.json();
-      console.log('aqui')
+      console.log(token);
 
-      // O Adobe retorna { success: true/false }
-      console.log(data)
+      // adobe returns { success: true/false }
+      console.log(data);
+
+      if (!resp.ok) {
+        console.error('Erro na requisição de validação do Adobe reCAPTCHA', resp.status);
+        return false;
+      }
 
     } catch (err) {
       console.error('Erro ao validar token do reCAPTCHA no Adobe', err);
-    }
-
-    if (!resp.ok) {
-      console.error('Erro na requisição de validação do Adobe reCAPTCHA', resp.status);
-      return false;
     }
 
     if (form.hasAttribute('novalidate')) {
