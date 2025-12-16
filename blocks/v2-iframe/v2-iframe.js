@@ -32,8 +32,8 @@ const getMaxWidth = (block) => findClass(block.classList, /^width-[0-9]+px$/)?.r
  * Enables fullscreen mode for the iframe block.
  *
  * Adds:
- *  - `iframe-container--fullscreen` to the block container
- *  - `iframe-fullscreen` to the document body
+ *  - `${blockName}-container--fullscreen` to the block container
+ *  - `${blockName}-fullscreen` to the document body
  *
  * @param {HTMLElement} block
  */
@@ -61,7 +61,6 @@ const createIframe = (src) =>
   });
 
 export default async function decorate(block) {
-  console.log('Decorating iframe block', block);
   variantsClassesToBEM(block.classList, variantClasses, blockName);
 
   const isFullscreen = block.classList.contains(`${blockName}--fullscreen`);

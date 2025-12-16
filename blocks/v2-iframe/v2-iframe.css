@@ -25,8 +25,8 @@ body.v2-iframe-fullscreen main > :not(.v2-iframe-container) {
   background: var(--primary-white);
 }
 
-.v2-iframe-container--fullscreen .v2-iframe-wrapper,
-.v2-iframe-container--fullscreen .v2-iframe {
+.v2-iframe-fullscreen .v2-iframe-container--fullscreen .v2-iframe-wrapper,
+.v2-iframe-fullscreen .v2-iframe-container--fullscreen .v2-iframe {
   width: 100%;
   height: 100%;
   padding: 0;
