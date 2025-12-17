@@ -20,7 +20,7 @@ jobs:
       (github.event.client_payload.status == 200 || github.event.client_payload.status == 204)
       && endsWith(github.event.client_payload.path, '.md')
       && (
-        startsWith(github.event.client_payload.path, '/bulldog/')
+        startsWith(github.event.client_payload.path, '/magazine/')
         || startsWith(github.event.client_payload.path, '/mack-news/')
       )
     runs-on: ubuntu-latest
