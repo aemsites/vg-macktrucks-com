@@ -815,7 +815,20 @@ async function createForm(formURL) {
 
   groupFieldsByFieldSet(form);
   form.addEventListener('submit', async (e) => {
+    e.preventDefault();
     let isValid = true;
+
+    if (form.hasAttribute('novalidate')) {
+      isValid = form.checkValidity();
+    }
+    // after been submitted, the form needs to clean the error messages if the fields are valid
+    cleanErrorMessages(form);
+
+    const honeypot = form.querySelector('input[name="form_extra_field"]');
+    if (honeypot && honeypot.value) {
+      console.warn('Form submission blocked: honeypot field was filled (possible bot).');
+      return;
+    }
 
     const token = await recaptcha.getToken();
 
@@ -824,52 +837,34 @@ async function createForm(formURL) {
       return;
     }
 
-    console.log(token);
-
-    try {
-      const resp = await fetch('http://localhost:7071/api/captchaValidator', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ token }),
-      });
-      const data = await resp.json();
-      console.log(token);
-
-      // adobe returns { success: true/false }
-      console.log(data);
-
-      if (!resp.ok) {
-        console.error('Erro na requisição de validação do Adobe reCAPTCHA', resp.status);
-        return false;
-      }
-
-    } catch (err) {
-      console.error('Erro ao validar token do reCAPTCHA no Adobe', err);
-    }
-
-    if (form.hasAttribute('novalidate')) {
-      isValid = form.checkValidity();
-    }
-    // after been submitted, the form needs to clean the error messages if the fields are valid
-    cleanErrorMessages(form);
-    e.preventDefault();
-
-    const honeypot = form.querySelector('input[name="form_extra_field"]');
-    if (honeypot && honeypot.value) {
-      console.warn('Form submission blocked: honeypot field was filled (possible bot).');
-      return;
-    }
-
-    if (isValid) {
+    if(isValid) {
       const block = form.closest(`.${blockName}`);
       const formTitle = block.querySelector(`.${blockName}__title`);
+      const { payload } = constructPayload(form);
+      const serializedData = serialize(payload);
       if (formTitle) {
         formTitle.remove();
       }
       e.submitter.setAttribute('disabled', '');
       form.dataset.action = e.submitter.formAction || SUBMIT_ACTION || pathname.split('.json')[0];
+      try {
+        const resp = await fetch('http://localhost:7071/api/captchaValidator', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token, serializedData }),
+        });
+        const data = await resp.json();
+
+        if (!resp.ok) {
+          console.error('Erro na requisição de validação do Adobe reCAPTCHA', resp.status);
+          return false;
+        }
+
+      } catch (err) {
+        console.error('Erro ao validar token do reCAPTCHA no Adobe', err);
+      }
       handleSubmit(form);
     }
   });
