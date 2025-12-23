@@ -305,8 +305,16 @@ Select.prototype.createOption = function createOption(option, index) {
     optionEl.className = index === 0 ? `${componentName}__option option-current` : `${componentName}__option`;
     optionEl.setAttribute('aria-selected', `${index === 0}`);
   }
+  let normalizedOption = option;
 
-  optionEl.innerText = getOptionLabel(option);
+  if (typeof option === 'string' && option.includes(':')) {
+    // first value in the array is the translated label
+    // second value is the actual information sent to the server
+    const [value, label] = option.split(':');
+    value.trim();
+    normalizedOption = { label, value };
+  }
+  optionEl.innerText = getOptionLabel(normalizedOption);
 
   optionEl.addEventListener('click', (event) => {
     event.stopPropagation();
@@ -502,7 +510,10 @@ Select.prototype.selectOption = function selectOption(index) {
 
   // call the onChangeCallback if provided
   if (this.onChangeCallback) {
-    this.onChangeCallback(selected);
+    this.onChangeCallback({
+      label: getOptionLabel(selected),
+      value: getOptionValue(selected),
+    });
   }
 };
 
