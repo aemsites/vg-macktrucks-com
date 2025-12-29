@@ -672,6 +672,36 @@ $.fn.canDetermineHours = function (pin) {
   return false;
 };
 
+$.fn.getDirectionsUrlFromPin = function (pin) {
+  $origin = $currentAddress;
+
+  if (!$origin || $origin == '') {
+    $origin = $location[0] + ',' + $location[1];
+    $('.from-directions input').val($origin);
+  }
+
+  let {
+    MAIN_ADDRESS_LINE_1_TXT: address1,
+    MAIN_ADDRESS_LINE_2_TXT: address2,
+    MAIN_CITY_NM: mainCity,
+    MAIN_STATE_PROV_CD: mainState,
+    MAIN_POSTAL_CD: postalCd,
+  } = pin;
+
+  $destination = `${address1 || address2} ${mainCity} ${mainState} ${postalCd}`
+
+  var waypointDecodeUrl = "";
+  for (var x = 0; x < $wayPoints.length; x++) {
+    var loc = $wayPoints[x].point.location;
+
+    waypointDecodeUrl += '/' + loc.lat() + ',' + loc.lng() + '/';
+  }
+
+  const mapsUrl = `https://www.google.com/maps/dir/${$origin}/${$destination}${waypointDecodeUrl}`;
+
+  return mapsUrl
+}
+
 $.fn.renderPinDirections = function (markerId) {
 
   var templateClone = $($('#sidebar-directions').clone(true).html());
@@ -746,9 +776,11 @@ $.fn.renderPinDirections = function (markerId) {
     waypointDecodeUrl += '/' + loc.lat() + ',' + loc.lng() + '/';
   }
 
+  var mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails)
+
   // link to google
   templateClone.find('#gmaps-link')
-    .attr('onclick', 'window.open("https://www.google.com/maps/dir/' + $origin + '/' + $destination + waypointDecodeUrl + '", "_blank")');
+    .attr('onclick', mapsUrl);
 
   return templateClone;
 }
@@ -827,32 +859,7 @@ $.fn.renderPinDetails = async function (markerId) {
     templateClone.find('.detail-call a').css({ 'pointer-events': 'none', 'cursor': 'default', 'opacity': '0.5' });
   }
 
-
-  $origin = $currentAddress;
-
-  if (!$origin || $origin == '') {
-    $origin = $location[0] + ',' + $location[1];
-    $('.from-directions input').val($origin);
-  }
-
-  let {
-    MAIN_ADDRESS_LINE_1_TXT: address1,
-    MAIN_ADDRESS_LINE_2_TXT: address2,
-    MAIN_CITY_NM: mainCity,
-    MAIN_STATE_PROV_CD: mainState,
-    MAIN_POSTAL_CD: postalCd,
-  } = markerDetails;
-
-  $destination = `${address1 || address2} ${mainCity} ${mainState} ${postalCd}`
-
-  var waypointDecodeUrl = "";
-  for (var x = 0; x < $wayPoints.length; x++) {
-    var loc = $wayPoints[x].point.location;
-
-    waypointDecodeUrl += '/' + loc.lat() + ',' + loc.lng() + '/';
-  }
-
-  const mapsUrl = `https://www.google.com/maps/dir/${$origin}/${$destination}${waypointDecodeUrl}`;
+  const mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails);
 
   templateClone.find('.detail-direction').on('click', function (e) {
     e.preventDefault();
@@ -1567,31 +1574,7 @@ $.fn.tmpPins = function (tmpPinList) {
       isOpenHtml = `${openHours.open.toLowerCase()} - ${openHours.close.toLowerCase()}`;
     }
 
-    $origin = $currentAddress;
-
-    if (!$origin || $origin == '') {
-      $origin = $location[0] + ',' + $location[1];
-      $('.from-directions input').val($origin);
-    }
-
-    let {
-      MAIN_ADDRESS_LINE_1_TXT: address1,
-      MAIN_ADDRESS_LINE_2_TXT: address2,
-      MAIN_CITY_NM: mainCity,
-      MAIN_STATE_PROV_CD: mainState,
-      MAIN_POSTAL_CD: postalCd,
-    } = pin;
-
-    $destination = `${address1 || address2} ${mainCity} ${mainState} ${postalCd}`
-
-    var waypointDecodeUrl = "";
-    for (var x = 0; x < $wayPoints.length; x++) {
-      var loc = $wayPoints[x].point.location;
-
-      waypointDecodeUrl += '/' + loc.lat() + ',' + loc.lng() + '/';
-    }
-
-    const mapsUrl = `https://www.google.com/maps/dir/${$origin}/${$destination}${waypointDecodeUrl}`;
+    var mapsUrl = $.fn.getDirectionsUrlFromPin(pin);
 
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
@@ -1599,6 +1582,7 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.direction a')
       .attr('data-id', pin.IDENTIFIER_VALUE)
       .text('Google Maps')
+      .removeAttr("onclick")
       .on('click', function (e) {
         e.preventDefault();
         window.open(mapsUrl, "_blank");
@@ -2443,6 +2427,8 @@ $.fn.setAddress = function () {
     address = address2;
   }
   address = $('#location').val();
+  $currentAddress = $('#location').val();
+
   if (!address) {
     return null;
   }
@@ -2498,6 +2484,7 @@ $.fn.setAddress = function () {
 
       }
 
+      $origin = $currentAddress;
 
       $me.setPosition({ lat: parseFloat(pos.lat), lng: parseFloat(pos.lng) });
 
