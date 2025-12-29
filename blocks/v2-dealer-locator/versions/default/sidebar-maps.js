@@ -703,25 +703,20 @@ $.fn.getDirectionsUrlFromPin = function (pin) {
 }
 
 $.fn.renderPinDirections = function (markerId) {
-
   var templateClone = $($('#sidebar-direction-list').clone(true).html());
   var markerDetails;
 
   $('.add-directions').attr('data-id', markerId);
 
   for (i = 0; i < $sortedPins.length; i++) {
-
     if ($sortedPins[i].IDENTIFIER_VALUE == markerId) {
-
       markerDetails = $sortedPins[i];
     }
-
   }
 
   $('.main-header').css('display', 'none');
   $('.main-directions').css('display', 'block');
   $('.go-back').css('display', 'none');
-
 
   // link to google
   var mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails)
