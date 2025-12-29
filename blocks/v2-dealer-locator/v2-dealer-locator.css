@@ -2328,6 +2328,13 @@ main .section.v2-dealer-locator-container > div {
   z-index: 99;
 }
 
+.v2-dealer-locator .slider-arrow i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: inherit;
+}
+
 .v2-dealer-locator .wrapper {
   position: relative;
   overflow: hidden;
