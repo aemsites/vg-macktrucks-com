@@ -704,7 +704,6 @@ $.fn.getDirectionsUrlFromPin = function (pin) {
 
 $.fn.renderPinDirections = function (markerId) {
 
-  var templateClone = $($('#sidebar-directions').clone(true).html());
   var templateClone = $($('#sidebar-direction-list').clone(true).html());
   var markerDetails;
 
@@ -723,64 +722,10 @@ $.fn.renderPinDirections = function (markerId) {
   $('.main-directions').css('display', 'block');
   $('.go-back').css('display', 'none');
 
-  $origin = $currentAddress;
-  if (!$origin || $origin == '') {
-    $origin = $location[0] + ',' + $location[1];
-    $('.from-directions input').val($origin);
-  }
-
-  let {
-    MAIN_ADDRESS_LINE_1_TXT: address1,
-    MAIN_ADDRESS_LINE_2_TXT: address2,
-    MAIN_CITY_NM: mainCity,
-    MAIN_STATE_PROV_CD: mainState,
-    MAIN_POSTAL_CD: postalCd,
-  } = markerDetails;
-
-  $destination = `${address1 || address2} ${mainCity} ${mainState} ${postalCd}`
-
-  if ($('.from-directions input').val()) {
-    $origin = $('.from-directions input').val();
-  }
-
-  $directionsObject = {
-    origin: $origin,
-    destination: $destination,
-    travelMode: 'DRIVING',
-    optimizeWaypoints: true,
-    provideRouteAlternatives: true,
-    waypoints: $.fn.wayPointArray()
-  };
-
-  $directionsService.route(
-    $directionsObject,
-    function (result, status) {
-      if (status == 'OK') {
-
-        $directionsDisplay.setMap($map);
-
-        $directionsDisplay.setPanel(templateClone.find("#directions-container").get(0));
-        $directionsDisplay.setDirections(result);
-        $directionResults = result;
-      }
-    }
-  );
-
-  $('.from-directions input').val($origin);
-  $('.to-directions input').val($destination);
-
-  var waypointDecodeUrl = "";
-  for (var x = 0; x < $wayPoints.length; x++) {
-    var loc = $wayPoints[x].point.location;
-
-    waypointDecodeUrl += '/' + loc.lat() + ',' + loc.lng() + '/';
-  }
-
-  var mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails)
 
   // link to google
-  templateClone.find('#gmaps-link')
-    .attr('onclick', mapsUrl);
+  var mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails)
+  templateClone.find('#gmaps-link').attr('onclick', mapsUrl);
 
   return templateClone;
 }
