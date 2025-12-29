@@ -1406,6 +1406,7 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.call a').attr("href", 'tel:' + $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
     templateClone.find('.call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + "Call" + '</a>');
     
+    var mapsUrl = $.fn.getDirectionsUrlFromPin(pin)
     templateClone.find('.direction a')
       .attr('data-id', pin.IDENTIFIER_VALUE)
       .text('Google Maps')
