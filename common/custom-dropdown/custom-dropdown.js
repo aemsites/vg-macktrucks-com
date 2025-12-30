@@ -305,6 +305,7 @@ Select.prototype.createOption = function createOption(option, index) {
     optionEl.className = index === 0 ? `${componentName}__option option-current` : `${componentName}__option`;
     optionEl.setAttribute('aria-selected', `${index === 0}`);
   }
+
   let normalizedOption = option;
 
   if (typeof option === 'string' && option.includes(':')) {
@@ -314,6 +315,8 @@ Select.prototype.createOption = function createOption(option, index) {
     value.trim();
     normalizedOption = { label, value };
   }
+
+  this.options[index] = normalizedOption;
   optionEl.innerText = getOptionLabel(normalizedOption);
 
   optionEl.addEventListener('click', (event) => {
