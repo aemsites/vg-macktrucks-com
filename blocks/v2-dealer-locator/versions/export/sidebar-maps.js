@@ -679,7 +679,7 @@ $.fn.getDirectionsUrlFromPin = function (pin) {
 }
 
 $.fn.renderPinDirections = function (markerId) {
-  var templateClone = $($('#sidebar-direction-list').clone(true).html());
+  var templateClone = $('#sidebar-direction-list').clone();
   var markerDetails;
 
   $('.add-directions').data('id', markerId);
@@ -706,8 +706,7 @@ $.fn.renderPinDirections = function (markerId) {
 
 // Creates sidebar-pini overview item
 $.fn.renderPinDetails = function (markerId) {
-
-  var templateClone = $($('#sidebar-pin').clone(true).html());
+  var templateClone = $('#sidebar-pin').clone();
   var markerDetails;
 
   for (i = 0; i < $sortedPins.length; i++) {
