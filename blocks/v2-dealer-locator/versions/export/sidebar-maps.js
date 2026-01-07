@@ -682,7 +682,7 @@ $.fn.renderPinDirections = function (markerId) {
   var templateClone = $($('#sidebar-direction-list').clone(true).html());
   var markerDetails;
 
-  $('.add-directions').attr('data-id', markerId);
+  $('.add-directions').data('id', markerId);
 
   for (i = 0; i < $sortedPins.length; i++) {
     if ($sortedPins[i].IDENTIFIER_VALUE == markerId) {
@@ -697,7 +697,9 @@ $.fn.renderPinDirections = function (markerId) {
 
   // link to google
   var mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails)
-  templateClone.find('#gmaps-link').attr('onclick', mapsUrl);
+  templateClone.find('#gmaps-link')
+    .removeAttr("onclick")
+    .attr({ 'href': mapsUrl, 'target': '_blank' });
 
   return templateClone;
 }
@@ -742,7 +744,7 @@ $.fn.renderPinDetails = function (markerId) {
 
   templateClone.find('.detail-website a').attr('href', $.fn.formatWebAddress(markerDetails.WEB_ADDRESS));
   templateClone.find('#phone div').html('<a href="tel:' + markerDetails.REG_PHONE_NUMBER + '">' + $.fn.formatPhoneNumber(markerDetails.REG_PHONE_NUMBER) + '</a>');
-  templateClone.find('#directions').attr('data-id', markerDetails.IDENTIFIER_VALUE);
+  templateClone.find('#directions').data('id', markerDetails.IDENTIFIER_VALUE);
   templateClone.find('#clipboard-address').attr('data-clipboard', markerDetails.MAIN_ADDRESS_LINE_1_TXT + ' ' + markerDetails.MAIN_ADDRESS_LINE_2_TXT + ' ' + markerDetails.MAIN_CITY_NM + ', ' + markerDetails.MAIN_STATE_PROV_CD + ' ' + markerDetails.MAIN_POSTAL_CD);
   templateClone.find('#open-website').attr('onclick', "window.open('" + $.fn.formatWebAddress(markerDetails.WEB_ADDRESS) + "', '_blank')");
   templateClone.find('#share-link').val(window.location.href.split('?')[0] + '?view=' + markerDetails.IDENTIFIER_VALUE);
@@ -771,10 +773,9 @@ $.fn.renderPinDetails = function (markerId) {
 
   const mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails);
 
-  templateClone.find('.detail-direction').on('click', function (e) {
-    e.preventDefault();
-    window.open(mapsUrl, "_blank");
-  });
+  templateClone.find('.detail-direction a')
+    .removeAttr("onclick")
+    .attr({ 'href': mapsUrl, 'target': '_blank' });
 
   var isOpen = $.fn.isOpen(markerDetails);
   var isOpenHtml = "";
@@ -994,7 +995,7 @@ $.fn.renderAddDirectionsPin = function (marker, details) {
 
   var templateClone = $($('#sidebar-select-pin').clone(true).html());
 
-  templateClone.find('.fa-close').attr('data-id', details.IDENTIFIER_VALUE);
+  templateClone.find('.fa-close').data('id', details.IDENTIFIER_VALUE);
 
   var isOpen = $.fn.isOpen(details);
   var isOpenHtml = "";
@@ -1377,8 +1378,8 @@ $.fn.tmpPins = function (tmpPinList) {
 
     var templateClone = $($('#nearbyPinDetails').clone(true).html());
 
-    templateClone.find('.teaser-top').attr('data-id', pin.IDENTIFIER_VALUE);
-    templateClone.find('.more').attr('data-id', pin.IDENTIFIER_VALUE);
+    templateClone.find('.teaser-top').data('id', pin.IDENTIFIER_VALUE);
+    templateClone.find('.more').data('id', pin.IDENTIFIER_VALUE);
 
     var isOpen = $.fn.isOpen(pin);
     var isOpenHtml = "";
@@ -1404,12 +1405,12 @@ $.fn.tmpPins = function (tmpPinList) {
     
     var mapsUrl = $.fn.getDirectionsUrlFromPin(pin)
     templateClone.find('.direction a')
-      .attr('data-id', pin.IDENTIFIER_VALUE)
+      .data('id', pin.IDENTIFIER_VALUE)
       .text('Google Maps')
       .removeAttr("onclick")
-      .on('click', function (e) {
-        e.preventDefault();
-        window.open(mapsUrl, "_blank");
+      .attr({
+        'href': mapsUrl,
+        'target': '_blank'
       });
 
     const distanceInMiles = pin.distance.toFixed(2);
@@ -1918,7 +1919,7 @@ $.fn.selectNearbyPins = function () {
 
     var templateClone = $($('#nearbyPinDetails').clone(true).html());
 
-    templateClone.find('.panel-container').parent().attr('data-id', pin.IDENTIFIER_VALUE);
+    templateClone.find('.panel-container').parent().data('id', pin.IDENTIFIER_VALUE);
 
     var isOpen = $.fn.isOpen(pin);
     var isOpenHtml = "";
