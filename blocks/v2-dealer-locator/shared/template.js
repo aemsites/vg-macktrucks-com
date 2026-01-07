@@ -214,7 +214,7 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
                   </a>
               </div>
               <div class="detail detail-direction">
-                  <a id="directions" data-id="">
+                  <a id="directions">
                       <img src="/blocks/v2-dealer-locator/images/google-maps.svg"/>
                       <p>Google Maps</p>
                   </a>
@@ -299,7 +299,7 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
                       <img id="marker" src=""/>
                   </div>
                   <div class="dealerPanelContainer">
-                      <div class="teaser-top" onclick="$.fn.switchSidebarPane('sidebar-pin', this);" data-id="">
+                      <div class="teaser-top" onclick="$.fn.switchSidebarPane('sidebar-pin', this);">
                           <div class="heading">
                               <p></p>
 
@@ -396,7 +396,7 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
               <article class="teaser">
 
                   <div style="width: 15%;">
-                      <i class="fa fa-close tooltip" onclick="$.fn.removeWaypoint(this)" data-id=""><span
+                      <i class="fa fa-close tooltip" onclick="$.fn.removeWaypoint(this)"><span
                               class="tooltiptext removepin">Remove from route</span></i>
                   </div>
                   <div style="width: 80%;">
