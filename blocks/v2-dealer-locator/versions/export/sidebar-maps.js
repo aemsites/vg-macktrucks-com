@@ -491,6 +491,7 @@ $.fn.loadPins = function () {
     }
   }
 };
+
 $.fn.removeWaypoint = function (pin) {
 
   var $this = $(pin);
@@ -655,11 +656,6 @@ $.fn.canDetermineHours = function (pin) {
 $.fn.getDirectionsUrlFromPin = function (pin) {
   $origin = $currentAddress;
 
-  if (!$origin || $origin == '') {
-    $origin = $location[0] + ',' + $location[1];
-    $('.from-directions input').val($origin);
-  }
-
   let {
     MAIN_ADDRESS_LINE_1_TXT: address1,
     MAIN_ADDRESS_LINE_2_TXT: address2,
@@ -677,7 +673,7 @@ $.fn.getDirectionsUrlFromPin = function (pin) {
     waypointDecodeUrl += '/' + loc.lat() + ',' + loc.lng() + '/';
   }
 
-  const mapsUrl = `https://www.google.com/maps/dir/${$origin}/${$destination}${waypointDecodeUrl}`;
+  const mapsUrl = `https://www.google.com/maps/dir/${$location}/${$destination}${waypointDecodeUrl}`;
 
   return mapsUrl
 }
