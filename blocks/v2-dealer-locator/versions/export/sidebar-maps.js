@@ -1403,6 +1403,7 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.direction a')
       .data('id', pin.IDENTIFIER_VALUE)
       .text('Google Maps')
+      .removeAttr('onclick')
       .attr({ 'href': mapsUrl, 'target': '_blank' });
 
     const distanceInMiles = pin.distance.toFixed(2);
