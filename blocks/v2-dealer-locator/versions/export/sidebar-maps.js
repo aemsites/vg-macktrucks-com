@@ -697,9 +697,7 @@ $.fn.renderPinDirections = function (markerId) {
 
   // link to google
   var mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails)
-  templateClone.find('#gmaps-link')
-    .removeAttr("onclick")
-    .attr({ 'href': mapsUrl, 'target': '_blank' });
+  templateClone.find('#gmaps-link').attr({ 'href': mapsUrl, 'target': '_blank' });
 
   return templateClone;
 }
@@ -773,9 +771,7 @@ $.fn.renderPinDetails = function (markerId) {
 
   const mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails);
 
-  templateClone.find('.detail-direction a')
-    .removeAttr("onclick")
-    .attr({ 'href': mapsUrl, 'target': '_blank' });
+  templateClone.find('.detail-direction a').attr({ 'href': mapsUrl, 'target': '_blank' });
 
   var isOpen = $.fn.isOpen(markerDetails);
   var isOpenHtml = "";
@@ -1407,11 +1403,7 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.direction a')
       .data('id', pin.IDENTIFIER_VALUE)
       .text('Google Maps')
-      .removeAttr("onclick")
-      .attr({
-        'href': mapsUrl,
-        'target': '_blank'
-      });
+      .attr({ 'href': mapsUrl, 'target': '_blank' });
 
     const distanceInMiles = pin.distance.toFixed(2);
     const distanceInKms = (distanceInMiles * $units[0].factor).toFixed(2);
