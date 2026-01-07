@@ -706,7 +706,8 @@ $.fn.renderPinDirections = function (markerId) {
 
 // Creates sidebar-pini overview item
 $.fn.renderPinDetails = function (markerId) {
-  var templateClone = $('#sidebar-pin').clone();
+
+  var templateClone = $($('#sidebar-pin').clone(true).html());
   var markerDetails;
 
   for (i = 0; i < $sortedPins.length; i++) {

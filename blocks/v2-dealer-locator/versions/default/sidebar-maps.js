@@ -724,7 +724,8 @@ $.fn.renderPinDirections = function (markerId) {
 
 // Creates sidebar-pini overview item
 $.fn.renderPinDetails = async function (markerId) {
-  var templateClone = $('#sidebar-pin').clone();
+
+  var templateClone = $($('#sidebar-pin').clone(true).html());
   var markerDetails;
 
   for (i = 0; i < $sortedPins.length; i++) {
@@ -1495,6 +1496,7 @@ $.fn.tmpPins = function (tmpPinList) {
 
     templateClone.find('.teaser-top').data('id', pin.IDENTIFIER_VALUE);
     templateClone.find('.more').data('id', pin.IDENTIFIER_VALUE);
+
 
     var openHours = $.fn.getOpenHours(pin);
     var isOpenHtml = "";
