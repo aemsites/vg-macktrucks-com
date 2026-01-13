@@ -1,6 +1,6 @@
 import { decorateIcons } from '../../scripts/common.js';
 
-const blockName = 'v2-faq';
+const BLOCK_NAME = 'v2-faq';
 const FAQ_SCHEMA_SELECTOR = 'script[type="application/ld+json"][data-v2-faq]';
 
 const GLOBAL_KEYS = {
@@ -41,7 +41,7 @@ const escapeHtmlText = (str = '') => str.replace(/[&<>"']/g, (ch) => HTML_ESCAPE
  */
 const getOrCreateBlockId = (block) => {
   if (!block.dataset.v2FaqId) {
-    block.dataset.v2FaqId = `${blockName}-${Math.random().toString(16).slice(2)}`;
+    block.dataset.v2FaqId = `${BLOCK_NAME}-${Math.random().toString(16).slice(2)}`;
   }
   return block.dataset.v2FaqId;
 };
@@ -91,20 +91,20 @@ const renderFaqItemMarkup = ({ question, answerHtml }, blockId, index) => {
   const panelId = `${blockId}-panel-${index}`;
 
   return `
-    <div class="${blockName}__item">
+    <div class="${BLOCK_NAME}__item">
       <button
-        class="${blockName}__button"
+        class="${BLOCK_NAME}__button"
         id="${buttonId}"
         aria-expanded="false"
         aria-controls="${panelId}"
         type="button"
       >
-        <span class="${blockName}__title">${escapeHtmlText(question)}</span>
-        <span class="icon icon-dropdown-caret-wide ${blockName}__icon" aria-hidden="true"></span>
+        <span class="${BLOCK_NAME}__title">${escapeHtmlText(question)}</span>
+        <span class="icon icon-dropdown-caret-wide ${BLOCK_NAME}__icon" aria-hidden="true"></span>
       </button>
 
       <div
-        class="${blockName}__panel"
+        class="${BLOCK_NAME}__panel"
         id="${panelId}"
         role="region"
         aria-labelledby="${buttonId}"
@@ -151,7 +151,7 @@ const toggleAccordionItem = (button, panel) => {
   const isExpanded = button.getAttribute('aria-expanded') === 'true';
   button.setAttribute('aria-expanded', String(!isExpanded));
   panel.toggleAttribute('hidden', isExpanded);
-  button.parentElement?.classList.toggle(`${blockName}__item--open`, !isExpanded);
+  button.parentElement?.classList.toggle(`${BLOCK_NAME}__item--open`, !isExpanded);
 };
 
 /**
@@ -165,7 +165,7 @@ const bindAccordionToggle = (block) => {
   }
 
   block.addEventListener('click', (e) => {
-    const button = e.target?.closest?.(`.${blockName}__button`);
+    const button = e.target?.closest?.(`.${BLOCK_NAME}__button`);
     if (!button || !block.contains(button)) {
       return;
     }
