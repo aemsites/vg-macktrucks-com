@@ -1,0 +1,293 @@
+import { decorateIcons } from '../../scripts/common.js';
+
+const blockName = 'v2-faq';
+const FAQ_SCHEMA_SELECTOR = 'script[type="application/ld+json"][data-v2-faq]';
+
+const GLOBAL_KEYS = {
+  ENTRIES_BY_BLOCK: '__v2FaqEntriesByBlock',
+  SCHEMA_SCHEDULED: '__v2FaqSchemaScheduled',
+};
+
+// Initialize global state once per page
+window[GLOBAL_KEYS.ENTRIES_BY_BLOCK] = window[GLOBAL_KEYS.ENTRIES_BY_BLOCK] || new Map();
+window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = window[GLOBAL_KEYS.SCHEMA_SCHEDULED] || false;
+
+/**
+ * Normalize text content from a DOM node.
+ * @param {Element|null} el
+ * @returns {string}
+ */
+const normalizeTextContent = (el) => (el?.textContent || '').replace(/\s+/g, ' ').trim();
+
+const HTML_ESCAPE_MAP = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  [String.fromCharCode(39)]: '&#39;',
+};
+
+/**
+ * Escape text for safe HTML insertion.
+ * @param {string} str
+ * @returns {string}
+ */
+const escapeHtmlText = (str = '') => str.replace(/[&<>"']/g, (ch) => HTML_ESCAPE_MAP[ch] || ch);
+
+/**
+ * Ensure a stable block id on the element.
+ * @param {HTMLElement} block
+ * @returns {string}
+ */
+const getOrCreateBlockId = (block) => {
+  if (!block.dataset.v2FaqId) {
+    block.dataset.v2FaqId = `${blockName}-${Math.random().toString(16).slice(2)}`;
+  }
+  return block.dataset.v2FaqId;
+};
+
+/**
+ * Extract FAQ items from authored markup.
+ *
+ * Security note:
+ * - `answerHtml` is treated as trusted HTML coming from the EDS/CMS authoring pipeline.
+ * - It may contain markup (links, lists, formatting).
+ * - If this assumption changes, `answerHtml` must be sanitized before rendering.
+ *
+ * @param {HTMLElement} block
+ * @returns {{ question: string, answerText: string, answerHtml: string }[]}
+ */
+const extractFaqItems = (block) => {
+  const rows = [...block.children];
+
+  return rows
+    .map((row) => {
+      const [questionCell, answerCell] = row.children;
+      if (!questionCell || !answerCell) {
+        return null;
+      }
+
+      const question = normalizeTextContent(questionCell);
+      const answerText = normalizeTextContent(answerCell);
+      const answerHtml = (answerCell.innerHTML || '').trim();
+
+      if (!question || !answerText) {
+        return null;
+      }
+      return { question, answerText, answerHtml };
+    })
+    .filter((item) => item !== null);
+};
+
+/**
+ * Render a single FAQ item as HTML.
+ * @param {{ question: string, answerHtml: string }} item
+ * @param {string} blockId
+ * @param {number} index
+ * @returns {string}
+ */
+const renderFaqItemMarkup = ({ question, answerHtml }, blockId, index) => {
+  const buttonId = `${blockId}-btn-${index}`;
+  const panelId = `${blockId}-panel-${index}`;
+
+  return `
+    <div class="${blockName}__item">
+      <button
+        class="${blockName}__button"
+        id="${buttonId}"
+        aria-expanded="false"
+        aria-controls="${panelId}"
+        type="button"
+      >
+        <span class="${blockName}__title">${escapeHtmlText(question)}</span>
+        <span class="icon icon-dropdown-caret-wide ${blockName}__icon" aria-hidden="true"></span>
+      </button>
+
+      <div
+        class="${blockName}__panel"
+        id="${panelId}"
+        role="region"
+        aria-labelledby="${buttonId}"
+        hidden
+      >
+        ${answerHtml}
+      </div>
+    </div>
+  `;
+};
+
+/**
+ * Render all FAQ items into the block.
+ * @param {HTMLElement} block
+ * @param {{ question: string, answerText: string, answerHtml: string }[]} items
+ * @param {string} blockId
+ * @returns {void}
+ */
+const renderFaqItems = (block, items, blockId) => {
+  block.innerHTML = items.map((item, i) => renderFaqItemMarkup(item, blockId, i)).join('');
+  decorateIcons(block);
+};
+
+/**
+ * Find the panel controlled by a button (via aria-controls).
+ * @param {HTMLButtonElement} button
+ * @returns {HTMLElement|null}
+ */
+const getPanelForButton = (button) => {
+  const panelId = button.getAttribute('aria-controls');
+  if (!panelId) {
+    return null;
+  }
+  return document.getElementById(panelId);
+};
+
+/**
+ * Toggle a single accordion item.
+ * @param {HTMLButtonElement} button
+ * @param {HTMLElement} panel
+ * @returns {void}
+ */
+const toggleAccordionItem = (button, panel) => {
+  const isExpanded = button.getAttribute('aria-expanded') === 'true';
+  button.setAttribute('aria-expanded', String(!isExpanded));
+  panel.toggleAttribute('hidden', isExpanded);
+  button.parentElement?.classList.toggle(`${blockName}__item--open`, !isExpanded);
+};
+
+/**
+ * Bind delegated click handling for accordion toggles (once per block).
+ * @param {HTMLElement} block
+ * @returns {void}
+ */
+const bindAccordionToggle = (block) => {
+  if (block.dataset.v2FaqBound) {
+    return;
+  }
+
+  block.addEventListener('click', (e) => {
+    const button = e.target?.closest?.(`.${blockName}__button`);
+    if (!button || !block.contains(button)) {
+      return;
+    }
+
+    const panel = getPanelForButton(button);
+    if (!panel || !block.contains(panel)) {
+      return;
+    }
+
+    toggleAccordionItem(button, panel);
+  });
+
+  block.dataset.v2FaqBound = 'true';
+};
+
+/**
+ * Update the global registry for a single block.
+ * @param {string} blockId
+ * @param {{ question: string, answerText: string, answerHtml: string }[]} items
+ * @returns {void}
+ */
+const setBlockEntries = (blockId, items) => {
+  const entries = items.map(({ question, answerText }) => ({ question, answer: answerText }));
+  const registry = window[GLOBAL_KEYS.ENTRIES_BY_BLOCK];
+
+  if (entries.length) {
+    registry.set(blockId, entries);
+  } else {
+    registry.delete(blockId);
+  }
+};
+
+/**
+ * De-duplicate entries across blocks.
+ * @param {{ question: string, answer: string }[]} entries
+ * @returns {{ question: string, answer: string }[]}
+ */
+const dedupeEntries = (entries) => {
+  const seen = new Set();
+  return entries.filter(({ question, answer }) => {
+    const key = `${question.trim()}\u0000${answer.trim()}`;
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+};
+
+/**
+ * Collect all entries across blocks and de-duplicate them.
+ * @returns {{ question: string, answer: string }[]}
+ */
+const getAllEntriesDeduplicated = () => {
+  const registry = window[GLOBAL_KEYS.ENTRIES_BY_BLOCK];
+  const all = Array.from(registry.values()).flat();
+  return dedupeEntries(all);
+};
+
+/**
+ * Build JSON-LD schema for FAQ entries.
+ * @param {{ question: string, answer: string }[]} entries
+ * @returns {object}
+ */
+const buildFaqJsonLdSchema = (entries) => ({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: entries.map(({ question, answer }) => ({
+    '@type': 'Question',
+    name: question,
+    acceptedAnswer: { '@type': 'Answer', text: answer },
+  })),
+});
+
+/**
+ * Upsert the JSON-LD script or remove it when empty.
+ * @returns {void}
+ */
+const updateFaqSchemaScript = () => {
+  const entries = getAllEntriesDeduplicated();
+  const existing = document.querySelector(FAQ_SCHEMA_SELECTOR);
+
+  if (!entries.length) {
+    existing?.remove();
+    return;
+  }
+
+  const json = JSON.stringify(buildFaqJsonLdSchema(entries));
+
+  const script = existing || document.createElement('script');
+  if (!existing) {
+    script.type = 'application/ld+json';
+    script.dataset.v2Faq = 'true';
+    document.head.appendChild(script);
+  }
+
+  script.textContent = json;
+};
+
+/**
+ * Batch schema updates across blocks (one per frame).
+ * @returns {void}
+ */
+const scheduleSchemaUpdate = () => {
+  if (window[GLOBAL_KEYS.SCHEMA_SCHEDULED]) {
+    return;
+  }
+
+  window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = true;
+  requestAnimationFrame(() => {
+    window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = false;
+    updateFaqSchemaScript();
+  });
+};
+
+export default function decorate(block) {
+  const blockId = getOrCreateBlockId(block);
+  const items = extractFaqItems(block);
+
+  renderFaqItems(block, items, blockId);
+  bindAccordionToggle(block);
+
+  setBlockEntries(blockId, items);
+  scheduleSchemaUpdate();
+}
