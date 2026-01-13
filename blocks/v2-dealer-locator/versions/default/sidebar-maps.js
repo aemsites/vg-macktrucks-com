@@ -545,7 +545,7 @@ $.fn.isWaypoint = function (waypoint) {
 };
 
 $.fn.formatTime = function (timeString) {
-  var [ hour, minutes ] = timeString.split(':');
+  var [hour, minutes] = timeString.split(':');
   var period = 'AM';
   if (hour >= 12) {
     period = 'PM';
@@ -563,10 +563,10 @@ $.fn.getOpenHours = function (pin) {
 
   if (!isLeasing) {
     var { Parts: parts, Sales: sales, Service: service } = pin.hours;
-    allTimes = [ parts[today], sales[today], service[today] ];
+    allTimes = [parts[today], sales[today], service[today]];
   } else if (isLeasing) {
     var { Leasing: leasing } = pin.hours;
-    allTimes = [ leasing[today] ];
+    allTimes = [leasing[today]];
   }
 
   var earliestHour;
@@ -600,10 +600,10 @@ $.fn.getOpenHours = function (pin) {
       earliestHour = start;
       latestHour = end;
     } else {
-      if (start != '' && new Date (compareDate + start) < new Date (compareDate + earliestHour) || earliestHour === '') {
+      if (start != '' && new Date(compareDate + start) < new Date(compareDate + earliestHour) || earliestHour === '') {
         earliestHour = start;
       }
-      if (end != '' && new Date (compareDate + end) > new Date (compareDate + latestHour)) {
+      if (end != '' && new Date(compareDate + end) > new Date(compareDate + latestHour)) {
         latestHour = end;
       }
     }
@@ -634,7 +634,7 @@ $.fn.isOpen = async function (dealer, time) {
     var stringDealerDate = moment().tz(dealer.timeZoneId).format();
     var hourPosition = stringDealerDate.indexOf('T');
     var dealerLocalHour = stringDealerDate.substring(hourPosition + 1, hourPosition + 6);
-    var [ hour, minutes ] = dealerLocalHour.split(':');
+    var [hour, minutes] = dealerLocalHour.split(':');
     var dealerTime = (Number(hour) * 60) + Number(minutes);
 
     if (dealerTime >= openTime && dealerTime < closeTime) {
@@ -672,32 +672,8 @@ $.fn.canDetermineHours = function (pin) {
   return false;
 };
 
-$.fn.renderPinDirections = function (markerId) {
-
-  var templateClone = $($('#sidebar-directions').clone(true).html());
-  var templateClone = $($('#sidebar-direction-list').clone(true).html());
-  var markerDetails;
-
-  $('.add-directions').attr('data-id', markerId);
-
-  for (i = 0; i < $sortedPins.length; i++) {
-
-    if ($sortedPins[i].IDENTIFIER_VALUE == markerId) {
-
-      markerDetails = $sortedPins[i];
-    }
-
-  }
-
-  $('.main-header').css('display', 'none');
-  $('.main-directions').css('display', 'block');
-  $('.go-back').css('display', 'none');
-
+$.fn.getDirectionsUrlFromPin = function (pin) {
   $origin = $currentAddress;
-  if (!$origin || $origin == '') {
-    $origin = $location[0] + ',' + $location[1];
-    $('.from-directions input').val($origin);
-  }
 
   let {
     MAIN_ADDRESS_LINE_1_TXT: address1,
@@ -705,39 +681,9 @@ $.fn.renderPinDirections = function (markerId) {
     MAIN_CITY_NM: mainCity,
     MAIN_STATE_PROV_CD: mainState,
     MAIN_POSTAL_CD: postalCd,
-  } = markerDetails;
+  } = pin;
 
   $destination = `${address1 || address2} ${mainCity} ${mainState} ${postalCd}`
-
-  if ($('.from-directions input').val()) {
-    $origin = $('.from-directions input').val();
-  }
-
-  $directionsObject = {
-    origin: $origin,
-    destination: $destination,
-    travelMode: 'DRIVING',
-    optimizeWaypoints: true,
-    provideRouteAlternatives: true,
-    waypoints: $.fn.wayPointArray()
-  };
-
-  $directionsService.route(
-    $directionsObject,
-    function (result, status) {
-      if (status == 'OK') {
-
-        $directionsDisplay.setMap($map);
-
-        $directionsDisplay.setPanel(templateClone.find("#directions-container").get(0));
-        $directionsDisplay.setDirections(result);
-        $directionResults = result;
-      }
-    }
-  );
-
-  $('.from-directions input').val($origin);
-  $('.to-directions input').val($destination);
 
   var waypointDecodeUrl = "";
   for (var x = 0; x < $wayPoints.length; x++) {
@@ -746,7 +692,30 @@ $.fn.renderPinDirections = function (markerId) {
     waypointDecodeUrl += '/' + loc.lat() + ',' + loc.lng() + '/';
   }
 
-  templateClone.find('#gmaps-link').attr('onclick', 'window.open("https://www.google.com/maps/dir/' + $origin + '/' + $destination + waypointDecodeUrl + '", "_blank")');
+  const mapsUrl = `https://www.google.com/maps/dir/${$location}/${$destination}${waypointDecodeUrl}`;
+
+  return mapsUrl
+}
+
+$.fn.renderPinDirections = function (markerId) {
+  var templateClone = $('#sidebar-direction-list').clone();
+  var markerDetails;
+
+  $('.add-directions').data('id', markerId);
+
+  for (i = 0; i < $sortedPins.length; i++) {
+    if ($sortedPins[i].IDENTIFIER_VALUE == markerId) {
+      markerDetails = $sortedPins[i];
+    }
+  }
+
+  $('.main-header').css('display', 'none');
+  $('.main-directions').css('display', 'block');
+  $('.go-back').css('display', 'none');
+
+  // link to google
+  var mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails)
+  templateClone.find('#gmaps-link').attr({ 'href': mapsUrl, 'target': '_blank' });
 
   return templateClone;
 }
@@ -797,9 +766,9 @@ $.fn.renderPinDetails = async function (markerId) {
 
   if (markerDetails.WEB_ADDRESS) {
     templateClone.find('.detail-website a').attr('href', $.fn.formatWebAddress(markerDetails.WEB_ADDRESS));
-    templateClone.find('#website').text(markerDetails.WEB_ADDRESS).css('text-transform','lowercase');
+    templateClone.find('#website').text(markerDetails.WEB_ADDRESS).css('text-transform', 'lowercase');
   } else {
-    templateClone.find('.detail-website a').css({'pointer-events':'none','cursor':'default','opacity':'0.5','border-color':'red'});
+    templateClone.find('.detail-website a').css({ 'pointer-events': 'none', 'cursor': 'default', 'opacity': '0.5', 'border-color': 'red' });
     templateClone.find('#website').parent().addClass('noDataClass');
   }
 
@@ -811,7 +780,7 @@ $.fn.renderPinDetails = async function (markerId) {
   }
 
   templateClone.find('#phone div').html('<a href="tel:' + markerDetails.REG_PHONE_NUMBER + '">' + $.fn.formatPhoneNumber(markerDetails.REG_PHONE_NUMBER) + '</a>');
-  templateClone.find('#directions').attr('data-id', markerDetails.IDENTIFIER_VALUE);
+  templateClone.find('#directions').data('id', markerDetails.IDENTIFIER_VALUE);
   templateClone.find('#clipboard-address').attr('data-clipboard', markerDetails.MAIN_ADDRESS_LINE_1_TXT + ' ' + markerDetails.MAIN_ADDRESS_LINE_2_TXT + ' ' + markerDetails.MAIN_CITY_NM + ', ' + markerDetails.MAIN_STATE_PROV_CD + ' ' + markerDetails.MAIN_POSTAL_CD);
 
   templateClone.find('#open-website').attr('onclick', "window.open('" + $.fn.formatWebAddress(markerDetails.WEB_ADDRESS) + "', '_blank')");
@@ -822,10 +791,12 @@ $.fn.renderPinDetails = async function (markerId) {
     templateClone.find('.detail-call').html('<a href="tel:' + markerDetails.REG_PHONE_NUMBER + '">' + '<img src="/blocks/v2-dealer-locator/images/phone.svg" />' + "Call" + '</a>');
   } else {
     templateClone.find('.detail-call').html('<a>' + '<img src="/blocks/v2-dealer-locator/images/phone.svg" />' + "Call" + '</a>');
-    templateClone.find('.detail-call a').css({'pointer-events':'none','cursor':'default','opacity':'0.5'});
+    templateClone.find('.detail-call a').css({ 'pointer-events': 'none', 'cursor': 'default', 'opacity': '0.5' });
   }
 
+  const mapsUrl = $.fn.getDirectionsUrlFromPin(markerDetails);
 
+  templateClone.find('.detail-direction a').attr({ 'href': mapsUrl, 'target': '_blank' });
 
   templateClone.find('#head-marker').attr('src', $viewingPin.icon.url);
   templateClone.find('#head-marker').css('width', '31px');
@@ -855,7 +826,7 @@ $.fn.renderPinDetails = async function (markerId) {
     isOpenHtml = openHours.open
   } else {
     var isOpen = await $.fn.isOpen(markerDetails);
-    isOpenHtml = `${isOpen.open ? 'Open' : 'Closed' } - ${openHours.open.toLowerCase()} - ${openHours.close.toLowerCase()}`;
+    isOpenHtml = `${isOpen.open ? 'Open' : 'Closed'} - ${openHours.open.toLowerCase()} - ${openHours.close.toLowerCase()}`;
   }
 
   var servicesHtml = templateClone.find('#services');
@@ -1058,7 +1029,7 @@ $.fn.renderAddDirectionsPin = function (marker, details) {
 
   var templateClone = $($('#sidebar-select-pin').clone(true).html());
 
-  templateClone.find('.fa-close').attr('data-id', details.IDENTIFIER_VALUE);
+  templateClone.find('.fa-close').data('id', details.IDENTIFIER_VALUE);
 
   var openHours = $.fn.getOpenHours(pin);
   var isOpenHtml = "";
@@ -1508,6 +1479,7 @@ $.fn.showPin = function (pin) {
   return condition;
 };
 
+// initial dealers list
 $.fn.tmpPins = function (tmpPinList) {
   var pinIndex = 1;
   var nearbyHtml = $('.nearby-pins').empty();
@@ -1518,8 +1490,8 @@ $.fn.tmpPins = function (tmpPinList) {
 
     var templateClone = $($('#nearbyPinDetails').clone(true).html());
 
-    templateClone.find('.teaser-top').attr('data-id', pin.IDENTIFIER_VALUE);
-    templateClone.find('.more').attr('data-id', pin.IDENTIFIER_VALUE);
+    templateClone.find('.teaser-top').data('id', pin.IDENTIFIER_VALUE);
+    templateClone.find('.more').data('id', pin.IDENTIFIER_VALUE);
 
 
     var openHours = $.fn.getOpenHours(pin);
@@ -1534,12 +1506,17 @@ $.fn.tmpPins = function (tmpPinList) {
       isOpenHtml = `${openHours.open.toLowerCase()} - ${openHours.close.toLowerCase()}`;
     }
 
+    var mapsUrl = $.fn.getDirectionsUrlFromPin(pin);
 
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
     templateClone.find('.city').text(pin.MAIN_CITY_NM + ', ' + pin.MAIN_STATE_PROV_CD + ' ' + pin.MAIN_POSTAL_CD);
-    templateClone.find('.direction a').attr('data-id', pin.IDENTIFIER_VALUE);
-    templateClone.find('.direction a').text('Direction');
+    templateClone.find('.direction a')
+      .data('id', pin.IDENTIFIER_VALUE)
+      .text('Google Maps')
+      .removeAttr('onclick')
+      .attr({ 'href': mapsUrl, 'target': '_blank' });
+
     templateClone.find('.website a').text('Dealer Site');
     templateClone.find('.phone').text($.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
 
@@ -1570,31 +1547,26 @@ $.fn.tmpPins = function (tmpPinList) {
     if (pin.WEB_ADDRESS) {
       templateClone.find('.website a').attr("href", $.fn.formatWebAddress(pin.WEB_ADDRESS));
     } else {
-      templateClone.find('.website').css({'pointer-events':'none','cursor':'default','opacity':'0.7','border-color':'rgba(0, 0, 0, 0.7)'});
+      templateClone.find('.website').css({ 'pointer-events': 'none', 'cursor': 'default', 'opacity': '0.7', 'border-color': 'rgba(0, 0, 0, 0.7)' });
     }
 
     if (pin.REG_PHONE_NUMBER) {
-      templateClone.find('.call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + "Call" + '</a>');      
+      templateClone.find('.call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + "Call" + '</a>');
       templateClone.find('.call a').attr("href", 'tel:' + $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
     } else {
       templateClone.find('.call').text('Call');
-      templateClone.find('.call').css({'pointer-events':'none','cursor':'default','opacity':'0.7','border-color':'rgba(0, 0, 0, 0.7)'});
+      templateClone.find('.call').css({ 'pointer-events': 'none', 'cursor': 'default', 'opacity': '0.7', 'border-color': 'rgba(0, 0, 0, 0.7)' });
     }
 
     var marker;
     for (i = 0; i < $markers.length; i++) {
-
       if ($markers[i].id == pin.IDENTIFIER_VALUE) {
-
         marker = $markers[i];
-
         if (!$myDealer) {
           $myDealer = { IDENTIFIER_VALUE: $.fn.getCookie('my-dealer') };
         }
-
         if ($myDealer.IDENTIFIER_VALUE == pin.IDENTIFIER_VALUE) {
           var pinIcon = $.fn.drawPin('', 43, 63, '328E04');
-
           templateClone.find('#marker').css('width', 'auto');
           templateClone.find('#marker').css('height', 'auto');
         }
@@ -1636,16 +1608,9 @@ $.fn.tmpPins = function (tmpPinList) {
             }
           }
         }
-
-
         marker.setIcon(pinIcon2);
-
         marker['pinIndex'] = pinIndex;
-
-
-
         templateClone.find('#marker').attr('src', pinIcon);
-
         pinIndex++;
       }
     }
@@ -1675,7 +1640,7 @@ $.fn.tmpPins = function (tmpPinList) {
               url: "/blocks/v2-dealer-locator/images/uptime-electric.svg",
               scaledSize: new google.maps.Size(58, 80), // scaled size
               origin: new google.maps.Point(0, 0), // origin
-            anchor: new google.maps.Point(19, 57)
+              anchor: new google.maps.Point(19, 57)
             }
           }
         }
@@ -1955,7 +1920,7 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterUptime').style.pointerEvents = 'auto';
       document.getElementById('filterDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'auto';
-      
+
       document.getElementById('filterDealer').classList.toggle('disabled');
       document.getElementById('filterUptime').classList.toggle('disabled');
       document.getElementById('filterDealerMobile').classList.toggle('disabled');
@@ -1967,7 +1932,7 @@ $.fn.filterNearbyPins = function () {
     }
     return false;
   });
- 
+
   $("#filterDealer, #filterDealerMobile ").unbind().bind("click", function (e) {
     e.preventDefault();
     var tmpPinList4 = [];
@@ -2042,12 +2007,12 @@ $.fn.filterNearbyPins = function () {
       document.getElementById('filterUptime').style.pointerEvents = 'auto';
       document.getElementById('filterElectricDealerMobile').style.pointerEvents = 'auto';
       document.getElementById('filterUptimeMobile').style.pointerEvents = 'auto';
-            
+
       document.getElementById('filterElectricDealer').classList.toggle('disabled');
       document.getElementById('filterUptime').classList.toggle('disabled');
       document.getElementById('filterElectricDealerMobile').classList.toggle('disabled');
       document.getElementById('filterUptimeMobile').classList.toggle('disabled');
-      
+
       document.getElementById('electric-tag').removeAttribute("title", $hoverText);
       document.getElementById('uptime-tag').removeAttribute("title", $hoverText);
 
@@ -2095,7 +2060,7 @@ $.fn.selectNearbyPins = function () {
 
     var templateClone = $($('#nearbyPinDetails').clone(true).html());
 
-    templateClone.find('.panel-container').parent().attr('data-id', pin.IDENTIFIER_VALUE);
+    templateClone.find('.panel-container').parent().data('id', pin.IDENTIFIER_VALUE);
 
     var openHours = $.fn.getOpenHours(pin);
     var isOpenHtml = "";
@@ -2391,6 +2356,8 @@ $.fn.setAddress = function () {
     address = address2;
   }
   address = $('#location').val();
+  $currentAddress = $('#location').val();
+
   if (!address) {
     return null;
   }
@@ -2446,6 +2413,7 @@ $.fn.setAddress = function () {
 
       }
 
+      $origin = $currentAddress;
 
       $me.setPosition({ lat: parseFloat(pos.lat), lng: parseFloat(pos.lng) });
 
@@ -2715,25 +2683,16 @@ $.fn.setMyDealer = function (dealer) {
 };
 
 $.fn.myDealer = function () {
-
   var dealer = $.fn.getCookie('my-dealer');
-
   var marker;
   for (i = 0; i < $markers.length; i++) {
-
     if ($markers[i].id == dealer) {
-
       var pinIcon = $.fn.drawPin('', 43, 63, '328E04');
-
       $markers[i].setIcon(pinIcon);
-
       marker = $markers[i];
-
     }
   }
-
   return marker;
-
 };
 
 $.fn.drawPin = function (text, width, height, color) {

@@ -313,17 +313,6 @@
   display: none;
 }
 
-@media (min-width: 744px) {
-  .v2-custom-form-container form {
-    display: flex;
-    flex-flow: row wrap;
-  }
-
-  .v2-custom-form-container .field-wrapper {
-    width: 100%;
-  }
-}
-
 @media (min-width: 1200px) {
   .section--with-background.v2-custom-form-container {
     margin-bottom: 0;
