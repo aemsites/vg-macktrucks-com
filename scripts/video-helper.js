@@ -269,6 +269,10 @@ export function getYoutubeVideoId(url) {
 }
 
 export function isVideoLink(link) {
+  if (!link || !(link instanceof HTMLAnchorElement)) {
+    return false;
+  }
+
   const linkString = link.getAttribute('href');
   return (
     (linkString.includes('youtube.com/embed/') ||
