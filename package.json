@@ -1,7 +1,7 @@
 {
   "name": "macktrucks",
   "private": true,
-  "version": "55.0.0",
+  "version": "56.0.0",
   "description": "Mack Trucks",
   "engines": {
     "node": ">=20.19.5 <23",
