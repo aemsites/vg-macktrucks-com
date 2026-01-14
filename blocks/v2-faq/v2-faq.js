@@ -69,7 +69,11 @@ const extractFaqItems = (block) => {
 
   return rows
     .map((row) => {
-      const [questionCell, answerCell] = row.children;
+      if (!row?.children || row.children.length < 2) {
+        return null;
+      }
+      const questionCell = row.children[0];
+      const answerCell = row.children[1];
       if (!questionCell || !answerCell) {
         return null;
       }
