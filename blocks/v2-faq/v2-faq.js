@@ -107,7 +107,9 @@ const renderFaqItemMarkup = ({ question, answerHtml }, blockId, index) => {
         type="button"
       >
         <span class="${BLOCK_NAME}__title">${escapeHtmlText(question)}</span>
-        <span class="icon icon-dropdown-caret-wide ${BLOCK_NAME}__icon" aria-hidden="true"></span>
+        <span class="${BLOCK_NAME}__icon" aria-hidden="true">
+          <span class="icon icon-dropdown-caret-wide"></span>
+        </span>
       </button>
 
       <div
