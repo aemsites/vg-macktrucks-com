@@ -121,6 +121,7 @@ const renderFaqItemMarkup = ({ question, answerHtml }, blockId, index) => {
         id="${panelId}"
         role="region"
         aria-labelledby="${buttonId}"
+        aria-hidden="true"
         hidden
       >
         ${answerHtml}
@@ -156,15 +157,26 @@ const getPanelForButton = (button) => {
 
 /**
  * Toggle a single accordion item.
+ * Keeps `aria-expanded` on the button and `hidden`/`aria-hidden` on the panel in sync.
  * @param {HTMLButtonElement} button
  * @param {HTMLElement} panel
  * @returns {void}
  */
 const toggleAccordionItem = (button, panel) => {
-  const isExpanded = button.getAttribute('aria-expanded') === 'true';
-  button.setAttribute('aria-expanded', String(!isExpanded));
-  panel.toggleAttribute('hidden', isExpanded);
-  button.parentElement?.classList.toggle(`${BLOCK_NAME}__item--open`, !isExpanded);
+  const expanded = button.getAttribute('aria-expanded') === 'true';
+  const nextExpanded = !expanded;
+
+  button.setAttribute('aria-expanded', String(nextExpanded));
+
+  if (nextExpanded) {
+    panel.removeAttribute('hidden');
+    panel.setAttribute('aria-hidden', 'false');
+  } else {
+    panel.setAttribute('hidden', '');
+    panel.setAttribute('aria-hidden', 'true');
+  }
+
+  button.parentElement?.classList.toggle(`${BLOCK_NAME}__item--open`, nextExpanded);
 };
 
 /**
