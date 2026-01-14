@@ -318,8 +318,11 @@ const scheduleSchemaUpdate = () => {
 
   window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = true;
   requestAnimationFrame(() => {
-    window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = false;
-    updateFaqSchemaScript();
+    try {
+      updateFaqSchemaScript();
+    } finally {
+      window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = false;
+    }
   });
 };
 
