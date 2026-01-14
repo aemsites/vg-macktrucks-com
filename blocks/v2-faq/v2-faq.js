@@ -151,16 +151,17 @@ const renderFaqItems = (block, items, blockId) => {
 };
 
 /**
- * Find the panel controlled by a button (via aria-controls).
+ * Find the panel associated with a toggle button.
+ * @param {HTMLElement} block
  * @param {HTMLButtonElement} button
  * @returns {HTMLElement|null}
  */
 const getPanelForButton = (block, button) => {
-  const panelId = button.getAttribute('aria-controls');
-  if (!panelId) {
+  const item = button.closest(`.${BLOCK_NAME}__item`);
+  if (!item || !block.contains(item)) {
     return null;
   }
-  return block.getElementById(panelId);
+  return item.querySelector(`.${BLOCK_NAME}__panel`);
 };
 
 /**
