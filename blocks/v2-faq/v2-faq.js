@@ -14,7 +14,9 @@ window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = window[GLOBAL_KEYS.SCHEMA_SCHEDULED] || f
 
 /**
  * Normalize text content from a DOM node.
- * @param {Element|null} el
+ * Safely handles nullish values by returning an empty string.
+ *
+ * @param {Element | null | undefined} el
  * @returns {string}
  */
 const normalizeTextContent = (el) => (el?.textContent || '').replace(/\s+/g, ' ').trim();
@@ -93,7 +95,7 @@ const extractFaqItems = (block) => {
       }
       return { question, answerText, answerHtml };
     })
-    .filter((item) => item !== null);
+    .filter(Boolean);
 };
 
 /**
@@ -153,17 +155,27 @@ const renderFaqItems = (block, items, blockId) => {
  * @param {HTMLButtonElement} button
  * @returns {HTMLElement|null}
  */
-const getPanelForButton = (button) => {
+const getPanelForButton = (block, button) => {
   const panelId = button.getAttribute('aria-controls');
   if (!panelId) {
     return null;
   }
-  return document.getElementById(panelId);
+  return block.getElementById(panelId);
 };
 
 /**
  * Toggle a single accordion item.
- * Keeps `aria-expanded` on the button and `hidden`/`aria-hidden` on the panel in sync.
+ *
+ * State invariants:
+ * - When expanded:
+ *   - button[aria-expanded="true"]
+ *   - panel is visible (no `hidden`)
+ *   - panel[aria-hidden="false"]
+ * - When collapsed:
+ *   - button[aria-expanded="false"]
+ *   - panel has `hidden`
+ *   - panel[aria-hidden="true"]
+ *
  * @param {HTMLButtonElement} button
  * @param {HTMLElement} panel
  * @returns {void}
@@ -201,7 +213,7 @@ const bindAccordionToggle = (block) => {
       return;
     }
 
-    const panel = getPanelForButton(button);
+    const panel = getPanelForButton(block, button);
     if (!panel || !block.contains(panel)) {
       return;
     }
@@ -213,7 +225,14 @@ const bindAccordionToggle = (block) => {
 };
 
 /**
- * Update the global registry for a single block.
+ * Register or remove FAQ entries for a specific block in the global registry.
+ *
+ * This registry is later used to generate a single, de-duplicated FAQPage
+ * JSON-LD schema for the entire page.
+ *
+ * - If the block has valid entries, they are stored under its blockId.
+ * - If no valid entries exist, the block is removed from the registry.
+ *
  * @param {string} blockId
  * @param {{ question: string, answerText: string, answerHtml: string }[]} items
  * @returns {void}
@@ -268,9 +287,15 @@ const getAllEntriesDeduplicated = () => {
 };
 
 /**
- * Build JSON-LD schema for FAQ entries.
+ * Build a FAQPage JSON-LD object (schema.org / Google FAQPage).
+ *
+ * Notes:
+ * - `question` and `answer` must be plain text (no HTML).
+ * - The result is serialized with `JSON.stringify` and injected into a
+ *   `<script type="application/ld+json">` tag.
+ *
  * @param {{ question: string, answer: string }[]} entries
- * @returns {object}
+ * @returns {Record<string, any>}
  */
 const buildFaqJsonLdSchema = (entries) => ({
   '@context': 'https://schema.org',
@@ -283,7 +308,12 @@ const buildFaqJsonLdSchema = (entries) => ({
 });
 
 /**
- * Upsert the JSON-LD script or remove it when empty.
+ * Create, update, or remove the page-level FAQPage JSON-LD script.
+ *
+ * Guarantees:
+ * - At most ONE FAQPage script with `data-v2-faq` exists on the page.
+ * - Script is removed when no valid FAQ entries are registered.
+ *
  * @returns {void}
  */
 const updateFaqSchemaScript = () => {
