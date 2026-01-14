@@ -212,14 +212,25 @@ const setBlockEntries = (blockId, items) => {
 };
 
 /**
+ * Normalize a string for deduplication:
+ * - collapse whitespace
+ * - trim
+ * @param {string} str
+ * @returns {string}
+ */
+const normalizeForDedupeKey = (str = '') => str.replace(/\s+/g, ' ').trim();
+
+/**
  * De-duplicate entries across blocks.
+ * Deduplication is whitespace-insensitive for both question and answer.
  * @param {{ question: string, answer: string }[]} entries
  * @returns {{ question: string, answer: string }[]}
  */
 const dedupeEntries = (entries) => {
   const seen = new Set();
+
   return entries.filter(({ question, answer }) => {
-    const key = `${question.trim()}\u0000${answer.trim()}`;
+    const key = `${normalizeForDedupeKey(question)}\u0000${normalizeForDedupeKey(answer)}`;
     if (seen.has(key)) {
       return false;
     }
