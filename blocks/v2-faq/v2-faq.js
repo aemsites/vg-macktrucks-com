@@ -35,13 +35,26 @@ const HTML_ESCAPE_MAP = {
 const escapeHtmlText = (str = '') => str.replace(/[&<>"']/g, (ch) => HTML_ESCAPE_MAP[ch] || ch);
 
 /**
+ * Create a unique id fragment for block-scoped DOM ids.
+ * Prefers `crypto.randomUUID()` when available; falls back to a random hex string.
+ * @returns {string}
+ */
+const createStableId = () => {
+  if (window.crypto?.randomUUID) {
+    return window.crypto.randomUUID();
+  }
+  return Math.random().toString(16).slice(2);
+};
+
+/**
  * Ensure a stable block id on the element.
+ * The id is stored in `data-v2-faq-id` so it persists across re-decorations.
  * @param {HTMLElement} block
  * @returns {string}
  */
 const getOrCreateBlockId = (block) => {
   if (!block.dataset.v2FaqId) {
-    block.dataset.v2FaqId = `${BLOCK_NAME}-${Math.random().toString(16).slice(2)}`;
+    block.dataset.v2FaqId = `${BLOCK_NAME}-${createStableId()}`;
   }
   return block.dataset.v2FaqId;
 };
