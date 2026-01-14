@@ -61,6 +61,12 @@ const getOrCreateBlockId = (block) => {
 
 /**
  * Extract FAQ items from authored markup.
+ *
+ * Security note:
+ * - `answerHtml` is treated as trusted HTML from the authoring pipeline (EDS).
+ * - It may contain markup (links, lists, formatting).
+ * - If this assumption changes, sanitize `answerHtml` before rendering.
+ *
  * @param {HTMLElement} block
  * @returns {{ question: string, answerText: string, answerHtml: string }[]}
  */
