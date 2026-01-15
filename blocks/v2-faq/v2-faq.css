@@ -47,7 +47,7 @@
   margin-right: 6px;
   flex-shrink: 0;
   color: #141414;
-  transition: transform 0.2s ease;
+  transition: transform var(--duration-medium) ease;
 }
 
 .v2-faq__icon svg {
