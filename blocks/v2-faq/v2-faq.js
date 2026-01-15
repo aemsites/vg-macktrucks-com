@@ -204,10 +204,6 @@ const toggleAccordionItem = (button, panel) => {
  * @returns {void}
  */
 const bindAccordionToggle = (block) => {
-  if (block.dataset.v2FaqBound) {
-    return;
-  }
-
   block.addEventListener('click', (e) => {
     const button = e.target?.closest?.(`.${BLOCK_NAME}__button`);
     if (!button || !block.contains(button)) {
@@ -221,8 +217,6 @@ const bindAccordionToggle = (block) => {
 
     toggleAccordionItem(button, panel);
   });
-
-  block.dataset.v2FaqBound = 'true';
 };
 
 /**
