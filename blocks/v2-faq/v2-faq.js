@@ -5,12 +5,10 @@ const FAQ_SCHEMA_SELECTOR = 'script[type="application/ld+json"][data-v2-faq]';
 
 const GLOBAL_KEYS = {
   ENTRIES_BY_BLOCK: '__v2FaqEntriesByBlock',
-  SCHEMA_SCHEDULED: '__v2FaqSchemaScheduled',
 };
 
 // Initialize global state once per page
 window[GLOBAL_KEYS.ENTRIES_BY_BLOCK] = window[GLOBAL_KEYS.ENTRIES_BY_BLOCK] || new Map();
-window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = window[GLOBAL_KEYS.SCHEMA_SCHEDULED] || false;
 
 /**
  * Normalize text content from a DOM node.
@@ -49,17 +47,11 @@ const createStableId = () => {
 };
 
 /**
- * Ensure a stable block id on the element.
- * The id is stored in `data-v2-faq-id` so it persists across re-decorations.
- * @param {HTMLElement} block
+ * Create a unique block id.
+ * Used to scope DOM ids (aria-controls / aria-labelledby) per block instance.
  * @returns {string}
  */
-const getOrCreateBlockId = (block) => {
-  if (!block.dataset.v2FaqId) {
-    block.dataset.v2FaqId = `${BLOCK_NAME}-${createStableId()}`;
-  }
-  return block.dataset.v2FaqId;
-};
+const createBlockId = () => `${BLOCK_NAME}-${createStableId()}`;
 
 /**
  * Extract FAQ items from authored markup.
@@ -332,32 +324,13 @@ const updateFaqSchemaScript = () => {
   script.textContent = json;
 };
 
-/**
- * Batch schema updates across blocks (one per frame).
- * @returns {void}
- */
-const scheduleSchemaUpdate = () => {
-  if (window[GLOBAL_KEYS.SCHEMA_SCHEDULED]) {
-    return;
-  }
-
-  window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = true;
-  requestAnimationFrame(() => {
-    try {
-      updateFaqSchemaScript();
-    } finally {
-      window[GLOBAL_KEYS.SCHEMA_SCHEDULED] = false;
-    }
-  });
-};
-
 export default function decorate(block) {
-  const blockId = getOrCreateBlockId(block);
+  const blockId = createBlockId(block);
   const items = extractFaqItems(block);
 
   renderFaqItems(block, items, blockId);
   bindAccordionToggle(block);
 
   setBlockEntries(blockId, items);
-  scheduleSchemaUpdate();
+  updateFaqSchemaScript();
 }
