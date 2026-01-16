@@ -76,9 +76,15 @@ const createLogo = (logoWrapper) => {
 const createMainLinks = (mainLinksWrapper) => {
   const list = mainLinksWrapper.querySelector('ul');
   if (list) {
+    const listItems = list.querySelectorAll('li');
     list.setAttribute('id', 'header-main-nav');
     list.classList.add(`${blockName}__main-nav`);
-    list.querySelectorAll('li').forEach((listItem) => {
+
+    if (listItems.length === 1) {
+      return list;
+    }
+
+    listItems.forEach((listItem) => {
       const accordionContainer = document.createRange().createContextualFragment(`
         <div class="${blockName}__accordion-container ${blockName}__main-link-wrapper">
           <div class="${blockName}__accordion-content-wrapper">
@@ -94,6 +100,7 @@ const createMainLinks = (mainLinksWrapper) => {
       const mainNavLink = listItem.querySelector('a');
       mainNavLink.setAttribute('id', generateId('main-nav'));
     });
+
     list.querySelectorAll('li > a').forEach((link) => {
       link.classList.add(`${blockName}__main-nav-link`, `${blockName}__link`, `${blockName}__link-accordion`);
     });
@@ -150,7 +157,7 @@ const createActions = (actionsWrapper) => {
   return list;
 };
 
-const mobileActions = () => {
+const mobileActions = (shouldRenderMobileHeaderButton) => {
   const mobileActionsEl = createElement('div', { classes: [`${blockName}__mobile-actions`] });
   const searchLabel = getTextLabel('Search');
   const openMenuLabel = getTextLabel('Open menu');
@@ -160,19 +167,26 @@ const mobileActions = () => {
     <span class="icon icon-search" aria-hidden="true"></span>
   </a>`;
 
-  const actions = document.createRange().createContextualFragment(`
+  let actions = `
     ${SEARCH_DISABLED?.toLowerCase() === 'true' ? '' : searchEl}
-    <button
-      aria-label="${openMenuLabel}"
-      class="${blockName}__hamburger-menu ${blockName}__action-link ${blockName}__link"
-      aria-expanded="false"
-      aria-controls="header-main-nav, header-actions-list"
-    >
-      <span class="icon icon-hamburger" aria-hidden="true"></span>
-    </button>
-  `);
+  `;
 
-  mobileActionsEl.append(...actions.childNodes);
+  if (shouldRenderMobileHeaderButton) {
+    actions += `
+      <button
+        aria-label="${openMenuLabel}"
+        class="${blockName}__hamburger-menu ${blockName}__action-link ${blockName}__link"
+        aria-expanded="false"
+        aria-controls="header-main-nav, header-actions-list"
+      >
+        <span class="icon icon-hamburger" aria-hidden="true"></span>
+      </button>
+    `;
+  }
+
+  const actionsFragment = document.createRange().createContextualFragment(actions);
+
+  mobileActionsEl.append(...actionsFragment.childNodes);
 
   return mobileActionsEl;
 };
@@ -713,21 +727,28 @@ export default async function decorate(block) {
   if (headerLogoAlignment) {
     nav.classList.add(`${blockName}__nav-logo--${headerLogoAlignment}`);
   }
-  const navContent = document.createRange().createContextualFragment(`
+
+  const headerMainLinks = createMainLinks(navigationContainer);
+  const headerMainLinksListItems = headerMainLinks.querySelectorAll('li');
+  const shouldRenderMobileHeaderButton = headerMainLinksListItems.length > 1;
+
+  const navContent = `
     <div class="${blockName}__menu-overlay"></div>
     ${createLogo(logoContainer).outerHTML}
     ${
       navigationContainer.children.length
         ? `<div class="${blockName}__main-links">
-      ${createMainLinks(navigationContainer).outerHTML}
+      ${headerMainLinks.outerHTML}
     </div>`
         : ''
     }
     <div class="${blockName}__actions">
-      ${isMobileMenuDisabled ? '' : mobileActions().outerHTML}
+      ${isMobileMenuDisabled ? '' : mobileActions(shouldRenderMobileHeaderButton).outerHTML}
       ${isMobileMenuDisabled ? decorateCTA(actionsContainer).outerHTML : createActions(actionsContainer).outerHTML}
     </div>
-  `);
+  `;
+
+  const navContentFragment = document.createRange().createContextualFragment(navContent);
 
   const setAriaForMenu = (isMenuVisible) => {
     nav.querySelectorAll(`.${blockName}__close-menu, .${blockName}__hamburger-menu`).forEach((control) => {
@@ -779,26 +800,26 @@ export default async function decorate(block) {
 
   // add actions for search
   if (SEARCH_DISABLED.toLowerCase() === 'false') {
-    navContent.querySelector(`.${blockName}__search-button`)?.addEventListener('click', () => {
+    navContentFragment.querySelector(`.${blockName}__search-button`)?.addEventListener('click', () => {
       window.location.href = '/search';
     });
   }
 
   // add action for hamburger
-  navContent.querySelector(`.${blockName}__hamburger-menu`)?.addEventListener('click', () => {
+  navContentFragment.querySelector(`.${blockName}__hamburger-menu`)?.addEventListener('click', () => {
     block.classList.add(`${blockName}--hamburger-open`);
     onNavExpandChange(true);
     setAriaForMenu(true);
   });
 
-  navContent.querySelectorAll(`.${blockName}__menu-overlay, .${blockName}__close-menu`).forEach((el) => {
+  navContentFragment.querySelectorAll(`.${blockName}__menu-overlay, .${blockName}__close-menu`).forEach((el) => {
     el.addEventListener('click', closeHamburgerMenu);
   });
 
   // hiding the hamburger menu when switch to desktop
   desktopMQ.addEventListener('change', closeHamburgerMenu);
 
-  nav.append(navContent);
+  nav.append(navContentFragment);
   block.append(nav);
 
   setAriaForMenu(false);
