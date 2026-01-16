@@ -753,7 +753,7 @@ async function createCustomDropdown(fd) {
   };
 
   if (fd.onChangeCallback) {
-    configFd.onChangeCallback = (label, value) => fd.onChangeCallback({ label, value, name: fd.Name });
+    configFd.onChangeCallback = ({ label, value }) => fd.onChangeCallback({ label, value, name: fd.Name });
   }
 
   const customDropdown = await getCustomDropdown(configFd);
