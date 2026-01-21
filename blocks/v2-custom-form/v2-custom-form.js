@@ -5,6 +5,20 @@ import { getCustomDropdown } from '../../common/custom-dropdown/custom-dropdown.
 const blockName = 'v2-custom-form';
 const variantClasses = ['double-column', 'redirect-new-tab'];
 
+let fullyLoadedTime = null;
+let minRequiredSeconds;
+
+function onPageReady(callback) {
+  if (document.readyState === 'complete') {
+    callback();
+  } else {
+    window.addEventListener('load', callback);
+  }
+}
+onPageReady(() => {
+  fullyLoadedTime = Date.now();
+});
+
 const CLASSES = {
   IGNORE_ON_FORM_SUBMIT: 'ignore-on-form-submit',
 };
@@ -1043,6 +1057,23 @@ async function createForm(formURL) {
     cleanErrorMessages(form);
     e.preventDefault();
 
+    const currentTime = Date.now();
+    const secondsSinceLoad = Math.floor((currentTime - fullyLoadedTime) / 1000);
+    const isValidTiming = secondsSinceLoad >= minRequiredSeconds;
+
+    // Track usage of form in Google Analytics
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'contact_form_submitted',
+      status: isValidTiming ? 'accepted' : 'rejected',
+      time_to_fill: secondsSinceLoad,
+    });
+
+    if (!isValidTiming) {
+      console.warn(`Form submission blocked: Fields were filled in less than: ${minRequiredSeconds} (possible bot).`);
+      return;
+    }
+
     const honeypot = form.querySelector('input[name="form_extra_field"]');
     if (honeypot && honeypot.value) {
       console.warn('Form submission blocked: honeypot field was filled (possible bot).');
@@ -1121,12 +1152,14 @@ export default async function decorate(block) {
   const successFragmentCell = getConfigValueCell(block, 'successFragmentUrl');
   const successRedirectCell = getConfigValueCell(block, 'successRedirectUrl');
   const errorRedirectCell = getConfigValueCell(block, 'errorRedirectUrl');
+  const timeValue = getConfigValueCell(block, 'time');
 
   const formUrl = linkCell ? (linkCell.querySelector('a')?.href || linkCell.textContent).trim() : '';
   const isJsonUrl = formUrl.toLowerCase().trim().endsWith('.json');
   const thankYouPageUrl = successFragmentCell ? (successFragmentCell.querySelector('a')?.href || successFragmentCell.textContent).trim() : '';
   const successRedirectUrl = successRedirectCell ? (successRedirectCell.querySelector('a')?.href || successRedirectCell.textContent).trim() : '';
   const errorRedirectUrl = errorRedirectCell ? (errorRedirectCell.querySelector('a')?.href || errorRedirectCell.textContent).trim() : '';
+  minRequiredSeconds = timeValue ? parseInt(timeValue.textContent, 10) : 3;
 
   if (!formUrl || !isJsonUrl) {
     console.error('%cForm link%c is missing or not a .json', 'color:red', 'color:inherit', { formUrl });
