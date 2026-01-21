@@ -445,5 +445,28 @@
       }
     ]
   },
+    "holidays": {
+    "total": 4,
+    "offset": 0,
+    "limit": 4,
+    "data": [
+      {
+        "name": "Juneteenth National Independence Day",
+        "value": "45827"
+      },
+      {
+        "name": "New Year’s Day",
+        "value": "45658"
+      },
+      {
+        "name": "Veterans Day",
+        "value": "45972"
+      }
+    ],
+    "columns": [
+      "name",
+      "value"
+    ]
+  },
   ":type": "multi-sheet"
 }
