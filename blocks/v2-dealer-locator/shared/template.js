@@ -74,13 +74,6 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
                           src="/blocks/v2-dealer-locator/images/location.svg"/></button>
                 </div>
               </div>
-              <div class="toggle-wrapper">
-                <div class="toggle-container">
-                    <button class="toggle-button" data-active="mi"></button>
-                    <p class="units unit-km">km</p>
-                    <p class="units unit-mi">mi</p>
-                </div>
-              </div>
       </div>
       <div id="map"></div>
       <div class="map-geo-container">
@@ -110,11 +103,6 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
                               src="/blocks/v2-dealer-locator/images/location.svg"/></button>
                   </div>
 
-                  </div>
-                  <div class="toggle-container">
-                    <button class="toggle-button" data-active="mi"></button>
-                    <p class="units unit-km">km</p>
-                    <p class="units unit-mi">mi</p>
                   </div>
           </div>
           <div class="row legend-header">
