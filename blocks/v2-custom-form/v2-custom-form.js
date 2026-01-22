@@ -16,7 +16,7 @@ function onPageReady(callback) {
   }
 }
 onPageReady(() => {
-  fullyLoadedTime = Date.now();
+  fullyLoadedTime = performance.now();
 });
 
 const CLASSES = {
@@ -1057,7 +1057,7 @@ async function createForm(formURL) {
     cleanErrorMessages(form);
     e.preventDefault();
 
-    const currentTime = Date.now();
+    const currentTime = performance.now();
     const secondsSinceLoad = Math.floor((currentTime - fullyLoadedTime) / 1000);
     const isValidTiming = secondsSinceLoad >= minRequiredSeconds;
 
