@@ -1387,7 +1387,13 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.detail-call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + '<img src="/blocks/v2-dealer-locator/images/phone.svg" />' + "Call" + '</a>');
     templateClone.find('.call a').attr("href", 'tel:' + $.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
     templateClone.find('.call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + "Call" + '</a>');
-    
+    var mapsUrl = $.fn.getDirectionsUrlFromPin(pin)
+    templateClone.find('.direction a')
+      .data('id', pin.IDENTIFIER_VALUE)
+      .text('Google Maps')
+      .removeAttr('onclick')
+      .attr({ 'href': mapsUrl, 'target': '_blank' });
+      
     if (!pin.MAIN_ADDRESS_LINE_1_TXT) {
       templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_2_TXT);
     } else if (!pin.MAIN_ADDRESS_LINE_2_TXT) {

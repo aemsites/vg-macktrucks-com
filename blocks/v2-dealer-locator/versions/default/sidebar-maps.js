@@ -1044,7 +1044,6 @@ $.fn.renderAddDirectionsPin = function (marker, details) {
   templateClone.find('.detail-website a').attr("href", $.fn.formatWebAddress(pin.WEB_ADDRESS));
   templateClone.find('.detail-call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + '<img src="/blocks/v2-dealer-locator/images/phone.svg" />' + "Call" + '</a>');
 
-
   $("<div/>", {
     'html': templateClone
   }).appendTo('.nearby-select');
@@ -1500,6 +1499,11 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.heading p').text($.fn.camelCase(pin.COMPANY_DBA_NAME));
     templateClone.find('.hours').text(isOpenHtml);
     templateClone.find('.city').text(pin.MAIN_CITY_NM + ', ' + pin.MAIN_STATE_PROV_CD + ' ' + pin.MAIN_POSTAL_CD);
+    templateClone.find('.direction a')
+      .data('id', pin.IDENTIFIER_VALUE)
+      .text('Google Maps')
+      .removeAttr('onclick')
+      .attr({ 'href': mapsUrl, 'target': '_blank' });
     templateClone.find('.website a').text('Dealer Site');
     templateClone.find('.phone').text($.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
 
