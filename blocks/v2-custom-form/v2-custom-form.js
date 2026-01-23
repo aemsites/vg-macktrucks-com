@@ -949,7 +949,7 @@ async function createForm(formURL, time) {
   }
 
   const form = createElement('form');
-  form.dataset.msRef = btoa(time.toString()); // Encoded into Base64 for an extra layer of safety
+  form.dataset.msRef = time;
   const customDropdowns = [];
   const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
@@ -1045,8 +1045,7 @@ async function createForm(formURL, time) {
     e.preventDefault();
 
     const activeForm = e.currentTarget;
-    const decodedMsValue = atob(activeForm.dataset.msRef);
-    const minMs = (parseInt(decodedMsValue, 10) || 3) * 1000;
+    const minMs = (parseInt(activeForm.dataset.msRef, 10) || 3) * 1000;
     const fullyLoadedTime = parseFloat(activeForm.dataset.loaded || 0);
     const msElapsed = performance.now() - fullyLoadedTime;
     const isSecure = msElapsed >= minMs;
@@ -1056,7 +1055,7 @@ async function createForm(formURL, time) {
     window.dataLayer.push({
       event: 'contact_form_submitted',
       status: isSecure ? 'accepted' : 'rejected',
-      time_to_fill: msElapsed,
+      time_to_fill: Math.ceil(msElapsed),
     });
 
     if (!isSecure) {
@@ -1150,7 +1149,7 @@ export default async function decorate(block) {
   const successRedirectUrl = successRedirectCell ? (successRedirectCell.querySelector('a')?.href || successRedirectCell.textContent).trim() : '';
   const errorRedirectUrl = errorRedirectCell ? (errorRedirectCell.querySelector('a')?.href || errorRedirectCell.textContent).trim() : '';
   const parsedValue = timeValue ? parseInt(timeValue.textContent, 10) : 3;
-  const minRequiredSeconds = isNaN(parsedValue) ? 3 : parsedValue;
+  const minRequiredSeconds = Math.max(isNaN(parsedValue) ? 3 : parsedValue, 1);
 
   if (!formUrl || !isJsonUrl) {
     console.error('%cForm link%c is missing or not a .json', 'color:red', 'color:inherit', { formUrl });
