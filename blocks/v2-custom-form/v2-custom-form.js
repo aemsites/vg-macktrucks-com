@@ -949,7 +949,7 @@ async function createForm(formURL, time) {
   }
 
   const form = createElement('form');
-  form.dataset.msRef = time;
+  form.dataset.secRef = time;
   const customDropdowns = [];
   const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
@@ -1045,7 +1045,7 @@ async function createForm(formURL, time) {
     e.preventDefault();
 
     const activeForm = e.currentTarget;
-    const minMs = (parseInt(activeForm.dataset.msRef, 10) || 3) * 1000;
+    const minMs = (parseInt(activeForm.dataset.secRef, 10) || 3) * 1000;
     const fullyLoadedTime = parseFloat(activeForm.dataset.loaded || 0);
     const msElapsed = performance.now() - fullyLoadedTime;
     const isSecure = msElapsed >= minMs;
@@ -1055,7 +1055,7 @@ async function createForm(formURL, time) {
     window.dataLayer.push({
       event: 'contact_form_submitted',
       status: isSecure ? 'accepted' : 'rejected',
-      time_to_fill: Math.ceil(msElapsed),
+      time_to_fill_ms: Math.ceil(msElapsed),
     });
 
     if (!isSecure) {
