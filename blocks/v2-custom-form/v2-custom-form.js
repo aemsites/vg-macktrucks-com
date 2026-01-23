@@ -5,20 +5,6 @@ import { getCustomDropdown } from '../../common/custom-dropdown/custom-dropdown.
 const blockName = 'v2-custom-form';
 const variantClasses = ['double-column', 'redirect-new-tab'];
 
-let fullyLoadedTime = null;
-let minRequiredSeconds;
-
-function onPageReady(callback) {
-  if (document.readyState === 'complete') {
-    callback();
-  } else {
-    window.addEventListener('load', callback);
-  }
-}
-onPageReady(() => {
-  fullyLoadedTime = performance.now();
-});
-
 const CLASSES = {
   IGNORE_ON_FORM_SUBMIT: 'ignore-on-form-submit',
 };
@@ -949,7 +935,7 @@ function validateSubmitButton(data) {
   return hasSubmit && hasAction;
 }
 
-async function createForm(formURL) {
+async function createForm(formURL, time) {
   const { pathname } = new URL(formURL);
   const data = await fetchForm(pathname);
 
@@ -963,6 +949,7 @@ async function createForm(formURL) {
   }
 
   const form = createElement('form');
+  form.dataset.msRef = btoa(time.toString()); // Encoded into Base64 for an extra layer of safety
   const customDropdowns = [];
   const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
@@ -1057,20 +1044,23 @@ async function createForm(formURL) {
     cleanErrorMessages(form);
     e.preventDefault();
 
-    const currentTime = performance.now();
-    const secondsSinceLoad = Math.floor((currentTime - fullyLoadedTime) / 1000);
-    const isValidTiming = secondsSinceLoad >= minRequiredSeconds;
+    const activeForm = e.currentTarget;
+    const decodedMsValue = atob(activeForm.dataset.msRef);
+    const minMs = (parseInt(decodedMsValue, 10) || 3) * 1000;
+    const fullyLoadedTime = parseFloat(activeForm.dataset.loaded || 0);
+    const msElapsed = performance.now() - fullyLoadedTime;
+    const isSecure = msElapsed >= minMs;
 
     // Track usage of form in Google Analytics
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: 'contact_form_submitted',
-      status: isValidTiming ? 'accepted' : 'rejected',
-      time_to_fill: secondsSinceLoad,
+      status: isSecure ? 'accepted' : 'rejected',
+      time_to_fill: msElapsed,
     });
 
-    if (!isValidTiming) {
-      console.warn(`Form submission blocked: Fields were filled in less than: ${minRequiredSeconds} (possible bot).`);
+    if (!isSecure) {
+      console.warn(`Form submission blocked: Fields were filled in less than: ${Math.floor(msElapsed / 1000)} seconds (possible bot).`);
       return;
     }
 
@@ -1159,7 +1149,8 @@ export default async function decorate(block) {
   const thankYouPageUrl = successFragmentCell ? (successFragmentCell.querySelector('a')?.href || successFragmentCell.textContent).trim() : '';
   const successRedirectUrl = successRedirectCell ? (successRedirectCell.querySelector('a')?.href || successRedirectCell.textContent).trim() : '';
   const errorRedirectUrl = errorRedirectCell ? (errorRedirectCell.querySelector('a')?.href || errorRedirectCell.textContent).trim() : '';
-  minRequiredSeconds = timeValue ? parseInt(timeValue.textContent, 10) : 3;
+  const parsedValue = timeValue ? parseInt(timeValue.textContent, 10) : 3;
+  const minRequiredSeconds = isNaN(parsedValue) ? 3 : parsedValue;
 
   if (!formUrl || !isJsonUrl) {
     console.error('%cForm link%c is missing or not a .json', 'color:red', 'color:inherit', { formUrl });
@@ -1169,7 +1160,7 @@ export default async function decorate(block) {
 
   decorateTitles(block);
 
-  const form = await createForm(formUrl);
+  const form = await createForm(formUrl, minRequiredSeconds);
   if (!form) {
     console.error('%cForm%c could not be created. No form data found.', 'color:red', 'color:inherit', { formUrl, form });
     block.textContent = '';
@@ -1193,6 +1184,9 @@ export default async function decorate(block) {
 
   form.append(createHoneypotField());
   block.append(form);
+
+  // Register time the moment after the form is appended and add the miliseconds value to the form
+  form.dataset.loaded = Math.ceil(performance.now());
 
   window.addEventListener('unhandledrejection', ({ reason, error }) => {
     console.error('Unhandled rejection. Error submitting form:', { reason, error });
