@@ -935,7 +935,7 @@ function validateSubmitButton(data) {
   return hasSubmit && hasAction;
 }
 
-async function createForm(formURL) {
+async function createForm(formURL, time) {
   const { pathname } = new URL(formURL);
   const data = await fetchForm(pathname);
 
@@ -949,6 +949,7 @@ async function createForm(formURL) {
   }
 
   const form = createElement('form');
+  form.dataset.secRef = time;
   const customDropdowns = [];
   const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
@@ -1043,6 +1044,25 @@ async function createForm(formURL) {
     cleanErrorMessages(form);
     e.preventDefault();
 
+    const activeForm = e.currentTarget;
+    const minMs = (parseInt(activeForm.dataset.secRef, 10) || 3) * 1000;
+    const fullyLoadedTime = parseFloat(activeForm.dataset.loaded || 0);
+    const msElapsed = performance.now() - fullyLoadedTime;
+    const isSecure = msElapsed >= minMs;
+
+    // Track usage of form in Google Analytics
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'contact_form_submitted',
+      status: isSecure ? 'accepted' : 'rejected',
+      time_to_fill_ms: Math.ceil(msElapsed),
+    });
+
+    if (!isSecure) {
+      console.warn(`Form submission blocked: Fields were filled in less than: ${Math.floor(msElapsed / 1000)} seconds (possible bot).`);
+      return;
+    }
+
     const honeypot = form.querySelector('input[name="form_extra_field"]');
     if (honeypot && honeypot.value) {
       console.warn('Form submission blocked: honeypot field was filled (possible bot).');
@@ -1121,12 +1141,15 @@ export default async function decorate(block) {
   const successFragmentCell = getConfigValueCell(block, 'successFragmentUrl');
   const successRedirectCell = getConfigValueCell(block, 'successRedirectUrl');
   const errorRedirectCell = getConfigValueCell(block, 'errorRedirectUrl');
+  const timeValue = getConfigValueCell(block, 'time');
 
   const formUrl = linkCell ? (linkCell.querySelector('a')?.href || linkCell.textContent).trim() : '';
   const isJsonUrl = formUrl.toLowerCase().trim().endsWith('.json');
   const thankYouPageUrl = successFragmentCell ? (successFragmentCell.querySelector('a')?.href || successFragmentCell.textContent).trim() : '';
   const successRedirectUrl = successRedirectCell ? (successRedirectCell.querySelector('a')?.href || successRedirectCell.textContent).trim() : '';
   const errorRedirectUrl = errorRedirectCell ? (errorRedirectCell.querySelector('a')?.href || errorRedirectCell.textContent).trim() : '';
+  const parsedValue = timeValue ? parseInt(timeValue.textContent, 10) : 3;
+  const minRequiredSeconds = Math.max(isNaN(parsedValue) ? 3 : parsedValue, 1);
 
   if (!formUrl || !isJsonUrl) {
     console.error('%cForm link%c is missing or not a .json', 'color:red', 'color:inherit', { formUrl });
@@ -1136,7 +1159,7 @@ export default async function decorate(block) {
 
   decorateTitles(block);
 
-  const form = await createForm(formUrl);
+  const form = await createForm(formUrl, minRequiredSeconds);
   if (!form) {
     console.error('%cForm%c could not be created. No form data found.', 'color:red', 'color:inherit', { formUrl, form });
     block.textContent = '';
@@ -1160,6 +1183,9 @@ export default async function decorate(block) {
 
   form.append(createHoneypotField());
   block.append(form);
+
+  // Register time the moment after the form is appended and add the miliseconds value to the form
+  form.dataset.loaded = Math.ceil(performance.now());
 
   window.addEventListener('unhandledrejection', ({ reason, error }) => {
     console.error('Unhandled rejection. Error submitting form:', { reason, error });
