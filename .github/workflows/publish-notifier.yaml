@@ -29,7 +29,7 @@ jobs:
     outputs:
       http_code: ${{ steps.notify.outputs.http_code }}
       body: ${{ steps.notify.outputs.body }}
-      page_path: ${{ steps.notify.outputs.page_path }}
+      page_path: ${{ steps.notify.outputs.live_path }}
     steps:
       - name: Notify upsert endpoint
         id: notify
@@ -89,7 +89,7 @@ jobs:
         if: ${{ needs.notify-connector.result != 'success' }}
         shell: bash
         run: |
-          path="${{ needs.notify-connector.outputs.page_path }}"
+          path="${{ needs.notify-connector.outputs.live_path }}"
           site="${{ github.event.client_payload.site }}"
           repo="${{ github.repository }}"
           run_url="https://github.com/${repo}/actions/runs/${{ github.run_id }}"
@@ -138,6 +138,6 @@ jobs:
         if: ${{ needs.notify-connector.result == 'success' }}
         run: |
           echo "Notify connector job succeeded. No Slack notification sent."
-          echo "Cleaned path used for upsert: ${{ needs.notify-connector.outputs.page_path }}"
+          echo "Cleaned path used for upsert: ${{ needs.notify-connector.outputs.live_path }}"
           echo "Original path from event: ${{ github.event.client_payload.path }}"
           echo "Status: ${{ needs.notify-connector.result }}"
