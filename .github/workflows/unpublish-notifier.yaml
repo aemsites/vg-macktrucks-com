@@ -28,7 +28,7 @@ jobs:
       CONNECTOR_DOMAIN: ${{ vars.CONNECTOR_DOMAIN }}
       API_KEY: ${{ secrets.API_KEY }}
     outputs:
-      page_path: ${{ steps.delete.outputs.page_path }}
+      page_path: ${{ steps.delete.outputs.live_path }}
       body: ${{ steps.delete.outputs.body }}
       http_code: ${{ steps.delete.outputs.http_code }}
     steps:
@@ -87,7 +87,7 @@ jobs:
         if: ${{ needs.notify-delete.result != 'success' }}
         shell: bash
         run: |
-          path="${{ needs.notify-delete.outputs.page_path }}"
+          path="${{ needs.notify-delete.outputs.live_path }}"
           site="${{ github.event.client_payload.site }}"
           repo="${{ github.repository }}"
           run_url="https://github.com/${repo}/actions/runs/${{ github.run_id }}"
@@ -134,6 +134,6 @@ jobs:
         if: ${{ needs.notify-delete.result == 'success' }}
         run: |
           echo "Delete call succeeded. No Slack notification sent."
-          echo "Cleaned path used for delete: ${{ needs.notify-delete.outputs.page_path }}"
+          echo "Cleaned path used for delete: ${{ needs.notify-delete.outputs.live_path }}"
           echo "Original path from event: ${{ github.event.client_payload.path }}"
           echo "Status: ${{ needs.notify-delete.result }}"
