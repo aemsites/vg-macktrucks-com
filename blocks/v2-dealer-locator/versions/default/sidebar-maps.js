@@ -85,7 +85,6 @@ $hoverText = $('#hoverText').val();
 $locale = window.locatorConfig.locale;
 $units = [{ name: 'mi', factor: 1.60934 }, { name: 'km', factor: 1 }];
 $activeUnit = $units[($locale === 'en-BS' || $locale === 'en-US') ? 0 : 1].name;
-var $distanceToggles = $('.toggle-container');
 
 // Google callback letting us know maps is ready to be used
 (function () {
@@ -231,12 +230,6 @@ var $distanceToggles = $('.toggle-container');
 
     $directionsService = new google.maps.DirectionsService();
     $directionsDisplay = new google.maps.DirectionsRenderer();
-
-    // Set inital slider position based on active locale unit
-    [...$distanceToggles].forEach(toggle => {
-      $activeButton = toggle.querySelector('.toggle-button');
-      $activeButton.dataset.active = $activeUnit;
-    });
   }
 })();
 
@@ -1051,7 +1044,6 @@ $.fn.renderAddDirectionsPin = function (marker, details) {
   templateClone.find('.detail-website a').attr("href", $.fn.formatWebAddress(pin.WEB_ADDRESS));
   templateClone.find('.detail-call').html('<a href="tel:' + pin.REG_PHONE_NUMBER + '">' + '<img src="/blocks/v2-dealer-locator/images/phone.svg" />' + "Call" + '</a>');
 
-
   $("<div/>", {
     'html': templateClone
   }).appendTo('.nearby-select');
@@ -1343,10 +1335,6 @@ $.fn.milesInMeters = function ($mi) {
   return $mi * 1609.3;
 };
 
-$.fn.kmToMiles = function ($km) {
-  return $km * 0.621371;
-};
-
 $.fn.radiusChange = function () {
 
   $value = $('#range').val() * 1;
@@ -1516,25 +1504,8 @@ $.fn.tmpPins = function (tmpPinList) {
       .text('Google Maps')
       .removeAttr('onclick')
       .attr({ 'href': mapsUrl, 'target': '_blank' });
-
     templateClone.find('.website a').text('Dealer Site');
     templateClone.find('.phone').text($.fn.formatPhoneNumber(pin.REG_PHONE_NUMBER));
-
-    const distanceInMiles = pin.distance.toFixed(2);
-    const distanceInKms = (distanceInMiles * $units[0].factor).toFixed(2);
-
-    const isActive = (unit) => unit === $activeUnit ? 'active' : '';
-
-    const distances = `
-      <p class='distance-text ${isActive($units[0].name)}'>
-        ~ ${Math.round(distanceInMiles) + ' ' + $units[0].name}
-      </p>
-      <p class='distance-text ${isActive($units[1].name)}'>
-        ~ ${Math.round(distanceInKms) + ' ' + $units[1].name}
-      </p>
-    `;
-
-    templateClone.find('.distance').html(distances);
 
     if (!pin.MAIN_ADDRESS_LINE_1_TXT) {
       templateClone.find('.address').text(pin.MAIN_ADDRESS_LINE_2_TXT);
@@ -3140,27 +3111,6 @@ $(document).on('click', '#print', function (eventObject) {
 
   setTimeout(function () { newWin.close(); }, 10);
 
-});
-
-// toggle distance units
-const updateToggle = (e) => {
-  e.preventDefault;
-  const button = e.target.closest('.toggle-button')
-  if (!button) return
-  const activeUnit = button.dataset.active;
-  button.dataset.active = activeUnit === 'mi' ? 'km' : 'mi';
-
-  // update global variable
-  $activeUnit = $activeUnit === 'mi' ? 'km' : 'mi';
-
-  const distanceTags = document.querySelectorAll('.nearby-pins .heading .distance-text');
-  distanceTags.forEach((el) => {
-    el.classList.toggle('active');
-  });
-}
-
-[...$distanceToggles].forEach(toggleBtn => {
-  toggleBtn.addEventListener("click", (e) => updateToggle(e));
 });
 
 $.fn.initGoogleMaps();//entry point to dealer locator

@@ -1,9 +1,9 @@
 import { loadScript, sampleRUM } from '../../scripts/aem.js';
-import { getTextLabel, createElement, variantsClassesToBEM } from '../../scripts/common.js';
-import { getCustomDropdown } from '../../../common/custom-dropdown/custom-dropdown.js';
+import { getTextLabel, createElement, variantsClassesToBEM, normalizeUrlText, isHttp, HOLIDAYS } from '../../scripts/common.js';
+import { getCustomDropdown } from '../../common/custom-dropdown/custom-dropdown.js';
 
 const blockName = 'v2-custom-form';
-const variantClasses = ['double-column'];
+const variantClasses = ['double-column', 'redirect-new-tab'];
 
 const CLASSES = {
   IGNORE_ON_FORM_SUBMIT: 'ignore-on-form-submit',
@@ -16,6 +16,11 @@ const successMessage = (successTitle, successText) => `<h3 class='${blockName}__
 const errorMessage = (errorTitle, errorText) => `<h3 class='${blockName}__title ${blockName}__title--error'>${errorTitle}</h3>
 <p class='${blockName}__text ${blockName}__text--error'>${errorText}</p>
 `;
+
+window.__activeForms = window.__activeForms || new Set();
+
+// BRAND SPECIFIC
+const buttonClasses = ['button', 'button--primary'];
 
 /**
  * Get the message text from placeholder.json based on the success and title
@@ -57,66 +62,107 @@ function throwFormNotFound(form) {
   console.error('Form with data-submitting=true not found', { form });
 }
 
-function addHeaderWithMark(wrapper) {
-  const hasHeaderWithMark = wrapper.closest('.header-with-mark');
-  if (hasHeaderWithMark) {
-    const title = wrapper.querySelector('h1, h2, h3, h4, h5, h6');
-    if (title) {
-      title.classList.add('with-marker');
-    }
+function tryRedirect(form, redirectKey, { warnLabel = redirectKey, redirectNewTab = false } = {}) {
+  if (!form) {
+    return false;
   }
+
+  const redirectValue = normalizeUrlText(form.dataset?.[redirectKey]);
+  if (!redirectValue || form.dataset.redirecting === 'true') {
+    return false;
+  }
+
+  try {
+    const resolvedUrl = new URL(redirectValue, window.location.href);
+    if (isHttp(resolvedUrl.protocol)) {
+      form.dataset.redirecting = 'true';
+
+      if (redirectNewTab) {
+        window.open(resolvedUrl.href, '_blank', 'noopener,noreferrer');
+      } else {
+        window.location.assign(resolvedUrl.href);
+      }
+      return true;
+    }
+  } catch {
+    console.warn(`Invalid ${warnLabel} URL`);
+  }
+  return false;
 }
 
-async function submissionSuccess() {
+async function submissionSuccess(form, redirectNewTab = false) {
   sampleRUM('form:submit');
+
+  if (!form) {
+    throwFormNotFound(form);
+    return;
+  }
+
+  if (tryRedirect(form, 'successRedirect', { redirectNewTab })) {
+    window.__activeForms.delete(form);
+    return;
+  }
+
   const successDiv = createElement('div', {
     classes: [`${blockName}--message`, `${blockName}__message--success`],
   });
   successDiv.innerHTML = successMessage(getMessageText(true, true), getMessageText(true, false));
-  const form = document.querySelector('form[data-submitting=true]');
+
+  const customMessageUrl = form.dataset.customMessage;
+
+  if (customMessageUrl) {
+    successDiv.innerHTML = await getCustomMessage(customMessageUrl);
+  }
+  form.setAttribute('data-submitting', 'false');
+  form.replaceWith(successDiv);
+  window.__activeForms.delete(form);
+}
+
+async function submissionFailure(form, redirectNewTab = false) {
   if (!form) {
     throwFormNotFound(form);
     return;
   }
-  const hasCustomMessage = form.dataset.customMessage;
-  const hasHeaderWithMark = form?.closest('.header-with-mark');
 
-  if (hasCustomMessage) {
-    successDiv.innerHTML = await getCustomMessage(hasCustomMessage);
+  if (tryRedirect(form, 'errorRedirect', { warnLabel: 'errorRedirect', redirectNewTab })) {
+    console.log('redirecting to errorRedirect');
+    window.__activeForms.delete(form);
+    return;
+  } else {
+    console.log('no errorRedirect found, showing error message');
   }
-  form.setAttribute('data-submitting', 'false');
-  form.replaceWith(successDiv);
-  if (hasHeaderWithMark) {
-    addHeaderWithMark(successDiv);
-  }
-}
 
-async function submissionFailure() {
   const errorDiv = createElement('div', {
     classes: [`${blockName}--message`, `${blockName}__message--error`],
   });
   errorDiv.innerHTML = errorMessage(getMessageText(false, true), getMessageText(false, false));
-  const form = document.querySelector('form[data-submitting=true]');
-  if (!form) {
-    throwFormNotFound(form);
-    return;
-  }
-  const headerWithMark = form?.closest('.header-with-mark');
+
   form.setAttribute('data-submitting', 'false');
   form.querySelector('button[type="submit"]').disabled = false;
   form.replaceWith(errorDiv);
-  if (headerWithMark) {
-    addHeaderWithMark(errorDiv);
-  }
+  window.__activeForms.delete(form);
 }
 
-// callback
 window.showResult = function showResult(json) {
-  if (json.result === 'success') {
-    submissionSuccess();
-  } else if (json.result === 'error') {
-    submissionFailure();
+  const activeForms = Array.from(window.__activeForms);
+  const form = activeForms.reverse().find((f) => f.dataset.submitting === 'true');
+
+  if (!form) {
+    console.warn('showResult: no active submitting form found');
+    return;
   }
+
+  const block = form.closest(`.${blockName}`);
+  const redirectNewTab = block?.classList.contains(`${blockName}--redirect-new-tab`) || false;
+
+  if (json.result === 'success') {
+    submissionSuccess(form, redirectNewTab);
+  } else if (json.result === 'error') {
+    submissionFailure(form, redirectNewTab);
+  }
+
+  window.__activeForms.delete(form);
+  form.dataset.submitting = 'false';
 };
 
 function serialize(obj) {
@@ -159,6 +205,7 @@ async function prepareRequest(form) {
 async function handleSubmit(form) {
   if (form.getAttribute('data-submitting') !== 'true') {
     form.setAttribute('data-submitting', 'true');
+    window.__activeForms.add(form);
     await prepareRequest(form);
   }
 }
@@ -230,12 +277,18 @@ function kebabName(name) {
 
 function createFieldWrapper(fd, tagName = 'div') {
   const nameStyle = fd.Name ? `form-${kebabName(fd.Name)}` : '';
-  const fieldWrapper = createElement(tagName, {
-    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper'],
-    props: {
+  let props = {};
+
+  if (tagName !== 'div') {
+    props = {
       id: fd.Id,
       name: fd.Name,
-    },
+    };
+  }
+
+  const fieldWrapper = createElement(tagName, {
+    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper'],
+    props,
   });
   if (fd.Mandatory && fd.Mandatory.toLowerCase() === 'true') {
     fieldWrapper.setAttribute('required', 'required');
@@ -253,7 +306,7 @@ function createFieldWrapper(fd, tagName = 'div') {
 function createButton(fd) {
   const wrapper = createFieldWrapper(fd);
   const button = createElement('button', {
-    classes: ['button', 'button--primary'],
+    classes: buttonClasses,
     props: {
       type: fd.Type,
       id: fd.Id,
@@ -284,6 +337,106 @@ function createInput(fd) {
   });
   setPlaceholder(input, fd);
   setConstraints(input, fd);
+  return input;
+}
+
+function formatDate(date) {
+  return date.toISOString().split('T')[0];
+}
+
+function excelDateToISO(serial) {
+  // Excel's day 1 = 1900-01-01, but it wrongly counts 1900 as a leap year
+  const excelEpoch = new Date(Date.UTC(1899, 11, 30));
+  const jsDate = new Date(excelEpoch.getTime() + serial * 86400000);
+
+  return jsDate.toISOString().split('T')[0]; // returns YYYY-MM-DD
+}
+
+function createDateInput(fd) {
+  const input = createElement('input', {
+    props: {
+      type: fd.Type,
+    },
+  });
+  setPlaceholder(input, fd);
+  setConstraints(input, fd);
+
+  if (fd['Custom Options'] && fd['Custom Options'] !== '') {
+    try {
+      const customOptions = fd['Custom Options'];
+      const customOptionsObj = JSON.parse(customOptions.replace(/(\w+):/g, '"$1":'));
+
+      if (customOptionsObj.ignoreNonWorkingDays && customOptionsObj.ignoreNonWorkingDays === true) {
+        // Implement logic to restrict date picker to working days only
+        input.addEventListener('input', (e) => {
+          const selectedDate = new Date(e.target.value);
+          const day = selectedDate.getUTCDay();
+
+          const holidayDates = Object.values(HOLIDAYS).map((date) => excelDateToISO(date));
+          const selectedDateISO = selectedDate.toISOString().split('T')[0];
+
+          // 0 = Sunday, 6 = Saturday
+          if (day === 0 || day === 6) {
+            const invalidFormWeekendDayLabel = getTextLabel('v2_custom_form:invalid_form_weekend_day_label');
+
+            e.target.setCustomValidity(invalidFormWeekendDayLabel);
+          } else if (holidayDates.includes(selectedDateISO)) {
+            const invalidFormHolidayLabel = getTextLabel('v2_custom_form:invalid_form_holiday_label');
+            e.target.setCustomValidity(invalidFormHolidayLabel);
+          } else {
+            e.target.setCustomValidity('');
+          }
+        });
+      }
+
+      if (customOptionsObj.minDay) {
+        const today = new Date();
+        const minDate = new Date();
+
+        minDate.setDate(today.getDate() + customOptionsObj.minDay);
+
+        input.min = formatDate(minDate);
+      }
+
+      if (customOptionsObj.maxDay) {
+        let maxDay = customOptionsObj.maxDay;
+
+        if (customOptionsObj.ignoreNonWorkingDays) {
+          // If ignoreNonWorkingDays is true, we need to know how many weekend days there are between today and maxDay
+          // or if customOptionsObj.minDay is set, between minDay and maxDay
+          // if that is the case we need to add those invalid days to the maxDay
+          const today = new Date();
+          const startDate = customOptionsObj.minDay ? new Date(today.setDate(today.getDate() + customOptionsObj.minDay)) : today;
+          let nonWorkingDays = 0;
+
+          for (let i = 0; i <= maxDay + nonWorkingDays; i++) {
+            const checkDate = new Date(startDate);
+            checkDate.setDate(startDate.getDate() + i);
+            const day = checkDate.getUTCDay();
+            const checkDateISO = checkDate.toISOString().split('T')[0];
+            const isHoliday = Object.values(HOLIDAYS)
+              .map((date) => excelDateToISO(date))
+              .includes(checkDateISO);
+
+            if (day === 0 || day === 6 || isHoliday) {
+              nonWorkingDays += 1;
+            }
+          }
+
+          maxDay += nonWorkingDays;
+        }
+        const today = new Date();
+        const maxDate = new Date();
+
+        maxDate.setDate(today.getDate() + maxDay);
+
+        input.max = formatDate(maxDate);
+      }
+    } catch (error) {
+      console.error('Error parsing Custom Options JSON:', error);
+    }
+  }
+
   return input;
 }
 
@@ -397,8 +550,14 @@ function createRadio(fd) {
 }
 
 function createRadioWrapper(fd) {
+  const isButtonVariant = fd.Type === 'buttons';
+  const classes = ['form-radio-wrapper', 'field-wrapper'];
+  if (isButtonVariant) {
+    classes.push('form-radio-wrapper--buttons');
+  }
+
   const wrapper = createElement('fieldset', {
-    classes: [`form-${fd.Type}-wrapper`, 'field-wrapper'],
+    classes,
     props: { name: fd.Name },
   });
 
@@ -411,7 +570,7 @@ function createRadioWrapper(fd) {
   }
 
   const legend = createElement('legend', {
-    classes: [`form-${fd.Type}-legend`],
+    classes: ['form-radio-legend'],
   });
   legend.textContent = fd.Label || fd.Name;
   wrapper.append(legend);
@@ -443,7 +602,7 @@ function createRadioOption(option, index, fd) {
   });
 
   const input = createElement('input', {
-    classes: [`form-${fd.Type}-input`],
+    classes: ['form-radio-input'],
     props: {
       type: 'radio',
       id: radioId,
@@ -454,7 +613,7 @@ function createRadioOption(option, index, fd) {
   });
 
   const label = createElement('label', {
-    classes: [`form-${fd.Type}-label`],
+    classes: ['form-radio-label'],
     props: { for: radioId },
   });
 
@@ -487,7 +646,7 @@ const createOutput = withFieldWrapper((fd) => {
 });
 
 function createHidden(fd) {
-  const input = createInput('input', {
+  const input = createElement('input', {
     props: {
       type: 'hidden',
       id: fd.Id,
@@ -496,6 +655,55 @@ function createHidden(fd) {
     },
   });
   return input;
+}
+
+function createHiddenMeta(fd) {
+  let value = '';
+
+  // get the value from the head meta tag with the name === fd.Name
+  const meta = document.querySelector(`head meta[name="${fd.Name}"]`);
+
+  if (meta) {
+    value = meta.content;
+  } else {
+    // if the meta tag doens't exist, create it and append it to the head
+    const newMeta = createElement('meta', {
+      props: {
+        name: fd.Name,
+        content: fd.Value || '',
+      },
+    });
+
+    document.head.append(newMeta);
+    value = fd.Value || '';
+  }
+
+  const inputField = createElement('input', {
+    props: {
+      type: 'hidden',
+      id: fd.Id,
+      name: fd.Name,
+      value,
+    },
+  });
+
+  // observe the head meta tag with the name === fd.Name and everytime the value changes, update the hidden input value
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'content') {
+        const newValue = mutation.target.content;
+        if (inputField) {
+          inputField.value = newValue;
+        }
+      }
+    }
+  });
+
+  if (meta) {
+    observer.observe(meta, { attributes: true });
+  }
+
+  return inputField;
 }
 
 function createLegend(fd) {
@@ -545,7 +753,7 @@ async function createCustomDropdown(fd) {
   };
 
   if (fd.onChangeCallback) {
-    configFd.onChangeCallback = (label, value) => fd.onChangeCallback({ label, value, name: fd.Name });
+    configFd.onChangeCallback = ({ label, value }) => fd.onChangeCallback({ label, value, name: fd.Name });
   }
 
   const customDropdown = await getCustomDropdown(configFd);
@@ -568,6 +776,7 @@ const getId = (function getId() {
 
 const fieldRenderers = {
   radio: createRadio,
+  buttons: createRadio,
   checkbox: createCheckbox,
   textarea: createTextArea,
   select: createSelect,
@@ -577,13 +786,17 @@ const fieldRenderers = {
   hidden: createHidden,
   fieldset: createFieldSet,
   plaintext: createPlainText,
+  date: createDateInput,
   'custom-dropdown': createSelect, // create a select as a placeholder for the custom dropdown
 };
 
 function renderField(fd) {
   const renderer = fieldRenderers[fd.Type];
   let field;
-  if (typeof renderer === 'function') {
+  if (fd.Type === 'date' && typeof renderer === 'function') {
+    field = createFieldWrapper(fd);
+    field.append(renderer(fd));
+  } else if (typeof renderer === 'function') {
     field = renderer(fd);
   } else {
     field = createFieldWrapper(fd);
@@ -593,6 +806,17 @@ function renderField(fd) {
     field.append(createHelpText(fd));
   }
   return field;
+}
+
+function renderTitle(config) {
+  const text = config.Label || '';
+  const tag = config.Name && ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'].includes(config.Name.toLowerCase()) ? config.Name.toLowerCase() : 'h2';
+  const title = createElement(tag, {
+    classes: [`${blockName}__subtitle`],
+  });
+  title.textContent = text;
+
+  return title;
 }
 
 async function fetchData(url) {
@@ -711,7 +935,7 @@ function validateSubmitButton(data) {
   return hasSubmit && hasAction;
 }
 
-async function createForm(formURL) {
+async function createForm(formURL, time) {
   const { pathname } = new URL(formURL);
   const data = await fetchForm(pathname);
 
@@ -725,43 +949,53 @@ async function createForm(formURL) {
   }
 
   const form = createElement('form');
+  form.dataset.secRef = time;
   const customDropdowns = [];
   const dependencies = []; // these will be used to show/hide the fields based on the dependencies
   data.forEach(async (fd) => {
-    const el = renderField(fd);
+    let el;
 
-    if (fd.Type === 'custom-dropdown') {
-      customDropdowns.push(fd);
-    }
+    if (fd.Type === 'title') {
+      el = renderTitle(fd);
+    } else if (fd.Type === 'paragraph') {
+      el = createPlainText(fd);
+    } else if (fd.Type === 'meta') {
+      el = createHiddenMeta(fd);
+    } else {
+      el = renderField(fd);
 
-    const formField = el.querySelector('input,textarea,select');
-    if (fd.Mandatory && fd.Mandatory.toLowerCase() === 'true') {
-      formField.setAttribute('required', 'required');
-    }
-    if (formField) {
-      if (!formField.id) {
-        formField.id = fd.Id;
-      }
-      formField.name = fd.Name;
-
-      if (fd.Type !== 'radio') {
-        formField.value = fd.Value;
+      if (fd.Type === 'custom-dropdown') {
+        customDropdowns.push(fd);
       }
 
-      if (fd.Description) {
-        formField.setAttribute('aria-describedby', `${fd.Id}-description`);
-      }
-    }
-    if (fd.Dependency) {
-      // If it has a dependency, we need to hide it by default
-      // toggleNovalidateOnInput(el, true);
-      dependencies.push({
-        element: el,
-        dependency: fd.Dependency,
+      const formField = el.querySelector('input,textarea,select');
+      if (formField) {
+        if (fd.Mandatory && fd.Mandatory.toLowerCase() === 'true') {
+          formField.setAttribute('required', 'required');
+        }
+        if (!formField.id) {
+          formField.id = fd.Id;
+        }
+        formField.name = fd.Name;
 
-        name: (fd.Dependency && fd.Dependency.split(':')[0]) || '',
-        value: (fd.Dependency && fd.Dependency.split(':')[1]) || '',
-      });
+        if (fd.Type !== 'radio') {
+          formField.value = fd.Value;
+        }
+
+        if (fd.Description) {
+          formField.setAttribute('aria-describedby', `${fd.Id}-description`);
+        }
+      }
+      if (fd.Dependency) {
+        // If it has a dependency, we need to hide it by default
+        dependencies.push({
+          element: el,
+          dependency: fd.Dependency,
+
+          name: (fd.Dependency && fd.Dependency.split(':')[0]) || '',
+          value: (fd.Dependency && fd.Dependency.split(':')[1]) || '',
+        });
+      }
     }
     form.append(el);
   });
@@ -782,9 +1016,9 @@ async function createForm(formURL) {
       }
 
       const customDropdownPlaceholder = form.querySelectorAll('.form-custom-dropdown-wrapper')[index];
-      const placholderSelect = customDropdownPlaceholder.querySelector('select');
+      const placeholderSelect = customDropdownPlaceholder.querySelector('select');
       const customDropdown = await createCustomDropdown(fd);
-      placholderSelect.replaceWith(customDropdown);
+      placeholderSelect.replaceWith(customDropdown);
 
       if (hasDependency) {
         const { value } = hasDependency;
@@ -809,6 +1043,25 @@ async function createForm(formURL) {
     // after been submitted, the form needs to clean the error messages if the fields are valid
     cleanErrorMessages(form);
     e.preventDefault();
+
+    const activeForm = e.currentTarget;
+    const minMs = (parseInt(activeForm.dataset.secRef, 10) || 3) * 1000;
+    const fullyLoadedTime = parseFloat(activeForm.dataset.loaded || 0);
+    const msElapsed = performance.now() - fullyLoadedTime;
+    const isSecure = msElapsed >= minMs;
+
+    // Track usage of form in Google Analytics
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'contact_form_submitted',
+      status: isSecure ? 'accepted' : 'rejected',
+      time_to_fill_ms: Math.ceil(msElapsed),
+    });
+
+    if (!isSecure) {
+      console.warn(`Form submission blocked: Fields were filled in less than: ${Math.floor(msElapsed / 1000)} seconds (possible bot).`);
+      return;
+    }
 
     const honeypot = form.querySelector('input[name="form_extra_field"]');
     if (honeypot && honeypot.value) {
@@ -847,16 +1100,11 @@ function decorateTitles(block) {
 }
 
 function addTitleText(titleText, block) {
-  const headerWithMark = block.closest('.header-with-mark');
-  const defaultContentWrapper = headerWithMark?.querySelector('.default-content-wrapper');
   const titleTextContent = createElement('div', {
     classes: [`${blockName}__title`],
   });
   titleTextContent.innerHTML = titleText.innerHTML;
   block.append(titleTextContent);
-  if (headerWithMark && !defaultContentWrapper) {
-    addHeaderWithMark(titleTextContent);
-  }
 }
 
 function createHoneypotField() {
@@ -875,44 +1123,83 @@ function createHoneypotField() {
   return fragment.firstElementChild;
 }
 
+function getConfigValueCell(block, propName) {
+  for (const row of block.querySelectorAll(':scope > div')) {
+    const [propCell, valueCell] = row.children || [];
+    if (propCell && propCell.textContent.trim() === propName) {
+      return valueCell || null;
+    }
+  }
+  return null;
+}
+
 export default async function decorate(block) {
   variantsClassesToBEM(block.classList, variantClasses, blockName);
-  const formLink = block.querySelector('a[href$=".json"]'); // this is the form fields config file
-  const thankYouPage = [...block.querySelectorAll('a')].filter((a) => a.href.includes('thank-you'));
-  const formTitleContainer = block.querySelector(':scope > div:first-child > div');
-  const isFormLinkInsideTitleContainer = formLink && formTitleContainer.contains(formLink);
 
-  if (formLink) {
-    decorateTitles(block);
-    const form = await createForm(formLink.href);
+  const titleCell = getConfigValueCell(block, 'title');
+  const linkCell = getConfigValueCell(block, 'link');
+  const successFragmentCell = getConfigValueCell(block, 'successFragmentUrl');
+  const successRedirectCell = getConfigValueCell(block, 'successRedirectUrl');
+  const errorRedirectCell = getConfigValueCell(block, 'errorRedirectUrl');
+  const timeValue = getConfigValueCell(block, 'time');
+
+  const formUrl = linkCell ? (linkCell.querySelector('a')?.href || linkCell.textContent).trim() : '';
+  const isJsonUrl = formUrl.toLowerCase().trim().endsWith('.json');
+  const thankYouPageUrl = successFragmentCell ? (successFragmentCell.querySelector('a')?.href || successFragmentCell.textContent).trim() : '';
+  const successRedirectUrl = successRedirectCell ? (successRedirectCell.querySelector('a')?.href || successRedirectCell.textContent).trim() : '';
+  const errorRedirectUrl = errorRedirectCell ? (errorRedirectCell.querySelector('a')?.href || errorRedirectCell.textContent).trim() : '';
+  const parsedValue = timeValue ? parseInt(timeValue.textContent, 10) : 3;
+  const minRequiredSeconds = Math.max(isNaN(parsedValue) ? 3 : parsedValue, 1);
+
+  if (!formUrl || !isJsonUrl) {
+    console.error('%cForm link%c is missing or not a .json', 'color:red', 'color:inherit', { formUrl });
+    block.textContent = '';
+    return;
+  }
+
+  decorateTitles(block);
+
+  const form = await createForm(formUrl, minRequiredSeconds);
+  if (!form) {
+    console.error('%cForm%c could not be created. No form data found.', 'color:red', 'color:inherit', { formUrl, form });
+    block.textContent = '';
+    return;
+  }
+
+  if (successRedirectUrl) {
+    form.dataset.successRedirect = successRedirectUrl;
+  }
+  if (errorRedirectUrl) {
+    form.dataset.errorRedirect = errorRedirectUrl;
+  }
+  if (!successRedirectUrl && thankYouPageUrl) {
+    form.dataset.customMessage = `${thankYouPageUrl}.plain.html`;
+  }
+
+  block.textContent = '';
+  if (titleCell) {
+    addTitleText(titleCell, block);
+  }
+
+  form.append(createHoneypotField());
+  block.append(form);
+
+  // Register time the moment after the form is appended and add the miliseconds value to the form
+  form.dataset.loaded = Math.ceil(performance.now());
+
+  window.addEventListener('unhandledrejection', ({ reason, error }) => {
+    console.error('Unhandled rejection. Error submitting form:', { reason, error });
+
+    const activeForms = Array.from(window.__activeForms || []);
+    const form = activeForms.reverse().find((f) => f.dataset.submitting === 'true');
+
     if (!form) {
-      console.error('%cForm%c could not be created. No form data found.', 'color:red', 'color:inherit', { formLink, form });
-      // remove the setup rows from the block if the form could not be created
-      block.innerText = '';
+      throwFormNotFound(form);
       return;
     }
-    if (thankYouPage.length > 0) {
-      form.dataset.customMessage = `${thankYouPage[0].href}.plain.html`;
-      block.lastElementChild.remove();
-    }
 
-    form.append(createHoneypotField());
-
-    // clean the content block before appending the form
-    block.innerText = '';
-    if (formTitleContainer && !isFormLinkInsideTitleContainer) {
-      addTitleText(formTitleContainer, block);
-    }
-
-    block.append(form);
-
-    // in case the form has any kind of error, the form will be replaced with the error message
-    window.addEventListener('unhandledrejection', ({ reason, error }) => {
-      console.error('Unhandled rejection. Error submitting form:', { reason, error });
-      submissionFailure();
-    });
-  } else {
-    console.error('%cForm link%c is missing or does not end with .json', 'color:red', 'color:inherit', { formLink });
-    block.innerText = '';
-  }
+    const block = form.closest(`.${blockName}`);
+    const redirectNewTab = block?.classList.contains(`${blockName}--redirect-new-tab`) || false;
+    submissionFailure(form, redirectNewTab);
+  });
 }

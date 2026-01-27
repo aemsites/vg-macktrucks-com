@@ -43,7 +43,7 @@ async function getConstantValues() {
   return constants;
 }
 
-const { searchConfig, cookieValues, magazineConfig, headerConfig, tools, truckConfiguratorUrls, myGarageUrls, newsFeedConfig, feeds } =
+const { searchConfig, cookieValues, magazineConfig, headerConfig, tools, truckConfiguratorUrls, myGarageUrls, newsFeedConfig, feeds, holidays } =
   await getConstantValues();
 
 // This data comes from the sharepoint 'constants.xlsx' file
@@ -56,6 +56,7 @@ const TRUCK_CONFIGURATOR_URLS = formatValues(truckConfiguratorUrls?.data);
 const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
 const FEEDS = formatValuesByKey(feeds?.data);
 const MY_GARAGE_URLS = formatValues(myGarageUrls?.data);
+const HOLIDAYS = formatValues(holidays?.data);
 
 async function getPlaceholders() {
   const url = `${getLanguagePath()}placeholder.json`;
@@ -727,6 +728,31 @@ const isMobileViewport = () => {
   return MQ.matches;
 };
 
+/**
+ * Normalize a string intended to be used as a URL.
+ *
+ * - Coerces `undefined`/`null` to an empty string.
+ * - Replaces non-breaking spaces with regular spaces.
+ * - Strips out angle brackets (`<`, `>`).
+ * - Trims leading/trailing whitespace.
+ *
+ * @param {string} [s] - Raw string (possibly from DOM or dataset).
+ * @returns {string} A cleaned string safe to pass to `new URL()`.
+ */
+const normalizeUrlText = (s) =>
+  String(s || '')
+    .replace(/\u00A0/g, ' ')
+    .replace(/[<>]/g, '')
+    .trim();
+
+/**
+ * Test whether a given URL protocol is HTTP or HTTPS.
+ *
+ * @param {string} protocol - Protocol string (e.g. `"http:"`, `"https:"`).
+ * @returns {boolean} `true` if the protocol is HTTP/HTTPS, otherwise `false`.
+ */
+const isHttp = (protocol) => /^https?:$/i.test(protocol);
+
 export {
   loadCSS,
   getMetadata,
@@ -744,6 +770,7 @@ export {
   MY_GARAGE_URLS,
   NEWS_FEED_CONFIGS,
   FEEDS,
+  HOLIDAYS,
   getPlaceholders,
   getTextLabel,
   getOrigin,
@@ -784,4 +811,6 @@ export {
   isValidISODateString,
   formatTimeUnit,
   isMobileViewport,
+  normalizeUrlText,
+  isHttp,
 };
