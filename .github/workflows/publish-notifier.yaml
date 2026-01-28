@@ -99,6 +99,11 @@ jobs:
           echo "Body of the request: $BODY"
           echo "Posting to: $URI"
 
+          // log the curl command for debugging
+          // TODO: Remove sensitive asap
+          echo "Executing curl command..."    
+          echo "curl -s -w \"%{http_code}\" -o response_body.txt -H \"x-api-key: $API_KEY\" -X POST \"$URI\" -d \"$BODY\""
+
           # Call API and capture both body and HTTP status code
           response=$(curl -s -w "%{http_code}" -o response_body.txt -H "x-api-key: $API_KEY" -X POST "$URI" -d "$BODY")
           http_code="${response: -3}"
