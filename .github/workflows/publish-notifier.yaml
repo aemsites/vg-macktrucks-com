@@ -14,6 +14,45 @@ jobs:
           echo "Org: ${{ github.event.client_payload.org }}"
           echo "Path: ${{ github.event.client_payload.path }}"
 
+  notify-connector-if-logger:
+    if: >
+      (github.event.client_payload.status != 200 && github.event.client_payload.status != 204)
+      || !endsWith(github.event.client_payload.path, '.md')
+      || (
+        !startsWith(github.event.client_payload.path, '/magazine/')
+        && !startsWith(github.event.client_payload.path, '/mack-news/')
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log why notify-connector did not run
+        shell: bash
+        run: |
+          status="${{ github.event.client_payload.status }}"
+          path="${{ github.event.client_payload.path }}"
+          
+          echo "=== notify-connector conditions check ==="
+          echo "Status: $status"
+          echo "Path: $path"
+          echo ""
+          
+          # Check each condition
+          if [[ "$status" != "200" && "$status" != "204" ]]; then
+            echo "❌ FAILED: Status must be 200 or 204 (got: $status)"
+          else
+            echo "✓ Status check passed: $status"
+          fi
+          
+          if [[ "$path" == *.md ]]; then
+            echo "✓ Path ends with .md"
+          else
+            echo "❌ FAILED: Path must end with .md (got: $path)"
+          fi
+          
+          if [[ "$path" == /magazine/* || "$path" == /mack-news/* ]]; then
+            echo "✓ Path starts with /magazine/ or /mack-news/"
+          else
+            echo "❌ FAILED: Path must start with /magazine/ or /mack-news/ (got: $path)"
+          fi
   notify-connector:
     if: >
       (github.event.client_payload.status == 200 || github.event.client_payload.status == 204)
@@ -56,6 +95,9 @@ jobs:
 
           BODY='{ "paths": [ "'$PAGE_PATH'" ] }'
           BODY="$(echo "$BODY" | jq -c)"
+
+          echo "Body of the request: $BODY"
+          echo "Posting to: $URI"
 
           # Call API and capture both body and HTTP status code
           response=$(curl -s -w "%{http_code}" -o response_body.txt -H "x-api-key: $API_KEY" -X POST "$URI" -d "$BODY")
