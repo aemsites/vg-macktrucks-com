@@ -102,7 +102,8 @@ jobs:
           # log the curl command for debugging
           # TODO: Remove sensitive asap
           echo "Executing curl command..."    
-          echo "curl -s -w \"%{http_code}\" -o response_body.txt -H \"x-api-key: $API_KEY\" -X POST \"$URI\" -d \"$BODY\""
+          api_key_preview="${API_KEY:0:4}...${API_KEY: -4}"
+          echo "curl -s -w \"%{http_code}\" -o response_body.txt -H \"x-api-key: $api_key_preview\" -X POST \"$URI\" -d \"$BODY\""
 
           # Call API and capture both body and HTTP status code
           response=$(curl -s -w "%{http_code}" -o response_body.txt -H "x-api-key: $API_KEY" -X POST "$URI" -d "$BODY")
