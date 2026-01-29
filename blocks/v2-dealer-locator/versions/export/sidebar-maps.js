@@ -1361,7 +1361,6 @@ $.fn.tmpPins = function (tmpPinList) {
   function createPinsLoop(startPoint) {
     pinsToShow += 5;
     const PinListToShowOnSideBar = tmpPinList.slice(startPoint, pinsToShow)
-    console.log(startPoint, pinsToShow)
     PinListToShowOnSideBar.forEach(function (pin) {
     if (!$.fn.showPin(pin)) {
       return true;
@@ -1572,7 +1571,7 @@ $.fn.tmpPins = function (tmpPinList) {
     id: "loadMorePinsBtn",
 
     click: function () {
-      createPinsLoop(pinsToShow, tmpPinList);
+      createPinsLoop(pinsToShow);
       if (pinsToShow >= pinCount) {
         $(this).remove();
       }

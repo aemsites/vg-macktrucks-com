@@ -1704,7 +1704,7 @@ $.fn.tmpPins = function (tmpPinList) {
     id: "loadMorePinsBtn",
 
     click: function () {
-      createPinsLoop(pinsToShow, tmpPinList);
+      createPinsLoop(pinsToShow);
       if (pinsToShow >= pinCount) {
         $(this).remove();
       }
