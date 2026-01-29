@@ -1473,7 +1473,7 @@ $.fn.tmpPins = function (tmpPinList) {
   let pinsToShow = 0;
   var pinIndex = 1;
   var nearbyHtml = $('.nearby-pins').empty();
-  function createPinsLoop(startPoint, pinListUpdated = []) {
+  function createPinsLoop(startPoint) {
     pinsToShow += 5;
     const PinListToShowOnSideBarValue = pinListUpdated.length ? pinListUpdated : tmpPinList
     const PinListToShowOnSideBar = PinListToShowOnSideBarValue.slice(startPoint, pinsToShow)
