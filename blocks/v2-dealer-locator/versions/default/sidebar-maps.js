@@ -1475,7 +1475,7 @@ $.fn.tmpPins = function (tmpPinList) {
   var nearbyHtml = $('.nearby-pins').empty();
   function createPinsLoop(startPoint) {
     pinsToShow += 5;
-    const PinListToShowOnSideBar = tmpPinList.slice(startPoint, pinsToShow)
+    const PinListToShowOnSideBar = tmpPinList.slice(startPoint, pinsToShow);
     PinListToShowOnSideBar.forEach(function (pin) {
     if (!$.fn.showPin(pin)) {
       return true;
@@ -1693,7 +1693,7 @@ $.fn.tmpPins = function (tmpPinList) {
   });
   };
 
-  createPinsLoop(0)
+  createPinsLoop(0);
 
   // Ensure the load more button is rebound to the current scope: remove existing and recreate
   $('#loadMorePinsBtn').remove();
