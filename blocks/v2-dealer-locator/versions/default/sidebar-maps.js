@@ -1475,9 +1475,8 @@ $.fn.tmpPins = function (tmpPinList) {
   var nearbyHtml = $('.nearby-pins').empty();
   function createPinsLoop(startPoint) {
     pinsToShow += 5;
-    const PinListToShowOnSideBarValue = pinListUpdated.length ? pinListUpdated : tmpPinList
-    const PinListToShowOnSideBar = PinListToShowOnSideBarValue.slice(startPoint, pinsToShow)
-    PinListToShowOnSideBar.forEach(async function (pin) {
+    const PinListToShowOnSideBar = tmpPinList.slice(startPoint, pinsToShow)
+    PinListToShowOnSideBar.forEach(function (pin) {
     if (!$.fn.showPin(pin)) {
       return true;
     }
