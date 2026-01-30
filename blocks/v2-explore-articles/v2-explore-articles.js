@@ -64,6 +64,16 @@ const CLASSES = {
   noArticlesMessage: `${blockName}__no-articles-message`,
 };
 
+const FILTER_KEYS = ['truck', 'topic', 'category'];
+const FACET_NAME_TO_FILTER_KEY = {
+  truck: 'truck',
+  topic: 'topic',
+  category: 'category',
+  // "article" can be used as a facet label,
+  // but it maps to the same filter dimension as "category"
+  article: 'category',
+};
+
 const docRange = document.createRange();
 const defaultAmountOfArticles = 9;
 const widthBreakpoint = 744;
@@ -79,6 +89,155 @@ let appliedFilters = {};
 let previousQueryFilters = {};
 let amountOfFacets = 10000; // high default value
 let appliedSortingCriteria = 'PUBLISH_DATE_DESC'; // sorting criteria defaults to: 'by date'
+
+const getFilterKeyFromHeading = (facetHeadingEl) => {
+  const facetName = facetHeadingEl?.textContent?.trim().toLowerCase();
+  return facetName ? (FACET_NAME_TO_FILTER_KEY[facetName] ?? null) : null;
+};
+
+const readFiltersFromUrl = () => {
+  const params = new URLSearchParams(window.location.search);
+  const filters = {};
+
+  FILTER_KEYS.forEach((key) => {
+    const raw = params.get(key);
+    if (!raw) {
+      return;
+    }
+
+    const values = raw
+      .split(',')
+      .map((v) => v.trim())
+      .filter(Boolean);
+
+    const uniqueValues = [...new Set(values)];
+    if (uniqueValues.length) {
+      filters[key] = uniqueValues;
+    }
+  });
+
+  return filters;
+};
+
+const writeFiltersToUrl = (filters) => {
+  const params = new URLSearchParams(window.location.search);
+  FILTER_KEYS.forEach((key) => params.delete(key));
+
+  Object.entries(filters).forEach(([key, values]) => {
+    if (!FILTER_KEYS.includes(key)) {
+      return;
+    }
+    if (!Array.isArray(values) || values.length === 0) {
+      return;
+    }
+
+    const cleanValues = [...new Set(values.map((v) => String(v).trim()).filter(Boolean))];
+    if (cleanValues.length === 0) {
+      return;
+    }
+
+    params.set(key, cleanValues.join(','));
+  });
+
+  const query = params.toString();
+  const nextUrl = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+
+  const currentUrl = `${window.location.pathname}${window.location.search}`;
+  if (nextUrl !== currentUrl) {
+    window.history.replaceState({}, '', nextUrl);
+  }
+};
+
+const syncUrlWithFilters = () => {
+  writeFiltersToUrl(appliedFilters);
+};
+
+const applyFiltersToUi = (block, filters) => {
+  const checkboxes = Array.from(block.querySelectorAll(`.${CLASSES.filterCheckbox}`));
+  const checkboxByValue = new Map(checkboxes.map((cb) => [String(cb.value).trim(), cb]));
+  let didApply = false;
+
+  Object.entries(filters).forEach(([key, values]) => {
+    if (!FILTER_KEYS.includes(key) || !Array.isArray(values)) {
+      return;
+    }
+
+    values
+      .map((v) => String(v).trim())
+      .filter(Boolean)
+      .forEach((value) => {
+        const checkbox = checkboxByValue.get(value);
+        if (checkbox && !checkbox.checked) {
+          checkbox.click();
+          didApply = true;
+        }
+      });
+  });
+
+  return didApply;
+};
+
+const getSelectedFiltersCount = () => Object.values(appliedFilters).reduce((sum, value) => (Array.isArray(value) ? sum + value.length : sum), 0);
+
+const updateSelectedFiltersUiState = (htmlElts, facetHeading) => {
+  if (!htmlElts) {
+    return;
+  }
+
+  const selectedCount = getSelectedFiltersCount();
+  const hasAnySelected = selectedCount > 0;
+
+  if (htmlElts.filterButton) {
+    if (hasAnySelected) {
+      htmlElts.filterButton.dataset.amount = `(${selectedCount} ${LABELS.SELECTED})`;
+    } else {
+      delete htmlElts.filterButton.dataset.amount;
+    }
+  }
+
+  if (facetHeading) {
+    const facetKey = getFilterKeyFromHeading(facetHeading);
+    const facetCount = facetKey && Array.isArray(appliedFilters?.[facetKey]) ? appliedFilters[facetKey].length : 0;
+
+    if (facetCount > 0) {
+      facetHeading.dataset.amount = `(${facetCount} ${LABELS.SELECTED})`;
+    } else {
+      delete facetHeading.dataset.amount;
+    }
+  }
+
+  htmlElts.clearBtn?.classList.toggle('hide', !hasAnySelected);
+  htmlElts.mobileBtnsContainer?.classList.toggle('hide', !hasAnySelected);
+};
+
+const setSelectedFiltersOverflowControlsHidden = (block, hidden) => {
+  const showMoreButton = block.querySelector(`.${CLASSES.toggleMore}`);
+  const showLessButton = block.querySelector(`.${CLASSES.toggleLess}`);
+
+  [showMoreButton, showLessButton].filter(Boolean).forEach((button) => {
+    button.style.display = hidden ? 'none' : '';
+  });
+};
+
+const updateSelectedFiltersOverflowControls = (block) => {
+  const selectedFiltersEl = block.querySelector(`.${CLASSES.selectedFilters}`);
+  if (!selectedFiltersEl) {
+    return;
+  }
+
+  const hasSelectedFilters = !!selectedFiltersEl.querySelector('.filter-item');
+
+  const showMoreButton = block.querySelector(`.${CLASSES.toggleMore}`);
+  const showLessButton = block.querySelector(`.${CLASSES.toggleLess}`);
+
+  if (!hasSelectedFilters) {
+    showMoreButton?.classList.add('hide');
+    showLessButton?.classList.add('hide');
+    return;
+  }
+
+  handleToggleBtns(selectedFiltersEl, 29);
+};
 
 // Gets the data from the API and formats it
 const getData = async (articleSet = {}, offset = 0, sortingCriteria = appliedSortingCriteria) => {
@@ -417,7 +576,10 @@ const addEventListeners = (block) => {
     const target = evt.target;
     if (target.classList.contains(CLASSES.filterCheckbox)) {
       const facetHeading = target.closest(`.${CLASSES.facetList}`).querySelector(`.${CLASSES.facetHeading}`);
-      const facet = facetHeading.innerText.toLowerCase();
+      const facet = getFilterKeyFromHeading(facetHeading);
+      if (!facet) {
+        return;
+      }
       const { value: itemValue, id: itemId } = target;
 
       // Create applied filter element
@@ -428,45 +590,31 @@ const addEventListeners = (block) => {
         </div>`);
       decorateIcons(item);
 
-      htmlElts.mobileBtnsContainer.classList.remove('hide');
-      htmlElts.clearBtn.classList.remove('hide');
-
-      const getSelectedFilters = () => Object.values(appliedFilters).reduce((sum, value) => (Array.isArray(value) ? sum + value.length : sum), 0);
-
       if (target.checked) {
         // add filter to list
         htmlElts.selectedFilters.append(item);
-        // if facet is empty create an empty array and add value
+
         if (!appliedFilters[facet]) {
           appliedFilters[facet] = [];
         }
         appliedFilters[facet].push(itemValue);
-        htmlElts.filterButton.dataset.amount = `(${getSelectedFilters()} ${LABELS.SELECTED})`;
-        facetHeading.dataset.amount = `(${appliedFilters[facet].length} ${LABELS.SELECTED})`;
 
         handleToggleBtns(htmlElts.selectedFilters, 29);
+        updateSelectedFiltersUiState(htmlElts, facetHeading);
+        syncUrlWithFilters();
       } else {
         // uncheck input
         const itemIndex = appliedFilters[facet].indexOf(itemValue);
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
         appliedFilters[facet].splice(itemIndex, 1);
 
-        htmlElts.filterButton.dataset.amount = getSelectedFilters() > 0 ? `(${getSelectedFilters()} ${LABELS.SELECTED})` : '';
-        facetHeading.dataset.amount = appliedFilters[facet].length > 0 ? `(${appliedFilters[facet].length} ${LABELS.SELECTED})` : '';
-        handleToggleBtns(htmlElts.selectedFilters);
-
-        // delete array key if array is empty
         if (appliedFilters[facet].length === 0) {
           delete appliedFilters[facet];
         }
 
-        // once all inputs are unchecked hide 'clear all' btn
-        if (htmlElts.selectedFilters.querySelectorAll('.filter-item').length === 0) {
-          delete appliedFilters[facet];
-          htmlElts.clearBtn.classList.add('hide');
-          delete htmlElts.filterButton.dataset.amount;
-          delete facetHeading.dataset.amount;
-        }
+        handleToggleBtns(htmlElts.selectedFilters);
+        updateSelectedFiltersUiState(htmlElts, facetHeading);
+        syncUrlWithFilters();
       }
 
       // Add closing functionality to X icon
@@ -477,16 +625,16 @@ const addEventListeners = (block) => {
         htmlElts.selectedFilters.querySelector(`.${itemId}-filter`).remove();
 
         appliedFilters[facet].splice(itemIndex, 1);
-        pageCounter = 0;
 
         if (appliedFilters[facet].length === 0) {
           delete appliedFilters[facet];
         }
-        if (htmlElts.selectedFilters.querySelectorAll('.filter-item').length === 0) {
-          htmlElts.mobileBtnsContainer.classList.add('hide');
-          htmlElts.clearBtn.classList.add('hide');
-        }
+
+        pageCounter = 0;
+
+        updateSelectedFiltersUiState(htmlElts, facetHeading);
         handleToggleBtns(htmlElts.selectedFilters);
+        syncUrlWithFilters();
         updateArticleList(block);
       });
     }
@@ -497,20 +645,19 @@ const addEventListeners = (block) => {
   // Clear all filters from both available buttons
   allClearBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      // Get all currently added filter items
       const currentFilters = block.querySelectorAll(`.${CLASSES.selectedFilter}`);
       currentFilters.forEach((filter) => filter.remove());
 
-      htmlElts.clearBtn.classList.add('hide');
       htmlElts.filterCheckbox.forEach((checkbox) => (checkbox.checked = false));
-      htmlElts.facetHeading.forEach((heading) => (heading.dataset.amount = ''));
+      htmlElts.facetHeading.forEach((heading) => delete heading.dataset.amount);
       htmlElts.toggleFilters.forEach((btn) => btn.classList.add('hide'));
       htmlElts.selectedFilters.classList.remove('expand');
-      delete htmlElts.filterButton.dataset.amount;
 
       appliedFilters = {};
+      syncUrlWithFilters();
       pageCounter = 0;
 
+      updateSelectedFiltersUiState(htmlElts);
       updateArticleList(block);
     });
   });
@@ -577,4 +724,23 @@ export default async function decorate(block) {
   decorateIcons(block);
 
   addEventListeners(block);
+
+  setSelectedFiltersOverflowControlsHidden(block, true);
+
+  const urlFilters = readFiltersFromUrl();
+  const didApplyUrlFilters = applyFiltersToUi(block, urlFilters);
+
+  if (didApplyUrlFilters) {
+    writeFiltersToUrl(urlFilters);
+
+    pageCounter = 0;
+    offset = 0;
+    await updateArticleList(block, 0, appliedSortingCriteria);
+  }
+
+  // Run after layout is settled to correctly measure overflow
+  requestAnimationFrame(() => {
+    updateSelectedFiltersOverflowControls(block);
+    setSelectedFiltersOverflowControlsHidden(block, false);
+  });
 }
