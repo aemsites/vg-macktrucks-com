@@ -121,11 +121,9 @@ npm run lint
 
 ## Local development
 
-1. Create a new repository based on the `helix-project-boilerplate` template and add a mountpoint in the `fstab.yaml`
-2. Add the [helix-bot](https://github.com/apps/helix-bot) to the repository
-3. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
-4. Start Franklin Proxy: `aem up` (opens your browser at `http://localhost:3000`)
-5. Open the `{repo}` directory in your favorite IDE and start coding :)
+1. Install the [Helix CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
+2. Start the AEM proxy: `aem up` (opens your browser at http://localhost:3000)
+3. Open the `{repo}` directory in your favorite IDE and start coding :)
 
 ## Best practices using fonts
 
