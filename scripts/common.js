@@ -30,7 +30,8 @@ const getLanguagePath = () => {
  * Loads the constants file where configuration values are stored
  */
 async function getConstantValues() {
-  const url = `${getLanguagePath()}constants.json`;
+  // const url = `${getLanguagePath()}constants.json`;
+  const url = 'https://www.macktrucks.com/constants.json';
   let constants;
   try {
     const response = await fetch(url).then((resp) => resp.json());
