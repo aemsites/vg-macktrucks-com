@@ -122,6 +122,13 @@ const buildTabItems = (carousel, navigation, items, articles) => {
         const shortPath = path.path.split('/magazine/')[1];
         return shortPath === shortUrl;
       });
+
+      // Gracefully handle missing article data
+      if (!fullArticleObj) {
+        console.warn(`Article data not found for path: ${articlePath}`);
+        return;
+      }
+
       const { title, category } = fullArticleObj;
 
       const navItem = buildTabNavigation(carousel, title, category, index);
