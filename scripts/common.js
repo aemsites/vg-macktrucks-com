@@ -60,7 +60,8 @@ const MY_GARAGE_URLS = formatValues(myGarageUrls?.data);
 const HOLIDAYS = formatValues(holidays?.data);
 
 async function getPlaceholders() {
-  const url = `${getLanguagePath()}placeholder.json`;
+  // const url = `${getLanguagePath()}placeholder.json`;
+  const url = 'https://www.macktrucks.com/placeholder.json';
   placeholders = await fetch(url).then((resp) => resp.json());
 }
 
