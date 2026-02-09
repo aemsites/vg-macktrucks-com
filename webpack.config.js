@@ -66,7 +66,7 @@ module.exports = {
     ],
   },
 
-  plugins, 
+  plugins,
 
   optimization: {
     usedExports: true,
