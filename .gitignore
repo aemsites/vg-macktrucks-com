@@ -11,3 +11,5 @@ fstab.yaml
 pull_request_template.md
 README.md
 config.json
+
+/dist
