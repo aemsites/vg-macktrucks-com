@@ -38,6 +38,7 @@
   text-decoration: underline;
   text-decoration-color: var(--c-accent-red);
   text-underline-offset: 8px;
+  margin-right: 10px;
 }
 
 .v2-pencil-promo__promo-banner a {
@@ -98,7 +99,7 @@
   --color-icon: var(--text-color);
 
   position: absolute;
-  margin-right: 10px;
+  margin-left: 10px;
   width: 24px;
   height: 24px;
 }
