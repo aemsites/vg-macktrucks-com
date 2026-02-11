@@ -77,6 +77,13 @@
   line-height: var(--body-2-line-height);
 }
 
+@media (min-width: 1072px) {
+  .v2-icon-cards__body,
+  .v2-icon-cards__heading:not(.h2) {
+    font-size: var(--body-1-font-size);
+  }
+}
+
 .v2-icon-cards__heading:not(.h2) {
   letter-spacing: var(--body-2-letter-spacing-bold);
   font-weight: var(--body-2-font-weight-bold);
