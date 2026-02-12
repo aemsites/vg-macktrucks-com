@@ -87,13 +87,6 @@
   letter-spacing: var(--body-2-letter-spacing);
 }
 
-@media (min-width: 1072px) {
-  .v2-icon-cards__body,
-  .v2-icon-cards__heading:not(.h2) {
-    font-size: var(--body-1-font-size);
-  }
-}
-
 .v2-icon-cards--alt-font-size .v2-icon-cards__heading {
   font-size: var(--headline-5-font-size);
   font-weight: var(--headline-5-font-weight);
@@ -173,6 +166,13 @@
     align-self: start;
     max-width: 329px;
     width: 100%;
+  }
+}
+
+@media (min-width: 1072px) {
+  .v2-icon-cards__body,
+  .v2-icon-cards__heading:not(.h2) {
+    font-size: var(--body-1-font-size);
   }
 }
 
