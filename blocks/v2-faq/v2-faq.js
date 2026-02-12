@@ -1,5 +1,3 @@
-import { decorateIcons } from '../../scripts/common.js';
-
 const BLOCK_NAME = 'v2-faq';
 const FAQ_SCHEMA_SELECTOR = 'script[type="application/ld+json"][data-v2-faq]';
 
@@ -91,82 +89,32 @@ const extractFaqItems = (block) => {
 };
 
 /**
- * Render a single FAQ item as HTML.
- * @param {{ question: string, answerHtml: string }} item
- * @param {string} blockId
- * @param {number} index
- * @returns {string}
- */
-const renderFaqItemMarkup = ({ question, answerHtml }, blockId, index) => {
-  const buttonId = `${blockId}-btn-${index}`;
-  const panelId = `${blockId}-panel-${index}`;
-
-  return `
-    <vcdk-accordion>
-      <span slot="title" id="${buttonId}">${escapeHtmlText(question)}</span>
-      <div class="accordion__content" id="${panelId}">${answerHtml}</div>
-    </vcdk-accordion>
-  `;
-};
-
-/**
- * Render all FAQ items into the block.
+ * Render FAQ items using the VCDK accordion web component.
+ *
+ * Security note:
+ * - `answerHtml` is treated as trusted HTML from the authoring pipeline (EDS).
+ * - It may contain markup (links, lists, formatting).
+ * - If this assumption changes, sanitize `answerHtml` before rendering.
+ *
  * @param {HTMLElement} block
  * @param {{ question: string, answerText: string, answerHtml: string }[]} items
- * @param {string} blockId
  * @returns {void}
  */
-const renderFaqItems = (block, items, blockId) => {
-  block.innerHTML = items.map((item, i) => renderFaqItemMarkup(item, blockId, i)).join('');
-  decorateIcons(block);
-};
+const renderVcdkAccordion = (block, items) => {
+  const fragment = document.createDocumentFragment();
 
-/**
- * Find the panel associated with a toggle button.
- * @param {HTMLElement} block
- * @param {HTMLButtonElement} button
- * @returns {HTMLElement|null}
- */
-const getPanelForButton = (block, button) => {
-  const item = button.closest(`.${BLOCK_NAME}__item`);
-  if (!item || !block.contains(item)) {
-    return null;
-  }
-  return item.querySelector(`.${BLOCK_NAME}__panel`);
-};
+  items.forEach(({ question, answerHtml }) => {
+    const html = `
+      <vcdk-accordion>
+        <span slot="title" class="accordion__title">${escapeHtmlText(question)}</span>
+        <div class="accordion__content">${answerHtml}</div>
+      </vcdk-accordion>
+    `;
+    fragment.append(document.createRange().createContextualFragment(html));
+  });
 
-/**
- * Toggle a single accordion item.
- *
- * State invariants:
- * - When expanded:
- *   - button[aria-expanded="true"]
- *   - panel is visible (no `hidden`)
- *   - panel[aria-hidden="false"]
- * - When collapsed:
- *   - button[aria-expanded="false"]
- *   - panel has `hidden`
- *   - panel[aria-hidden="true"]
- *
- * @param {HTMLButtonElement} button
- * @param {HTMLElement} panel
- * @returns {void}
- */
-const toggleAccordionItem = (button, panel) => {
-  const expanded = button.getAttribute('aria-expanded') === 'true';
-  const nextExpanded = !expanded;
-
-  button.setAttribute('aria-expanded', String(nextExpanded));
-
-  if (nextExpanded) {
-    panel.removeAttribute('hidden');
-    panel.setAttribute('aria-hidden', 'false');
-  } else {
-    panel.setAttribute('hidden', '');
-    panel.setAttribute('aria-hidden', 'true');
-  }
-
-  button.parentElement?.classList.toggle(`${BLOCK_NAME}__item--open`, nextExpanded);
+  block.innerHTML = '';
+  block.append(fragment);
 };
 
 /**
@@ -286,7 +234,7 @@ export default function decorate(block) {
   const blockId = createBlockId(block);
   const items = extractFaqItems(block);
 
-  renderFaqItems(block, items, blockId);
+  renderVcdkAccordion(block, items);
   setBlockEntries(blockId, items);
   updateFaqSchemaScript();
 }
