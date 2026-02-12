@@ -102,31 +102,10 @@ const renderFaqItemMarkup = ({ question, answerHtml }, blockId, index) => {
   const panelId = `${blockId}-panel-${index}`;
 
   return `
-    <div class="${BLOCK_NAME}__item">
-      <button
-        class="${BLOCK_NAME}__button"
-        id="${buttonId}"
-        aria-expanded="false"
-        aria-controls="${panelId}"
-        type="button"
-      >
-        <span class="${BLOCK_NAME}__title">${escapeHtmlText(question)}</span>
-        <span class="${BLOCK_NAME}__icon" aria-hidden="true">
-          <span class="icon icon-dropdown-caret-wide"></span>
-        </span>
-      </button>
-
-      <div
-        class="${BLOCK_NAME}__panel"
-        id="${panelId}"
-        role="region"
-        aria-labelledby="${buttonId}"
-        aria-hidden="true"
-        hidden
-      >
-        ${answerHtml}
-      </div>
-    </div>
+    <vcdk-accordion>
+      <span slot="title" id="${buttonId}">${escapeHtmlText(question)}</span>
+      <div class="accordion__content" id="${panelId}">${answerHtml}</div>
+    </vcdk-accordion>
   `;
 };
 
