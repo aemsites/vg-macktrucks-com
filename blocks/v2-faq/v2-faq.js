@@ -170,27 +170,6 @@ const toggleAccordionItem = (button, panel) => {
 };
 
 /**
- * Bind delegated click handling for accordion toggles (once per block).
- * @param {HTMLElement} block
- * @returns {void}
- */
-const bindAccordionToggle = (block) => {
-  block.addEventListener('click', (e) => {
-    const button = e.target?.closest?.(`.${BLOCK_NAME}__button`);
-    if (!button || !block.contains(button)) {
-      return;
-    }
-
-    const panel = getPanelForButton(block, button);
-    if (!panel || !block.contains(panel)) {
-      return;
-    }
-
-    toggleAccordionItem(button, panel);
-  });
-};
-
-/**
  * Register or remove FAQ entries for a specific block in the global registry.
  *
  * This registry is later used to generate a single, de-duplicated FAQPage
@@ -308,8 +287,6 @@ export default function decorate(block) {
   const items = extractFaqItems(block);
 
   renderFaqItems(block, items, blockId);
-  bindAccordionToggle(block);
-
   setBlockEntries(blockId, items);
   updateFaqSchemaScript();
 }
