@@ -88,43 +88,59 @@ function safePlay(playable) {
 }
 
 /**
- * Sets up an IntersectionObserver to autoplay a media element when it is fully in view,
- * and pause it when it is fully out of view.
+ * Observes a target element and triggers autoplay when it is almost fully visible
+ * in the viewport, and pauses it when it is almost fully out of view.
  *
- * @param {Object} options - Configuration options for autoplay and pause behavior.
- * @param {HTMLElement} options.target - The DOM element to observe for visibility.
- * @param {Function} options.play - Callback invoked when the element is 100% visible in the viewport.
- * @param {Function} options.pause - Callback invoked when the element is 0% visible (fully out of view).
- * @param {number|number[]} [options.threshold=[0, 1.0]] - One or more intersection thresholds. Defaults to [0, 1.0] to track full entry and exit.
- * @param {boolean} [options.once=false] - If true, the observer stops observing after the video plays once.
- * @param {number} [options.debounceMs=0] - Delay (in milliseconds) before invoking the `play()` callback when the element becomes fully visible.
+ * Uses a visibility tolerance (≈99% visible / ≈1% visible) to avoid strict
+ * equality checks that can be unreliable.
+ *
+ * @param {Object} options - Configuration options.
+ * @param {HTMLElement} options.target - The element to observe.
+ * @param {Function} options.play - Callback invoked when the element becomes sufficiently visible.
+ * @param {Function} options.pause - Callback invoked when the element becomes sufficiently hidden.
+ * @param {number|number[]} [options.threshold] - Custom IntersectionObserver thresholds.
+ *        Defaults to [0, 0.01, 0.99, 1].
+ * @param {boolean} [options.once=false] - If true, stops observing after the first successful play.
+ * @param {number} [options.debounceMs=0] - Delay (in ms) before invoking the play callback.
+ *
+ * @returns {IntersectionObserver} The created observer instance (can be disconnected externally).
  */
-function observeAutoplayWhenVisible({ target, play, pause, threshold = [0, 1.0], once = false, debounceMs = 0 }) {
-  let timeout;
+function observeAutoplayWhenVisible({ target, play, pause, threshold, once = false, debounceMs = 0 }) {
+  const FULLY_VISIBLE_RATIO = 0.99;
+  const FULLY_HIDDEN_RATIO = 0.01;
+
+  const thresholds = threshold ?? [0, FULLY_HIDDEN_RATIO, FULLY_VISIBLE_RATIO, 1];
+
+  let timeoutId;
 
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        clearTimeout(timeout);
+        clearTimeout(timeoutId);
 
-        if (entry.intersectionRatio === 1) {
-          // Fully in view: autoplay
-          timeout = setTimeout(() => {
+        const { intersectionRatio, isIntersecting } = entry;
+
+        const isVisible = isIntersecting && intersectionRatio >= FULLY_VISIBLE_RATIO;
+        const isHidden = !isIntersecting || intersectionRatio <= FULLY_HIDDEN_RATIO;
+
+        if (isVisible) {
+          timeoutId = setTimeout(() => {
             play();
             if (once) {
               observer.unobserve(entry.target);
             }
           }, debounceMs);
-        } else if (entry.intersectionRatio === 0) {
-          // Fully out of view: pause
+        } else if (isHidden) {
           pause();
         }
       });
     },
-    { threshold },
+    { threshold: thresholds },
   );
 
   observer.observe(target);
+
+  return observer;
 }
 
 /**
@@ -132,13 +148,13 @@ function observeAutoplayWhenVisible({ target, play, pause, threshold = [0, 1.0],
  *
  * @param {HTMLVideoElement} videoElement - The video element used by the player.
  * @param {Object} player - The video.js player instance.
+ * @returns {IntersectionObserver} The observer instance.
  */
 function setupAutopause(videoElement, player) {
-  observeAutoplayWhenVisible({
+  return observeAutoplayWhenVisible({
     target: videoElement,
     play: () => safePlay(player),
     pause: () => player.pause(),
-    threshold: [0, 1.0],
     debounceMs: 100,
   });
 }
@@ -258,6 +274,14 @@ export function isAEMVideoUrl(url) {
   return videoURLRegex.test(url);
 }
 
+export function isValidVideoUrl(url) {
+  if (typeof url !== 'string' || !url.trim()) {
+    return false;
+  }
+
+  return isLowResolutionVideoUrl(url) || isAEMVideoUrl(url);
+}
+
 export function isYoutubeVideoUrl(url) {
   return youtubeVideoRegex.test(url);
 }
@@ -268,27 +292,407 @@ export function getYoutubeVideoId(url) {
   return match?.length >= 2 ? match[1] : '';
 }
 
-export function isVideoLink(link) {
-  if (!link || !(link instanceof HTMLAnchorElement)) {
-    return false;
+/**
+ * Builds a YouTube embed URL using the privacy-enhanced (youtube-nocookie) domain.
+ * Applies relevant player parameters such as autoplay, mute, controls,
+ * playsinline and loop.
+ *
+ * @param {string} videoId - The 11-character YouTube video ID.
+ * @param {Object} [playerConfig={}] - Player configuration options.
+ * @param {boolean} [playerConfig.autoplay] - Whether the video should autoplay.
+ * @param {boolean} [playerConfig.muted] - Whether the video should start muted.
+ * @param {boolean} [playerConfig.controls] - Whether native YouTube controls are shown.
+ * @param {boolean} [playerConfig.playsinline] - Whether playback should occur inline on mobile.
+ * @param {boolean} [playerConfig.loop] - Whether the video should loop.
+ * @returns {string} Fully qualified YouTube embed URL.
+ */
+function buildYouTubeEmbedUrl(videoId, playerConfig = {}) {
+  const searchParams = new URLSearchParams();
+
+  searchParams.set('rel', '0');
+  searchParams.set('modestbranding', '1');
+  searchParams.set('autoplay', playerConfig.autoplay ? '1' : '0');
+  searchParams.set('mute', playerConfig.muted ? '1' : '0');
+  searchParams.set('controls', playerConfig.controls === false ? '0' : '1');
+  searchParams.set('playsinline', playerConfig.playsinline ? '1' : '0');
+
+  if (playerConfig.loop) {
+    searchParams.set('loop', '1');
+    searchParams.set('playlist', videoId);
   }
 
-  const linkString = link.getAttribute('href');
-  return (
-    (linkString.includes('youtube.com/embed/') ||
-      linkString.includes('https://player.restream.io') ||
-      videoURLRegex.test(linkString) ||
-      isLowResolutionVideoUrl(linkString)) &&
-    link.closest('.block.embed') === null
-  );
+  return `https://www.youtube-nocookie.com/embed/${videoId}?${searchParams.toString()}`;
 }
 
-export function isValidVideoUrl(url) {
-  if (typeof url !== 'string' || !url.trim()) {
+/**
+ * Creates a YouTube <iframe> element using the privacy-enhanced embed URL.
+ * Applies accessibility, loading and feature permissions.
+ *
+ * @param {string} videoId - The 11-character YouTube video ID.
+ * @param {Object} [playerConfig={}] - Player configuration options.
+ * @param {string} [playerConfig.title] - Optional accessible title for the iframe.
+ * @returns {HTMLIFrameElement} The configured YouTube iframe element.
+ */
+function createYouTubeIframe(videoId, playerConfig = {}) {
+  const embedUrl = buildYouTubeEmbedUrl(videoId, playerConfig);
+
+  return createIframe(embedUrl, {
+    props: {
+      title: playerConfig.title || 'YouTube video',
+      loading: 'lazy',
+      referrerpolicy: 'strict-origin-when-cross-origin',
+      allow: 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share',
+    },
+  });
+}
+
+/**
+ * Adds custom play/pause controls for a YouTube IFrame API player.
+ * Syncs UI state with the player's playback state.
+ *
+ * @param {HTMLElement} container - The wrapper element where controls are appended.
+ * @param {YT.Player} player - The YouTube IFrame API player instance.
+ * @returns {{ update: () => void }} Control API exposing an update method to resync UI state.
+ */
+function setYouTubeControls(container, player) {
+  const button = createElement('button', {
+    props: { type: 'button', class: 'v2-video__playback-button' },
+  });
+
+  const pauseIcon = createElement('span', { classes: ['icon', 'icon-pause-video'] });
+  const playIcon = createElement('span', { classes: ['icon', 'icon-play-video'] });
+
+  button.append(pauseIcon, playIcon);
+  container.appendChild(button);
+  decorateIcons(button);
+
+  const pauseLabel = getTextLabel('video_helper:pause_video_label');
+  const playLabel = getTextLabel('video_helper:play_video_label');
+
+  const PlayerState = window.YT?.PlayerState;
+
+  const isPlayingState = (state) => PlayerState && (state === PlayerState.PLAYING || state === PlayerState.BUFFERING);
+
+  const update = () => {
+    const state = player.getPlayerState?.();
+    const isPlaying = isPlayingState(state);
+
+    pauseIcon.style.display = isPlaying ? 'flex' : 'none';
+    playIcon.style.display = isPlaying ? 'none' : 'flex';
+    button.setAttribute('aria-label', isPlaying ? pauseLabel : playLabel);
+    button.setAttribute('aria-pressed', String(isPlaying));
+  };
+
+  update();
+
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const state = player.getPlayerState?.();
+    if (isPlayingState(state)) {
+      player.pauseVideo?.();
+    } else {
+      player.playVideo?.();
+    }
+
+    requestAnimationFrame(update);
+  });
+
+  return { update };
+}
+
+/**
+ * Adds a custom mute/unmute toggle for a YouTube IFrame API player.
+ * Keeps the button UI in sync with the player's mute state.
+ *
+ * Due to the asynchronous nature of the YouTube API, the UI is resynced
+ * immediately and shortly after toggling to ensure accuracy.
+ *
+ * @param {HTMLElement} container - The wrapper element where the toggle is appended.
+ * @param {YT.Player} player - The YouTube IFrame API player instance.
+ * @returns {{ update: () => void, syncUI: () => void }} Control API exposing
+ *          methods to manually resync the UI with the player state.
+ */
+function setYouTubeMuteToggle(container, player) {
+  const button = createElement('button', {
+    classes: 'video__mute-toggle-button',
+    props: { type: 'button' },
+  });
+
+  const mutedIcon = createElement('span', { classes: ['icon', 'icon-muted'] });
+  const unmutedIcon = createElement('span', { classes: ['icon', 'icon-unmuted'] });
+
+  button.append(mutedIcon, unmutedIcon);
+  container.appendChild(button);
+  decorateIcons(button);
+
+  const muteLabel = getTextLabel('video_helper:mute_video_aria_label');
+  const unmuteLabel = getTextLabel('video_helper:unmute_video_aria_label');
+
+  const isMuted = () => player?.isMuted?.() === true;
+
+  const update = () => {
+    const muted = isMuted();
+    mutedIcon.style.display = muted ? 'flex' : 'none';
+    unmutedIcon.style.display = muted ? 'none' : 'flex';
+    button.setAttribute('aria-label', muted ? unmuteLabel : muteLabel);
+    button.setAttribute('aria-pressed', String(muted));
+  };
+
+  let delayedSyncId;
+
+  // YouTube Iframe API updates mute state asynchronously.
+  // We sync UI immediately, on next frame, and with a short delay
+  // to ensure the button reflects the actual player state.
+  const syncUI = () => {
+    update();
+    requestAnimationFrame(update);
+
+    if (delayedSyncId) {
+      clearTimeout(delayedSyncId);
+    }
+    delayedSyncId = setTimeout(update, 200);
+  };
+
+  syncUI();
+
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (isMuted()) {
+      player.unMute();
+    } else {
+      player.mute();
+    }
+
+    syncUI();
+  });
+
+  return { update, syncUI };
+}
+
+let ytPromise;
+
+/**
+ * Lazily loads the YouTube IFrame API and returns a shared promise.
+ *
+ * Ensures the API script is loaded only once.
+ * Resolves when `window.YT.Player` becomes available, and rejects on
+ * timeout or script loading failure.
+ *
+ * @returns {Promise<void>} A promise that resolves when the YouTube
+ *          IFrame API is ready to use.
+ */
+export function loadYouTubeIframeAPI() {
+  if (ytPromise) {
+    return ytPromise;
+  }
+
+  ytPromise = new Promise((resolve, reject) => {
+    if (window.YT && typeof window.YT.Player === 'function') {
+      resolve();
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      ytPromise = undefined;
+      reject(new Error('YouTube Iframe API load timeout'));
+    }, 15000);
+
+    const previousReady = window.onYouTubeIframeAPIReady;
+
+    window.onYouTubeIframeAPIReady = () => {
+      if (typeof previousReady === 'function') {
+        previousReady();
+      }
+
+      clearTimeout(timeoutId);
+
+      if (window.YT && typeof window.YT.Player === 'function') {
+        resolve();
+      } else {
+        ytPromise = undefined;
+        reject(new Error('YouTube Iframe API ready callback fired but YT.Player is unavailable'));
+      }
+    };
+
+    loadScript('https://www.youtube.com/iframe_api').catch((err) => {
+      clearTimeout(timeoutId);
+      ytPromise = undefined;
+      reject(err);
+    });
+  });
+
+  return ytPromise;
+}
+
+/**
+ * Creates a YouTube player using the YouTube IFrame API and mounts it into the given element.
+ *
+ * Supports:
+ * - Poster-first rendering (hide iframe until playback starts)
+ * - Optional custom controls UI (when `playerConfig.controls === false`)
+ * - Optional viewport-based autoplay/pause (when `playerConfig.autoplay === true`)
+ *
+ * @param {string} videoId - The YouTube video ID (11 chars).
+ * @param {string} mountId - The DOM id of the element where the player will be mounted.
+ * @param {Object} playerConfig - Player options (e.g. autoplay, muted, controls, playsinline, loop).
+ * @param {Object} [options] - Optional DOM helpers.
+ * @param {HTMLElement} [options.container] - Wrapper container used for custom UI and/or autoplay observation.
+ * @param {HTMLPictureElement|HTMLElement} [options.poster] - Poster element to show before playback (will be hidden on play).
+ * @returns {Promise<any>} Resolves to the created YouTube player instance.
+ */
+async function createYouTubeApiPlayer(videoId, mountId, playerConfig, { container, poster } = {}) {
+  await loadYouTubeIframeAPI();
+
+  let controlsUI;
+  let muteUI;
+  let autoplayObserver;
+
+  const player = new window.YT.Player(mountId, {
+    videoId,
+    playerVars: {
+      rel: 0,
+      modestbranding: 1,
+      autoplay: 0,
+      mute: playerConfig.muted ? 1 : 0,
+      controls: playerConfig.controls === false ? 0 : 1,
+      playsinline: playerConfig.playsinline ? 1 : 0,
+      loop: playerConfig.loop ? 1 : 0,
+      playlist: playerConfig.loop ? videoId : undefined,
+    },
+    events: {
+      onReady: (e) => {
+        const ytPlayer = e.target;
+        const iframe = ytPlayer.getIframe();
+
+        if (poster) {
+          iframe.style.display = 'none';
+        }
+
+        if (playerConfig.controls === false && container) {
+          controlsUI = setYouTubeControls(container, ytPlayer);
+          muteUI = setYouTubeMuteToggle(container, ytPlayer);
+
+          controlsUI.update?.();
+          muteUI.syncUI?.();
+        }
+
+        if (playerConfig.autoplay) {
+          const targetEl = container || iframe;
+
+          if (!autoplayObserver) {
+            autoplayObserver = observeAutoplayWhenVisible({
+              target: targetEl,
+              play: () => ytPlayer.playVideo(),
+              pause: () => ytPlayer.pauseVideo(),
+              debounceMs: 100,
+            });
+          }
+        }
+      },
+
+      onStateChange: (evt) => {
+        if (poster && evt.data === window.YT.PlayerState.PLAYING) {
+          const iframe = evt.target.getIframe();
+          poster.style.display = 'none';
+          iframe.style.display = '';
+        }
+
+        controlsUI?.update?.();
+        muteUI?.update?.();
+      },
+    },
+  });
+
+  return player;
+}
+
+/**
+ * Creates a wrapper element for a YouTube video.
+ *
+ * Depending on the provided options, this will:
+ * - Render a lightweight iframe embed (default behavior)
+ * - Render a poster-first embed that initializes the iframe on click
+ * - Initialize a full YouTube IFrame API player when custom controls are required
+ *
+ * @param {string} src - The YouTube URL.
+ * @param {string} [className=''] - Additional CSS class(es) applied to the wrapper.
+ * @param {Object} [videoParams={}] - Player options (autoplay, muted, controls, loop, playsinline).
+ * @param {HTMLElement|null} [poster=null] - Optional poster element displayed before playback.
+ * @returns {HTMLElement|null} The wrapper element containing the video, or null if the URL is invalid.
+ */
+function createYouTubeVideoWrapper(src, className = '', videoParams = {}, poster = null) {
+  const videoId = getYoutubeVideoId(src);
+  if (!videoId) {
+    return null;
+  }
+
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('video-wrapper');
+
+  const classes = className.trim();
+  if (classes) {
+    wrapper.classList.add(...classes.split(/\s+/));
+  }
+
+  const hasNativeControls = videoParams.controls !== false;
+
+  if (hasNativeControls) {
+    if (poster && !videoParams.autoplay) {
+      wrapper.append(poster);
+      addPlayIcon(wrapper);
+
+      wrapper.addEventListener(
+        'click',
+        (e) => {
+          e.preventDefault();
+          wrapper.replaceChildren(createYouTubeIframe(videoId, { ...videoParams, autoplay: true }));
+        },
+        { once: true },
+      );
+
+      return wrapper;
+    }
+
+    wrapper.append(createYouTubeIframe(videoId, videoParams));
+    return wrapper;
+  }
+
+  if (poster) {
+    wrapper.append(poster);
+  }
+
+  const mount = createElement('div', {
+    props: { id: `yt-${Math.random().toString(36).slice(2)}` },
+  });
+
+  wrapper.append(mount);
+
+  createYouTubeApiPlayer(videoId, mount.id, videoParams, {
+    container: wrapper,
+    poster,
+  }).catch(console.error);
+
+  return wrapper;
+}
+
+export function isVideoLink(link) {
+  if (!(link instanceof HTMLAnchorElement)) {
     return false;
   }
 
-  return isLowResolutionVideoUrl(url) || isAEMVideoUrl(url);
+  const href = link.getAttribute('href') || '';
+  if (!href) {
+    return false;
+  }
+
+  return (
+    (isYoutubeVideoUrl(href) || href.includes('player.restream.io') || videoURLRegex.test(href) || isLowResolutionVideoUrl(href)) &&
+    link.closest('.block.embed') === null
+  );
 }
 
 export function selectVideoLink(links, preferredType, videoType = videoTypes.both) {
@@ -300,7 +704,7 @@ export function selectVideoLink(links, preferredType, videoType = videoTypes.bot
   const findLinkByCondition = (conditionFn) => linksArray.find((link) => conditionFn(link.getAttribute('href')));
 
   const aemVideoLink = findLinkByCondition((href) => videoURLRegex.test(href));
-  const youTubeLink = findLinkByCondition((href) => href.includes('youtube.com/embed/'));
+  const youTubeLink = findLinkByCondition((href) => isYoutubeVideoUrl(href));
   const localMediaLink = findLinkByCondition((href) => href.split('?')[0].endsWith('.mp4'));
 
   if (aemVideoLink) {
@@ -802,22 +1206,22 @@ export function createVideoWithPoster(linkUrl, poster, className, videoConfig = 
 }
 
 /**
- * Creates a video element or videojs player, depending on whether the video is local
- * or not. Configures the element with specified classes, properties, and source.
+ * Creates a video wrapper element for the given source.
+ * Supports progressive MP4, AEM (Video.js), and YouTube (iframe or API mode).
  *
- * @param {HTMLAnchorElement | string} link - The link that contains the video URL or the URL of the video.
- * @param {string} [className=''] - Optional. CSS class names to apply to the video container.
- * @param {Object} [videoParams={}] - Optional. Properties for the video player, including attributes like 'muted', 'autoplay', 'title'.
- * @param {Object} [configs={}] - Optional. Additional configurations such as 'usePosterAutoDetection' and 'checkVideoCookie'.
- * @param {boolean} [configs.usePosterAutoDetection=false] - Whether to automatically detect and use a poster image.
- * @param {boolean} [configs.checkVideoCookie=false] - Whether to check for video cookie settings.
- * @returns {HTMLElement | null} - The created video element or player with specified configs, or null if the video link is invalid.
+ * @param {HTMLAnchorElement|string} link Anchor containing a video URL or a direct video URL.
+ * @param {string} [className=''] CSS class(es) applied to the wrapper element.
+ * @param {Object} [videoParams={}] Player options (muted, autoplay, controls, loop, playsinline, title).
+ * @param {Object} [configs={}] Additional configuration flags.
+ * @param {boolean} [configs.usePosterAutoDetection] Auto-detect a poster image from the anchor context.
+ * @param {boolean} [configs.addMuteToggle] Adds a custom mute toggle when supported.
+ * @returns {HTMLElement|null} Wrapper element containing the appropriate video implementation, or null if invalid.
  */
 export const createVideo = (link, className = '', videoParams = {}, configs = {}) => {
   let src;
   let poster;
 
-  const { usePosterAutoDetection, checkVideoCookie, addMuteToggle = false } = configs;
+  const { usePosterAutoDetection, addMuteToggle = false } = configs;
 
   if (link instanceof HTMLAnchorElement) {
     const config = parseVideoLink(link, usePosterAutoDetection);
@@ -835,6 +1239,10 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
     return createProgressivePlaybackVideo(src, className, videoParams, addMuteToggle);
   }
 
+  if (isYoutubeVideoUrl(src)) {
+    return createYouTubeVideoWrapper(src, className, videoParams, poster);
+  }
+
   if (poster) {
     return createVideoWithPoster(src, poster, className, videoParams, { addMuteToggle });
   }
@@ -845,7 +1253,7 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
   const videoUrl = getDeviceSpecificVideoUrl(src);
 
   async function initializePlayerWithControls() {
-    await setupPlayer(videoUrl, container, videoParams, null, checkVideoCookie);
+    await setupPlayer(videoUrl, container, videoParams, null);
 
     if (!videoParams.controls) {
       setPlaybackControls(container);
@@ -860,10 +1268,6 @@ export const createVideo = (link, className = '', videoParams = {}, configs = {}
 
   return container;
 };
-
-export function loadYouTubeIframeAPI() {
-  return loadScript('https://www.youtube.com/iframe_api');
-}
 
 const logVideoEvent = (eventName, videoId, timeStamp, blockName = 'video') => {
   console.info(`[${blockName}] ${eventName} for ${videoId} at ${timeStamp}`);
