@@ -49,11 +49,11 @@ const applyInitialRoute = (metadataPageKey) => {
     return;
   }
 
-  const expected = `#/${page}`;
-  const allowedHashes = [expected, '#/summary'];
-  if (!allowedHashes.some((hash) => location.hash.startsWith(hash))) {
-    location.hash = expected;
+  if (location.hash && location.hash !== '#' && location.hash !== '#/') {
+    return;
   }
+
+  location.hash = `#/${page}`;
 };
 
 /**
