@@ -50,7 +50,8 @@ const applyInitialRoute = (metadataPageKey) => {
   }
 
   const expected = `#/${page}`;
-  if (!location.hash.startsWith(expected)) {
+  const allowedHashes = [expected, '#/summary'];
+  if (!allowedHashes.some((hash) => location.hash.startsWith(hash))) {
     location.hash = expected;
   }
 };
