@@ -169,6 +169,13 @@
   }
 }
 
+@media (min-width: 1072px) {
+  .v2-icon-cards__body,
+  .v2-icon-cards__heading:not(.h2) {
+    font-size: var(--body-1-font-size);
+  }
+}
+
 /* 4 COLUMNS VARIANT */
 
 /* previous header styling */
