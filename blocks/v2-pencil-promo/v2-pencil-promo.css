@@ -91,13 +91,13 @@
 
 .v2-pencil-promo__pencil-banner .icon {
   height: 24px;
+  width: 24px;
 }
 
 .v2-pencil-promo__pencil-banner .icon svg {
   --color-icon: var(--text-color);
 
   position: absolute;
-  margin-left: 10px;
   width: 24px;
   height: 24px;
 }
@@ -197,6 +197,10 @@
   .v2-pencil-promo__promo-banner .v2-pencil-promo__content > p,
   .v2-pencil-promo__promo-banner .v2-pencil-promo__content-wrapper {
     background: none;
+  }
+
+  .v2-pencil-promo__pencil-banner .icon svg {
+    margin-left: 10px;
   }
 }
 

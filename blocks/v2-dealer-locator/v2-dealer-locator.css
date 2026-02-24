@@ -325,6 +325,20 @@ main .section.v2-dealer-locator-container > div {
   overflow: hidden;
 }
 
+.v2-dealer-locator .nearby-pins-load-more {
+  padding: 10px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--c-secondary-silver);
+  cursor: pointer;
+  transition: background-color 0.4s ease-in-out;
+}
+
+.v2-dealer-locator .nearby-pins-load-more:hover {
+  background-color: var(--c-tertiary-light-gray);
+  transition: background-color 0.4s ease-in-out;
+}
+
 .v2-dealer-locator .nearby-pins::-webkit-scrollbar-thumb {
   background-color: var(--c-secondary-steel) !important;
 }

@@ -67,7 +67,9 @@ export default async function decorate(block) {
 
     handleSlider(block);
   } else {
-    slider.appendChild(images[0]);
+    if (images.length >= 1) {
+      slider.appendChild(images[0]);
+    }
     content.appendChild(slider);
   }
 
