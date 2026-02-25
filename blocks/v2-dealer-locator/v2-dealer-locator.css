@@ -2091,7 +2091,12 @@ main .section.v2-dealer-locator-container > div {
 .v2-dealer-locator .sidebar-legend .dealer div,
 .v2-dealer-locator .sidebar-legend .electric-dealer div,
 .v2-dealer-locator .sidebar-legend .uptime-dealer div {
-  padding: 8px;
+  padding: 0 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
 }
 
 .v2-dealer-locator .sidebar .panel-card .panel-container #filter-options li label input {
@@ -2261,7 +2266,7 @@ main .section.v2-dealer-locator-container > div {
 }
 
 .v2-dealer-locator .sidebar-legend .legend-icon {
-  margin-top: -3px;
+  margin-top: 0;
 }
 
 .v2-dealer-locator .no-dealer-text {
@@ -2441,6 +2446,16 @@ main .section.v2-dealer-locator-container > div {
     text-align: center;
   }
 
+  .sidebar .mobile-dealer > div,
+  .sidebar .mobile-uptime-dealer > div,
+  .sidebar .mobile-electric-dealer > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    height: 100%;
+  }
+
   .sidebar .mobile-dealer img {
     width: 16px;
     height: 22px;
@@ -2468,6 +2483,12 @@ main .section.v2-dealer-locator-container > div {
   .sidebar .mobile-electric-dealer img {
     width: 16px;
     height: 22px;
+  }
+
+  .sidebar .mobile-dealer img,
+  .sidebar .mobile-uptime-dealer img,
+  .sidebar .mobile-electric-dealer img {
+    flex-shrink: 0;
   }
 
   .sidebar .main-header {
