@@ -364,15 +364,37 @@ main .section.v2-dealer-locator-container > div {
   width: 100%;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .v2-dealer-locator .nearby-pins article.teaser .marker-main {
-  width: 15%;
+  width: 40px;
+  flex: 0 0 40px;
+  min-width: 40px;
+  padding-left: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: visible;
+}
+
+.v2-dealer-locator .nearby-select article.teaser .marker-main {
+  width: 40px;
+  flex: 0 0 40px;
+  min-width: 40px;
+  padding-left: 0;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: visible;
 }
 
 .v2-dealer-locator .nearby-pins article.teaser .dealerPanelContainer {
   width: unset;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 @media (min-width: 496px) and (max-width: 992px) {
@@ -385,11 +407,16 @@ main .section.v2-dealer-locator-container > div {
   cursor: pointer;
 }
 
-.v2-dealer-locator .nearby-pins article.teaser .teaser-top #marker {
-  width: 30px;
-  float: left;
-  padding-top: 10px;
-  padding-right: 10px;
+.v2-dealer-locator .nearby-pins article.teaser .marker-main #marker {
+  width: 30px !important;
+  height: 43px !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  display: block !important;
+  object-fit: contain !important;
+  flex-shrink: 0;
 }
 
 .v2-dealer-locator .nearby-pins article.teaser .teaser-top .heading {
@@ -464,6 +491,30 @@ main .section.v2-dealer-locator-container > div {
     max-width: unset;
   }
 
+  .v2-dealer-locator .nearby-pins article.teaser .marker-main,
+  .v2-dealer-locator .nearby-select article.teaser .marker-main {
+    width: 38px;
+    flex: 0 0 38px;
+    min-width: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: visible;
+  }
+
+  .v2-dealer-locator .nearby-pins article.teaser .marker-main #marker,
+  .v2-dealer-locator .nearby-select article.teaser .marker-main #marker {
+    width: 28px !important;
+    height: 40px !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    display: block !important;
+    object-fit: contain !important;
+    flex-shrink: 0;
+  }
+
   .v2-dealer-locator .nearby-pins article.teaser .teaser-top .left {
     max-width: unset;
   }
@@ -526,18 +577,49 @@ main .section.v2-dealer-locator-container > div {
   width: 100%;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .v2-dealer-locator .nearby-select article.teaser .teaser-top {
   cursor: pointer;
 }
 
-.v2-dealer-locator .nearby-select article.teaser .teaser-top #marker {
-  width: 30px;
-  float: left;
-  padding-top: 10px;
-  padding-right: 10px;
+.v2-dealer-locator .nearby-select article.teaser .marker-main #marker {
+  width: 30px !important;
+  height: 43px !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  display: block !important;
+  object-fit: contain !important;
+  flex-shrink: 0;
+}
+
+@media (max-width: 400px) {
+  .v2-dealer-locator .nearby-pins article.teaser .marker-main,
+  .v2-dealer-locator .nearby-select article.teaser .marker-main {
+    width: 36px;
+    flex: 0 0 36px;
+    min-width: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: visible;
+  }
+
+  .v2-dealer-locator .nearby-pins article.teaser .marker-main #marker,
+  .v2-dealer-locator .nearby-select article.teaser .marker-main #marker {
+    width: 28px !important;
+    height: 40px !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    float: none !important;
+    display: block !important;
+    object-fit: contain !important;
+    flex-shrink: 0;
+  }
 }
 
 .v2-dealer-locator .nearby-select article.teaser .teaser-top .heading {
@@ -2397,10 +2479,6 @@ main .section.v2-dealer-locator-container > div {
 @media (max-width: 700px) {
   .v2-dealer-locator .slider-arrow {
     left: 80%;
-  }
-
-  .v2-dealer-locator .nearby-pins article.teaser > div img {
-    width: 30px;
   }
 
   .v2-dealer-locator .nearby-pins article.teaser .teaser-top .heading p {
