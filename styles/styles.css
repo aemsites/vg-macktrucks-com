@@ -1473,7 +1473,7 @@ main .section.responsive-title h1 {
   width: 100%;
 }
 
-.v2-video .video__mute-toggle-button .icon svg {
+.video__mute-toggle-button .icon svg {
   height: var(--video-mute-toggle-button-size);
   width: var(--video-mute-toggle-button-size);
 }
