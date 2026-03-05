@@ -620,6 +620,61 @@ main .section.v2-dealer-locator-container > div {
     object-fit: contain !important;
     flex-shrink: 0;
   }
+
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0;
+    justify-content: space-between;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left,
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .left,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .right {
+    flex: 0 0 22%;
+    max-width: 22%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left div,
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right div,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .left div,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .right div {
+    min-width: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left > div,
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right > div,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .left > div,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .right > div {
+    min-height: 22px;
+    padding: 2px 1px;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .left a,
+  .v2-dealer-locator .nearby-pins article.teaser .teaser-bottom .right a,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .left a,
+  .v2-dealer-locator .nearby-select article.teaser .teaser-bottom .right a {
+    display: block;
+    width: 100%;
+    font-size: 8px;
+    line-height: 1.05;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: clip;
+    text-align: center;
+    word-break: break-word;
+  }
 }
 
 .v2-dealer-locator .nearby-select article.teaser .teaser-top .heading {
