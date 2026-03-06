@@ -899,6 +899,11 @@ sup {
   align-items: center;
 }
 
+.video__mute-toggle-button .icon svg {
+  height: var(--video-mute-toggle-button-size);
+  width: var(--video-mute-toggle-button-size);
+}
+
 .icon-button ul .icon svg {
   width: 150px;
   height: 40px;
@@ -1471,11 +1476,6 @@ main .section.responsive-title h1 {
   align-items: center;
   height: 100%;
   width: 100%;
-}
-
-.video__mute-toggle-button .icon svg {
-  height: var(--video-mute-toggle-button-size);
-  width: var(--video-mute-toggle-button-size);
 }
 
 /* Section Background colors */
