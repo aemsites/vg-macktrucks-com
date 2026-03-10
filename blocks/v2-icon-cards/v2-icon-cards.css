@@ -53,6 +53,10 @@
   margin: 0;
 }
 
+.v2-icon-cards__column > ul {
+  padding-left: 22px;
+}
+
 .v2-icon-cards__column--main {
   gap: 24px;
 }
