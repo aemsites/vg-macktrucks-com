@@ -54,7 +54,23 @@
 }
 
 .v2-icon-cards__column > ul {
-  padding-left: 22px;
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.v2-icon-cards__column > ul li::before {
+  content: "-";
+  margin-right: 10px;
+}
+
+.v2-icon-cards.list-style-bullets .v2-icon-cards__column > ul {
+  list-style: disc;
+  list-style-position: inside;
+}
+
+.v2-icon-cards.list-style-bullets .v2-icon-cards__column > ul li::before {
+  content: "";
+  margin-right: 0;
 }
 
 .v2-icon-cards__column--main {
