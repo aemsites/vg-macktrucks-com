@@ -899,6 +899,11 @@ sup {
   align-items: center;
 }
 
+.video__mute-toggle-button .icon svg {
+  height: var(--video-mute-toggle-button-size);
+  width: var(--video-mute-toggle-button-size);
+}
+
 .icon-button ul .icon svg {
   width: 150px;
   height: 40px;
@@ -1460,8 +1465,15 @@ main .section.responsive-title h1 {
   background-color: var(--c-secondary-dark-gold, #87754e);
 }
 
+.video__mute-toggle-button .icon-muted,
+.video__mute-toggle-button .icon-unmuted {
+  display: none;
+  justify-content: center;
+}
+
 .video__mute-toggle-button .icon {
   /* color: var(--button-primary-bg); */
+  align-items: center;
   height: 100%;
   width: 100%;
 }
