@@ -240,13 +240,14 @@ const updateSelectedFiltersOverflowControls = (block) => {
 };
 
 // Gets the data from the API and formats it
-const getData = async (articleSet = {}, offset = 0, sortingCriteria = appliedSortingCriteria) => {
+const getData = async (articleSet = {}, offset = 0, sortingCriteria = appliedSortingCriteria, inputValue) => {
   const queryVariables = {
     limit: defaultAmountOfArticles,
     offset: offset,
     facets: ['ARTICLE', 'TOPIC', 'TRUCK'],
     sort: sortingCriteria,
     article: articleSet,
+    q: inputValue || 'mack',
   };
 
   const allMagazineData = await fetchMagazineData(queryVariables);
@@ -351,9 +352,12 @@ const buildShowMoreBtn = () => {
 const buildTemplate = (articles, facets, articlesAmount) => {
   const template = docRange.createContextualFragment(`
   <div class="${CLASSES.headSection}">
-    <div class="${CLASSES.searchContainer}">
+    <form class="${CLASSES.searchContainer}">
       <input class="${CLASSES.searchInput}" type="text" id="search" name="search" placeholder="${LABELS.SEARCH}">
-    </div>
+      <button type="submit">
+        <span class="icon icon-search"></span>
+      </button>
+    </form>
     <div class="${CLASSES.sortContainer} switch">
       <p>${LABELS.SORT_BY}:</p>
       <div class="${CLASSES.switchContainer}">
@@ -446,12 +450,12 @@ const objectsAreTheSame = (obj1, obj2) => {
 };
 
 // Update the article list with the global object "appliedFilters"
-const updateArticleList = async (block, offset = 0, sorting) => {
-  if (objectsAreTheSame(previousQueryFilters, appliedFilters) && sorting === undefined) {
+const updateArticleList = async (block, offset = 0, sorting, inputValue) => {
+  if (!inputValue && objectsAreTheSame(previousQueryFilters, appliedFilters) && sorting === undefined) {
     return;
   }
 
-  const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset, sorting);
+  const { articles: newFilteredArticles, count } = await getData(appliedFilters, offset, sorting, inputValue);
   // Store the last query to compare next time
   previousQueryFilters = JSON.parse(JSON.stringify(appliedFilters));
   totalArticleCount = count;
@@ -502,6 +506,16 @@ const handleToggleBtns = (filters, extra = 0) => {
   }
 };
 
+const scrollToView = (focusedElement) => {
+  const borderWidth = 2;
+  const headerHeight = document.querySelector('.header-wrapper').getBoundingClientRect().height;
+  const yOffset = focusedElement.getBoundingClientRect().top + window.scrollY - headerHeight - borderWidth;
+  window.scrollTo({
+    top: yOffset,
+    behavior: 'smooth',
+  });
+};
+
 const addEventListeners = (block) => {
   const htmlElts = {
     sortContainer: block.querySelectorAll(`.${CLASSES.sortContainer} button`),
@@ -520,7 +534,11 @@ const addEventListeners = (block) => {
     filterCheckbox: block.querySelectorAll(`.${CLASSES.filterCheckbox}`),
     selectedFilters: block.querySelector(`.${CLASSES.selectedFilters}`),
     showMoreBtn: block.querySelector(`.${CLASSES.showMoreButton}`),
+    searchForm: block.querySelector(`.${CLASSES.searchContainer}`),
+    searchInput: block.querySelector(`.${CLASSES.searchInput}`),
   };
+
+  const resetInputField = () => (htmlElts.searchInput.value = '');
 
   htmlElts.sortContainer.forEach((btn) => {
     btn.addEventListener('click', async () => {
@@ -538,6 +556,7 @@ const addEventListeners = (block) => {
       appliedSortingCriteria = btn.value;
 
       updateArticleList(block, 0, btn.value);
+      resetInputField();
     });
   });
 
@@ -552,18 +571,14 @@ const addEventListeners = (block) => {
       htmlElts.filterButton.style.setProperty('--display-icon', htmlElts.filterButton.classList.contains('overlay') ? 'inline-flex' : 'none');
 
       // Scroll to the top so filters open in view
-      const headerHeight = document.querySelector('.header-wrapper').getBoundingClientRect().height;
-      const yOffset = htmlElts.filterButton.getBoundingClientRect().top + window.scrollY - headerHeight;
-      window.scrollTo({
-        top: yOffset,
-        behavior: 'smooth',
-      });
+      scrollToView(htmlElts.filterButton);
 
       // Lock screen when filter opens
       document.body.classList.add('disable-scroll');
 
       // Apply changes when filter closes.
       if (htmlElts.filterList.classList.contains('hide')) {
+        resetInputField();
         updateArticleList(block);
         document.body.classList.remove('disable-scroll');
         pageCounter = 0;
@@ -640,25 +655,32 @@ const addEventListeners = (block) => {
     }
   });
 
+  const clearAllFilters = (shouldUpdate = true) => {
+    const currentFilters = block.querySelectorAll(`.${CLASSES.selectedFilter}`);
+    currentFilters.forEach((filter) => filter.remove());
+
+    htmlElts.filterCheckbox.forEach((checkbox) => (checkbox.checked = false));
+    htmlElts.facetHeading.forEach((heading) => delete heading.dataset.amount);
+    htmlElts.toggleFilters.forEach((btn) => btn.classList.add('hide'));
+    htmlElts.selectedFilters.classList.remove('expand');
+
+    appliedFilters = {};
+    syncUrlWithFilters();
+    pageCounter = 0;
+
+    updateSelectedFiltersUiState(htmlElts);
+    if (shouldUpdate) {
+      updateArticleList(block);
+    }
+  };
+
   const mobileClearBtn = htmlElts.mobileBtnsContainer.querySelector(`.${CLASSES.clearFiltersBtn}`);
   const allClearBtns = [mobileClearBtn, htmlElts.clearBtn];
   // Clear all filters from both available buttons
   allClearBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const currentFilters = block.querySelectorAll(`.${CLASSES.selectedFilter}`);
-      currentFilters.forEach((filter) => filter.remove());
-
-      htmlElts.filterCheckbox.forEach((checkbox) => (checkbox.checked = false));
-      htmlElts.facetHeading.forEach((heading) => delete heading.dataset.amount);
-      htmlElts.toggleFilters.forEach((btn) => btn.classList.add('hide'));
-      htmlElts.selectedFilters.classList.remove('expand');
-
-      appliedFilters = {};
-      syncUrlWithFilters();
-      pageCounter = 0;
-
-      updateSelectedFiltersUiState(htmlElts);
-      updateArticleList(block);
+      clearAllFilters();
+      resetInputField();
     });
   });
 
@@ -708,6 +730,21 @@ const addEventListeners = (block) => {
       const selectedChecklist = e.target.closest(`.${CLASSES.facetList}`);
       selectedChecklist.querySelector('ul').classList.toggle('expand');
     }
+  });
+
+  // Submit search input field
+  htmlElts.searchForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const searchValue = htmlElts.searchInput.value.trim();
+    if (searchValue) {
+      clearAllFilters(false);
+      appliedSortingCriteria = 'BEST_MATCH';
+      updateArticleList(block, 0, appliedSortingCriteria, searchValue);
+    }
+  });
+
+  htmlElts.searchInput.addEventListener('focus', () => {
+    scrollToView(htmlElts.searchInput);
   });
 };
 
