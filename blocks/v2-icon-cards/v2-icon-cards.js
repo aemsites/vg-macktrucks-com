@@ -147,6 +147,7 @@ export default async function decorate(block) {
     col.classList.add(`${blockName}__column`);
 
     const allTextElmts = col.querySelectorAll('p');
+    const allLiElements = col.querySelectorAll('li');
     const bodyElmts = [];
 
     allTextElmts.forEach((e) => {
@@ -159,7 +160,8 @@ export default async function decorate(block) {
         bodyElmts.push(e);
       }
     });
-    bodyElmts.forEach((e) => e.classList.add(`${blockName}__body`));
+
+    [...bodyElmts, ...allLiElements].forEach((e) => e.classList.add(`${blockName}__body`));
 
     const buttons = [...block.querySelectorAll('.button-container a')];
     buttons.forEach((btn) => {
