@@ -2,6 +2,7 @@
 const path = require('path');
 
 const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
@@ -63,6 +64,10 @@ module.exports = {
         test: /\.(css)$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
+      {
+        test: /\.(svg|png|jpg|jpeg|gif|webp)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
 
@@ -70,6 +75,7 @@ module.exports = {
 
   optimization: {
     usedExports: true,
+    moduleIds: 'deterministic',
     splitChunks: {
       cacheGroups: {
         vcdk: {
@@ -93,11 +99,15 @@ module.exports = {
       new TerserPlugin({
         extractComments: false,
         terserOptions: {
-          compress: true,
+          compress: {
+            passes: 2,
+            drop_console: false,
+          },
           mangle: true,
           format: { comments: false },
         },
       }),
+      new CssMinimizerPlugin(),
     ],
   },
 

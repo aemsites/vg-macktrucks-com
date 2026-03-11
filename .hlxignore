@@ -6,3 +6,4 @@ constants.json
 package.json
 package-lock.json
 placeholder.json
+packages/*

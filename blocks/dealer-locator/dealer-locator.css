@@ -1,0 +1,23 @@
+:root {
+  --dealer-locator-height: 100vh;
+  --dealer-locator-min-height: 600px;
+  --dealer-locator-max-height: 1000px;
+}
+
+.block.dealer-locator {
+  padding: 0;
+}
+
+.block.dealer-locator .dealer-locator__mount {
+  position: relative;
+  width: 100%;
+  height: var(--dealer-locator-height);
+  min-height: var(--dealer-locator-min-height);
+  max-height: var(--dealer-locator-max-height);
+}
+
+@media (min-width: 905px) {
+  :root {
+    --dealer-locator-height: calc(100vh - 79px);
+  }
+}

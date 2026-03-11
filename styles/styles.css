@@ -1654,6 +1654,14 @@ main .section.responsive-title h1 {
   max-width: 100%;
 }
 
+main .section.full-width,
+main .section.full-width > div {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
 .section.header-with-mark > .default-content-wrapper > h1:first-child,
 .section.header-with-mark > .default-content-wrapper > h2:first-child,
 .redesign-v2 .with-marker {
