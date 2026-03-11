@@ -263,14 +263,13 @@
 }
 
 .v2-explore-articles__filter-list input:checked {
-  background-color: var(--c-primary-black);
   border-color: var(--c-primary-black);
 }
 
 .v2-explore-articles__filter-list input:checked::before {
   content: url('/icons/tick.svg');
   position: absolute;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
