@@ -82,7 +82,7 @@
   padding: 4px;
 }
 
-.v2-explore-articles__sort-container button {
+.v2-explore-articles__sort-container .v2-explore-articles__sort-button {
   color: var(--text-color);
   font-size: var(--body-font-size-xs);
   position: relative;
@@ -93,7 +93,7 @@
   margin: 0;
 }
 
-.v2-explore-articles__search-container button {
+.v2-explore-articles__search-container .v2-explore-articles__search-button {
   display: flex;
   position: absolute;
   right: 16px;

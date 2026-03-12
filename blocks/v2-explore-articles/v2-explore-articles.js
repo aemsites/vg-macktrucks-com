@@ -27,7 +27,9 @@ const CLASSES = {
   filterButton: `${blockName}__filter-button`,
   searchContainer: `${blockName}__search-container`,
   searchInput: `${blockName}__search-input`,
+  searchButton: `${blockName}__search-button`,
   sortContainer: `${blockName}__sort-container`,
+  sortButton: `${blockName}__sort-button`,
   sortByDate: `${blockName}__sort-by-date`,
   sortByTitle: `${blockName}__sort-by-title`,
   switchContainer: `${blockName}__switch-container`,
@@ -354,15 +356,15 @@ const buildTemplate = (articles, facets, articlesAmount) => {
   <div class="${CLASSES.headSection}">
     <form class="${CLASSES.searchContainer}">
       <input class="${CLASSES.searchInput}" type="text" id="search" name="search" placeholder="${LABELS.SEARCH}">
-      <button type="submit">
+      <button class="${CLASSES.searchButton} type="submit">
         <span class="icon icon-search"></span>
       </button>
     </form>
     <div class="${CLASSES.sortContainer} switch">
       <p>${LABELS.SORT_BY}:</p>
       <div class="${CLASSES.switchContainer}">
-        <button value="${sortingTypes.byPublishDate}" class="${CLASSES.sortByDate} active">${LABELS.SORT_MOST_RECENT}</button>
-        <button value="${sortingTypes.alphabetical}"class="${CLASSES.sortByTitle}">${LABELS.SORT_ALPHABETICAL}</button>
+        <button value="${sortingTypes.byPublishDate}" class="${CLASSES.sortButton} ${CLASSES.sortByDate} active">${LABELS.SORT_MOST_RECENT}</button>
+        <button value="${sortingTypes.alphabetical}"class="${CLASSES.sortButton} ${CLASSES.sortByTitle}">${LABELS.SORT_ALPHABETICAL}</button>
         <div class="${CLASSES.switchSlider}"></div>  
       </div>
     </div>
@@ -507,18 +509,37 @@ const handleToggleBtns = (filters, extra = 0) => {
 };
 
 const scrollToView = (focusedElement) => {
-  const borderWidth = 2;
+  const SEARCH_AND_FILTERS_BORDER_WIDTH = 2;
   const headerHeight = document.querySelector('.header-wrapper').getBoundingClientRect().height;
-  const yOffset = focusedElement.getBoundingClientRect().top + window.scrollY - headerHeight - borderWidth;
+  const yOffset = focusedElement.getBoundingClientRect().top + window.scrollY - headerHeight - SEARCH_AND_FILTERS_BORDER_WIDTH;
   window.scrollTo({
     top: yOffset,
     behavior: 'smooth',
   });
 };
 
+const clearAllFilters = (block, shouldUpdate = true) => {
+  const currentFilters = block.querySelectorAll(`.${CLASSES.selectedFilter}`);
+  currentFilters.forEach((filter) => filter.remove());
+
+  block.querySelectorAll(`.${CLASSES.filterCheckbox}`).forEach((checkbox) => (checkbox.checked = false));
+  block.querySelectorAll(`.${CLASSES.facetHeading}`).forEach((heading) => delete heading.dataset.amount);
+  block.querySelectorAll(`.${CLASSES.toggleFilters}`).forEach((btn) => btn.classList.add('hide'));
+  block.querySelector(`.${CLASSES.selectedFilters}`).classList.remove('expand');
+
+  appliedFilters = {};
+  syncUrlWithFilters();
+  pageCounter = 0;
+
+  updateSelectedFiltersUiState(block);
+  if (shouldUpdate) {
+    updateArticleList(block);
+  }
+};
+
 const addEventListeners = (block) => {
   const htmlElts = {
-    sortContainer: block.querySelectorAll(`.${CLASSES.sortContainer} button`),
+    sortButtons: block.querySelectorAll(`.${CLASSES.sortButton}`),
     sortByDate: block.querySelector(`.${CLASSES.sortByDate}`),
     sortByTitle: block.querySelector(`.${CLASSES.sortByTitle}`),
     switchSlider: block.querySelector(`.${CLASSES.switchSlider}`),
@@ -540,7 +561,7 @@ const addEventListeners = (block) => {
 
   const resetInputField = () => (htmlElts.searchInput.value = '');
 
-  htmlElts.sortContainer.forEach((btn) => {
+  htmlElts.sortButtons.forEach((btn) => {
     btn.addEventListener('click', async () => {
       if (btn.classList.contains('active')) {
         return;
@@ -655,31 +676,12 @@ const addEventListeners = (block) => {
     }
   });
 
-  const clearAllFilters = (shouldUpdate = true) => {
-    const currentFilters = block.querySelectorAll(`.${CLASSES.selectedFilter}`);
-    currentFilters.forEach((filter) => filter.remove());
-
-    htmlElts.filterCheckbox.forEach((checkbox) => (checkbox.checked = false));
-    htmlElts.facetHeading.forEach((heading) => delete heading.dataset.amount);
-    htmlElts.toggleFilters.forEach((btn) => btn.classList.add('hide'));
-    htmlElts.selectedFilters.classList.remove('expand');
-
-    appliedFilters = {};
-    syncUrlWithFilters();
-    pageCounter = 0;
-
-    updateSelectedFiltersUiState(htmlElts);
-    if (shouldUpdate) {
-      updateArticleList(block);
-    }
-  };
-
   const mobileClearBtn = htmlElts.mobileBtnsContainer.querySelector(`.${CLASSES.clearFiltersBtn}`);
   const allClearBtns = [mobileClearBtn, htmlElts.clearBtn];
   // Clear all filters from both available buttons
   allClearBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      clearAllFilters();
+      clearAllFilters(block);
       resetInputField();
     });
   });
@@ -737,7 +739,7 @@ const addEventListeners = (block) => {
     e.preventDefault();
     const searchValue = htmlElts.searchInput.value.trim();
     if (searchValue) {
-      clearAllFilters(false);
+      clearAllFilters(block, false);
       appliedSortingCriteria = 'BEST_MATCH';
       updateArticleList(block, 0, appliedSortingCriteria, searchValue);
     }
