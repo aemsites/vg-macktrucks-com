@@ -76,6 +76,8 @@ const FACET_NAME_TO_FILTER_KEY = {
   article: 'category',
 };
 
+const SEARCH_AND_FILTERS_BORDER_WIDTH = 2;
+
 const docRange = document.createRange();
 const defaultAmountOfArticles = 9;
 const widthBreakpoint = 744;
@@ -509,7 +511,6 @@ const handleToggleBtns = (filters, extra = 0) => {
 };
 
 const scrollToView = (focusedElement) => {
-  const SEARCH_AND_FILTERS_BORDER_WIDTH = 2;
   const headerHeight = document.querySelector('.header-wrapper').getBoundingClientRect().height;
   const yOffset = focusedElement.getBoundingClientRect().top + window.scrollY - headerHeight - SEARCH_AND_FILTERS_BORDER_WIDTH;
   window.scrollTo({
