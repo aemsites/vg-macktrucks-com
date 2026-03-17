@@ -474,6 +474,7 @@ export function decorateMain(main, head) {
         .forEach((style) => main.classList.add(style));
     }
   }
+  moveClassToHtmlEl('redesign-v2');
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
@@ -495,6 +496,9 @@ export function decorateMain(main, head) {
  */
 async function loadEager(doc) {
   decorateTemplateAndTheme();
+
+  moveClassToHtmlEl('truck-configurator');
+  moveClassToHtmlEl('my-garage');
 
   const placeholdersReady = getPlaceholders();
   const main = doc.querySelector('main');
@@ -843,15 +847,12 @@ function buildTruckLineupBlock(main, classname) {
 }
 
 const moveClassToHtmlEl = (className, elementSelector = 'main') => {
-  if (document.querySelector(elementSelector).classList.contains(className)) {
+  const el = document.querySelector(elementSelector);
+  if (el?.classList.contains(className)) {
     document.documentElement.classList.add(className);
-    document.querySelector(elementSelector).classList.remove(className);
+    el.classList.remove(className);
   }
 };
-
-moveClassToHtmlEl('redesign-v2');
-moveClassToHtmlEl('truck-configurator');
-moveClassToHtmlEl('my-garage');
 
 initEmbeddedApp({
   appClass: 'truck-configurator',
