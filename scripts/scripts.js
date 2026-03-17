@@ -460,6 +460,14 @@ function buildInpageNavigationBlock(main, classname) {
   }
 }
 
+const moveClassToHtmlEl = (className, elementSelector = 'main') => {
+  const el = document.querySelector(elementSelector);
+  if (el?.classList.contains(className)) {
+    document.documentElement.classList.add(className);
+    el.classList.remove(className);
+  }
+};
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -842,13 +850,6 @@ function buildTruckLineupBlock(main, classname) {
     }
   }
 }
-
-const moveClassToHtmlEl = (className, elementSelector = 'main') => {
-  if (document.querySelector(elementSelector).classList.contains(className)) {
-    document.documentElement.classList.add(className);
-    document.querySelector(elementSelector).classList.remove(className);
-  }
-};
 
 moveClassToHtmlEl('truck-configurator');
 moveClassToHtmlEl('my-garage');
