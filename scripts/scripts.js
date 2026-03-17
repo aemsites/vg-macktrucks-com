@@ -496,9 +496,11 @@ export function decorateMain(main, head) {
 async function loadEager(doc) {
   decorateTemplateAndTheme();
 
+  const placeholdersReady = getPlaceholders();
   const main = doc.querySelector('main');
   const { head } = doc;
   if (main) {
+    await placeholdersReady;
     decorateMain(main, head);
     document.body.classList.add('appear');
     const language = getLocale();
@@ -508,13 +510,12 @@ async function loadEager(doc) {
       await loadTemplate(doc, templateName);
     }
 
-    await getPlaceholders();
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   } else {
     const meta_i18n = doc.querySelector('meta[name="i18n"]');
     const meta_locale = doc.querySelector('meta[name="locale"]');
     document.documentElement.lang = (meta_i18n && meta_i18n.content) || (meta_locale && meta_locale.content.toLowerCase()) || 'en';
-    await getPlaceholders();
+    await placeholdersReady;
   }
 }
 
