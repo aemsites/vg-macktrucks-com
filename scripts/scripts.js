@@ -509,7 +509,6 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   const { head } = doc;
   if (main) {
-    await placeholdersReady;
     decorateMain(main, head);
     document.body.classList.add('appear');
     const language = getLocale();
@@ -519,6 +518,7 @@ async function loadEager(doc) {
       await loadTemplate(doc, templateName);
     }
 
+    await placeholdersReady;
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   } else {
     const meta_i18n = doc.querySelector('meta[name="i18n"]');
