@@ -280,12 +280,41 @@ export default function decorate(block) {
     fetchResults();
   };
 
+  function hasVisibleMatch(items, queryTerm) {
+    const trimmedQuery = queryTerm.trim().toLowerCase();
+    if (trimmedQuery.length < 4) {
+      return items.length > 0;
+    }
+
+    const terms = trimmedQuery
+      .split(/\s+/)
+      .map((term) => term.replace(/[^a-z0-9-]/gi, ''))
+      .filter(Boolean);
+
+    if (!terms.length) {
+      return false;
+    }
+
+    const termsToCheck = terms.filter((term) => term.length >= 3);
+    const normalizedTerms = termsToCheck.length ? termsToCheck : terms;
+
+    return items.some(({ metadata = {} }) => {
+      const title = metadata.title || '';
+      const description = metadata.description || '';
+      const url = metadata.url || '';
+      const haystack = `${title} ${description} ${url}`.toLowerCase();
+
+      return normalizedTerms.some((term) => haystack.includes(term));
+    });
+  }
+
   function showResults(data) {
     const { items, count, facets } = data;
     const queryTerm = sanitizeQueryTerm(input.value);
+    const shouldShowResults = items.length > 0 && hasVisibleMatch(items, queryTerm);
     let resultsText = '';
     let facetsText = null;
-    if (items.length > 0) {
+    if (shouldShowResults) {
       // items by query: 25, count has the total
       paginationContainer.classList.add('show');
       summary.parentElement.classList.remove('no-results');

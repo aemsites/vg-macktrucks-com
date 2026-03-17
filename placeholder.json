@@ -49,11 +49,11 @@
     },
     {
       "Key": "search:no_results",
-      "Text": "SORRY, YOUR SEARCH FOR $0 RETURNED NO RESULTS!"
+      "Text": "No results found for $0."
     },
     {
       "Key": "search:refine",
-      "Text": "LET'S REFINE, OR TRY SEARCHING BY DIFFERENT SEARCH KEYWORDS INSTEAD."
+      "Text": "Please check your spelling or try a different keyword."
     },
     {
       "Key": "search:showing_results_for",
