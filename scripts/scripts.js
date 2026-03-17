@@ -497,9 +497,6 @@ export function decorateMain(main, head) {
 async function loadEager(doc) {
   decorateTemplateAndTheme();
 
-  moveClassToHtmlEl('truck-configurator');
-  moveClassToHtmlEl('my-garage');
-
   const placeholdersReady = getPlaceholders();
   const main = doc.querySelector('main');
   const { head } = doc;
@@ -847,12 +844,14 @@ function buildTruckLineupBlock(main, classname) {
 }
 
 const moveClassToHtmlEl = (className, elementSelector = 'main') => {
-  const el = document.querySelector(elementSelector);
-  if (el?.classList.contains(className)) {
+  if (document.querySelector(elementSelector).classList.contains(className)) {
     document.documentElement.classList.add(className);
-    el.classList.remove(className);
+    document.querySelector(elementSelector).classList.remove(className);
   }
 };
+
+moveClassToHtmlEl('truck-configurator');
+moveClassToHtmlEl('my-garage');
 
 initEmbeddedApp({
   appClass: 'truck-configurator',
