@@ -75,7 +75,7 @@ jobs:
         shell: bash
         run: |
           # Give time for publish pipeline to finish
-          sleep 45s
+          sleep 90s
 
           RAW_PATH="${{ github.event.client_payload.path }}"
 
