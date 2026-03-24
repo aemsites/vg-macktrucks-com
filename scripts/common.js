@@ -582,8 +582,22 @@ const extractObjectFromArray = (data) => {
  * @param {String} groupName the one trust group like: C0002
  */
 function checkOneTrustGroup(groupName, cookieCheck = false) {
-  const oneTrustCookie = decodeURIComponent(document.cookie.split(';').find((cookie) => cookie.trim().startsWith('OptanonConsent=')));
-  return cookieCheck || oneTrustCookie.includes(`${groupName}:1`);
+  if (cookieCheck) {
+    return true;
+  }
+
+  const activeGroups = window.OnetrustActiveGroups || '';
+  if (activeGroups.includes(groupName)) {
+    return true;
+  }
+
+  const consentCookie = document.cookie.split(';').find((cookie) => cookie.trim().startsWith('OptanonConsent='));
+  if (!consentCookie) {
+    return false;
+  }
+
+  const oneTrustCookie = decodeURIComponent(consentCookie);
+  return oneTrustCookie.includes(`${groupName}:1`);
 }
 
 const { PERFORMANCE_COOKIE = false, FUNCTIONAL_COOKIE = false, TARGETING_COOKIE = false, SOCIAL_COOKIE = false } = COOKIE_CONFIGS;
@@ -597,6 +611,8 @@ function isFunctionalAllowed() {
 }
 
 function isTargetingAllowed() {
+  console.log(checkOneTrustGroup(TARGETING_COOKIE));
+  console.log(TARGETING_COOKIE);
   return checkOneTrustGroup(TARGETING_COOKIE);
 }
 
