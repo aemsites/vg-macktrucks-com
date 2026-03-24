@@ -460,6 +460,14 @@ function buildInpageNavigationBlock(main, classname) {
   }
 }
 
+const moveClassToHtmlEl = (className, elementSelector = 'main') => {
+  const el = document.querySelector(elementSelector);
+  if (el?.classList.contains(className)) {
+    document.documentElement.classList.add(className);
+    el.classList.remove(className);
+  }
+};
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -474,6 +482,7 @@ export function decorateMain(main, head) {
         .forEach((style) => main.classList.add(style));
     }
   }
+  moveClassToHtmlEl('redesign-v2');
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
@@ -496,6 +505,7 @@ export function decorateMain(main, head) {
 async function loadEager(doc) {
   decorateTemplateAndTheme();
 
+  const placeholdersReady = getPlaceholders();
   const main = doc.querySelector('main');
   const { head } = doc;
   if (main) {
@@ -508,13 +518,13 @@ async function loadEager(doc) {
       await loadTemplate(doc, templateName);
     }
 
-    await getPlaceholders();
+    await placeholdersReady;
     await loadSection(main.querySelector('.section'), waitForFirstImage);
   } else {
     const meta_i18n = doc.querySelector('meta[name="i18n"]');
     const meta_locale = doc.querySelector('meta[name="locale"]');
     document.documentElement.lang = (meta_i18n && meta_i18n.content) || (meta_locale && meta_locale.content.toLowerCase()) || 'en';
-    await getPlaceholders();
+    await placeholdersReady;
   }
 }
 
@@ -841,14 +851,6 @@ function buildTruckLineupBlock(main, classname) {
   }
 }
 
-const moveClassToHtmlEl = (className, elementSelector = 'main') => {
-  if (document.querySelector(elementSelector).classList.contains(className)) {
-    document.documentElement.classList.add(className);
-    document.querySelector(elementSelector).classList.remove(className);
-  }
-};
-
-moveClassToHtmlEl('redesign-v2');
 moveClassToHtmlEl('truck-configurator');
 moveClassToHtmlEl('my-garage');
 

@@ -418,18 +418,6 @@
       }
     ]
   },
-  ":version": 3,
-  ":names": [
-    "tools",
-    "truckConfigurator",
-    "truckConfiguratorUrls",
-    "searchUrls",
-    "fgrep",
-    "cookieValues",
-    "newsFeedConfig",
-    "headerConfig",
-    "magazineConfig"
-  ],
   "myGarageUrls": {
     "total": 2,
     "offset": 0,
@@ -445,7 +433,7 @@
       }
     ]
   },
-    "holidays": {
+  "holidays": {
     "total": 4,
     "offset": 0,
     "limit": 4,
@@ -468,5 +456,35 @@
       "value"
     ]
   },
+  "placeholdersConfig": {
+    "total": 2,
+    "offset": 0,
+    "limit": 2,
+    "data": [
+      {
+        "name": "PLACEHOLDERS_URL",
+        "value": "https://www.macktrucks.com/placeholder.json"
+      }
+    ],
+    "columns": [
+      "name",
+      "value"
+    ]
+  },
+  ":version": 3,
+  ":names": [
+    "tools",
+    "truckConfigurator",
+    "truckConfiguratorUrls",
+    "searchUrls",
+    "fgrep",
+    "cookieValues",
+    "newsFeedConfig",
+    "headerConfig",
+    "magazineConfig",
+    "myGarageUrls",
+    "holidays",
+    "placeholdersConfig"
+  ],
   ":type": "multi-sheet"
 }

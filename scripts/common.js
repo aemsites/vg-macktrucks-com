@@ -1,6 +1,8 @@
 import { loadCSS, getMetadata } from './aem.js';
 
+const DEFAULT_PLACEHOLDER_LOCALE = 'en';
 let placeholders = null;
+let placeholdersPromise = null;
 
 const formatValues = (values) => {
   const obj = {};
@@ -27,24 +29,40 @@ const getLanguagePath = () => {
 };
 
 /**
- * Loads the constants file where configuration values are stored
+ * loads the constants file where configuration values are stored
  */
 async function getConstantValues() {
-  const url = `${getLanguagePath()}constants.json`;
-  let constants;
+  const constantsUrl = `${getLanguagePath()}constants.json`;
+
   try {
-    const response = await fetch(url).then((resp) => resp.json());
+    const response = await fetch(constantsUrl);
+
     if (!response.ok) {
-      constants = response;
+      console.error('[constants] Failed to fetch constants:', response.status, response.statusText, constantsUrl);
+      return {};
     }
+
+    return await response.json();
   } catch (error) {
-    throw new Error('Error with constants file', error);
+    console.error('[constants] Error fetching constants file:', constantsUrl, error);
+    return {};
   }
-  return constants;
 }
 
-const { searchConfig, cookieValues, magazineConfig, headerConfig, tools, truckConfiguratorUrls, myGarageUrls, newsFeedConfig, feeds, holidays } =
-  await getConstantValues();
+const CONSTANTS = (await getConstantValues()) || {};
+const {
+  searchConfig,
+  cookieValues,
+  magazineConfig,
+  headerConfig,
+  tools,
+  truckConfiguratorUrls,
+  myGarageUrls,
+  newsFeedConfig,
+  feeds,
+  holidays,
+  placeholdersConfig,
+} = CONSTANTS;
 
 // This data comes from the sharepoint 'constants.xlsx' file
 const SEARCH_CONFIGS = formatValues(searchConfig?.data);
@@ -57,14 +75,182 @@ const NEWS_FEED_CONFIGS = formatValues(newsFeedConfig?.data);
 const FEEDS = formatValuesByKey(feeds?.data);
 const MY_GARAGE_URLS = formatValues(myGarageUrls?.data);
 const HOLIDAYS = formatValues(holidays?.data);
+const PLACEHOLDERS_URL = formatValues(placeholdersConfig?.data)?.PLACEHOLDERS_URL;
 
-async function getPlaceholders() {
-  const url = `${getLanguagePath()}placeholder.json`;
-  placeholders = await fetch(url).then((resp) => resp.json());
+/**
+ * Resolves the localized text for a single placeholder row.
+ *
+ * Fallback order:
+ * 1. Exact locale (e.g. "fr-ca")
+ * 2. Base language (e.g. "fr")
+ * 3. Any matching language variant (e.g. "fr-*", deterministic)
+ * 4. Default locale (DEFAULT_PLACEHOLDER_LOCALE)
+ *
+ * @param {Object} placeholderRow
+ * @param {string} pageLocale
+ * @returns {string}
+ */
+function resolveTextForLocale(placeholderRow, pageLocale) {
+  if (!placeholderRow || typeof placeholderRow !== 'object') {
+    return '';
+  }
+
+  const pageLocaleNormalized = String(pageLocale || '')
+    .toLowerCase()
+    .trim();
+  const languageCode = pageLocaleNormalized ? pageLocaleNormalized.split('-')[0] : '';
+
+  const readText = (value) => {
+    if (typeof value !== 'string') {
+      return '';
+    }
+    return value.trim() || '';
+  };
+
+  if (pageLocaleNormalized) {
+    const exactLocaleText = readText(placeholderRow[pageLocaleNormalized]);
+    if (exactLocaleText) {
+      return exactLocaleText;
+    }
+  }
+
+  if (languageCode) {
+    const baseLanguageText = readText(placeholderRow[languageCode]);
+    if (baseLanguageText) {
+      return baseLanguageText;
+    }
+
+    const languageVariantPrefix = `${languageCode}-`;
+    let bestVariantColumnKey = '';
+    let bestVariantColumnKeyNormalized = '';
+
+    for (const columnKey of Object.keys(placeholderRow)) {
+      const columnKeyNormalized = String(columnKey).toLowerCase();
+      if (!columnKeyNormalized.startsWith(languageVariantPrefix)) {
+        continue;
+      }
+      if (!bestVariantColumnKey || columnKeyNormalized < bestVariantColumnKeyNormalized) {
+        bestVariantColumnKey = columnKey;
+        bestVariantColumnKeyNormalized = columnKeyNormalized;
+      }
+    }
+
+    if (bestVariantColumnKey) {
+      const variantText = readText(placeholderRow[bestVariantColumnKey]);
+      if (variantText) {
+        return variantText;
+      }
+    }
+  }
+
+  return readText(placeholderRow[DEFAULT_PLACEHOLDER_LOCALE]);
 }
 
+/**
+ * Builds a map of placeholder keys to resolved localized values.
+ *
+ * Rows without a valid key or resolved text are ignored.
+ * Duplicate keys overwrite previous values and log a warning.
+ *
+ * @param {Object} placeholdersPayload
+ * @param {string} pageLocale
+ * @returns {Map<string, string>}
+ */
+function buildPlaceholdersMap(placeholdersPayload, pageLocale) {
+  const dataRows = Array.isArray(placeholdersPayload?.data) ? placeholdersPayload.data : [];
+  const placeholdersByKey = new Map();
+
+  for (const dataRow of dataRows) {
+    const authoredKey = dataRow?.Key ?? dataRow?.key;
+    if (authoredKey === undefined || authoredKey === null) {
+      continue;
+    }
+
+    const placeholderKey = String(authoredKey).trim();
+    if (!placeholderKey) {
+      continue;
+    }
+
+    const resolvedText = resolveTextForLocale(dataRow, pageLocale);
+    if (!resolvedText) {
+      continue;
+    }
+
+    if (placeholdersByKey.has(placeholderKey)) {
+      console.warn('[placeholders] Duplicate placeholder key:', placeholderKey);
+    }
+
+    placeholdersByKey.set(placeholderKey, resolvedText);
+  }
+
+  return placeholdersByKey;
+}
+
+/**
+ * Loads and caches the placeholders map for the current locale.
+ * Ensures a single in-flight request. On failure, an empty map is stored.
+ *
+ * @returns {Promise<void>}
+ */
+async function getPlaceholders() {
+  if (placeholders) {
+    return Promise.resolve();
+  }
+
+  if (placeholdersPromise) {
+    return placeholdersPromise;
+  }
+
+  const locale = getLocale();
+  const pageLocale = locale ? locale.toLowerCase().trim() : DEFAULT_PLACEHOLDER_LOCALE;
+  const placeholdersUrl = typeof PLACEHOLDERS_URL === 'string' ? PLACEHOLDERS_URL.trim() : '';
+
+  if (!placeholdersUrl) {
+    console.error('[placeholders] Missing PLACEHOLDERS_URL.');
+    placeholders = new Map();
+    return Promise.resolve();
+  }
+
+  placeholdersPromise = (async () => {
+    try {
+      const response = await fetch(placeholdersUrl);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch placeholders (${response.status} ${response.statusText})`);
+      }
+
+      const placeholdersPayload = await response.json();
+      const dataRows = Array.isArray(placeholdersPayload?.data) ? placeholdersPayload.data : [];
+
+      if (dataRows.length) {
+        const hasLocaleColumn = dataRows.some((dataRow) => {
+          return dataRow && typeof dataRow === 'object' && pageLocale in dataRow;
+        });
+
+        if (!hasLocaleColumn) {
+          console.warn('[placeholders] Locale column missing in placeholder file:', pageLocale);
+        }
+      }
+
+      placeholders = buildPlaceholdersMap(placeholdersPayload, pageLocale);
+    } catch (error) {
+      console.error('[placeholders] Fetch failed:', { url: placeholdersUrl, error });
+      placeholders = new Map();
+    } finally {
+      placeholdersPromise = null;
+    }
+  })();
+
+  return placeholdersPromise;
+}
+
+/**
+ * Return the resolved placeholder text for a key.
+ *
+ * @param {string} key
+ * @returns {string}
+ */
 function getTextLabel(key) {
-  return placeholders.data.find((el) => el.Key === key)?.Text || key;
+  return placeholders?.get(key) ?? key;
 }
 
 /**
