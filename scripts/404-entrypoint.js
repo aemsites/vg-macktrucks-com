@@ -15,7 +15,7 @@ if (document.referrer) {
     const main = document.querySelector('main.error');
 
     const observer = new MutationObserver((mutations, observer) => {
-      const fragmentContainer = document.querySelector('.fragment-wrapper');
+      const fragmentContainer = document.querySelector('.fragment');
       if (fragmentContainer) {
         const backLinkTitle = getTextLabel('404:back_link_title');
         const btnContainer = document.createElement('p');
