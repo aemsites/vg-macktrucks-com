@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
       const main = document.querySelector('main.error');
 
       const observer = new MutationObserver((mutations, observer) => {
-        const fragmentContainer = document.querySelector('.fragment');
+        const fragmentContainer = document.querySelector('.fragment-wrapper');
         if (fragmentContainer) {
           const backLinkTitle = getTextLabel('404:back_link_title');
           const btnContainer = document.createElement('p');
