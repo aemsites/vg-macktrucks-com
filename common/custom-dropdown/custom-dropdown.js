@@ -43,6 +43,25 @@ function getOptionLabel(option) {
 }
 
 /**
+ * Normalize an option into a consistent value/label shape.
+ * Supports the "value:label" string format used by form spreadsheets.
+ *
+ * @param {string | Object} option - The option to normalize.
+ * @returns {string | Object} - A normalized option.
+ */
+function normalizeOption(option) {
+  if (typeof option !== 'string' || !option.includes(':')) {
+    return option;
+  }
+
+  const [value, ...labelParts] = option.split(':');
+  return {
+    value: value.trim(),
+    label: labelParts.join(':').trim(),
+  };
+}
+
+/**
  * Filter an array of options against an input string.
  *
  * @param {string[]} options - The list of options to filter.
@@ -58,7 +77,8 @@ function getOptionLabel(option) {
  */
 function filterOptions(options = [], filter, exclude = []) {
   return options.filter((option) => {
-    const matches = option.toLowerCase().indexOf(filter.toLowerCase()) === 0;
+    const label = getOptionLabel(option);
+    const matches = label.toLowerCase().indexOf(filter.toLowerCase()) === 0;
     return matches && exclude.indexOf(option) < 0;
   });
 }
@@ -306,15 +326,7 @@ Select.prototype.createOption = function createOption(option, index) {
     optionEl.setAttribute('aria-selected', `${index === 0}`);
   }
 
-  let normalizedOption = option;
-
-  if (typeof option === 'string' && option.includes(':')) {
-    // first value in the array is the translated label
-    // second value is the actual information sent to the server
-    const [value, label] = option.split(':');
-    value.trim();
-    normalizedOption = { label, value };
-  }
+  const normalizedOption = normalizeOption(option);
 
   this.options[index] = normalizedOption;
   optionEl.innerText = getOptionLabel(normalizedOption);
@@ -502,7 +514,19 @@ Select.prototype.selectOption = function selectOption(index) {
 
   // this updates the value of the select that gets inputed in the forms
   const selectHtml = this.el.closest(`.${componentName}`).querySelector('select');
-  selectHtml.selectedIndex = this.placeholder ? index + 1 : index;
+  const nativeSelectedIndex = this.placeholder ? index + 1 : index;
+  selectHtml.selectedIndex = nativeSelectedIndex;
+
+  [...selectHtml.options].forEach((optionEl, optionIndex) => {
+    const isSelected = optionIndex === nativeSelectedIndex;
+    optionEl.selected = isSelected;
+
+    if (isSelected) {
+      optionEl.setAttribute('selected', '');
+    } else {
+      optionEl.removeAttribute('selected');
+    }
+  });
 
   // update aria-selected
   const optionsElements = this.el.querySelectorAll('[role=option]');
@@ -579,7 +603,7 @@ const createOptionMarkup = (idx, option, hasPlaceholder) => {
  * @returns {string} The HTML markup for the list of option elements.
  */
 const createSelectHtml = (list, hasPlaceholder) => {
-  return list.map((item, idx) => createOptionMarkup(idx, item, hasPlaceholder)).join('');
+  return list.map((item, idx) => createOptionMarkup(idx, normalizeOption(item), hasPlaceholder)).join('');
 };
 
 /**
@@ -620,6 +644,7 @@ function getVariantClasses(options) {
 export const getCustomDropdown = async (options = {}) => {
   const baseUrl = window.location.origin !== 'null' ? window.location.origin : window.location.ancestorOrigins && window.location.ancestorOrigins[0];
   const { optionList = [], label = '', mandatory = false, id = '', placeholder = '', name = '', formName = '' } = options;
+  const normalizedOptionList = optionList.map((option) => normalizeOption(option));
   const dropdownCSS = `${baseUrl}/common/${componentName}/${componentName}.css`;
   const className = options.variants ? [componentName, getVariantClasses(options)] : componentName;
   const el = createElement('div', { classes: className });
@@ -658,13 +683,13 @@ export const getCustomDropdown = async (options = {}) => {
           autocomplete="off"
           ${mandatory ? 'required' : ''}>
           ${placeholder ? `<option value="" selected disabled>${placeholder}</option>` : ''}
-          ${createSelectHtml(optionList, !!placeholder)}
+          ${createSelectHtml(normalizedOptionList, !!placeholder)}
         </select>
     `;
 
     el.appendChild(document.createRange().createContextualFragment(innerContent));
 
-    new Select(el, optionList, placeholder, options.onChangeCallback);
+    new Select(el, normalizedOptionList, placeholder, options.onChangeCallback);
     return el;
   } catch (error) {
     console.error(`Failed to load CSS from ${dropdownCSS}:`, error);
