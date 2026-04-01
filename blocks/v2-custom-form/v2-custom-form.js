@@ -190,16 +190,63 @@ function constructPayload(form) {
       }
     }
   });
-  payload.callback = 'showResult';
+
+  if (form.dataset.method === 'get') {
+    payload.callback = 'showResult';
+  }
+
   return { payload };
 }
 
+function buildRequestUrl(url, serializedData) {
+  return `${url}${url.includes('?') ? '&' : '?'}${serializedData}`;
+}
+
+function submitPost(form, url, payload) {
+  const postForm = createElement('form', {
+    props: {
+      action: url,
+      method: 'POST',
+    },
+  });
+
+  const block = form.closest(`.${blockName}`);
+  const redirectNewTab = block?.classList.contains(`${blockName}--redirect-new-tab`) || false;
+
+  if (redirectNewTab) {
+    postForm.target = '_blank';
+  }
+
+  postForm.style.display = 'none';
+
+  Object.entries(payload).forEach(([name, value]) => {
+    const input = createElement('input', {
+      props: {
+        type: 'hidden',
+        name,
+        value,
+      },
+    });
+    postForm.append(input);
+  });
+
+  document.body.append(postForm);
+  postForm.submit();
+  postForm.remove();
+}
+
 async function prepareRequest(form) {
-  const { payload } = constructPayload(form);
+  const method = (form.dataset.method || 'get').toLowerCase();
+  const { payload } = constructPayload(form, method);
   const url = form.dataset.action;
 
+  if (method === 'post') {
+    submitPost(form, url, payload);
+    return;
+  }
+
   const serializedData = serialize(payload);
-  loadScript(`${url}?${serializedData}`, { type: 'text/javascript', charset: 'UTF-8' });
+  loadScript(buildRequestUrl(url, serializedData), { type: 'text/javascript', charset: 'UTF-8' });
 }
 
 async function handleSubmit(form) {
@@ -315,6 +362,10 @@ function createButton(fd) {
   });
   if (fd.Type === 'submit' && fd.Action) {
     button.formAction = fd.Action;
+  }
+  if (fd.Type === 'submit' && fd.Method) {
+    button.formMethod = fd.Method.toLowerCase();
+    button.dataset.submitMethod = fd.Method.toLowerCase();
   }
   if (fd.Extra) {
     button.dataset.redirect = fd.Extra;
@@ -1076,7 +1127,9 @@ async function createForm(formURL, time) {
         formTitle.remove();
       }
       e.submitter.setAttribute('disabled', '');
-      form.dataset.action = e.submitter.formAction || SUBMIT_ACTION || pathname.split('.json')[0];
+      const actionUrl = e.submitter.formAction || SUBMIT_ACTION || pathname.split('.json')[0];
+      form.dataset.action = actionUrl;
+      form.dataset.method = actionUrl.includes('salesforce.com') ? 'post' : (e.submitter.formMethod || 'get').toLowerCase();
       handleSubmit(form);
     }
   });
