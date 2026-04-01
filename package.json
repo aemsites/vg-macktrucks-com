@@ -12,7 +12,7 @@
     "build:dev": "cross-env SOURCEMAPS=true webpack --config ./webpack.config.js",
     "watch": "cross-env SOURCEMAPS=true webpack --watch --config ./webpack.config.js",
     "start": "run-p dev watch",
-    "dev": "aem up --url https://main--vg-macktrucks-com--volvogroup.aem.page",
+    "dev": "aem up --url https://main--vg-macktrucks-com--volvogroup.aem.page/",
     "dev:ca": "aem up --url https://main--macktrucks-ca--volvogroup.aem.page/",
     "dev:co-nz": "aem up --url https://main--macktrucks-co-nz--volvogroup.aem.page/",
     "dev:com-ar": "aem up --url https://main--macktrucks-com-ar--volvogroup.aem.page/",
@@ -88,6 +88,6 @@
     "@volvo/vcdk": "^9.14.7",
     "@volvo/vcdk-assets": "1.1.0",
     "@volvo/vcdk-tokens": "1.1.0",
-    "@volvo/vg-dealer-locator": "file:./packages/volvo-vg-dealer-locator-0.0.1.tgz"
+    "@volvo/vg-dealer-locator": "file:./packages/volvo-vg-dealer-locator-0.0.5.tgz"
   }
 }
