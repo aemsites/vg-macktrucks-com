@@ -553,16 +553,8 @@ $.fn.isOpen = function (dealer, time) {
     var todayAtDealer = hours[time.getDay()];
 
     if (todayAtDealer) {
-
       var startTime = todayAtDealer.Start;
-      if (startTime.toLowerCase() == 'midnight') {
-        startTime = '12:00 AM';
-      }
-
       var endTime = todayAtDealer.End;
-      if (endTime.toLowerCase() == 'midnight') {
-        endTime = '11:59 PM';
-      }
 
       if (startTime.toLowerCase().indexOf('24') > -1) {
         startTime = '12:00 AM';
@@ -570,14 +562,6 @@ $.fn.isOpen = function (dealer, time) {
 
       if (endTime.toLowerCase().indexOf('24') > -1) {
         endTime = '11:59 PM';
-      }
-
-      if (startTime.toLowerCase() == 'noon') {
-        startTime = '12:00 PM';
-      }
-
-      if (endTime.toLowerCase() == 'noon') {
-        endTime = '12:00 PM';
       }
 
       var start = new Date();
