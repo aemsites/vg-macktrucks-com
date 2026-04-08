@@ -43,6 +43,7 @@ export default [
       ],
       quotes: ['error', 'single'],
       'no-constant-binary-expression': 'error',
+      'no-useless-assignment': 'off',
     },
   },
 ];
