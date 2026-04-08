@@ -1,7 +1,7 @@
 {
   "name": "macktrucks",
   "private": true,
-  "version": "61.0.0",
+  "version": "62.0.0",
   "description": "Mack Trucks",
   "engines": {
     "node": ">=20.19.5 <23",
@@ -9,8 +9,8 @@
   },
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
-    "build:dev": "cross-env SOURCEMAPS=true webpack --config ./webpack.config.js",
-    "watch": "cross-env SOURCEMAPS=true webpack --watch --config ./webpack.config.js",
+    "build:dev": "cross-env PROD=false webpack --config ./webpack.config.js",
+    "watch": "cross-env PROD=false webpack --watch --config ./webpack.config.js",
     "start": "run-p dev watch",
     "dev": "aem up --url https://main--vg-macktrucks-com--volvogroup.aem.page",
     "dev:ca": "aem up --url https://main--macktrucks-ca--volvogroup.aem.page/",
