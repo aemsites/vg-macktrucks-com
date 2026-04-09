@@ -37,6 +37,8 @@ import { simplifiedReadBlockConfig } from '../../scripts/common.js';
  * - `showDistanceOnCard`: Authored as `"true"` or `"false"`. Default: `true`.
  *   When `false`, the distance from search center to dealer is hidden on dealer
  *   cards.
+ * - `showBrandFilter`: Authored as `"true"` or `"false"`. Default: `true`.
+ *   When `false`, the brand filter (All/Volvo/Mack) is hidden;
  *
  * Radius slider:
  * - `rangeMin`: Minimum selectable radius in miles. Default: `25`.
@@ -132,6 +134,12 @@ function toMountOptions(cfg) {
     options.showDistanceOnCard = true;
   } else if (cfg.showDistanceOnCard === 'false') {
     options.showDistanceOnCard = false;
+  }
+
+  if (cfg.showBrandFilter === 'true') {
+    options.showBrandFilter = true;
+  } else if (cfg.showBrandFilter === 'false') {
+    options.showBrandFilter = false;
   }
 
   const { rangeMin, rangeMax, rangeInitialValue } = cfg;
