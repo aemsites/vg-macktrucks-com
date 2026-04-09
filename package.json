@@ -88,6 +88,6 @@
     "@volvo/vcdk": "^9.14.7",
     "@volvo/vcdk-assets": "1.1.0",
     "@volvo/vcdk-tokens": "1.1.0",
-    "@volvo/vg-dealer-locator": "file:./packages/volvo-vg-dealer-locator-0.0.5.tgz"
+    "@volvo/vg-dealer-locator": "file:./packages/volvo-vg-dealer-locator-0.0.8.tgz"
   }
 }

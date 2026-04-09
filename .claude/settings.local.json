@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/eslint.config*)",
+      "Bash(npm run:*)",
+      "Bash(find /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks -name *filter* -o -name *brand*)",
+      "Bash(find /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com -name *.xlsx -o -name *.csv -o -name *config* -type f)",
+      "Bash(xargs -I {} basename {})",
+      "Bash(grep -r \"filter.*brand\\\\|filters.*km\\\\|filters.*unit\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks --include=*.js)",
+      "Bash(grep -r \"const filters\\\\|const settings\\\\|filters.*=\\\\|settings.*=\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks --include=*.js)",
+      "Bash(grep -r \"filters\\\\|settings\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks --include=*.js)",
+      "Bash(grep -E \"blocks/.*\\\\.js$\")",
+      "Bash(grep -r \"filters\\\\|filter\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks --include=*.js -l)",
+      "Bash(grep -r settings /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks --include=*.js -l)",
+      "Bash(grep -r \"km\\\\|mile\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks --include=*.js -n)",
+      "Bash(grep -n \"brandOptionSelected\\\\|$units\\\\|filterOptions\\\\|sidebar-filter\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks/v2-dealer-locator/versions/default/sidebar-maps.js)",
+      "Bash(grep -n \"activeUnit\\\\|$activeUnit\\\\|unit.*settings\\\\|settings.*km\\\\|settings.*unit\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks/v2-dealer-locator/versions/default/sidebar-maps.js)",
+      "Bash(grep -C10 \"sidebar.*settings\\\\|settings.*pane\\\\|unit.*km\\\\|unit.*switch\" /Users/733450/Projects/volvo/new-infrastructure/vg-macktrucks-com/blocks/v2-dealer-locator --include=*.js -r)"
+    ]
+  }
+}
