@@ -4,8 +4,8 @@
   "version": "60.0.0",
   "description": "Mack Trucks",
   "engines": {
-    "node": ">=20.19.5 <23",
-    "npm": ">=10.8.2"
+    "node": ">=24.14.1 <25",
+    "npm": ">=11.11.0"
   },
   "scripts": {
     "build": "webpack --config ./webpack.config.js",
@@ -85,9 +85,9 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "@volvo/vcdk": "^9.14.7",
-    "@volvo/vcdk-assets": "1.1.0",
-    "@volvo/vcdk-tokens": "1.1.0",
+    "@volvo/vcdk": "^10.14.0",
+    "@volvo/vcdk-assets": "2.4.0",
+    "@volvo/vcdk-tokens": "2.4.0",
     "@volvo/vg-dealer-locator": "file:./packages/volvo-vg-dealer-locator-0.0.8.tgz"
   }
 }
