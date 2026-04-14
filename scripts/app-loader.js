@@ -37,26 +37,6 @@ const loadAssets = (urls = {}, loadedScripts = new Set()) => {
 };
 
 /**
- * Handle single metadata-based hash routing.
- */
-const applyInitialRoute = (metadataPageKey) => {
-  if (!metadataPageKey) {
-    return;
-  }
-
-  const page = getMetadata(metadataPageKey)?.toLowerCase();
-  if (!page) {
-    return;
-  }
-
-  if (location.hash && location.hash !== '#' && location.hash !== '#/') {
-    return;
-  }
-
-  location.hash = `#/${page}`;
-};
-
-/**
  * Move the app class from <main> to <html>.
  */
 const normalizeAppClass = (html, main, appClass) => {
@@ -92,7 +72,6 @@ export const initEmbeddedApp = ({ appClass, appId, urls = {}, metadataPageKey, s
   handleCountryRestrictions();
   mountContainer(main, appId);
   loadAssets(urls);
-  applyInitialRoute(metadataPageKey);
 
   if (shouldDisableHeader && headerDetailClass) {
     html.classList.add(headerDetailClass);
