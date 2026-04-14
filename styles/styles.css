@@ -1155,10 +1155,7 @@ main .section.responsive-title h1 {
   letter-spacing: var(--body-1-letter-spacing);
 }
 
-/* Keep default spacing above footer on this non-sectioned content page. */
-.redesign-v2 main > div:has(#sir-emissions-information) {
-  padding-bottom: 40px;
-}
+main > .section.v2-hero-container.v2-pencil-promo-container.v2-cards-container.v2-columns-container { padding-bottom: 40px; }
 
 /* stylelint-disable no-descending-specificity */
 :where(.redesign-v2) h1,
@@ -1779,10 +1776,6 @@ main .section.responsive-title h1 {
     --section-div-padding: 24px 0;
     --section-padding-top: 80px;
     --section-padding-bottom: 80px;
-  }
-
-  .redesign-v2 main > div:has(#sir-emissions-information) {
-    padding-bottom: 80px;
   }
 
   .redesign-v2 .v2-testimonial-container {
