@@ -1155,8 +1155,8 @@ main .section.responsive-title h1 {
   letter-spacing: var(--body-1-letter-spacing);
 }
 
-/* Keep default spacing above footer on SIR Emissions page across locales. */
-.redesign-v2 body.body-sir-emissions-information main > div:first-child {
+/* Keep default spacing above footer on this non-sectioned content page. */
+.redesign-v2 main > div:has(#sir-emissions-information) {
   padding-bottom: 40px;
 }
 
@@ -1781,7 +1781,7 @@ main .section.responsive-title h1 {
     --section-padding-bottom: 80px;
   }
 
-  .redesign-v2 body.body-sir-emissions-information main > div:first-child {
+  .redesign-v2 main > div:has(#sir-emissions-information) {
     padding-bottom: 80px;
   }
 
