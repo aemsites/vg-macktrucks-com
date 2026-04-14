@@ -320,7 +320,7 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
                               </div>
                           </div>
                           <div class="right">
-                              <div class="more" onclick="$.fn.switchSidebarPane('sidebar-pin', this);">
+                              <div class="more">
                                   <a>More</a>
                               </div>
                           </div>
