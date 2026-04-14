@@ -310,8 +310,7 @@ const template = ({ zipCode, isMobile, isExportMarket }) => {
                           </div>
                           <div class="right">
                               <div class="direction">
-                                  <a href="" id="direction"
-                                    onclick="$.fn.switchSidebarPane('sidebar-direction-list', this);return false;"></a>
+                                  <a href="" id="direction"></a>
                               </div>
                           </div>
                           <div class="right">

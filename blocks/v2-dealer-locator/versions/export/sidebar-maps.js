@@ -1354,6 +1354,9 @@ $.fn.tmpPins = function (tmpPinList) {
 
     templateClone.find('.teaser-top').data('id', pin.IDENTIFIER_VALUE);
     templateClone.find('.more').data('id', pin.IDENTIFIER_VALUE);
+    templateClone.find('.more').on('click', function() {
+      $.fn.switchSidebarPane('sidebar-pin', this);
+    });
 
     var isOpen = $.fn.isOpen(pin);
     var isOpenHtml = "";

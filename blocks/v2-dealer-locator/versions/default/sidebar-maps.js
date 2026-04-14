@@ -1466,8 +1466,8 @@ $.fn.tmpPins = function (tmpPinList) {
     templateClone.find('.teaser-top').data('id', pin.IDENTIFIER_VALUE);
     templateClone.find('.more').data('id', pin.IDENTIFIER_VALUE);
     templateClone.find('.more').on('click', function() {
-    $.fn.switchSidebarPane('sidebar-pin', this);
-});
+      $.fn.switchSidebarPane('sidebar-pin', this);
+    });
 
     var openHours = $.fn.getOpenHours(pin);
     var isOpenHtml = "";
