@@ -9,6 +9,7 @@
   padding-bottom: 32px;
 }
 
+.v2-recommendations > h2,
 .v2-recommendations > h3 {
   font-family: var(--ff-headline-medium);
   font-size: 27px;
@@ -16,7 +17,7 @@
   line-height: 117%;
   letter-spacing: -0.54px;
   padding-left: 16px;
-  padding-right: 16px;
+  padding-right: 24px;
 }
 
 .v2-recommendations__articles {
@@ -89,6 +90,7 @@
     padding-bottom: 80px;
   }
 
+  .v2-recommendations > h2,
   .v2-recommendations > h3 {
     font-size: 45px;
     line-height: 115%;
