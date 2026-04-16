@@ -859,6 +859,7 @@ initEmbeddedApp({
   appId: 'configurator',
   urls: TRUCK_CONFIGURATOR_URLS,
   shouldDisableHeader: disableHeader,
+  metadataPageKey: 'truck-configurator-page',
   headerDetailClass: 'truck-configurator--detail-page',
 });
 
