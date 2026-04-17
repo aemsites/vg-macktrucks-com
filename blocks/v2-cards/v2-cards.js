@@ -14,6 +14,50 @@ const variantClasses = [
   'with-uncropped-image',
 ];
 
+const trademarkPattern = /[®™]/g;
+
+const wrapTrademarkSymbols = (element) => {
+  const textNodes = [];
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+
+  while (walker.nextNode()) {
+    textNodes.push(walker.currentNode);
+  }
+
+  textNodes.forEach((textNode) => {
+    if (!textNode.textContent || textNode.parentElement?.closest('sup')) {
+      return;
+    }
+
+    const matches = [...textNode.textContent.matchAll(trademarkPattern)];
+    if (!matches.length) {
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    let lastIndex = 0;
+
+    matches.forEach((match) => {
+      const symbolIndex = match.index ?? 0;
+      if (symbolIndex > lastIndex) {
+        fragment.append(document.createTextNode(textNode.textContent.slice(lastIndex, symbolIndex)));
+      }
+
+      const superscript = document.createElement('sup');
+      superscript.textContent = match[0];
+      superscript.classList.add(`${blockName}__sup-generated`);
+      fragment.append(superscript);
+      lastIndex = symbolIndex + match[0].length;
+    });
+
+    if (lastIndex < textNode.textContent.length) {
+      fragment.append(document.createTextNode(textNode.textContent.slice(lastIndex)));
+    }
+
+    textNode.replaceWith(fragment);
+  });
+};
+
 const decoratePicture = (picture) => {
   const imageEl = picture.querySelector('img');
   picture.classList.add(`${blockName}__picture`);
@@ -91,4 +135,7 @@ export default async function decorate(block) {
       }
     });
   });
+
+  const trademarkTargets = [...block.querySelectorAll(`.${blockName}__heading, .${blockName}__button`)];
+  trademarkTargets.forEach((el) => wrapTrademarkSymbols(el));
 }
