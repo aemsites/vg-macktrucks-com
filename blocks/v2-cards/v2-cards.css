@@ -162,18 +162,6 @@
   align-items: flex-start;
 }
 
-.v2-cards__button sup {
-  display: inline-block;
-  font-size: 0.65em;
-  line-height: 1;
-  margin-top: -0.62em;
-  vertical-align: baseline;
-}
-
-.v2-cards__button sup.v2-cards__sup-generated {
-  margin-top: 0.9em;
-}
-
 .v2-cards__button-container .icon {
   stroke: currentcolor;
   width: 16px;
