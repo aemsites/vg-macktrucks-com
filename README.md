@@ -1,5 +1,5 @@
 # Mack Trucks
-Helix v5 sites for macktrucks.com
+EDS sites for macktrucks.com
 
 ## Environments
 - Preview: https://main--vg-macktrucks-com--volvogroup.aem.page/
