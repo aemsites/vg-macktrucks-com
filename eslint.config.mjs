@@ -7,6 +7,10 @@ export default [
     files: ['**/*.js', '**/*.jsx', '**/*.mjs'],
   },
   {
+    files: ['webpack.config.js'],
+    languageOptions: { globals: globals.node },
+  },
+  {
     ignores: ['**/*.min.js', '**/dealer-locator/vendor/*', '**/dealer-locator/shared/vendor/*', 'common/echarts-5.4.2/*', 'dist/*'],
   },
   {
@@ -39,6 +43,7 @@ export default [
       ],
       quotes: ['error', 'single'],
       'no-constant-binary-expression': 'error',
+      'no-useless-assignment': 'off',
     },
   },
 ];

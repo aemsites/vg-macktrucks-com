@@ -13,3 +13,4 @@ README.md
 config.json
 
 /dist
+*/settings.local.json
