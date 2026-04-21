@@ -333,7 +333,6 @@
 
 .hotspots-container .hotspot-layover .hotspot-layover-box.no-animation {
   transition: none !important;
-  transition-property: none !important;
 }
 
 .hotspots-container .hotspot-layover .hotspot-layover-box .hotspot-layover-thumb {

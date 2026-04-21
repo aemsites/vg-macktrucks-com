@@ -6,3 +6,7 @@ constants.json
 package.json
 package-lock.json
 placeholder.json
+blocks/**/*.js
+!blocks/v2-dealer-locator/**
+!blocks/v2-custom-form/responses/**
+scripts/**/*.js
