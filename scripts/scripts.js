@@ -34,6 +34,7 @@ import {
 
 import { isVideoLink, addVideoShowHandler, hasVideoOnPage, loadVideoJs } from './video-helper.js';
 import { initEmbeddedApp } from './app-loader.js';
+import assetsInit from './aem-assets-plugin-support.js';
 
 const disableHeader = getMetadata('disable-header').toLowerCase() === 'true';
 const disableFooter = getMetadata('disable-footer').toLowerCase() === 'true';
@@ -473,6 +474,10 @@ const moveClassToHtmlEl = (className, elementSelector = 'main') => {
  * @param {Element} main The main element
  */
 export function decorateMain(main, head) {
+  if (window.hlx.aemassets?.decorateExternalImages) {
+    window.hlx.aemassets.decorateExternalImages(main);
+  }
+
   if (head) {
     const pageStyle = head.querySelector('[name="style"]')?.content;
     if (pageStyle) {
@@ -588,6 +593,7 @@ async function loadPage() {
   }
 }
 
+await assetsInit(); // This to be done before loadPage() function invocation
 loadPage();
 
 /* this function load script only when it wasn't loaded yet */

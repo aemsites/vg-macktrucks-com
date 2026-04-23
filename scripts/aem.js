@@ -503,6 +503,9 @@ function buildBlock(blockName, content) {
  * @param {Element} block The block element
  */
 async function loadBlock(block) {
+  if (window.hlx?.aemassets?.loadBlock) {
+    return window.hlx.aemassets.loadBlock(block);
+  }
   const status = block.dataset.blockStatus;
   if (status !== 'loading' && status !== 'loaded') {
     block.dataset.blockStatus = 'loading';
