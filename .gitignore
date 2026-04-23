@@ -10,7 +10,6 @@ helix-importer-ui
 fstab.yaml
 pull_request_template.md
 README.md
-config.json
 
 /dist
 */settings.local.json

@@ -1,4 +1,16 @@
 {
+  "aemTierType": [
+    "delivery"
+  ],
+  "repoNames": [
+    "delivery-p107394-e1241111.adobeaemcloud.com"
+  ],
+  "copyMode": [
+    {
+      "mimeType": "image/*",
+      "value": "reference"
+    }
+  ],
   "blockName": [
     {
       "mimeType": "video/*",
