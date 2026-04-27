@@ -36,8 +36,8 @@ function handleImageError(img) {
     .closest('picture')
     .querySelectorAll('source')
     .forEach((source) => {
-    source.srcset = placeholderImg;
-  });
+      source.srcset = placeholderImg;
+    });
 }
 
 /**
@@ -59,8 +59,8 @@ function restoreOriginalImage(img, token) {
           .closest('picture')
           .querySelectorAll('source')
           .forEach((el) => {
-          el.setAttribute('srcset', base64Data);
-        });
+            el.setAttribute('srcset', base64Data);
+          });
       };
       reader.readAsDataURL(await resp.blob());
     } else {
@@ -95,7 +95,7 @@ export default function decorate(block) {
 
   images.forEach(async (img) => {
     const src = img.getAttribute('src');
-    if (!securedImages.includes(img) && isDMOpenAPIUrl(src) && await isSecureAsset(src)) {
+    if (!securedImages.includes(img) && isDMOpenAPIUrl(src) && (await isSecureAsset(src))) {
       // Identify all secure images and push them into securedImages map
       securedImages.push(img);
 
@@ -106,11 +106,14 @@ export default function decorate(block) {
         restoreOriginalImage(img, authToken);
       } else {
         img.src = placeholderImg;
-        img.closest('picture').querySelectorAll('source').forEach((source) => {
-          // capture the original src and replace the src with placeholder image
-          source.setAttribute('data-original-src', source.srcset);
-          source.srcset = placeholderImg;
-        });
+        img
+          .closest('picture')
+          .querySelectorAll('source')
+          .forEach((source) => {
+            // capture the original src and replace the src with placeholder image
+            source.setAttribute('data-original-src', source.srcset);
+            source.srcset = placeholderImg;
+          });
       }
     }
   });
