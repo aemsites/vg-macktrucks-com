@@ -351,7 +351,6 @@ async function decorateVideoCards(block, config) {
       const gridItem = document.createElement('li');
       gridItem.classList.add('video-card-grid-item');
       gridContainer.append(gridItem);
-
       await decorateVideoCard(gridItem, videoConfig);
     }),
   );
