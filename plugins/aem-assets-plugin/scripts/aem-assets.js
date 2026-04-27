@@ -11,6 +11,29 @@ const IMAGE_FORMATS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif', 'svg'];
  */
 const SMART_CROP_EXCLUDED_FORMATS = ['svg'];
 
+let siteBlocksContext = null;
+let pluginBlocksContext = null;
+
+try {
+  // eslint-disable-next-line no-undef
+  siteBlocksContext = require.context('../../../blocks/', true, /^[^/]+\/[^/]+\.js$/);
+  // eslint-disable-next-line no-undef
+  pluginBlocksContext = require.context('../blocks/', true, /^[^/]+\/[^/]+\.js$/);
+} catch (error) {
+  // Non-webpack environments fall back to runtime URL imports in loadBlockModule().
+}
+
+async function loadBlockModule(blockName, basePath, usePluginBlocksContext) {
+  const blockPath = `${blockName}/${blockName}.js`;
+  const context = usePluginBlocksContext ? pluginBlocksContext : siteBlocksContext;
+
+  if (context) {
+    return context(blockPath);
+  }
+
+  return import(`${basePath}/blocks/${blockName}/${blockName}.js`);
+}
+
 /**
  * Gets the extension of a URL.
  * @param {string} url The URL
@@ -615,8 +638,8 @@ export async function loadBlock(block) {
     const { blockName } = block.dataset;
     try {
       let basePath = window.hlx.codeBasePath;
-      if (window.hlx.aemassets.codeBasePath
-        && window.hlx.aemassets.blocks.indexOf(blockName) !== -1) {
+      const isPluginBlock = !!window.hlx.aemassets?.blocks?.includes(blockName);
+      if (window.hlx.aemassets.codeBasePath && isPluginBlock) {
         basePath = `${window.hlx.codeBasePath}${window.hlx.aemassets.codeBasePath}`;
       }
       decorateExternalImages(block);
@@ -624,9 +647,7 @@ export async function loadBlock(block) {
       const decorationComplete = new Promise((resolve) => {
         (async () => {
           try {
-            const mod = await import(
-              `${basePath}/blocks/${blockName}/${blockName}.js`
-            );
+            const mod = await loadBlockModule(blockName, basePath, isPluginBlock);
             if (mod.default) {
               await mod.default(block);
             }
