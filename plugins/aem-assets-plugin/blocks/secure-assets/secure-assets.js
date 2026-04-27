@@ -32,7 +32,10 @@ async function isSecureAsset(src) {
  */
 function handleImageError(img) {
   img.src = placeholderImg;
-  img.closest('picture').querySelectorAll('source').forEach((source) => {
+  img
+    .closest('picture')
+    .querySelectorAll('source')
+    .forEach((source) => {
     source.srcset = placeholderImg;
   });
 }
@@ -52,7 +55,10 @@ function restoreOriginalImage(img, token) {
       reader.onload = () => {
         const base64Data = reader.result;
         img.setAttribute('src', base64Data);
-        img.closest('picture').querySelectorAll('source').forEach((el) => {
+        img
+          .closest('picture')
+          .querySelectorAll('source')
+          .forEach((el) => {
           el.setAttribute('srcset', base64Data);
         });
       };
@@ -72,9 +78,9 @@ function isJWTTokenValid(token) {
     const [, payload] = token.split('.');
     const decodedPayload = JSON.parse(atob(payload));
     if (!decodedPayload.exp) {
-      isValid = (new Date(decodedPayload.expiry).getTime()) > Date.now();
+      isValid = new Date(decodedPayload.expiry).getTime() > Date.now();
     } else {
-      isValid = decodedPayload.exp > (Date.now() / 1000);
+      isValid = decodedPayload.exp > Date.now() / 1000;
     }
   } catch {
     isValid = false;
