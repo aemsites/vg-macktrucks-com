@@ -19,7 +19,7 @@ try {
   siteBlocksContext = require.context('../../../blocks/', true, /^[^/]+\/[^/]+\.js$/);
   // eslint-disable-next-line no-undef
   pluginBlocksContext = require.context('../blocks/', true, /^[^/]+\/[^/]+\.js$/);
-} catch (error) {
+} catch {
   // Non-webpack environments fall back to runtime URL imports in loadBlockModule().
 }
 
@@ -62,13 +62,19 @@ function getUrlExtension(url) {
  * @private
  */
 function isImageUrl(url) {
-  if (!url) return false;
+  if (!url) {
+    return false;
+  }
   const ext = getUrlExtension(url);
 
-  if (ext && IMAGE_FORMATS.includes(ext.toLowerCase())) return true;
+  if (ext && IMAGE_FORMATS.includes(ext.toLowerCase())) {
+    return true;
+  }
 
   // Check for '/is/image/' for handling DM image URLs
-  if (url.includes('is/image/')) return true;
+  if (url.includes('is/image/')) {
+    return true;
+  }
 
   return false;
 }
@@ -80,9 +86,11 @@ function isImageUrl(url) {
  * @private
  */
 function supportsSmartCrop(url) {
-  if (!url) return false;
+  if (!url) {
+    return false;
+  }
   const ext = getUrlExtension(url).toLowerCase();
-  
+
   // Smart crops work for raster images but not for excluded vector formats
   return !SMART_CROP_EXCLUDED_FORMATS.includes(ext) && IMAGE_FORMATS.includes(ext);
 }
@@ -103,9 +111,7 @@ function createWebOptimizedDMOpenAPIUrl(url) {
     // Extract the filename from the path
     const filename = pathname.split('/').pop();
     // Replace /original/as/ with /as/ and change extension to .avif
-    const newPathname = pathname
-      .replace(/(?:\/renditions)?\/original\/as\//, '/as/')
-      .replace(/\.[^.]+$/, '.avif');
+    const newPathname = pathname.replace(/(?:\/renditions)?\/original\/as\//, '/as/').replace(/\.[^.]+$/, '.avif');
     // Create new URL with modified pathname
     const newUrl = new URL(url.toString());
     newUrl.pathname = newPathname;
@@ -143,7 +149,7 @@ function getImageSrcUrlAndAlt(element) {
           if (deliveryUrl) {
             return { url: deliveryUrl, alt: altText || '' };
           }
-        } catch (e) {
+        } catch {
           // Not a JSON alt, fall back to src
         }
       }
@@ -170,7 +176,9 @@ function isExternalImage(element) {
   }
 
   const { url } = getImageSrcUrlAndAlt(element);
-  if (!url) return { isExternal: false, createOptimizedPictureHandler: null };
+  if (!url) {
+    return { isExternal: false, createOptimizedPictureHandler: null };
+  }
 
   // If it's an anchor tag and the URL doesn't have an image extension, return false
   if (element.tagName === 'A' && !isImageUrl(url)) {
@@ -204,15 +212,15 @@ function isExternalImage(element) {
 }
 
 /*
-  * Appends query params to a URL.
-  * @param {URL} url The URL object to append query params to
-  * @param {URLSearchParams} params The query params to append
-  * @returns {string} The URL string with query params appended
-  * @private
-  * @example
-  * appendQueryParams('https://example.com', { foo: 'bar' });
-  * // returns 'https://example.com?foo=bar'
-*/
+ * Appends query params to a URL.
+ * @param {URL} url The URL object to append query params to
+ * @param {URLSearchParams} params The query params to append
+ * @returns {string} The URL string with query params appended
+ * @private
+ * @example
+ * appendQueryParams('https://example.com', { foo: 'bar' });
+ * // returns 'https://example.com?foo=bar'
+ */
 function appendQueryParams(url, params) {
   const { searchParams } = url;
   params.forEach((value, key) => {
@@ -265,7 +273,9 @@ export function createOptimizedPicture(
   // webp
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
+    if (br.media) {
+      source.setAttribute('media', br.media);
+    }
     source.setAttribute('type', 'image/webp');
     const searchParams = new URLSearchParams({ width: br.width, format: 'webply' });
     source.setAttribute('srcset', appendQueryParams(url, searchParams));
@@ -278,7 +288,9 @@ export function createOptimizedPicture(
 
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
-      if (br.media) source.setAttribute('media', br.media);
+      if (br.media) {
+        source.setAttribute('media', br.media);
+      }
       source.setAttribute('srcset', appendQueryParams(url, searchParams));
       picture.appendChild(source);
     } else {
@@ -302,24 +314,17 @@ export function createOptimizedPicture(
  * @param {object[]} breakpoints The breakpoints to use
  * @returns {Element} The picture element
  */
-export function createOptimizedPictureWithSmartcrop(
-  src,
-  alt = '',
-  eager = false,
-  breakpoints = [],
-) {
+export function createOptimizedPictureWithSmartcrop(src, alt = '', eager = false, breakpoints = []) {
   const isAbsoluteUrl = /^https?:\/\//i.test(src);
- // check if the image type supports smart cropping
+  // check if the image type supports smart cropping
   const canUseSmartCrop = supportsSmartCrop(src);
   // initialise breakpoint to project level smartcrop config unless needed to customise
   let smartcropBreakpoints = breakpoints;
   if (canUseSmartCrop && breakpoints.length === 0 && window.hlx?.aemassets?.smartCrops) {
-    smartcropBreakpoints = Object.entries(window.hlx.aemassets.smartCrops).map(
-      ([name, { minWidth, maxWidth }]) => ({
-        media: `(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`,
-        smartcrop: name,
-      }),
-    );
+    smartcropBreakpoints = Object.entries(window.hlx.aemassets.smartCrops).map(([name, { minWidth, maxWidth }]) => ({
+      media: `(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`,
+      smartcrop: name,
+    }));
   } else if (breakpoints.length === 0) {
     // No custom breakpoints and format doesn't support smart crop (e.g., SVG)
     smartcropBreakpoints = [];
@@ -333,7 +338,9 @@ export function createOptimizedPictureWithSmartcrop(
   // webp
   smartcropBreakpoints.forEach((br) => {
     const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
+    if (br.media) {
+      source.setAttribute('media', br.media);
+    }
     source.setAttribute('type', 'image/webp');
     const searchParams = new URLSearchParams({ format: 'webply' });
     if (br.smartcrop) {
@@ -350,7 +357,9 @@ export function createOptimizedPictureWithSmartcrop(
       searchParams.set('smartcrop', br.smartcrop);
     }
     const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
+    if (br.media) {
+      source.setAttribute('media', br.media);
+    }
     source.setAttribute('srcset', appendQueryParams(url, searchParams));
     picture.appendChild(source);
   });
@@ -391,7 +400,9 @@ export function createOptimizedPictureForDM(
   // jpeg sources
   breakpoints.forEach((br) => {
     const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
+    if (br.media) {
+      source.setAttribute('media', br.media);
+    }
     source.setAttribute('type', 'image/jpeg');
     const searchParams = new URLSearchParams({ wid: br.width, fmt: 'jpeg' });
     source.setAttribute('srcset', appendQueryParams(url, searchParams));
@@ -404,7 +415,9 @@ export function createOptimizedPictureForDM(
 
     if (i < breakpoints.length - 1) {
       const source = document.createElement('source');
-      if (br.media) source.setAttribute('media', br.media);
+      if (br.media) {
+        source.setAttribute('media', br.media);
+      }
       source.setAttribute('srcset', appendQueryParams(url, searchParams));
       picture.appendChild(source);
     } else {
@@ -443,19 +456,19 @@ export function createOptimizedPictureForDMOpenAPI(
   // Determine which breakpoints to use
   let finalBreakpoints = breakpoints;
   if (useSmartcrop && window.hlx?.aemassets?.smartCrops) {
-    finalBreakpoints = Object.entries(window.hlx.aemassets.smartCrops).map(
-      ([name, { minWidth, maxWidth }]) => ({
-        media: `(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`,
-        smartcrop: name,
-        width: maxWidth || '2000',
-      }),
-    );
+    finalBreakpoints = Object.entries(window.hlx.aemassets.smartCrops).map(([name, { minWidth, maxWidth }]) => ({
+      media: `(min-width: ${minWidth}px) and (max-width: ${maxWidth}px)`,
+      smartcrop: name,
+      width: maxWidth || '2000',
+    }));
   }
 
   // Create sources
   finalBreakpoints.forEach((br) => {
     const source = document.createElement('source');
-    if (br.media) source.setAttribute('media', br.media);
+    if (br.media) {
+      source.setAttribute('media', br.media);
+    }
     source.setAttribute('type', 'image/avif');
 
     const searchParams = new URLSearchParams({ width: br.width });
@@ -471,7 +484,9 @@ export function createOptimizedPictureForDMOpenAPI(
   finalBreakpoints.forEach((br, i) => {
     if (i < finalBreakpoints.length - 1) {
       const source = document.createElement('source');
-      if (br.media) source.setAttribute('media', br.media);
+      if (br.media) {
+        source.setAttribute('media', br.media);
+      }
 
       const searchParams = new URLSearchParams({ width: br.width });
       if (useSmartcrop && br.smartcrop) {
@@ -586,12 +601,12 @@ function markSmartCropImages(ele = document) {
 }
 
 /*
-  * Decorates external images with a picture element
-  * @param {Element} ele The element
-  * @private
-  * @example
-  * decorateExternalImages(main);
-  */
+ * Decorates external images with a picture element
+ * @param {Element} ele The element
+ * @private
+ * @example
+ * decorateExternalImages(main);
+ */
 export function decorateExternalImages(ele) {
   // apply data-smartcrop-status=loading to all potential <a> ,<img> tags
   markSmartCropImages(ele);
@@ -604,7 +619,9 @@ export function decorateExternalImages(ele) {
       const renderSmartCrop = extImage.getAttribute('data-smartcrop-status');
       const { url: extImageSrc, alt } = getImageSrcUrlAndAlt(extImage);
 
-      if (!extImageSrc) return; // Skip if no source found
+      if (!extImageSrc) {
+        return;
+      } // Skip if no source found
 
       // Use the provided picture creator function to create the picture element
       const useSmartcrop = renderSmartCrop === 'loading';
@@ -652,7 +669,6 @@ export async function loadBlock(block) {
               await mod.default(block);
             }
           } catch (error) {
-            // eslint-disable-next-line no-console
             console.log(`failed to load module for ${blockName}`, error);
           }
           resolve();
@@ -660,7 +676,6 @@ export async function loadBlock(block) {
       });
       await Promise.all([cssLoaded, decorationComplete]);
     } catch (error) {
-      // eslint-disable-next-line no-console
       console.log(`failed to load block ${blockName}`, error);
     }
     block.dataset.blockStatus = 'loaded';

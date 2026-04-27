@@ -7,7 +7,7 @@ export default [
     files: ['**/*.js', '**/*.jsx', '**/*.mjs'],
   },
   {
-    files: ['webpack.config.js', '**/.eslintrc.js', '**/babel.config.js'],
+    files: ['webpack.config.js', '**/.eslintrc.js', '**/babel.config.js', '**/jest.config.js'],
     languageOptions: { globals: globals.node },
   },
   {

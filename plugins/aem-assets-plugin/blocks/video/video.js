@@ -7,9 +7,10 @@ const VIDEO_JS_LOAD_EVENT = 'videojs-loaded';
 function getDeviceSpecificVideoUrl(videoUrl) {
   const { userAgent } = navigator;
   const isIOS = /iPad|iPhone|iPod/.test(userAgent);
-  const isSafari = (/Safari/i).test(userAgent) && !(/Chrome/i).test(userAgent) && !(/CriOs/i).test(userAgent) && !(/Android/i).test(userAgent) && !(/Edg/i).test(userAgent);
+  const isSafari =
+    /Safari/i.test(userAgent) && !/Chrome/i.test(userAgent) && !/CriOs/i.test(userAgent) && !/Android/i.test(userAgent) && !/Edg/i.test(userAgent);
 
-  const manifest = (isIOS || isSafari) ? 'manifest.m3u8' : 'manifest.mpd';
+  const manifest = isIOS || isSafari ? 'manifest.m3u8' : 'manifest.mpd';
   return videoUrl.replace(/manifest\.mpd|manifest\.m3u8|play/, manifest);
 }
 
@@ -98,10 +99,7 @@ async function loadVideoJs() {
     return;
   }
 
-  await Promise.all([
-    loadCSS(VIDEO_JS_CSS),
-    loadScript(VIDEO_JS_SCRIPT),
-  ]);
+  await Promise.all([loadCSS(VIDEO_JS_CSS), loadScript(VIDEO_JS_SCRIPT)]);
 
   const { scriptTag: jsScript, cssLink: css } = getVideojsScripts();
   jsScript.dataset.loaded = true;
@@ -190,17 +188,20 @@ function getPosterImage(posterElement) {
 }
 
 function setupAutopause(videoElement, player) {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        player.play();
-      } else {
-        player.pause();
-      }
-    });
-  }, {
-    threshold: [0.5],
-  });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          player.play();
+        } else {
+          player.pause();
+        }
+      });
+    },
+    {
+      threshold: [0.5],
+    },
+  );
 
   observer.observe(videoElement);
 }
@@ -345,13 +346,15 @@ async function decorateVideoCards(block, config) {
   block.innerHTML = '';
   block.append(gridContainer);
 
-  await Promise.all(config.cards.map(async (videoConfig) => {
-    const gridItem = document.createElement('li');
-    gridItem.classList.add('video-card-grid-item');
-    gridContainer.append(gridItem);
+  await Promise.all(
+    config.cards.map(async (videoConfig) => {
+      const gridItem = document.createElement('li');
+      gridItem.classList.add('video-card-grid-item');
+      gridContainer.append(gridItem);
 
-    await decorateVideoCard(gridItem, videoConfig);
-  }));
+      await decorateVideoCard(gridItem, videoConfig);
+    }),
+  );
 }
 
 function closeModal() {
