@@ -1,9 +1,9 @@
 {
   "aemTierType": [
-    "delivery"
+    "publish"
   ],
   "repoNames": [
-    "delivery-p107394-e1241111.adobeaemcloud.com"
+    "publish-p107394-e1241111.adobeaemcloud.com"
   ],
   "copyMode": [
     {

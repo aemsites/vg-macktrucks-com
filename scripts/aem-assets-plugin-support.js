@@ -28,6 +28,6 @@ export default async function assetsInit() {
       Medium: { minWidth: 768, maxWidth: 1023 },
       Large: { minWidth: 1024, maxWidth: 9999 },
     },
-    externalImageUrlPrefixes: [['https://delivery-p107394-e1241111.adobeaemcloud.com/', createOptimizedPictureForDMOpenAPI]],
+    externalImageUrlPrefixes: [['https://publish-p107394-e1241111.adobeaemcloud.com/', createOptimizedPictureForDMOpenAPI]],
   };
 }
