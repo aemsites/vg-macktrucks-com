@@ -1,96 +1,166 @@
-import { createElement, decorateIcons } from '../../scripts/common.js';
-import fragmentBlock from '../fragment/fragment.js';
+const BLOCK_REFERENCE_PREFIX = '#';
+const BLOCK_LOADED_STATUS = 'loaded';
 
-const blockName = 'v2-accordion';
+/**
+ * Builds a <vcdk-accordion> item.
+ * Compliant with Volvo VCDK slot structure.
+ * @param {string} title
+ * @param {string} bodyHTML
+ * @returns {DocumentFragment}
+ */
+const renderAccordionItem = (title, bodyHTML = '') => {
+  const html = `
+    <vcdk-accordion>
+      <span slot="title" class="accordion__title">${title}</span>
+      <div class="accordion__content">${bodyHTML}</div>
+    </vcdk-accordion>
+  `;
+  return document.createRange().createContextualFragment(html);
+};
 
-function isContentLinkedCheck(el, startsWithString) {
-  if ((el.children.length === 1 && el.children[0].tagName.toLowerCase() === 'p') || (el.children.length === 0 && el.textContent === el.innerHTML)) {
-    return el.textContent.startsWith(startsWithString);
+/**
+ * Returns authoring rows with [title, content].
+ * @param {HTMLElement} block
+ * @returns {HTMLElement[]}
+ */
+const getRows = (block) => [...block.children].filter((row) => row.children?.length >= 2);
+
+const getText = (element) => element.textContent.trim();
+
+const isBlockReferenceContent = (element) => {
+  const text = getText(element);
+  return text.startsWith(BLOCK_REFERENCE_PREFIX) && text.length > 1 && element.children.length <= 1;
+};
+
+const getBlockReferenceId = (element) => getText(element).slice(BLOCK_REFERENCE_PREFIX.length).trim();
+
+const findBlockByReferenceId = (referenceId) => {
+  if (!referenceId) {
+    return null;
   }
-  return false;
-}
+  return document.querySelector(`.${CSS.escape(referenceId)}`);
+};
 
-/* Function checks if the content of the provided element is just a link to other doc */
-function isContentLink(el) {
-  return isContentLinkedCheck(el, '/');
-}
+/**
+ * Waits until a block reaches "loaded" state, then executes a callback.
+ * This avoids blocking the accordion rendering.
+ *
+ * @param {HTMLElement} block
+ * @param {Function} callback
+ */
+const waitForBlockLoaded = (block, callback) => {
+  if (block.dataset.blockStatus === BLOCK_LOADED_STATUS) {
+    callback();
+    return;
+  }
 
-function isContentInsideAnotherElement(el) {
-  return isContentLinkedCheck(el, '#id-');
-}
-
-function loaded(element, pointedContent, display) {
-  element.innerHTML = '';
-  element.append(pointedContent.parentElement);
-  pointedContent.parentElement.style.display = display;
-}
-
-export default async function decorate(block) {
-  const section = block.closest('.section');
-  const hasAccordion = section?.classList.contains(`${blockName}-container`);
-  const rows = [...block.querySelectorAll(':scope > div')];
-  const accordionsPromises = rows.map(async (row) => {
-    const accordionHeader = row.querySelector(
-      ':scope > div > h1, :scope > div > h2, :scope > div > h3, :scope > div > h4, :scope > div > h5, :scope > div > h6',
-    );
-    accordionHeader?.classList.add(`${blockName}__title`);
-    const accordionContent = row.querySelector(':scope > div:nth-child(2)');
-
-    const headerButton = createElement('button', { classes: `${blockName}__button` });
-    const dropdownArrowIcon = hasAccordion ? createElement('span', { classes: [`${blockName}__icon`, 'icon', 'icon-dropdown-caret'] }) : null;
-
-    headerButton.append(accordionHeader);
-    if (dropdownArrowIcon) {
-      headerButton.append(dropdownArrowIcon);
+  const observer = new MutationObserver(() => {
+    if (block.dataset.blockStatus === BLOCK_LOADED_STATUS) {
+      observer.disconnect();
+      callback();
     }
+  });
 
-    const contentEl = createElement('div', { classes: [`${blockName}__content`, `${blockName}__content-close`] });
+  observer.observe(block, {
+    attributes: true,
+    attributeFilter: ['data-block-status'],
+  });
+};
 
-    if (isContentLink(accordionContent)) {
-      await fragmentBlock(accordionContent);
-    }
+/**
+ * Injects a referenced block into the accordion content once loaded.
+ * Falls back to original HTML if the reference cannot be resolved.
+ *
+ * @param {HTMLElement} contentEl
+ * @param {HTMLElement} sourceEl
+ */
+const injectReferencedBlock = (contentEl, sourceEl) => {
+  const referenceId = getBlockReferenceId(sourceEl);
+  const referencedBlock = findBlockByReferenceId(referenceId);
+  const referencedBlockWrapper = referencedBlock?.parentElement;
 
-    contentEl.innerHTML = accordionContent.innerHTML;
+  if (!referencedBlock || !referencedBlockWrapper) {
+    contentEl.innerHTML = sourceEl.innerHTML.trim();
+    return;
+  }
 
-    if (isContentInsideAnotherElement(accordionContent)) {
-      const pointedContent = [...document.querySelectorAll(`.${accordionContent.textContent.substring(1)}`)].at(-1);
-      if (pointedContent) {
-        const prevDisplay = pointedContent.parentElement.style.display;
-        pointedContent.parentElement.style.display = 'none';
+  const moveBlock = () => {
+    contentEl.replaceChildren(referencedBlockWrapper);
+  };
 
-        if (pointedContent.dataset.blockStatus === 'loaded') {
-          loaded(contentEl, pointedContent, prevDisplay);
-        } else {
-          // lets wait for loading of the content that we want to put inside the accordion
-          new MutationObserver((_, observer) => {
-            if (pointedContent.dataset.blockStatus === 'loaded') {
-              observer.disconnect();
-              loaded(contentEl, pointedContent, prevDisplay);
-            }
-          }).observe(pointedContent, { attributes: true });
-        }
+  waitForBlockLoaded(referencedBlock, moveBlock);
+};
+
+const populateAccordionContent = (contentEl, sourceEl) => {
+  if (isBlockReferenceContent(sourceEl)) {
+    injectReferencedBlock(contentEl, sourceEl);
+    return;
+  }
+
+  contentEl.innerHTML = sourceEl.innerHTML.trim();
+};
+
+/**
+ * Enables single-open mode:
+ * When one accordion opens, all others close.
+ *
+ * @param {HTMLElement} block
+ */
+const enableSingleOpenBehavior = (block) => {
+  const items = [...block.querySelectorAll('vcdk-accordion')];
+
+  if (items.length <= 1) {
+    return;
+  }
+
+  items.forEach((item) => {
+    item.addEventListener('vcdk-toggle', () => {
+      if (!item.open) {
+        return;
       }
-    }
 
-    const accordionEl = createElement('div', { classes: [`${blockName}__item`, ...(hasAccordion ? [`${blockName}__item-close`] : [])] });
-    accordionEl.append(headerButton);
-    accordionEl.append(contentEl);
+      items
+        .filter((other) => other !== item && other.open)
+        .forEach((other) => {
+          other.open = false;
+        });
+    });
+  });
+};
 
-    if (hasAccordion) {
-      headerButton.addEventListener('click', () => {
-        accordionEl.classList.toggle(`${blockName}__item-close`);
-      });
-    }
+/**
+ * Forces all links inside the block to open in a new tab.
+ *
+ * @param {HTMLElement} block
+ */
+const setLinksToOpenInNewTab = (block) => {
+  block.querySelectorAll('a[href]').forEach((a) => {
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+  });
+};
 
-    decorateIcons(accordionEl);
-    return accordionEl;
+/**
+ * Decorates the accordion block.
+ * Supports:
+ * - standard rich text content
+ * - referenced blocks via "#id" syntax
+ *
+ * @param {HTMLElement} block
+ */
+export default function decorate(block) {
+  const fragment = document.createDocumentFragment();
+
+  getRows(block).forEach((row) => {
+    const [titleEl, bodyEl] = row.children;
+    const item = renderAccordionItem(getText(titleEl));
+    const contentEl = item.querySelector('.accordion__content');
+    populateAccordionContent(contentEl, bodyEl);
+    fragment.append(item);
   });
 
-  block.innerHTML = '';
-  await Promise.allSettled(accordionsPromises);
-  accordionsPromises.forEach(async (acc) => {
-    const result = await acc;
-    block.append(result);
-  });
-  decorateIcons(block);
+  block.replaceChildren(fragment);
+
+  setLinksToOpenInNewTab(block);
+  enableSingleOpenBehavior(block);
 }
