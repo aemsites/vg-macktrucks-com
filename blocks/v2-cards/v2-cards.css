@@ -98,34 +98,6 @@
   line-height: var(--headline-5-line-height);
   letter-spacing: var(--headline-5-letter-spacing);
   margin: 0 0 7px;
-  display: inline-flex;
-  align-items: baseline;
-}
-
-.v2-cards__heading a {
-  display: inline-flex;
-  align-items: baseline;
-}
-
-.v2-cards__heading sup,
-.v2-cards__heading sub {
-  font-size: 0.85em;
-  vertical-align: 0.3em;
-}
-
-.v2-cards__heading sup {
-  vertical-align: 0.05em;
-  position: relative;
-  top: 0;
-  padding-left: 0;
-}
-
-.v2-cards__heading em {
-  font-size: 1em;
-  margin: 0;
-  padding: 0;
-  letter-spacing: 0;
-  margin-right: -0.2em;
 }
 
 .v2-cards--large-heading .v2-cards__heading {
@@ -278,8 +250,26 @@
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-  gap: 4px;
+  white-space: nowrap;
+}
+
+.v2-cards .v2-cards__heading > sup {
+  font-size: var(--body-font-size-xs);
+  line-height: 1;
+  vertical-align: baseline;
+  position: relative;
+  top: -0.3em;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.v2-cards.v2-cards--heading-with-arrow .v2-cards__heading sup {
+  font-size: var(--body-font-size-xs);
+  line-height: 1;
+  vertical-align: baseline;
+  position: relative;
+  margin-top: 0.8em;
+  padding-right: 5px;
 }
 
 .v2-cards.v2-cards--heading-with-arrow .v2-cards__heading a:focus-visible {
@@ -290,6 +280,7 @@
   height: 28px;
   width: 28px;
   margin-left: auto;
+  padding-left: 4px;
   content: url('../../icons/arrow-right.svg');
 }
 
